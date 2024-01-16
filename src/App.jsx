@@ -1,45 +1,25 @@
-import { useState } from 'react';
-import Header from '@src/component/common/Header/Header.jsx';
-import Footer from '@src/component/common/Footer/Footer.jsx';
-import styled, { ThemeProvider } from 'styled-components';
-import { styled as muiStyled, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { theme } from '@src/config/theme/themeVariables';
-import muiTheme from '@src/config/theme/useMuiTheme.js';
-import { isDarkMode } from '@src/config/theme/jotai';
-import { useAtomValue } from 'jotai/react';
-import MuiGlobalStyles from '@src/config/theme/MuiGlobalStyles.jsx';
-import useMuiTheme from '@src/config/theme/useMuiTheme.js';
+import Layout from '@src/pages/layout/Layout.jsx';
+import LayoutWithoutSideBar from '@src/pages/layout/LayoutWithoutSideBar.jsx';
+import { Route, Routes } from 'react-router-dom';
+import MainPage from '@src/pages/MainPage.jsx';
+import InfoBoard from '@src/pages/InfoBoard.jsx';
 
-const footerHeight = '40px';
-const Wrapper = styled.div`
-    height: auto;
-    min-height: 97vw;
-    padding-bottom: ${footerHeight};
-`;
-const StyledFooter = muiStyled(Footer)`
-    height: ${footerHeight};
-    position: relative;
-    transform: translateY(-100%);
-`;
-
-function App() {
-  const darkMode = useAtomValue(isDarkMode);
-  const muiTheme = useMuiTheme();
-
+function App () {
+  
   return (
-    <MuiThemeProvider theme={muiTheme}>
-      <ThemeProvider theme={{
-        ...theme,
-        ...(darkMode ? theme.darkMode : theme.lightMode),
-      }}>
-        {/*<GlobalStyles />*/}
-        <MuiGlobalStyles />
-        <Wrapper>
-          <Header />
-        </Wrapper>
-        <StyledFooter footerheight={footerHeight} />
-      </ThemeProvider>
-    </MuiThemeProvider>
+    
+    <Routes>
+      <Route path={'/'} element={<LayoutWithoutSideBar />}>
+        <Route path={''} element={<MainPage />}></Route>
+      </Route>
+      <Route path={'/info/'} element={<Layout />}>
+        <Route path={''} element={<MainPage />}></Route>
+      </Route>
+      <Route path={'/board'} element={<Layout />}>
+        <Route path={''} element={<InfoBoard />}></Route>
+      </Route>
+    </Routes>
+  
   )
     ;
 }

@@ -1,5 +1,5 @@
-import React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import React, { useEffect } from 'react';
+import { styled as muiStyled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,23 +11,31 @@ import SideMenuButton from '@src/component/common/Header/SideMenuButton';
 import { drawerState } from '@src/component/common/Header/jotai';
 import ProfileImgMenu from '@src/component/common/Header/ProfileImgMenu';
 import Logo from '@src/component/common/Logo';
+import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { BOARD_LINK, INFO_LINK } from '@src/utils/const.js';
+import Tooltip from '@mui/material/Tooltip';
 
-const AppBar = styled(MuiAppBar, {
+const AppBar = muiStyled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
 }));
 
 //header css 설정
-const StyledAppBar = styled(AppBar)`
-    background-color: white;
+const StyledAppBar = muiStyled(AppBar)`
+    background-color: ${({ theme }) => theme['main-background']};
     color: black;
     min-height: 56px;
     box-shadow: none;
+    position: static;
 `;
+const StyledButton = muiStyled(Button)`
+      color: ${({ theme }) => theme['gray-light-text']};
+      margin-right: 1rem;
+  `;
 
 /**
- *
  * @param props {{hasDrawer: boolean}}
  * @returns {Element}
  * @constructor
@@ -35,12 +43,20 @@ const StyledAppBar = styled(AppBar)`
 const Header = (props) => {
   // const theme = useTheme();
   const { hasDrawer } = props;
-
+  
   const open = useAtomValue(drawerState);
-
+  const navigate = useNavigate();
+  const gotoInfo = () => {
+    navigate(INFO_LINK);
+  };
+  
+  const gotoBoard = () => {
+    navigate(BOARD_LINK);
+  };
+  
   return (
     <Box sx={{ display: 'flex' }}>
-      <StyledAppBar position="fixed" open={open}>
+      <StyledAppBar open={open}>
         <Toolbar sx={{ flexGrow: 0 }}>
           {/* 로고 */}
           <Logo />
@@ -48,11 +64,15 @@ const Header = (props) => {
           {hasDrawer && <SideMenuButton />}
           {/* 빈 공간 */}
           <Box sx={{ flexGrow: 1 }} />
-
+          <Tooltip title={'Infomation'}>
+            <StyledButton onClick={gotoInfo}>Infomation</StyledButton>
+          </Tooltip>
+          <Tooltip title={'Board'}>
+            <StyledButton onClick={gotoBoard}>Board</StyledButton>
+          </Tooltip>
           <ProfileImgMenu />
         </Toolbar>
       </StyledAppBar>
-
       {hasDrawer && <SideMenu />}
     </Box>
   );

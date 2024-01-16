@@ -16,6 +16,8 @@ const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
+  border: 'none',
+  backgroundColor: theme['main-background'],
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -29,6 +31,9 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
+  border: 'none',
+  
+  backgroundColor: theme['main-background'],
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
@@ -45,31 +50,37 @@ const Drawer = styled(MuiDrawer, {
   width: drawerWidth,
   flexShrink: 0,
   whiteSpace: 'nowrap',
-  '& .MuiDrawer-paper': {
-    border: 'none', // 항상 적용되는 border 제거
-    ...openedMixin(theme), // open 상태일 때 적용되는 스타일
-    ...closedMixin(theme), // close 상태일 때 적용되는 스타일
-    ...(open ? openedMixin(theme) : closedMixin(theme)), // open 상태에 따라 적용
-  },
+  ...(open && {
+    ...openedMixin(theme),
+    '& .MuiDrawer-paper': openedMixin(theme),
+  }),
+  ...(!open && {
+    ...closedMixin(theme),
+    '& .MuiDrawer-paper': closedMixin(theme),
+  }),
+  
 }));
 
-
 const StyledDrawer = styled(Drawer)`
+    &.MuiDrawer-docked {
+        width: 0;
+    }
 `;
 
 const menuItem = ['Inbox', 'Starred', 'Send email', 'Drafts'];
-const menuIcon = [<InboxIcon key="icon1" />,
-  <MailIcon key="icon2" />,
-  <InboxIcon key="icon3" />,
-  <MailIcon key="icon4" />,
+const menuIcon = [
+  <InboxIcon key='icon1' />,
+  <MailIcon key='icon2' />,
+  <InboxIcon key='icon3' />,
+  <MailIcon key='icon4' />,
 ];
 
 const SideMenu = () => {
-
+  
   const open = useAtomValue(drawerState);
-
+  
   return (
-    <StyledDrawer variant="permanent" open={open}>
+    <StyledDrawer variant='permanent' open={open}>
       <DrawerHeader />
       <List>
         {menuItem.map((text, index) => (

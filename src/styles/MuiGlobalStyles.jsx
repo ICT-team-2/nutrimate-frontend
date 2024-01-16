@@ -1,5 +1,5 @@
 import { GlobalStyles } from '@mui/system';
-import { theme } from '@src/config/theme/themeVariables';
+import { theme } from '@src/config/theme/themeVariables.js';
 
 const themeColor = {
   ...theme,
@@ -7,8 +7,7 @@ const themeColor = {
 };
 
 const MuiGlobalStyles = () => {
-
-
+  
   return (<GlobalStyles styles={{
     body: {
       backgroundColor: themeColor['main-background'],
@@ -18,6 +17,15 @@ const MuiGlobalStyles = () => {
       fontWeight: themeColor['main-font-weight'],
       lineHeight: themeColor['main-line-height'],
       letterSpacing: themeColor['main-letter-spacing'],
+    },
+    ':root': {
+      '--main-background': themeColor['main-background'],
+      '--main-text': themeColor['main-text'],
+      '--main-font': themeColor['main-font'],
+      '--main-font-size': themeColor['main-font-size'],
+      '--main-font-weight': themeColor['main-font-weight'],
+      '--main-line-height': themeColor['main-line-height'],
+      '--main-letter-spacing': themeColor['main-letter-spacing'],
     },
   }} />);
 };
