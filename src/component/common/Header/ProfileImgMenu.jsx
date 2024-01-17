@@ -6,6 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
+import { UserAvatar } from '@src/component/GlobalComponents.jsx';
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -27,7 +28,7 @@ const ProfileImgMenu = () => {
       {/* 프로필 아이콘 */}
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+          <UserAvatar />
         </IconButton>
       </Tooltip>
 

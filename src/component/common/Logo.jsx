@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import { APP_TITLE } from '@src/utils/const';
-import { NoDecoLink } from '@src/styles/GlobalStyledComponents';
+import { NoDecoLink } from '@src/component/GlobalComponents.jsx';
 
 const Logo = () => {
   return (

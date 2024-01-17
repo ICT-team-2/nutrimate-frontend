@@ -7,7 +7,7 @@ import { styled as muiStyled } from '@mui/material/styles';
 import {
   RelativeWrapper,
   StyledContainer,
-} from '@src/styles/GlobalStyledComponents.jsx';
+} from '@src/component/GlobalComponents.jsx';
 
 const MainImg = styled.img`
     width: 100%;
@@ -19,12 +19,12 @@ const MainPageImgContent = styled.div`
     width: 500px;
     height: 300px;
     position: absolute;
-    transform: translateY(-350px); // transform 속성을 사용하여 위치 이동
+    transform: translateY(-400px); // transform 속성을 사용하여 위치 이동
     color: white;
-    z-index: 1000;
 `;
 
 const MainContent = styled.div`
+    margin-top: 50px;
 `;
 
 const MainPage = ({ size }) => {
