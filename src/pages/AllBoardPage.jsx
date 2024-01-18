@@ -1,11 +1,11 @@
 import React from 'react';
 import BoardLayout from '@src/layout/BoardLayout.jsx';
-import BoardListContent from '@src/component/board/BoardListContent.jsx';
+import InfoBoardContent from '@src/component/board/info/InfoBoardContent.jsx';
 
 const AllBoardPage = () => {
   return (
     <>
-      <BoardListContent />
+      <InfoBoardContent />
 
     </>
   );

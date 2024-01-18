@@ -45,7 +45,7 @@ const rows = [
 ];
 
 //정보 공유 게시판 글 목록 테이블
-export default function InfoBoardList() {
+export default function InfoBoardTable() {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 400 }} aria-label="customized table">

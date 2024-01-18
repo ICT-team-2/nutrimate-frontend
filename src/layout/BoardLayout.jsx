@@ -4,7 +4,7 @@ import { Button, Container, Pagination, TextField } from '@mui/material';
 import styled from 'styled-components';
 import { CustomSearchInput } from '@src/component/GlobalComponents.jsx';
 import Box from '@mui/material/Box';
-import InfoBoardList from '@src/component/board/info/InfoBoardList.jsx';
+import InfoBoardTable from '@src/component/board/info/InfoBoardTable.jsx';
 import RecommendFriendList from '@src/component/board/RecommendFriendList.jsx';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 

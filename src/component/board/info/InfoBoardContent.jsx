@@ -4,9 +4,10 @@ import { Button, Container, Pagination, TextField } from '@mui/material';
 import styled from 'styled-components';
 import { CustomSearchInput } from '@src/component/GlobalComponents.jsx';
 import Box from '@mui/material/Box';
-import InfoBoardList from '@src/component/board/info/InfoBoardList.jsx';
+import InfoBoardTable from '@src/component/board/info/InfoBoardTable.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LINKS, PATH_PARAMS, TITLE } from '@src/utils/const.js';
+import InfoBoardCategory from '@src/component/board/info/InfoBoardCategoryMenu.jsx';
 
 
 const ContentsCotainerBox = muiStyled(Box)`
@@ -32,7 +33,7 @@ const FlexGrowDiv = styled.div`
     flex-grow: 1;
 `;
 
-const BoardListContent = ({ data, title, category }) => {
+const InfoBoardContent = ({ data, title, category }) => {
 
 
   const { page } = useParams(); // 현재 페이지
@@ -59,7 +60,9 @@ const BoardListContent = ({ data, title, category }) => {
 
   return (
     <ContentsCotainerBox>
-      <h3>{title}</h3>
+      {/* title */}
+      <InfoBoardCategory title={title} />
+      <br />
       <TextFieldContainerDiv>
         {/* 글 찾기 인풋 */}
         <CustomSearchInput label="Search" id="search" size="small" />
@@ -69,9 +72,8 @@ const BoardListContent = ({ data, title, category }) => {
           글 작성
         </Button>
       </TextFieldContainerDiv>
-      <br />
       {/* 글 목록 테이블 */}
-      <InfoBoardList />
+      <InfoBoardTable />
       {/* 페이지네이션 */}
       <PagingContainer>
         <FlexGrowDiv></FlexGrowDiv>
@@ -83,10 +85,10 @@ const BoardListContent = ({ data, title, category }) => {
   );
 };
 
-BoardListContent.defaultProps = {
+InfoBoardContent.defaultProps = {
   data: [],
   title: TITLE.ALL_INFO_BOARD,
   category: PATH_PARAMS.ALL,
 };
 
-export default BoardListContent;
+export default InfoBoardContent;
