@@ -44,6 +44,7 @@ const rows = [
   createData('Gingerbread7', 356, 16.0, 49, 3.9),
 ];
 
+//정보 공유 게시판 글 목록 테이블
 export default function InfoBoardList() {
   return (
     <TableContainer component={Paper}>

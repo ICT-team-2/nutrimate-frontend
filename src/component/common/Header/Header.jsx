@@ -13,7 +13,7 @@ import ProfileImgMenu from '@src/component/common/Header/ProfileImgMenu';
 import Logo from '@src/component/common/Logo';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { BOARD_FIRST_LINK, INFO_LINK } from '@src/utils/const.js';
+import { LINKS } from '@src/utils/const.js';
 import Tooltip from '@mui/material/Tooltip';
 
 const AppBar = muiStyled(MuiAppBar, {
@@ -47,11 +47,11 @@ const Header = (props) => {
   const open = useAtomValue(drawerState);
   const navigate = useNavigate();
   const gotoInfo = () => {
-    navigate(INFO_LINK);
+    navigate(LINKS.INFO);
   };
 
   const gotoBoard = () => {
-    navigate(BOARD_FIRST_LINK);
+    navigate(LINKS.ALL_INFO_BOARD + '/1');
   };
 
   return (

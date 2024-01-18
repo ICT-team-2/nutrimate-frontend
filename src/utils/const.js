@@ -1,11 +1,48 @@
-export const APP_TITLE = 'NutriMate';
-export const BOARD_LINK = '/board';
-export const ALL_LINK = BOARD_LINK + '/all';
-export const FOODS_LINK = BOARD_LINK + '/food';
-export const SPORT_LINK = BOARD_LINK + '/sport';
-export const FEED_LINK = BOARD_LINK + '/feed';
-export const BOARD_FIRST_LINK = ALL_LINK + '/1';
-export const INFO_LINK = '/info';
+export const TITLE = {
+  APP: 'NutriMate',
+  ALL_INFO_BOARD: '전체',
+  INFO_BOARD: '정보 공유',
+  FOOD_BOARD: '식단',
+  SPORT_BOARD: '운동',
+  FEED_BOARD: '피드',
+  INFO: '자료 공유',
+  BOARD_WRITE: '글쓰기',
+};
+
+export const PATH_PARAMS = {
+  BOARD: 'board',
+  ALL: 'all',
+  INFO: 'info',
+  FOOD: 'food',
+  SPORT: 'sport',
+  FEED: 'feed',
+  WRITE: 'write',
+};
+
+//
+export const ROUTER_LINKS = {
+  BOARD: PATH_PARAMS.BOARD,
+  ALL_INFO_BOARD: PATH_PARAMS.INFO + '/' + PATH_PARAMS.ALL,
+  FOOD_BOARD: PATH_PARAMS.INFO + '/' + PATH_PARAMS.FOOD,
+  SPORT_BOARD: PATH_PARAMS.INFO + '/' + PATH_PARAMS.SPORT,
+  FEED_BOARD: PATH_PARAMS.FEED,
+  INFO: PATH_PARAMS.INFO,
+  INFO_BOARD_WRITE: PATH_PARAMS.INFO + '/' + PATH_PARAMS.WRITE,
+};
+
+export const LINKS = {
+  BOARD: '/' + ROUTER_LINKS.BOARD,
+  INFO_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO,
+  ALL_INFO_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.ALL_INFO_BOARD,
+  FOOD_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.FOOD_BOARD,
+  SPORT_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.SPORT_BOARD,
+  FEED_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.FEED_BOARD,
+  INFO: '/' + ROUTER_LINKS.INFO,
+  INFO_BOARD_WRITE: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_WRITE,
+};
+
+
+export const EDITOR_HEIGHT = 500;
 
 
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Paper } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { APP_TITLE } from '@src/utils/const.js';
+import { TITLE } from '@src/utils/const.js';
 
 const FooterPaper = muiStyled(Paper)(({ theme, footerheight }) => ({
   zIndex: theme.zIndex.drawer + 1,
@@ -27,7 +27,7 @@ const Footer = ({ footerheight }) => {
       <FooterTypo variant="caption" color="initial"
                   footerheight={footerheight}
       >
-        &copy; Copyright 2024. {APP_TITLE}{' '}
+        &copy; Copyright 2024. {TITLE.APP}{' '}
       </FooterTypo>
     </FooterPaper>
   );

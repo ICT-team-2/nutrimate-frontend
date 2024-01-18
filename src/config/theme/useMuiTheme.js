@@ -33,6 +33,9 @@ const useMuiTheme = () => {
     action: {
       hover: themeColor['link-hover'],
     },
+    typography: {
+      fontFamily: '"JetBrains Mono", "Roboto", "Helvetica", "Arial", sans-serif',
+    },
   });
 };
 

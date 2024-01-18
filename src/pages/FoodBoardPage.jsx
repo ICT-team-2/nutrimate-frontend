@@ -1,11 +1,14 @@
 import React from 'react';
-import BoardLayout from '@src/pages/layout/BoardLayout.jsx';
+import BoardLayout from '@src/layout/BoardLayout.jsx';
 import BoardListContent from '@src/component/board/BoardListContent.jsx';
+import { PATH_PARAMS, TITLE } from '@src/utils/const.js';
 
 const FoodBoardPage = () => {
   return (
     <>
-      <BoardListContent title="식단" category="food" />
+      <BoardListContent
+        title={TITLE.FOOD_BOARD}
+        category={PATH_PARAMS.FOOD} />
     </>
   );
 };

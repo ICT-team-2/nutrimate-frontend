@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import React from 'react';
 
+
 const SideMenuButton = () => {
   const [open, setOpen] = useAtom(drawerState);
 
