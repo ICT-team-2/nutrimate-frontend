@@ -12,7 +12,15 @@ import { useAtom, useAtomValue } from 'jotai/react';
 
 import { drawerState } from '@src/component/common/Header/jotai';
 import { MENU_LIST } from '@src/utils/const.js';
-import { faBookmark, faGear, faHeart, faTrophy, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBookmark,
+  faCalendar, faClipboard,
+  faGear,
+  faHeart, faHouse, faMagnifyingGlass,
+  faPaperPlane,
+  faTrophy,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const drawerWidth = 240;
@@ -92,11 +100,11 @@ const menuItem = [
 const menuTitle = menuItem.map((item) => item.TITLE);
 
 const menuIcon = [
-  <InboxIcon key="icon1" />,
-  <MailIcon key="icon2" />,
-  <InboxIcon key="icon3" />,
-  <MailIcon key="icon4" />,
-  <InboxIcon key="icon5" />,
+  <FontAwesomeIcon key="icon1" icon={faHouse} />,
+  <FontAwesomeIcon key="icon2" icon={faMagnifyingGlass} />,
+  <FontAwesomeIcon key="icon3" icon={faClipboard} />,
+  <FontAwesomeIcon key="icon4" icon={faCalendar} />,
+  <FontAwesomeIcon key="icon5" icon={faPaperPlane} />,
   <FontAwesomeIcon key="icon6" icon={faHeart} />,
   <FontAwesomeIcon key="icon7" icon={faTrophy} />,
   <FontAwesomeIcon key="icon8" icon={faUser} />,
