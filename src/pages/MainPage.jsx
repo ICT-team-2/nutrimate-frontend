@@ -3,7 +3,7 @@ import MainPageImg from '@src/asset/image/MainPageImg.png';
 import styled from 'styled-components';
 import { TITLE } from '@src/utils/const.js';
 import { Button } from '@mui/material';
-import { RelativeWrapper, StyledContainer } from '@src/component/GlobalComponents.jsx';
+import { RelativeWrapper, StyledContainer } from '@src/component/common/GlobalComponents.jsx';
 
 const MainImg = styled.img`
     width: 100%;
@@ -42,8 +42,6 @@ const MainPage = ({ size }) => {
           <h3>Nutri Mate는 당신의 목표를 이루기 위한 올바른 식습관을 지원합니다.</h3>
         </MainContent>
       </StyledContainer>
-
-
     </>
   );
 };

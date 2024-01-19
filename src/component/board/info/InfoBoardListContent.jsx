@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled as muiStyled } from '@mui/material/styles';
 import { Button, Container, Pagination, TextField } from '@mui/material';
 import styled from 'styled-components';
-import { CustomSearchInput } from '@src/component/GlobalComponents.jsx';
+import { CustomSearchInput } from '@src/component/common/GlobalComponents.jsx';
 import Box from '@mui/material/Box';
 import InfoBoardTable from '@src/component/board/info/InfoBoardTable.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -12,10 +12,9 @@ import InfoBoardCategory from '@src/component/board/info/InfoBoardCategoryMenu.j
 
 const ContentsCotainerBox = muiStyled(Box)`
     margin: 0
-    witdh: 100%;
+    width: 100%;
     flex-grow: 8;
     margin-top: 20px;
-    
 `;
 
 const TextFieldContainerDiv = styled.div`
@@ -33,16 +32,22 @@ const FlexGrowDiv = styled.div`
     flex-grow: 1;
 `;
 
-const InfoBoardContent = ({ data, title, category }) => {
+const InfoBoardListContent = ({ data, title, category }) => {
 
 
   const { page } = useParams(); // 현재 페이지
   const [pageState, setPageState] = useState(parseInt(page));
 
+  useEffect(() => {
+    if (isNaN(pageState)) {
+      setPageState(1);
+    }
+  }, [pageState]);
+
   const navigate = useNavigate();
   const handlePageChange = (event, value) => {
     setPageState(value);
-    navigate(`/board/${category}/${value}`);
+    navigate(LINKS.INFO_BOARD + `/${category}/${value}`);
   };
 
   const gotoWritePage = () => {
@@ -85,10 +90,10 @@ const InfoBoardContent = ({ data, title, category }) => {
   );
 };
 
-InfoBoardContent.defaultProps = {
+InfoBoardListContent.defaultProps = {
   data: [],
   title: TITLE.ALL_INFO_BOARD,
   category: PATH_PARAMS.ALL,
 };
 
-export default InfoBoardContent;
+export default InfoBoardListContent;

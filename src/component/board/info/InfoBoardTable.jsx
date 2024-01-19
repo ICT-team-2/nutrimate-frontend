@@ -7,6 +7,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { LINKS } from '@src/utils/const.js';
+import { useNavigate } from 'react-router-dom';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -61,9 +63,8 @@ export default function InfoBoardTable() {
         <TableBody>
           {rows.map((row, index) => (
             <StyledTableRow key={row.name + index}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
+              <TitleTableCell component="th" scope="row">
+                {row.name}</TitleTableCell>
               <StyledTableCell align="right">{row.calories}</StyledTableCell>
               <StyledTableCell align="right">{row.fat}</StyledTableCell>
               <StyledTableCell align="right">{row.carbs}</StyledTableCell>
@@ -75,3 +76,11 @@ export default function InfoBoardTable() {
     </TableContainer>
   );
 }
+
+const TitleTableCell = (props) => {
+  const navigate = useNavigate();
+  const { children: title } = props;
+  return <StyledTableCell onClick={() => {
+    navigate(LINKS.INFO_BOARD_VIEW + '/1');
+  }}>{title}</StyledTableCell>;
+};

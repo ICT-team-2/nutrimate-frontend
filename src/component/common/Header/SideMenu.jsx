@@ -32,8 +32,8 @@ const closedMixin = (theme) => ({
   }),
   overflowX: 'hidden',
   border: 'none',
-  
   backgroundColor: theme['main-background'],
+
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
@@ -58,29 +58,34 @@ const Drawer = styled(MuiDrawer, {
     ...closedMixin(theme),
     '& .MuiDrawer-paper': closedMixin(theme),
   }),
-  
+
 }));
 
 const StyledDrawer = styled(Drawer)`
     &.MuiDrawer-docked {
         width: 0;
     }
+
+    & .MuiDrawer-paper {
+        position: absolute;
+    }
+
 `;
 
 const menuItem = ['Inbox', 'Starred', 'Send email', 'Drafts'];
 const menuIcon = [
-  <InboxIcon key='icon1' />,
-  <MailIcon key='icon2' />,
-  <InboxIcon key='icon3' />,
-  <MailIcon key='icon4' />,
+  <InboxIcon key="icon1" />,
+  <MailIcon key="icon2" />,
+  <InboxIcon key="icon3" />,
+  <MailIcon key="icon4" />,
 ];
 
 const SideMenu = () => {
-  
+
   const open = useAtomValue(drawerState);
-  
+
   return (
-    <StyledDrawer variant='permanent' open={open}>
+    <StyledDrawer variant="permanent" open={open}>
       <DrawerHeader />
       <List>
         {menuItem.map((text, index) => (

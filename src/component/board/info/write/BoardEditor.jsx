@@ -5,7 +5,7 @@ import { EDITOR_HEIGHT } from '@src/utils/const.js';
 import styled from 'styled-components';
 
 const StyledEditor = styled(ReactQuill)`
-    height: ${EDITOR_HEIGHT}px;
+    min-height: ${EDITOR_HEIGHT}px;
 `;
 
 function BoardEditor() {

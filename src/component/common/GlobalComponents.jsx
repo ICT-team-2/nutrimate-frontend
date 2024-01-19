@@ -1,10 +1,12 @@
 import { styled as muiStyled } from '@mui/material/styles';
-import { Container, InputAdornment, TextField } from '@mui/material';
+import { Button, Container, InputAdornment, TextField } from '@mui/material';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import Avatar from '@mui/material/Avatar';
 import React from 'react';
+import Typography from '@mui/material/Typography';
+
 
 export const StyledContainer = muiStyled(Container)`
     margin: 0 6vw;
@@ -64,3 +66,15 @@ UserAvatar.defaultProps = {
   profileLink: '/static/images/avatar/2.jpg',
   size: 40,
 };
+
+export const BoardSubtitleTypo = ({ text }) => {
+  return <h5 style={{ margin: '8px 0' }}>{text}</h5>;
+};
+
+export const FlexGrowDiv = styled.div`
+    flex-grow: 1;
+`;
+export const SeperatorDiv = styled.div`
+    display: inline-block;
+`;
+export const Seperator = '·';

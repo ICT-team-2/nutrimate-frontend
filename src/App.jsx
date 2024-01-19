@@ -12,12 +12,14 @@ import { ThemeProvider } from 'styled-components';
 import {
   ThemeProvider as MuiThemeProvider,
 } from '@mui/material/styles';
-import AllBoardPage from '@src/pages/AllBoardPage.jsx';
-import FoodBoardPage from '@src/pages/FoodBoardPage.jsx';
-import SportBoardPage from '@src/pages/SportBoardPage.jsx';
-import FeedBoardPage from '@src/pages/FeedBoardPage.jsx';
+import AllBoardPage from '@src/pages/board/AllBoardPage.jsx';
+import FoodBoardPage from '@src/pages/board/FoodBoardPage.jsx';
+import SportBoardPage from '@src/pages/board/SportBoardPage.jsx';
+import FeedBoardPage from '@src/pages/board/FeedBoardPage.jsx';
 import { ROUTER_LINKS } from '@src/utils/const.js';
-import InfoBoardWrite from '@src/component/board/info/write/InfoBoardWrite.jsx';
+import InfoBoardWritePage from '@src/pages/board/InfoBoardWritePage.jsx';
+import InfoBoardViewPage from '@src/pages/board/InfoBoardViewPage.jsx';
+import NotFound404Page from '@src/pages/NotFound404Page.jsx';
 
 function App() {
   const darkMode = useAtomValue(isDarkMode);
@@ -33,10 +35,11 @@ function App() {
           <Route path={'/'} element={<LayoutWithoutSideBar />}>
             <Route path={''} element={<MainPage />}></Route>
             <Route path={ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_WRITE}
-                   element={<InfoBoardWrite />}></Route>
+                   element={<InfoBoardWritePage />}></Route>
+            <Route path={'*'} element={<NotFound404Page />}></Route>
           </Route>
 
-          <Route path={ROUTER_LINKS.INFO} element={<Layout />}>
+          <Route path={ROUTER_LINKS.INFO} element={<LayoutWithoutSideBar />}>
             <Route path={''} element={<MainPage />}></Route>
           </Route>
           <Route path={'/' + ROUTER_LINKS.BOARD} element={<Layout />}>
@@ -49,6 +52,8 @@ function App() {
                      element={<SportBoardPage />}></Route>
               <Route path={ROUTER_LINKS.FEED_BOARD}
                      element={<FeedBoardPage />}></Route>
+              <Route path={ROUTER_LINKS.INFO_BOARD_VIEW + '/:boardId'}
+                     element={<InfoBoardViewPage />}></Route>
             </Route>
           </Route>
         </Routes>

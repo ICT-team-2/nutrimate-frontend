@@ -6,7 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import { UserAvatar } from '@src/component/GlobalComponents.jsx';
+import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];

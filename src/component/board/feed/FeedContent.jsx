@@ -25,9 +25,9 @@ const FeedContent = () => {
   return (
     <ContentContainer>
       <StyledImageList variant="quilted" cols={6} rowHeight={121}>
-        {itemData.map((item) => (
+        {itemData.map((item, index) => (
           <ImageListItem
-            key={item.img}
+            key={item.img + index}
             cols={item.cols || 1}
             rows={item.rows || 1}
           >
