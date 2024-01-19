@@ -18,6 +18,12 @@ export const PATH_PARAMS = {
   FEED: 'feed',
   WRITE: 'write',
   VIEW: 'view',
+  CHALLENGE: 'challenge',
+  RECORD: 'record',
+  CALENDAR: 'calendar',
+  USERINFO: 'userinfo',
+  BOOKMARK: 'bookmark',
+  SETTING: 'setting',
 };
 
 //
@@ -30,6 +36,12 @@ export const ROUTER_LINKS = {
   INFO: PATH_PARAMS.INFO,
   INFO_BOARD_WRITE: PATH_PARAMS.INFO + '/' + PATH_PARAMS.WRITE,
   INFO_BOARD_VIEW: PATH_PARAMS.INFO + '/' + PATH_PARAMS.VIEW,
+  RECORD: PATH_PARAMS.RECORD,
+  CALENDAR: PATH_PARAMS.CALENDAR,
+  USERINFO: PATH_PARAMS.USERINFO,
+  BOOKMARK: PATH_PARAMS.BOOKMARK,
+  SETTING: PATH_PARAMS.SETTING,
+  CHALLENGE: PATH_PARAMS.BOARD + '/' + PATH_PARAMS.CHALLENGE,
 };
 
 export const LINKS = {
@@ -42,10 +54,58 @@ export const LINKS = {
   INFO: '/' + ROUTER_LINKS.INFO,
   INFO_BOARD_WRITE: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_WRITE,
   INFO_BOARD_VIEW: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_VIEW,
+  RECORD: '/' + ROUTER_LINKS.RECORD,
+  CALENDAR: '/' + ROUTER_LINKS.CALENDAR,
+  USERINFO: '/' + ROUTER_LINKS.USERINFO,
+  BOOKMARK: '/' + ROUTER_LINKS.BOOKMARK,
+  SETTING: '/' + ROUTER_LINKS.SETTING,
+  CHALLENGE: '/' + ROUTER_LINKS.CHALLENGE,
 };
 
 
 export const EDITOR_HEIGHT = 500;
 
+export const MENU_LIST = {
+  HOME: {
+    TITLE: '홈',
+    PATH: '/',
+  },
+  SEARCH: {
+    TITLE: '검색',
+    PATH: '/',
+  },
+  RECORD: {
+    TITLE: '기록',
+    PATH: LINKS.RECORD,
+  },
+  CALENDAR: {
+    TITLE: '달력',
+    PATH: LINKS.CALENDAR,
+  },
+  INFOBOARD: {
+    TITLE: '공유',
+    PATH: LINKS.ALL_INFO_BOARD + '/1',
+  },
+  FEEDBOARD: {
+    TITLE: '피드',
+    PATH: LINKS.FEED_BOARD,
+  },
+  CHALLENGE: {
+    TITLE: '챌린지',
+    PATH: LINKS.CHALLENGE,
+  },
+  USERINFO: {
+    TITLE: '프로필',
+    PATH: LINKS.USERINFO,
+  },
+  BOOKMARK: {
+    TITLE: '북마크',
+    PATH: LINKS.BOOKMARK,
+  },
+  SETTING: {
+    TITLE: '설정',
+    PATH: LINKS.SETTING,
+  },
+};
 
 

@@ -3,6 +3,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
+import { Button, Container } from '@mui/material';
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -16,14 +17,32 @@ function srcset(image, size, rows = 1, cols = 1) {
 const ContentContainer = styled.div`
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
 `;
 const StyledImageList = muiStyled(ImageList)`
     width: 80%;
 `;
 
+const StyledButton = muiStyled(Button)`
+    margin-bottom: 20px;
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    width: 80%;
+`;
+
 const FeedContent = () => {
   return (
+
     <ContentContainer>
+      <ButtonContainer>
+        <StyledButton variant="contained">
+          글 작성
+        </StyledButton>
+      </ButtonContainer>
       <StyledImageList variant="quilted" cols={6} rowHeight={121}>
         {itemData.map((item, index) => (
           <ImageListItem
@@ -40,6 +59,7 @@ const FeedContent = () => {
         ))}
       </StyledImageList>
     </ContentContainer>
+
   );
 };
 export default FeedContent;

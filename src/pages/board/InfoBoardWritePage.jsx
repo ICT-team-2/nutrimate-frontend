@@ -12,6 +12,14 @@ import InputHashtag from '@src/component/board/InputHashtag.jsx';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import KakaoMap from '@src/component/board/info/write/KakaoMap.jsx';
 import { BOARD } from '@src/component/board/const.js';
+import loadable from '@loadable/component';
+import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
+
+const LoadableMap = loadable(
+  () => import('@src/component/board/info/write/KakaoMap.jsx'),
+  {
+    fallback: <LoadingComponent />,
+  });
 
 const InlineTypography = muiStyled(Typography)`
     display: inline-block;
@@ -55,7 +63,7 @@ const InfoBoardWritePage = (props) => {
       </TitleContainer>
       {/* 식단 or 운동코스 등록(지도) */}
       {title !== BOARD.INFO.FOOD.TITLE ?
-        <KakaoMap /> : <FoodImgAnaylsis />
+        <LoadableMap /> : <FoodImgAnaylsis />
       }
 
       {/* 해시태그 입력 */}

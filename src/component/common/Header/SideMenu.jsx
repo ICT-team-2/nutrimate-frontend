@@ -11,6 +11,9 @@ import MuiDrawer from '@mui/material/Drawer';
 import { useAtom, useAtomValue } from 'jotai/react';
 
 import { drawerState } from '@src/component/common/Header/jotai';
+import { MENU_LIST } from '@src/utils/const.js';
+import { faBookmark, faGear, faHeart, faTrophy, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const drawerWidth = 240;
 
@@ -72,12 +75,33 @@ const StyledDrawer = styled(Drawer)`
 
 `;
 
-const menuItem = ['Inbox', 'Starred', 'Send email', 'Drafts'];
+const menuItem = [
+  MENU_LIST.HOME,
+  MENU_LIST.SEARCH,
+  MENU_LIST.RECORD,
+  MENU_LIST.CALENDAR,
+  MENU_LIST.INFOBOARD,
+  MENU_LIST.FEEDBOARD,
+  MENU_LIST.CHALLENGE,
+  MENU_LIST.USERINFO,
+  MENU_LIST.BOOKMARK,
+  MENU_LIST.SETTING,
+];
+
+
+const menuTitle = menuItem.map((item) => item.TITLE);
+
 const menuIcon = [
   <InboxIcon key="icon1" />,
   <MailIcon key="icon2" />,
   <InboxIcon key="icon3" />,
   <MailIcon key="icon4" />,
+  <InboxIcon key="icon5" />,
+  <FontAwesomeIcon key="icon6" icon={faHeart} />,
+  <FontAwesomeIcon key="icon7" icon={faTrophy} />,
+  <FontAwesomeIcon key="icon8" icon={faUser} />,
+  <FontAwesomeIcon key="icon9" icon={faBookmark} />,
+  <FontAwesomeIcon key="icon10" icon={faGear} />,
 ];
 
 const SideMenu = () => {
@@ -88,8 +112,8 @@ const SideMenu = () => {
     <StyledDrawer variant="permanent" open={open}>
       <DrawerHeader />
       <List>
-        {menuItem.map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+        {menuTitle.map((text, index) => (
+          <ListItem key={text + index} disablePadding sx={{ display: 'block' }}>
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -101,6 +125,7 @@ const SideMenu = () => {
               <ListItemIcon
                 sx={{
                   minWidth: 0,
+                  ml: 1,
                   mr: open ? 3 : 'auto',
                 }}
               >

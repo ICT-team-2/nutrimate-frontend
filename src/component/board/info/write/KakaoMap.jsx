@@ -1,8 +1,21 @@
 import { useState } from 'react';
 import { CustomOverlayMap, Map, Polyline } from 'react-kakao-maps-sdk';
 import { Paper } from '@mui/material';
+import { styled as muiStyled } from '@mui/material/styles';
+import { createGlobalStyle } from 'styled-components';
 
+const GlobalStyle = createGlobalStyle`
+    .number {
+        color: red;
+    }
+`;
 
+const StyledPaper = muiStyled(Paper)`
+  padding: 10px;
+  list-style: none;
+  font-size: 0.8rem;
+  justify-content: space-between;
+`;
 const KakaoMap = () => {
   const [isdrawing, setIsdrawing] = useState(false);
   const [clickLine, setClickLine] = useState();
@@ -58,7 +71,8 @@ const KakaoMap = () => {
     const bycicleTime = (distance / 227) | 0;
 
     return (
-      <Paper className="dotOverlay distanceInfo">
+
+      <StyledPaper className="dotOverlay distanceInfo">
         {/* todo 이거 스타일 입히기 */}
         <li>
           <span className="label">총거리</span>{' '}
@@ -83,14 +97,16 @@ const KakaoMap = () => {
           )}
           <span className="number">{bycicleTime % 60}</span> 분
         </li>
-      </Paper>
+      </StyledPaper>
     );
   };
 
   return (
     <>
+      <GlobalStyle />
       <Map // 지도를 표시할 Container
-        id={`map`}
+        id={`;
+map`}
         center={{
           // 지도의 중심좌표
           lat: 37.498004414546934,
@@ -116,7 +132,8 @@ const KakaoMap = () => {
         />
         {paths.map((path) => (
           <CustomOverlayMap
-            key={`dot-${path.lat},${path.lng}`}
+            key={`;
+dot -${path.lat},${path.lng}`}
             position={path}
             zIndex={1}
           >
@@ -126,7 +143,8 @@ const KakaoMap = () => {
         {paths.length > 1 &&
           distances.slice(1, distances.length).map((distance, index) => (
             <CustomOverlayMap
-              key={`distance-${paths[index + 1].lat},${paths[index + 1].lng}`}
+              key={`;
+distance -${paths[index + 1].lat},${paths[index + 1].lng}`}
               position={paths[index + 1]}
               yAnchor={1}
               zIndex={2}
@@ -135,9 +153,9 @@ const KakaoMap = () => {
                 <DistanceInfo distance={distance} />
               ) : (
                 /* todo 이거 스타일 입히기 */
-                <Paper className="dotOverlay">
+                <StyledPaper className="dotOverlay">
                   거리 <span className="number">{distance}</span>m
-                </Paper>
+                </StyledPaper>
               )}
             </CustomOverlayMap>
           ))}
