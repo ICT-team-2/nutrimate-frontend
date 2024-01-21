@@ -8,7 +8,7 @@ import { useAtomValue } from 'jotai/react';
 
 import SideMenu from '@src/component/common/Header/SideMenu';
 import SideMenuButton from '@src/component/common/Header/SideMenuButton';
-import { drawerState } from '@src/component/common/Header/jotai';
+import { drawerState } from '@src/component/common/Header/atom.js';
 import ProfileImgMenu from '@src/component/common/Header/ProfileImgMenu';
 import Logo from '@src/component/common/Logo';
 import { Button } from '@mui/material';

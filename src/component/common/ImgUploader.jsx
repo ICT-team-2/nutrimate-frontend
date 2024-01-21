@@ -5,7 +5,7 @@ import React, { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
 
-const ResetStyleInput = styled.input`
+export const ResetStyleInput = styled.input`
     text-indent: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -13,8 +13,9 @@ const ResetStyleInput = styled.input`
 `;
 
 const StyledUploadImgDiv = styled.div`
-    width: ${({ width }) => width || '200'}px;
-    height: ${({ height }) => height || '100'}px;
+    width: ${({ width }) => width || '200px'};
+    height: ${({ height }) => height || '100px'};
+
     border: 1px dashed ${({ theme }) => theme['border-color-deep']};
     background-color: ${({ theme }) => theme['white']};
     display: flex;
@@ -41,7 +42,7 @@ const StyledButton = muiStyled(Button)`
 `;
 
 export const ImgUploader = (props) => {
-  const { width, height, title } = props;
+  const { width, height, children: title } = props;
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef();
 

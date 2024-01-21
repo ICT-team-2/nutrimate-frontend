@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import Avatar from '@mui/material/Avatar';
 import React from 'react';
-import Typography from '@mui/material/Typography';
 
 
 export const StyledContainer = muiStyled(Container)`
@@ -23,8 +22,8 @@ export const NoDecoLink = styled(Link)`
 
 export const StyledSearchInput = muiStyled(TextField)({
   '& .MuiOutlinedInput-root': {
-    borderRadius: '50px', // '50px'가 아닌 50px로 변경
-    backgroundColor: '#fff', // background-color가 아닌 backgroundColor로 변경
+    // borderRadius: '50px',
+    backgroundColor: '#fff',
   },
 });
 
@@ -52,19 +51,28 @@ CustomSearchInput.defaultProps = {
 const StyledAvatar = muiStyled(Avatar)`
   width: ${({ size }) => size || '40'}px;
   height: ${({ size }) => size || '40'}px;
+  ${({ variant }) => variant === 'rounded' && `
+    border-radius: 22px;
+  `}
 `;
 
 
 export const UserAvatar = (props) => {
   // eslint-disable-next-line react/prop-types
-  const { userNick, profileLink, size } = props;
-  return <StyledAvatar alt={userNick} src={profileLink} size={size} />;
+  const { userNick, src, size, variant } = props;
+  return <StyledAvatar
+    alt={userNick}
+    src={src}
+    size={size}
+    variant={variant}
+  />;
 };
 
 UserAvatar.defaultProps = {
   userNick: 'Remy Sharp',
-  profileLink: '/static/images/avatar/2.jpg',
+  src: '/static/images/avatar/2.jpg',
   size: 40,
+  variant: 'circular',
 };
 
 export const BoardSubtitleTypo = ({ text }) => {
@@ -74,7 +82,5 @@ export const BoardSubtitleTypo = ({ text }) => {
 export const FlexGrowDiv = styled.div`
     flex-grow: 1;
 `;
-export const SeperatorDiv = styled.div`
-    display: inline-block;
-`;
+
 export const Seperator = '·';

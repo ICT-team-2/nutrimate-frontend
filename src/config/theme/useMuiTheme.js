@@ -1,7 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 import { theme, themeColor } from '@src/config/theme/themeVariables.js';
 import { useAtomValue } from 'jotai/react';
-import { isDarkMode } from '@src/config/theme/jotai.js';
+import { isDarkMode } from '@src/config/theme/atom.js';
 
 const useMuiTheme = () => {
 

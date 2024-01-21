@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -10,7 +10,7 @@ import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import { useAtom, useAtomValue } from 'jotai/react';
 
-import { drawerState } from '@src/component/common/Header/jotai';
+import { drawerState, sideMenuIconRefAtom } from '@src/component/common/Header/atom.js';
 import { MENU_LIST } from '@src/utils/const.js';
 import {
   faBookmark,
@@ -22,6 +22,8 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { padding } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -83,6 +85,7 @@ const StyledDrawer = styled(Drawer)`
 
 `;
 
+//메뉴 아이템들
 const menuItem = [
   MENU_LIST.HOME,
   MENU_LIST.SEARCH,
@@ -91,7 +94,7 @@ const menuItem = [
   MENU_LIST.INFOBOARD,
   MENU_LIST.FEEDBOARD,
   MENU_LIST.CHALLENGE,
-  MENU_LIST.USERINFO,
+  MENU_LIST.MYINFO,
   MENU_LIST.BOOKMARK,
   MENU_LIST.SETTING,
 ];
@@ -99,33 +102,82 @@ const menuItem = [
 
 const menuTitle = menuItem.map((item) => item.TITLE);
 
+const itemMargin = [0, 1, 3, 2, 1, 1, 0, 2, 3, 1];
+
+//메뉴 아이콘들
 const menuIcon = [
   <FontAwesomeIcon key="icon1" icon={faHouse} />,
-  <FontAwesomeIcon key="icon2" icon={faMagnifyingGlass} />,
-  <FontAwesomeIcon key="icon3" icon={faClipboard} />,
-  <FontAwesomeIcon key="icon4" icon={faCalendar} />,
-  <FontAwesomeIcon key="icon5" icon={faPaperPlane} />,
-  <FontAwesomeIcon key="icon6" icon={faHeart} />,
+  <FontAwesomeIcon key="icon2" icon={faMagnifyingGlass}
+                   style={{ paddingLeft: '1px' }} />,
+  <FontAwesomeIcon key="icon3" icon={faClipboard}
+                   style={{ paddingLeft: '3px' }} />,
+  <FontAwesomeIcon key="icon4" icon={faCalendar}
+                   style={{ paddingLeft: '2px' }} />,
+  <FontAwesomeIcon key="icon5" icon={faPaperPlane}
+                   style={{ paddingLeft: '1px' }} />,
+  <FontAwesomeIcon key="icon6" icon={faHeart}
+                   style={{ paddingLeft: '1px' }} />,
   <FontAwesomeIcon key="icon7" icon={faTrophy} />,
-  <FontAwesomeIcon key="icon8" icon={faUser} />,
-  <FontAwesomeIcon key="icon9" icon={faBookmark} />,
-  <FontAwesomeIcon key="icon10" icon={faGear} />,
+  <FontAwesomeIcon key="icon8" icon={faUser}
+                   style={{ paddingLeft: '2px' }} />,
+  <FontAwesomeIcon key="icon9" icon={faBookmark}
+                   style={{ paddingLeft: '3px' }} />,
+  <FontAwesomeIcon key="icon10" icon={faGear}
+                   style={{ paddingLeft: '1px' }} />,
 ];
+
 
 const SideMenu = () => {
 
-  const open = useAtomValue(drawerState);
+  const [drawerOpen, setDrawerOpen] = useAtom(drawerState);
+  const navigate = useNavigate();
+  const drawerRef = useRef();
+  const documentRef = useRef(window.document);
+  const iconButtonRef = useAtomValue(sideMenuIconRefAtom);
+
+  const itemOnClick = menuItem.map((item) => {
+    return () => {
+      if (item.TITLE === MENU_LIST.SEARCH.TITLE) {
+        // todo 검색창 열기
+        return;
+      }
+      navigate(item.PATH);
+    };
+  });
+
+  // drawer 밖을 클릭하면 drawer가 닫히도록
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (drawerRef.current
+        && !drawerRef.current.contains(event.target)
+        && iconButtonRef
+        && !iconButtonRef.contains(event.target)
+      ) {
+        setDrawerOpen(false);
+      }
+    };
+    documentRef.current.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      documentRef.current.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [iconButtonRef]);
 
   return (
-    <StyledDrawer variant="permanent" open={open}>
+    <StyledDrawer
+      variant="permanent"
+      open={drawerOpen}
+      onClose={() => setDrawerOpen(false)}
+      ref={drawerRef}
+    >
       <DrawerHeader />
       <List>
         {menuTitle.map((text, index) => (
-          <ListItem key={text + index} disablePadding sx={{ display: 'block' }}>
+          <ListItem key={text + index} disablePadding sx={{ display: 'block' }}
+                    onClick={itemOnClick[index]}>
             <ListItemButton
               sx={{
                 minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
+                justifyContent: drawerOpen ? 'initial' : 'center',
                 px: 2.5,
               }}
             >
@@ -133,13 +185,17 @@ const SideMenu = () => {
               <ListItemIcon
                 sx={{
                   minWidth: 0,
-                  ml: 1,
-                  mr: open ? 3 : 'auto',
+                  mr: drawerOpen ? 4 : 'auto',
                 }}
               >
                 {menuIcon[index]}
               </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText
+                primary={text}
+                sx={{
+                  opacity: drawerOpen ? 1 : 0,
+                  marginLeft: itemMargin[index] + 'px',
+                }} />
             </ListItemButton>
           </ListItem>
         ))}

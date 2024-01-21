@@ -4,6 +4,8 @@ import ImageListItem from '@mui/material/ImageListItem';
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import { Button, Container } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { LINKS } from '@src/utils/const.js';
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -33,29 +35,44 @@ const ButtonContainer = styled.div`
     justify-content: flex-end;
     width: 80%;
 `;
+const StyledImageListItem = muiStyled(ImageListItem)`
+  cursor: pointer;
+`;
 
 const FeedContent = () => {
-  return (
 
+  const navigate = useNavigate();
+
+  const gotoWrite = () => {
+    navigate(LINKS.FEEDBOARD_WRITE);
+  };
+  const gotoView = () => {
+    navigate(LINKS.FEEDBOARD_VIEW);
+  };
+
+  return (
     <ContentContainer>
       <ButtonContainer>
-        <StyledButton variant="contained">
+        <StyledButton
+          variant="contained"
+          onClick={gotoWrite}>
           글 작성
         </StyledButton>
       </ButtonContainer>
       <StyledImageList variant="quilted" cols={6} rowHeight={121}>
         {itemData.map((item, index) => (
-          <ImageListItem
+          <StyledImageListItem
             key={item.img + index}
             cols={item.cols || 1}
             rows={item.rows || 1}
+            onClick={gotoView}
           >
             <img
               {...srcset(item.img, 121, item.rows, item.cols)}
               alt={item.title}
               loading="lazy"
             />
-          </ImageListItem>
+          </StyledImageListItem>
         ))}
       </StyledImageList>
     </ContentContainer>

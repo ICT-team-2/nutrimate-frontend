@@ -8,6 +8,7 @@ import InfoBoardTable from '@src/component/board/info/InfoBoardTable.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LINKS, PATH_PARAMS, TITLE } from '@src/utils/const.js';
 import InfoBoardCategory from '@src/component/board/info/InfoBoardCategoryMenu.jsx';
+import PagnationComponent from '@src/component/common/PagnationComponent.jsx';
 
 
 const ContentsCotainerBox = muiStyled(Box)`
@@ -80,12 +81,7 @@ const InfoBoardListContent = ({ data, title, category }) => {
       {/* 글 목록 테이블 */}
       <InfoBoardTable />
       {/* 페이지네이션 */}
-      <PagingContainer>
-        <FlexGrowDiv></FlexGrowDiv>
-        <Pagination count={10} color="primary" showFirstButton showLastButton
-                    shape="rounded" page={pageState} onChange={handlePageChange}
-        />
-      </PagingContainer>
+      <PagnationComponent pageState={pageState} handlePageChange={handlePageChange} />
     </ContentsCotainerBox>
   );
 };

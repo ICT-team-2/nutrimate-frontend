@@ -1,28 +1,37 @@
-import { useAtom } from 'jotai/react';
-import { drawerState } from '@src/component/common/Header/jotai';
+import { useAtom, useSetAtom } from 'jotai/react';
+import { drawerState, sideMenuIconRefAtom } from '@src/component/common/Header/atom.js';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 
 const SideMenuButton = () => {
   const [open, setOpen] = useAtom(drawerState);
 
-  const handleDrawer = () => {
+  const [refA, setRef] = useAtom(sideMenuIconRefAtom);
+  const ref = useRef(null);
+
+  const handleDrawer = (event) => {
     if (open) {
-      handleDrawerClose();
+      handleDrawerClose(event);
       return;
     }
-    handleDrawerOpen();
+    handleDrawerOpen(event);
   };
 
-  const handleDrawerOpen = () => {
+  const handleDrawerOpen = (event) => {
     setOpen(true);
+
   };
 
-  const handleDrawerClose = () => {
+  const handleDrawerClose = (event) => {
     setOpen(false);
+
   };
+
+  useEffect(() => {
+    setRef(ref.current);
+  }, [ref]);
 
   return (
     <IconButton
@@ -32,6 +41,7 @@ const SideMenuButton = () => {
       sx={{
         marginLeft: 1,
       }}
+      ref={ref}
     >
       <MenuIcon />
     </IconButton>
