@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { useRef } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -10,7 +10,6 @@ import Divider from '@mui/material/Divider';
 import { useAtom, useSetAtom } from 'jotai/react';
 import { profileModalAtom, profilePromptModalAtom, uploadedImageAtom } from '@src/component/mypage/atom.js';
 import { ResetStyleInput } from '@src/component/common/ImgUploader.jsx';
-import { useRef, useState } from 'react';
 import { styled as muiStyled } from '@mui/material/styles';
 import ProfileAIPromptModal from '@src/component/mypage/myinfo/ProfileAIPromptModal.jsx';
 

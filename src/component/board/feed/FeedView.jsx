@@ -1,7 +1,7 @@
 import React from 'react';
 import FeedViewContent from '@src/component/board/feed/FeedViewContent.jsx';
 import styled from 'styled-components';
-
+ 
 const ViewContainer = styled.div`
     display: flex;
     flex-direction: column;

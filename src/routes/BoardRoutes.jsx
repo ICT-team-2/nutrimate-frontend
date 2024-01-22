@@ -12,6 +12,7 @@ import FeedBoardViewPage from '@src/pages/board/FeedBoardViewPage.jsx';
 import InfoBoardWritePage from '@src/pages/board/InfoBoardWritePage.jsx';
 import FeedBoardWritePage from '@src/pages/board/FeedBoardWritePage.jsx';
 import LayoutWithoutSideBar from '@src/layout/LayoutWithoutSideBar.jsx';
+import NotFound404Page from '@src/pages/NotFound404Page.jsx';
 
 const BoardRoutes = () => {
   return (
@@ -40,6 +41,8 @@ const BoardRoutes = () => {
         <Route path={ROUTER_LINKS.FEED_BOARD_WRITE}
                element={<FeedBoardWritePage />}></Route>
       </Route>
+      <Route path={'*'} element={<NotFound404Page />}></Route>
+      
     </Routes>
   );
 };

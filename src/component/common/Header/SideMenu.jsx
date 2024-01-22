@@ -1,10 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
@@ -14,15 +12,17 @@ import { drawerState, sideMenuIconRefAtom } from '@src/component/common/Header/a
 import { MENU_LIST } from '@src/utils/const.js';
 import {
   faBookmark,
-  faCalendar, faClipboard,
+  faCalendar,
+  faClipboard,
   faGear,
-  faHeart, faHouse, faMagnifyingGlass,
+  faHeart,
+  faHouse,
+  faMagnifyingGlass,
   faPaperPlane,
   faTrophy,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { padding } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;

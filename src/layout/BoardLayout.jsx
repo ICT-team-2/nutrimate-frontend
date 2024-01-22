@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { styled as muiStyled } from '@mui/material/styles';
-import { Button, Container, Pagination, TextField } from '@mui/material';
+import { Container } from '@mui/material';
 import styled from 'styled-components';
-import { CustomSearchInput } from '@src/component/common/GlobalComponents.jsx';
 import Box from '@mui/material/Box';
-import InfoBoardTable from '@src/component/board/info/InfoBoardTable.jsx';
 import RecommendFriendList from '@src/component/board/RecommendFriendList.jsx';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 

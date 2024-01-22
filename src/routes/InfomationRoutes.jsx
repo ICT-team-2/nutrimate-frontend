@@ -1,14 +1,15 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { ROUTER_LINKS } from '@src/utils/const.js';
 import LayoutWithoutSideBar from '@src/layout/LayoutWithoutSideBar.jsx';
-import MainPage from '@src/pages/MainPage.jsx';
+import NotFound404Page from '@src/pages/NotFound404Page.jsx';
 
 const InfomationRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<LayoutWithoutSideBar />}>
-        <Route path="" element={<MainPage />}></Route>
+      <Route path="" element={<LayoutWithoutSideBar />}>
+        <Route path={''} element={<NotFound404Page />}></Route>
+        <Route path={'*'} element={<NotFound404Page />}></Route>
+
       </Route>
     </Routes>
   );

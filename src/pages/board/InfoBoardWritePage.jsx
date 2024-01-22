@@ -10,7 +10,6 @@ import WriteCategoryMenu from '@src/component/board/info/write/WriteCategoryMenu
 import FoodImgAnaylsis from '@src/component/board/info/write/FoodImgAnaylsis.jsx';
 import InputHashtag from '@src/component/board/InputHashtag.jsx';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
-import KakaoMap from '@src/component/board/info/write/KakaoMap.jsx';
 import { BOARD } from '@src/component/board/const.js';
 import loadable from '@loadable/component';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';

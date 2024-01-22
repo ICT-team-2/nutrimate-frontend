@@ -1,4 +1,4 @@
-import { useAtom, useSetAtom } from 'jotai/react';
+import { useAtom } from 'jotai/react';
 import { drawerState, sideMenuIconRefAtom } from '@src/component/common/Header/atom.js';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';

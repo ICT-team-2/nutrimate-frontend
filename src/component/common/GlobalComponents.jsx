@@ -1,5 +1,5 @@
 import { styled as muiStyled } from '@mui/material/styles';
-import { Button, Container, InputAdornment, TextField } from '@mui/material';
+import { Container, InputAdornment, TextField } from '@mui/material';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';

@@ -7,10 +7,8 @@ import Avatar from '@mui/material/Avatar';
 import ImageIcon from '@mui/icons-material/Image';
 import WorkIcon from '@mui/icons-material/Work';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
-import ListSubheader from '@mui/material/ListSubheader';
 import { Button } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
-import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import styled from 'styled-components';
 
 const exampleDatas = [

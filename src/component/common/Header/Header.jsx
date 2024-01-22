@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { styled as muiStyled, useTheme } from '@mui/material/styles';
+import React from 'react';
+import { styled as muiStyled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';

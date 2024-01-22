@@ -1,12 +1,12 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import MonthPicker from '@src/component/calendar/MonthPicker.jsx';
+import TestComp from '@src/pages/TestComp.jsx';
 
 const TestPage = () => {
   return (
     <div>
-      test
-      <FontAwesomeIcon icon={faHeart} beat />
+      <MonthPicker />
+      <TestComp />
     </div>
   );
 };

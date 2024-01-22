@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { styled as muiStyled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
-import styled from 'styled-components';
 import Box from '@mui/material/Box';
 
 const ListItem = muiStyled('li')(({ theme }) => ({

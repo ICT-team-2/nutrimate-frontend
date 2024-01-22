@@ -4,9 +4,10 @@ import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import { Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { styled as muiStyled } from '@mui/material/styles';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai/react';
+import { useAtomValue, useSetAtom } from 'jotai/react';
 import {
-  followerListModalAtom, followingListModalAtom,
+  followerListModalAtom,
+  followingListModalAtom,
   myPageTabAtom,
   profileModalAtom,
   uploadedImageAtom,

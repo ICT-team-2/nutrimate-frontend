@@ -1,6 +1,5 @@
 import React from 'react';
 import FeedWrite from '@src/component/board/feed/FeedWrite.jsx';
-import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import { Container } from '@mui/material';
 

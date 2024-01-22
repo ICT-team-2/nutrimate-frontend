@@ -1,8 +1,8 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai/react';
 import { myPageTabAtom } from '@src/component/mypage/atom.js';
 
