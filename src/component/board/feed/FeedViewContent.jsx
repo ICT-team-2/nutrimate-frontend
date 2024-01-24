@@ -22,6 +22,11 @@ const StyledCard = muiStyled(Card)`
   height: 700px;
 `;
 
+/**
+ * 상세보기의 카드형태의 피드 하나를 렌더링합니다.
+ *
+ * @return {JSX.Element} 피드 뷰의 콘텐츠
+ */
 function FeedViewContent() {
 
   return (

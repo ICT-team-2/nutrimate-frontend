@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Button, TextField } from '@mui/material';
 import { ImgUploader } from '@src/component/common/ImgUploader.jsx';
 import { styled as muiStyled } from '@mui/material/styles';
+import InputHashtag from '@src/component/board/InputHashtag.jsx';
 
 const TitleContainer = styled.div`
     display: flex;
@@ -15,7 +16,11 @@ const StyledTextField = muiStyled(TextField)`
     margin: 20px 0;
     width: 100%
 `;
-
+/**
+ * 피드 글을 작성하는 화면.
+ *
+ * @return {JSX} 피드 글 작성 화면
+ */
 const FeedWrite = () => {
   return (
     <>
@@ -24,6 +29,7 @@ const FeedWrite = () => {
         <Button variant="contained">등록</Button>
       </TitleContainer>
       <ImgUploader width="100%" height="400px">이미지 업로드</ImgUploader>
+      <InputHashtag />
       <StyledTextField
         id="outlined-textarea"
         label="본문"

@@ -16,7 +16,7 @@ export default function MonthPicker() {
     const dDate = new Date(date);
     if (dDate.getFullYear() >= 1900 && dDate.getFullYear() < 2200) {
       setSelectedDate(date);
-      console.log(date, typeof date === typeof new Date()); // 선택된 날짜를 콘솔에 출력
+      // console.log(date, typeof date === typeof new Date()); // 선택된 날짜를 콘솔에 출력
     }
   };
 

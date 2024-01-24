@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
 
-export const drawerState = atom(false);
+export const drawerStateAtom = atom(false);
+/** menuIcon의 ref.current를 저장함*/
 export const sideMenuIconRefAtom = atom(null);
 

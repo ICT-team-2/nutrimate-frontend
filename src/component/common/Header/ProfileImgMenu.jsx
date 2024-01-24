@@ -6,6 +6,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
+import { useAtomValue } from 'jotai/react';
+import { uploadedImageAtom } from '@src/component/mypage/atom.js';
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -13,6 +15,8 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const ProfileImgMenu = () => {
 
   const [anchorElUser, setAnchorElUser] = useState();
+  const uploadImg = useAtomValue(uploadedImageAtom);
+
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -27,7 +31,7 @@ const ProfileImgMenu = () => {
       {/* 프로필 아이콘 */}
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <UserAvatar />
+          <UserAvatar src={uploadImg} />
         </IconButton>
       </Tooltip>
 

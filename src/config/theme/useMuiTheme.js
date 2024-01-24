@@ -1,11 +1,11 @@
 import { createTheme } from '@mui/material/styles';
 import { theme, themeColor } from '@src/config/theme/themeVariables.js';
 import { useAtomValue } from 'jotai/react';
-import { isDarkMode } from '@src/config/theme/atom.js';
+import { isDarkModeAtom } from '@src/config/theme/atom.js';
 
 const useMuiTheme = () => {
 
-  const darkMode = useAtomValue(isDarkMode);
+  const darkMode = useAtomValue(isDarkModeAtom);
 
   return createTheme({
     ...theme,

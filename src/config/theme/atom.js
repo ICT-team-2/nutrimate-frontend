@@ -1,3 +1,4 @@
 import { atom } from 'jotai';
 
-export const isDarkMode = atom(false);
+/** dark mode 여부 */
+export const isDarkModeAtom = atom(false);

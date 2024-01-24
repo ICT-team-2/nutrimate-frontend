@@ -8,7 +8,7 @@ import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import { useAtom, useAtomValue } from 'jotai/react';
 
-import { drawerState, sideMenuIconRefAtom } from '@src/component/common/Header/atom.js';
+import { drawerStateAtom, sideMenuIconRefAtom } from '@src/component/common/Header/atom.js';
 import { MENU_LIST } from '@src/utils/const.js';
 import {
   faBookmark,
@@ -27,7 +27,7 @@ import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
-const openedMixin = (theme) => ({
+const openedMixin = (theme, drawerWidth) => ({
   width: drawerWidth,
   border: 'none',
   backgroundColor: theme['main-background'],
@@ -59,13 +59,13 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-  width: drawerWidth,
+})(({ theme, open, drawerwidth }) => ({
+  width: drawerwidth,
   flexShrink: 0,
   whiteSpace: 'nowrap',
   ...(open && {
-    ...openedMixin(theme),
-    '& .MuiDrawer-paper': openedMixin(theme),
+    ...openedMixin(theme, drawerwidth),
+    '& .MuiDrawer-paper': openedMixin(theme, drawerwidth),
   }),
   ...(!open && {
     ...closedMixin(theme),
@@ -127,9 +127,9 @@ const menuIcon = [
 ];
 
 
-const SideMenu = () => {
+const SideMenu = ({ drawerWidth }) => {
 
-  const [drawerOpen, setDrawerOpen] = useAtom(drawerState);
+  const [drawerOpen, setDrawerOpen] = useAtom(drawerStateAtom);
   const navigate = useNavigate();
   const drawerRef = useRef();
   const documentRef = useRef(window.document);
@@ -168,6 +168,7 @@ const SideMenu = () => {
       open={drawerOpen}
       onClose={() => setDrawerOpen(false)}
       ref={drawerRef}
+      drawerwidth={drawerWidth}
     >
       <DrawerHeader />
       <List>
@@ -202,6 +203,10 @@ const SideMenu = () => {
       </List>
     </StyledDrawer>
   );
+};
+
+SideMenu.defaultProps = {
+  drawerWidth: drawerWidth,
 };
 
 export default SideMenu;

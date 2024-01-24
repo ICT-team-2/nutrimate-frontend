@@ -79,6 +79,8 @@ const StyledCalendar = styled(Calendar)`
 const CalendarContainer = muiStyled(Container)`
     width: 60%;
     height: 100vh;
+    min-width: 800px;
+    min-height: 700px;
     
     &.MuiContainer-root {
       max-width: 70vw;
@@ -105,13 +107,13 @@ const CalendarComponent = (props) => {
         views={['month']}
         //이벤트 클릭 이벤트
         onSelectEvent={event => {
-          console.log(event);
+          // console.log(event);
           alert(`Event '${event.title}' was selected`);
         }}
         selectable
         //날짜 칸 클릭 이벤트
         onSelectSlot={(slotInfo) => {
-          console.log(slotInfo);
+          // console.log(slotInfo);
           alert(`selected slot: \n\nstart ${slotInfo.start.toLocaleString()} ` +
             `\nend: ${slotInfo.end.toLocaleString()}` +
             `\naction: ${slotInfo.action}`);

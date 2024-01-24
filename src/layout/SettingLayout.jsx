@@ -1,9 +1,9 @@
-import Header from '@src/component/common/Header/Header.jsx';
 import Footer from '@src/component/common/Footer/Footer.jsx';
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import { Outlet } from 'react-router-dom';
 import { FOOTER_HEIGHT } from '@src/utils/const.js';
+import SettingHeader from '@src/component/setting/sidemenu/SettingHeader.jsx';
 
 const Wrapper = styled.div`
     height: fit-content;
@@ -20,13 +20,11 @@ const Content = styled.div`
     padding-bottom: ${FOOTER_HEIGHT}; // 푸터의 높이만큼 padding-bottom을 추가
 `;
 
-function LayoutWithoutSideBar() {
-
-
+function SettingLayout() {
   return (
     <>
       <Wrapper>
-        <Header hasDrawer={false} />
+        <SettingHeader />
         <Content>
           <Outlet />
         </Content>
@@ -37,4 +35,4 @@ function LayoutWithoutSideBar() {
     ;
 }
 
-export default LayoutWithoutSideBar;
+export default SettingLayout;

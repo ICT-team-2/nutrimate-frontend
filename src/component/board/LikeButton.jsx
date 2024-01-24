@@ -58,6 +58,19 @@ const LikeContainer = styled(Label)`
     min-width: 3rem;
 
 `;
+/**
+ * 좋아요 버튼을 표시하고 상호 작용하기 위한 LikeButton 컴포넌트입니다.
+ *
+ * @param props {{className: string, clicked: boolean, like: number, size: number, heartColor: string}} - 좋아요 버튼을 구성하는 속성들입니다.
+ * @param props.className {string} - 좋아요 버튼의 className입니다.
+ * @param props.clicked {boolean} - 좋아요 버튼의 클릭 여부입니다.
+ * @param props.like {number} - 좋아요 버튼의 좋아요 개수입니다.
+ * @param props.size {number} - 좋아요 버튼의 크기입니다.
+ * @param props.heartColor {string} - 좋아요 버튼의 하트 색상입니다.
+ *
+ * @return {JSX.Element} 좋아요 버튼 컴포넌트입니다.
+ *
+ */
 
 const LikeButton = (props) => {
 

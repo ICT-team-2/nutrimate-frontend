@@ -3,16 +3,18 @@ import { drawerStateAtom, sideMenuIconRefAtom } from '@src/component/common/Head
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import React, { useEffect, useRef } from 'react';
+import { settingDrawerStateAtom } from '@src/component/setting/atom.js';
 
 
-const SideMenuButton = () => {
+const SettingMenuButton = () => {
   const [open, setOpen] = useAtom(drawerStateAtom);
+  const [settingDrawerOpen, setSettingDrawerOpen] = useAtom(settingDrawerStateAtom);
 
   const [refA, setRef] = useAtom(sideMenuIconRefAtom);
   const ref = useRef(null);
 
   const handleDrawer = (event) => {
-    if (open) {
+    if (settingDrawerOpen) {
       handleDrawerClose(event);
       return;
     }
@@ -20,14 +22,19 @@ const SideMenuButton = () => {
   };
 
   const handleDrawerOpen = (event) => {
+    setSettingDrawerOpen(true);
     setOpen(true);
-
   };
 
   const handleDrawerClose = (event) => {
+    setSettingDrawerOpen(false);
     setOpen(false);
 
   };
+
+  useEffect(() => {
+    setSettingDrawerOpen(open);
+  }, []);
 
   useEffect(() => {
     setRef(ref.current);
@@ -48,4 +55,4 @@ const SideMenuButton = () => {
   );
 };
 
-export default SideMenuButton;
+export default SettingMenuButton;

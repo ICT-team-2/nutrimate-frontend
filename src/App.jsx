@@ -1,23 +1,22 @@
-import { Route, Routes, useRoutes } from 'react-router-dom';
+import { useRoutes } from 'react-router-dom';
 
 import { theme } from '@src/config/theme/themeVariables.js';
 import MuiGlobalStyles from '@src/styles/MuiGlobalStyles.jsx';
 import { useAtomValue } from 'jotai/react';
-import { isDarkMode } from '@src/config/theme/atom.js';
+import { isDarkModeAtom } from '@src/config/theme/atom.js';
 import useMuiTheme from '@src/config/theme/useMuiTheme.js';
 import { ThemeProvider } from 'styled-components';
-import {
-  ThemeProvider as MuiThemeProvider,
-} from '@mui/material/styles';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { ROUTER_LINKS } from '@src/utils/const.js';
 import BoardRoutes from '@src/routes/BoardRoutes.jsx';
 import MyPageRoutes from '@src/routes/MyPageRoutes.jsx';
 import InfomationRoutes from '@src/routes/InfomationRoutes.jsx';
 import MainRoutes from '@src/routes/MainRoutes.jsx';
 import CalendarRoutes from '@src/routes/CalendarRoutes.jsx';
+import SettingRoutes from '@src/routes/SettingRoutes.jsx';
 
 function App() {
-  const darkMode = useAtomValue(isDarkMode);
+  const darkMode = useAtomValue(isDarkModeAtom);
   const muiTheme = useMuiTheme();
   const routes = useRoutes([
     { path: '/*', element: <MainRoutes /> },
@@ -36,6 +35,10 @@ function App() {
     {
       path: '/' + ROUTER_LINKS.CALENDAR + '/*',
       element: <CalendarRoutes />,
+    },
+    {
+      path: '/' + ROUTER_LINKS.SETTING + '/*',
+      element: <SettingRoutes />,
     },
   ]);
   return (

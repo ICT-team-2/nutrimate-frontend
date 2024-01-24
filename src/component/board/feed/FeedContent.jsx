@@ -38,7 +38,10 @@ const ButtonContainer = styled.div`
 const StyledImageListItem = muiStyled(ImageListItem)`
   cursor: pointer;
 `;
-
+/**
+ * 피드 컨텐츠를 렌더링하는 함수입니다.
+ * @return {JSX.Element} 피드 컨텐츠 컴포넌트
+ */
 const FeedContent = () => {
 
   const navigate = useNavigate();

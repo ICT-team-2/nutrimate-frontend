@@ -12,6 +12,8 @@ import { Button } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
 import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import styled from 'styled-components';
+import { useAtomValue } from 'jotai/react';
+import { uploadedImageAtom } from '@src/component/mypage/atom.js';
 
 const exampleDatas = [
   {
@@ -62,10 +64,12 @@ const UserNameContainer = styled.div`
 `;
 
 const RecommendFriendList = ({ datas = exampleDatas }) => {
+  const uploadImg = useAtomValue(uploadedImageAtom);
+
   return (
     <FriendListContainer>
       <AvatarContainer>
-        <UserAvatar />
+        <UserAvatar src={uploadImg} />
         <UserNameContainer>username</UserNameContainer>
       </AvatarContainer>
 

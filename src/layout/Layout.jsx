@@ -4,8 +4,9 @@ import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 
 import { Outlet } from 'react-router-dom';
+import { FOOTER_HEIGHT } from '@src/utils/const.js';
 
-const footerHeight = '13px';
+
 const Wrapper = styled.div`
     height: fit-content;
     min-height: 96vh;
@@ -13,12 +14,12 @@ const Wrapper = styled.div`
     flex-direction: column;
 `;
 const StyledFooter = muiStyled(Footer)`
-    height: ${footerHeight};
+    height: ${FOOTER_HEIGHT};
 `;
 
 const Content = styled.div`
     flex-grow: 1;
-    padding-bottom: ${footerHeight}; // 푸터의 높이만큼 padding-bottom을 추가
+    padding-bottom: ${FOOTER_HEIGHT}; // 푸터의 높이만큼 padding-bottom을 추가
 `;
 
 function Layout() {
@@ -32,7 +33,7 @@ function Layout() {
           <Outlet />
         </Content>
       </Wrapper>
-      <StyledFooter footerheight={footerHeight} />
+      <StyledFooter footerheight={FOOTER_HEIGHT} />
     </>
   )
     ;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { EDITOR_HEIGHT } from '@src/utils/const.js';
@@ -41,7 +41,7 @@ function BoardEditor() {
             base64ImageSrc,
             Quill.sources.USER,
           );
-          console.log(base64ImageSrc); // 이미지 내용 출력
+          // console.log(base64ImageSrc); // 이미지 내용 출력
         };
         reader.readAsDataURL(file);
       }

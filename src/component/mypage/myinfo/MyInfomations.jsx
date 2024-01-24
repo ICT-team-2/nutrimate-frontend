@@ -12,10 +12,10 @@ import {
   profileModalAtom,
   uploadedImageAtom,
 } from '@src/component/mypage/atom.js';
-import ChangeProfileModal from '@src/component/mypage/myinfo/ChangeProfileModal.jsx';
 import FollowerListModal from '@src/component/mypage/followlist/FollowerListModal.jsx';
 import FollowingListModal from '@src/component/mypage/followlist/FollowingListModal.jsx';
 import { FOLLOW_MODAL } from '@src/component/mypage/const.js';
+import ChangeProfileComponent from '@src/component/common/ChangeProfileComponent.jsx';
 
 
 const MyInfomationContainer = styled.div`
@@ -73,10 +73,7 @@ const MyInfomations = () => {
       <StyledContainerDiv>
         <NicknNameH3>
           <NickNameSpan>닉네임</NickNameSpan>
-          <Button
-            onClick={() => setOpenModal(true)}
-            variant="contained"
-            size="small">프로필 변경</Button>
+          <ChangeProfileComponent />
         </NicknNameH3>
         <SecondaryInfoSpan>
           <SecInfoTypo variant="subtitle1">
@@ -100,11 +97,11 @@ const MyInfomations = () => {
         </SecondaryInfoSpan>
         <SelfIntroductionSpan>자기소개</SelfIntroductionSpan>
       </StyledContainerDiv>
-      <ChangeProfileModal />
       <FollowerListModal />
       <FollowingListModal />
     </MyInfomationContainer>
   );
 };
+
 
 export default MyInfomations;

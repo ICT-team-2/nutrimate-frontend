@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { styled as muiStyled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
@@ -34,7 +34,11 @@ const StyledBox = muiStyled(Box)`
 const StyledListItem = muiStyled(ListItem)`
   margin: 0.5rem;
 `;
-
+/**
+ * 해시태그를 추가하는 InputHashtag 컴포넌트입니다.
+ *
+ * @return {JSX.Element} InputHashtag 컴포넌트에 대한 JSX
+ */
 const InputHashtag = () => {
   const [chipData, setChipData] = useState([]);
 
@@ -58,9 +62,9 @@ const InputHashtag = () => {
     );
   };
 
-  useEffect(() => {
-    console.log(chipData);
-  }, [chipData]);
+  // useEffect(() => {
+  //   console.log(chipData);
+  // }, [chipData]);
 
 
   return (
