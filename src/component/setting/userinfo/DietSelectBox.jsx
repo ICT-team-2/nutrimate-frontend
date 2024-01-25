@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MenuItem from '@mui/material/MenuItem';
 import { FormControl, InputLabel, Select } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
 import { USERINFOS } from '@src/component/setting/const.js';
-import { useAtom } from 'jotai/react';
-import { dietStateAtom } from '@src/component/setting/atom.js';
+import { useAtom, useSetAtom } from 'jotai/react';
+import { carboAtom, dietStateAtom, fatAtom, proteinAtom } from '@src/component/setting/atom.js';
 
 const StyledLabel = styled.label`
     margin-left: 30px;
@@ -33,6 +33,37 @@ const DietSelectBox = (props) => {
   const [isFocused, setIsFocused] = useState(undefined);
 
   const [diet, setDiet] = useAtom(dietStateAtom);
+  const setCarbo = useSetAtom(carboAtom);
+  const setProtein = useSetAtom(proteinAtom);
+  const setFat = useSetAtom(fatAtom);
+
+  useEffect(() => {
+    switch (diet) {
+      case USERINFOS.DIET.NORMAL.KEYS:
+        setCarbo(USERINFOS.DIET.NORMAL.CARBO);
+        setProtein(USERINFOS.DIET.NORMAL.PROTEIN);
+        setFat(USERINFOS.DIET.NORMAL.FAT);
+        break;
+      case USERINFOS.DIET.EXERCISE.KEYS:
+        setCarbo(USERINFOS.DIET.EXERCISE.CARBO);
+        setProtein(USERINFOS.DIET.EXERCISE.PROTEIN);
+        setFat(USERINFOS.DIET.EXERCISE.FAT);
+        break;
+      case USERINFOS.DIET.KITO.KEYS:
+        setCarbo(USERINFOS.DIET.KITO.CARBO);
+        setProtein(USERINFOS.DIET.KITO.PROTEIN);
+        setFat(USERINFOS.DIET.KITO.FAT);
+        break;
+      case USERINFOS.DIET.VEGAN.KEYS:
+        setCarbo(USERINFOS.DIET.VEGAN.CARBO);
+        setProtein(USERINFOS.DIET.VEGAN.PROTEIN);
+        setFat(USERINFOS.DIET.VEGAN.FAT);
+        break;
+      default:
+        break;
+    }
+  }, [diet]);
+
 
   const handleChange = (event) => {
     setDiet(event.target.value);

@@ -14,7 +14,7 @@ export const SETTING_LIST = {
 };
 
 export const SETTING_DRAWER_HEIGHT = {
-  VIEW_INFO: '1280px',
+  VIEW_INFO: '1460px',
   EDIT_INFO: '1460px',
   DELETE_USER: 'calc(100vh - 40px)',
 };
