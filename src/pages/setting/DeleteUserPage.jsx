@@ -16,7 +16,7 @@ const StyledDiv = styled.div`
 
 `;
 
-const DeleteUser = () => {
+const DeleteUserPage = () => {
   const setDrawerHeight = useSetAtom(settingDrawerHeightAtom);
 
   useEffect(() => {
@@ -36,4 +36,4 @@ const DeleteUser = () => {
   );
 };
 
-export default DeleteUser;
+export default DeleteUserPage;

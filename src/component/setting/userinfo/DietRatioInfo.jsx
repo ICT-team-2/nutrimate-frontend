@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { styled as muiStyled } from '@mui/material/styles';
 import { TextField } from '@mui/material';
 import styled from 'styled-components';
-import { UserInfoContainerDiv } from '@src/component/setting/userinfo/AdditionalInfos.jsx';
+import { useAtom } from 'jotai/react';
+import { carboAtom, dietStateAtom, fatAtom, proteinAtom } from '@src/component/setting/atom.js';
+import { USERINFOS } from '@src/component/setting/const.js';
+import { UserInfoContainerDiv } from '@src/component/setting/userinfo/UserViewInfo.jsx';
 
 
 const StyledTextField = muiStyled(TextField)`
@@ -14,6 +17,11 @@ const StyledTextField = muiStyled(TextField)`
     &:last-of-type {
         margin-right: 30px;
     }
+    & .MuiOutlinedInput-input.Mui-disabled{
+      color: black;
+      -webkit-text-fill-color: black;
+    }
+
 `;
 const StyledDiv = styled.label`
     margin: auto 0;
@@ -41,10 +49,16 @@ const LabelContainerDiv = styled.div`
     margin-left: 30px;
 
 `;
-const EditDietInfo = () => {
+const DietRatioInfo = ({ disabled }) => {
   const [isCarboFocused, setIsCarboFocused] = useState(undefined);
   const [isProteinFocused, setIsProteinFocused] = useState(undefined);
   const [isFatFocused, setIsFatFocused] = useState(undefined);
+
+  const [carbo, setCarbo] = useAtom(carboAtom);
+  const [protein, setProtein] = useAtom(proteinAtom);
+  const [fat, setFat] = useAtom(fatAtom);
+
+  const [diet, setDiet] = useAtom(dietStateAtom);
 
 
   return (<>
@@ -67,22 +81,29 @@ const EditDietInfo = () => {
           label="탄수화물" id="carbo"
           onFocus={() => setIsCarboFocused('true')}
           onBlur={() => setIsCarboFocused(undefined)}
+          value={carbo}
+          disabled={disabled || diet !== USERINFOS.DIET.CUSTOM.KEYS}
         ></StyledTextField>
         <ColonDiv>:</ColonDiv>
         <StyledTextField
           label="단백질" id="protein"
           onFocus={() => setIsProteinFocused('true')}
           onBlur={() => setIsProteinFocused(undefined)}
+          value={protein}
+          disabled={disabled || diet !== USERINFOS.DIET.CUSTOM.KEYS}
+
         ></StyledTextField>
         <ColonDiv>:</ColonDiv>
         <StyledTextField
           label="지방" id="province"
           onFocus={() => setIsFatFocused('true')}
           onBlur={() => setIsFatFocused(undefined)}
+          value={fat}
+          disabled={disabled || diet !== USERINFOS.DIET.CUSTOM.KEYS}
         ></StyledTextField>
       </UserInfoContainerDiv>
     </>
   );
 };
 
-export default EditDietInfo;
+export default DietRatioInfo;

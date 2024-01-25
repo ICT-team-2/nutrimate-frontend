@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { UserInfoContainerDiv } from '@src/component/setting/userinfo/AdditionalInfos.jsx';
+
 import { styled as muiStyled } from '@mui/material/styles';
 import { InputLabel, TextField } from '@mui/material';
+import { USERINFOS } from '@src/component/setting/const.js';
+import { UserInfoContainerDiv } from '@src/component/setting/userinfo/UserViewInfo.jsx';
 
 const StyledTextField = muiStyled(TextField)`
     width: 35%;
-
+    & .MuiOutlinedInput-input.Mui-disabled{
+      color: black;
+      -webkit-text-fill-color: black;
+    }
 `;
 const StyledLabel = muiStyled(InputLabel)`
     margin: auto 0;
@@ -14,38 +19,41 @@ const StyledLabel = muiStyled(InputLabel)`
     color: ${({ theme, focus }) => focus ? theme['primary-color'] : 'black'};
 
 `;
-const EditHeightWeightInfo = () => {
+const HeightWeightInfo = ({ disabled }) => {
   const [isHeightFocused, setIsHeightFocused] = useState(undefined);
   const [isWeightFocused, setIsWeightFocused] = useState(undefined);
 
   return (
     <UserInfoContainerDiv>
       <StyledLabel
-        htmlFor="height"
-        focus={isHeightFocused + ''}
+        htmlFor={USERINFOS.HEIGHT.ID}
+        focus={isHeightFocused}
       >
-        키
+        {USERINFOS.HEIGHT.TITLE}
       </StyledLabel>
       <StyledTextField
-        label="키(cm)" id="height"
+        label={USERINFOS.HEIGHT.LABEL}
+        id={USERINFOS.HEIGHT.ID}
         onFocus={() => setIsHeightFocused('true')}
         onBlur={() => setIsHeightFocused(undefined)}
+        disabled={disabled}
       >
       </StyledTextField>
 
       <StyledLabel
-        htmlFor="weight"
-        focus={isWeightFocused + ''}
+        htmlFor={USERINFOS.WEIGHT.ID}
+        focus={isWeightFocused}
       >
-        몸무게
+        {USERINFOS.WEIGHT.TITLE}
       </StyledLabel>
       <StyledTextField
-        label="몸무게(kg)" id="weight"
+        label={USERINFOS.WEIGHT.LABEL} id={USERINFOS.WEIGHT.ID}
         onFocus={() => setIsWeightFocused('true')}
         onBlur={() => setIsWeightFocused(undefined)}
+        disabled={disabled}
       ></StyledTextField>
     </UserInfoContainerDiv>
   );
 };
 
-export default EditHeightWeightInfo;
+export default HeightWeightInfo;

@@ -8,13 +8,21 @@ import { Button } from '@mui/material';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
-import EditAdditionalInfos from '@src/component/setting/userinfo/edit/EditAdditionalInfos.jsx';
-import EditDietInfo from '@src/component/setting/userinfo/edit/EditDietInfo.jsx';
-import EditHeightWeightInfo from '@src/component/setting/userinfo/edit/EditHeightWeightInfo.jsx';
-import EditGenderInfo from '@src/component/setting/userinfo/edit/EditGenderInfo.jsx';
-import EditSelectBox from '@src/component/setting/userinfo/edit/EditSelectBox.jsx';
+import AdditionalInfos from '@src/component/setting/userinfo/AdditionalInfos.jsx';
+import DietRatioInfo from '@src/component/setting/userinfo/DietRatioInfo.jsx';
+import HeightWeightInfo from '@src/component/setting/userinfo/HeightWeightInfo.jsx';
+import GenderInfo from '@src/component/setting/userinfo/GenderInfo.jsx';
+import SportSelectBox from '@src/component/setting/userinfo/SportSelectBox.jsx';
+import { USERINFOS } from '@src/component/setting/const.js';
+import DietSelectBox from '@src/component/setting/userinfo/DietSelectBox.jsx';
 
 const FIELD_WIDTH = 'calc(100% + 60px)';
+
+export const UserInfoContainerDiv = styled.div`
+    display: flex;
+    width: 100%;
+    margin: 30px 0;
+`;
 
 const StyledTypography = muiStyled(Typography)`
     margin: 30px;
@@ -24,6 +32,10 @@ const StyledTextField = muiStyled(TextField)`
     width: ${FIELD_WIDTH};
     color: black;
 
+    & .MuiOutlinedInput-input.Mui-disabled{
+      color: black;
+      -webkit-text-fill-color: black;
+    }
 `;
 
 const InfoContainer = styled.div`
@@ -47,31 +59,45 @@ const StyledDiv = styled.div`
 `;
 
 
-const UserEditInfo = () => {
+const UserViewInfo = () => {
 
   const navigate = useNavigate();
   return (
     <>
-      <NameProfileComponent profileButton />
+      <NameProfileComponent />
       <StyledTypography variant="h5">소개</StyledTypography>
       <StyledTextField
         variant={'outlined'} multiline rows={4}
         label="자기소개" placeholder="자기 소개를 입력해주세요"
+        disabled
+        value={'자기소개를 입력해주세요'}
       />
       <StyledTypography variant="h5">추가정보</StyledTypography>
       <InfoContainer height="auto">
         <InfoInnerContainer>
-          <EditAdditionalInfos title={'이메일'} label={'이메일'} />
-          <EditAdditionalInfos title={'일일 목표 칼로리'} label={'칼로리(kcal)'} />
-          <EditSelectBox
-            title="식단" label="식단"
-            keys={['NORMAL', 'EXERCISE', 'KITO', 'VEGAN']}
-            values={['일반식', '운동식', '키토식', '비건식']}
+          <AdditionalInfos
+            title={USERINFOS.EMAIL.TITLE}
+            label={USERINFOS.EMAIL.LABEL}
+            value={'email@email.com'}
+            disabled
           />
-          <EditDietInfo />
-          <EditGenderInfo />
-          <EditHeightWeightInfo />
-          <EditSelectBox />
+          <AdditionalInfos
+            title={USERINFOS.CALORY.TITLE}
+            label={USERINFOS.CALORY.LABEL}
+            value={'2000kcal'}
+            disabled
+          />
+          <DietSelectBox
+            title={USERINFOS.DIET.TITLE} label={USERINFOS.DIET.LABEL}
+            keys={USERINFOS.DIET.KEYS}
+            values={USERINFOS.DIET.VALUES}
+            defaultValue={USERINFOS.DIET.CUSTOM.KEYS}
+            disabled
+          />
+          <DietRatioInfo disabled />
+          <GenderInfo disabled />
+          <HeightWeightInfo disabled />
+          <SportSelectBox disabled />
         </InfoInnerContainer>
       </InfoContainer>
       <StyledDiv>
@@ -88,4 +114,4 @@ const UserEditInfo = () => {
   );
 };
 
-export default UserEditInfo;
+export default UserViewInfo;

@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import MenuItem from '@mui/material/MenuItem';
 import { FormControl, InputLabel, Select } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
+import { USERINFOS } from '@src/component/setting/const.js';
+import { useAtom } from 'jotai/react';
+import { dietStateAtom } from '@src/component/setting/atom.js';
 
 const StyledLabel = styled.label`
     margin-left: 30px;
@@ -19,18 +22,21 @@ const SelectContainer = styled.div`
 `;
 
 const StyledSelect = muiStyled(Select)`
+  & .MuiSelect-outlined.Mui-disabled{
+    color: black;
+    -webkit-text-fill-color: black;
+  }
 `;
 
-const EditSelectBox = (props) => {
-  const { title, label, keys, values } = props;
+const DietSelectBox = (props) => {
+  const { title, label, keys, values, disabled } = props;
   const [isFocused, setIsFocused] = useState(undefined);
-  const [exercise, setExercise] = useState(keys[0]);
 
+  const [diet, setDiet] = useAtom(dietStateAtom);
 
   const handleChange = (event) => {
-    setExercise(event.target.value);
+    setDiet(event.target.value);
   };
-
   return (
     <>
       <StyledLabel
@@ -41,15 +47,16 @@ const EditSelectBox = (props) => {
       <br />
       <SelectContainer>
         <FormControl fullWidth>
-          <InputLabel id="exercise">{label}</InputLabel>
+          <InputLabel id="diet">{label}</InputLabel>
           <StyledSelect
             label={label}
-            labelId="exercise"
-            id="exercise"
+            labelId="diet"
+            id="diet"
             onFocus={() => setIsFocused('true')}
             onBlur={() => setIsFocused(undefined)}
-            value={exercise}
+            value={diet}
             onChange={handleChange}
+            disabled={disabled}
           >
             {keys?.map((item, index) =>
               (<MenuItem
@@ -62,11 +69,11 @@ const EditSelectBox = (props) => {
     </>
   );
 };
-EditSelectBox.defaultProps = {
-  title: '일주일에 운동을 하는 횟수',
-  label: '운동횟수',
-  values: ['적게(0-2회)', '보통(3-5회)', '많이(5-7회)'],
-  keys: ['LOW', 'MEDIUM', 'HIGH'],
+DietSelectBox.defaultProps = {
+  title: USERINFOS.DIET.TITLE,
+  label: USERINFOS.DIET.LABEL,
+  values: USERINFOS.DIET.VALUES,
+  keys: USERINFOS.DIET.KEYS,
 };
 
-export default EditSelectBox;
+export default DietSelectBox;

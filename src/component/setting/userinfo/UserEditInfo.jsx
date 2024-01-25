@@ -4,15 +4,21 @@ import Typography from '@mui/material/Typography';
 import { styled as muiStyled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
-import AdditionalInfos from '@src/component/setting/userinfo/AdditionalInfos.jsx';
-import DietInfo from '@src/component/setting/userinfo/DietInfo.jsx';
 import { Button } from '@mui/material';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
+import AdditionalInfos from '@src/component/setting/userinfo/AdditionalInfos.jsx';
+import DietRatioInfo from '@src/component/setting/userinfo/DietRatioInfo.jsx';
+import HeightWeightInfo from '@src/component/setting/userinfo/HeightWeightInfo.jsx';
+import GenderInfo from '@src/component/setting/userinfo/GenderInfo.jsx';
+import SportSelectBox from '@src/component/setting/userinfo/SportSelectBox.jsx';
+import { useAtom } from 'jotai/react';
+import { dietStateAtom } from '@src/component/setting/atom.js';
+import { USERINFOS } from '@src/component/setting/const.js';
+import DietSelectBox from '@src/component/setting/userinfo/DietSelectBox.jsx';
 
 const FIELD_WIDTH = 'calc(100% + 60px)';
-
 
 const StyledTypography = muiStyled(Typography)`
     margin: 30px;
@@ -24,7 +30,6 @@ const StyledTextField = muiStyled(TextField)`
 
 `;
 
-
 const InfoContainer = styled.div`
     width: ${FIELD_WIDTH};
     border-radius: 5px;
@@ -34,9 +39,7 @@ const InfoContainer = styled.div`
     display: flex;
     margin-bottom: 40px;
 `;
-const IntroduceTypo = muiStyled(StyledTypography)`
-  margin: 20px;
-`;
+
 const InfoInnerContainer = styled.div`
     margin: auto;
     width: 100%;
@@ -48,25 +51,38 @@ const StyledDiv = styled.div`
 `;
 
 
-const UserInfoView = () => {
-
+const UserEditInfo = () => {
+  const [diet, setDiet] = useAtom(dietStateAtom);
   const navigate = useNavigate();
+
   return (
     <>
-      <NameProfileComponent />
+      <NameProfileComponent profileButton />
       <StyledTypography variant="h5">소개</StyledTypography>
-      <InfoContainer height="150px">
-        <IntroduceTypo variant="body1">소개를 입력해주세요</IntroduceTypo>
-      </InfoContainer>
+      <StyledTextField
+        variant={'outlined'} multiline rows={4}
+        label="자기소개" placeholder="자기 소개를 입력해주세요"
+      />
       <StyledTypography variant="h5">추가정보</StyledTypography>
       <InfoContainer height="auto">
         <InfoInnerContainer>
-          <AdditionalInfos title={['이메일']} info={['111@email.com']} />
-          <AdditionalInfos title={['일일 목표 칼로리']} minWidth={['136px']} info={['2000kcal']} />
-          <DietInfo />
-          <AdditionalInfos isDouble info={['70.3kg', '170cm']} textAlign={['left', 'right']} />
-          <AdditionalInfos title={['성별']} />
-          <AdditionalInfos title={['운동을 하는 정도']} minWidth={['136px']} />
+          <AdditionalInfos
+            title={USERINFOS.EMAIL.TITLE}
+            label={USERINFOS.EMAIL.LABEL} />
+          <AdditionalInfos
+            title={USERINFOS.CALORY.TITLE}
+            label={USERINFOS.CALORY.LABEL} />
+          <DietSelectBox
+            title={USERINFOS.DIET.TITLE} label={USERINFOS.DIET.LABEL}
+            keys={USERINFOS.DIET.KEYS}
+            values={USERINFOS.DIET.VALUES}
+            setDiet={setDiet}
+            id={USERINFOS.DIET.ID}
+          />
+          <DietRatioInfo />
+          <GenderInfo />
+          <HeightWeightInfo />
+          <SportSelectBox />
         </InfoInnerContainer>
       </InfoContainer>
       <StyledDiv>
@@ -74,13 +90,15 @@ const UserInfoView = () => {
         <Button
           variant="contained"
           onClick={() => {
-            navigate(LINKS.EDIT_INFO);
+            navigate(LINKS.VIEW_INFO);
           }}
-        >개인정보 수정</Button>
+        >수정</Button>
       </StyledDiv>
     </>
 
-  );
+
+  )
+    ;
 };
 
-export default UserInfoView;
+export default UserEditInfo;
