@@ -4,9 +4,9 @@ import { useAtomValue } from 'jotai/react';
 import { isDarkModeAtom } from '@src/config/theme/atom.js';
 
 const useMuiTheme = () => {
-
+  
   const darkMode = useAtomValue(isDarkModeAtom);
-
+  
   return createTheme({
     ...theme,
     ...(darkMode ? theme.darkMode : theme.lightMode),
@@ -34,10 +34,9 @@ const useMuiTheme = () => {
       hover: themeColor['link-hover'],
     },
     typography: {
-      fontFamily: '"JetBrains Mono", "Roboto", "Helvetica", "Arial", sans-serif',
+      fontFamily: 'AppleSDGothicNeo, "Nanum Gothic","Roboto", "Helvetica", "Arial", sans-serif',
     },
   });
 };
-
 
 export default useMuiTheme;

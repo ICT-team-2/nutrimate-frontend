@@ -16,7 +16,7 @@ const localizer = momentLocalizer(moment);
 
 const GlobalStyle = createGlobalStyle`
     body {
-        font-family: 'JetBrains Mono', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+        font-family: AppleSDGothicNeo, 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
     }
 `;
 
@@ -78,7 +78,7 @@ const StyledCalendar = styled(Calendar)`
 
 const CalendarContainer = muiStyled(Container)`
     width: 60%;
-    height: 100vh;
+    height: 90vh;
     min-width: 800px;
     min-height: 700px;
     
@@ -95,15 +95,15 @@ const events = [
 ];
 
 const CalendarComponent = (props) => {
-
+  
   return (
     <CalendarContainer>
       <GlobalStyle />
       <StyledCalendar
         localizer={localizer}
         events={events}
-        startAccessor="start"
-        endAccessor="start"
+        startAccessor='start'
+        endAccessor='start'
         views={['month']}
         //이벤트 클릭 이벤트
         onSelectEvent={event => {

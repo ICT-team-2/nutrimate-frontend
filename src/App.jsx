@@ -15,7 +15,7 @@ import MainRoutes from '@src/routes/MainRoutes.jsx';
 import CalendarRoutes from '@src/routes/CalendarRoutes.jsx';
 import SettingRoutes from '@src/routes/SettingRoutes.jsx';
 
-function App() {
+function App () {
   const darkMode = useAtomValue(isDarkModeAtom);
   const muiTheme = useMuiTheme();
   const routes = useRoutes([
