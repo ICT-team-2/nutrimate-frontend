@@ -16,7 +16,7 @@ const localizer = momentLocalizer(moment);
 
 const GlobalStyle = createGlobalStyle`
     body {
-        font-family: AppleSDGothicNeo, 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+        font-family: Pretendard, AppleSDGothicNeo, 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
     }
 `;
 

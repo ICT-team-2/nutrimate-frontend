@@ -34,7 +34,8 @@ const useMuiTheme = () => {
       hover: themeColor['link-hover'],
     },
     typography: {
-      fontFamily: 'AppleSDGothicNeo, "Nanum Gothic","Roboto", "Helvetica", "Arial", sans-serif',
+      fontFamily:
+        'Pretendard, AppleSDGothicNeo, "Nanum Gothic","Roboto", "Helvetica", "Arial", sans-serif',
     },
   });
 };
