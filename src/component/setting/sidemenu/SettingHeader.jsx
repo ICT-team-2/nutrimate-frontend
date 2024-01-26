@@ -12,8 +12,10 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
 import Tooltip from '@mui/material/Tooltip';
-import SettingSideMenu from '@src/component/setting/sidemenu/SettingSideMenu.jsx';
-import SettingMenuButton from '@src/component/setting/sidemenu/SettingMenuButton.jsx';
+import SettingSideMenu
+  from '@src/component/setting/sidemenu/SettingSideMenu.jsx';
+import SettingMenuButton
+  from '@src/component/setting/sidemenu/SettingMenuButton.jsx';
 import SideMenu from '@src/component/common/Header/SideMenu.jsx';
 
 const AppBar = muiStyled(MuiAppBar, {
@@ -48,20 +50,20 @@ const SettingHeader = (props) => {
   const gotoInfo = () => {
     navigate(LINKS.INFO);
   };
-
+  
   const gotoBoard = () => {
     navigate(LINKS.ALL_INFO_BOARD + '/1');
   };
-
+  
   return (
-
+    
     <Box sx={{ display: 'flex' }}>
       <StyledAppBar open={settingDrawerOpen}>
         <Toolbar sx={{ flexGrow: 0 }}>
           {/* 로고 */}
           <Logo />
           {/* 햄버거 아이콘 */}
-          {hasDrawer && <SettingMenuButton />}
+          {/* {hasDrawer && <SettingMenuButton />} */}
           {/* 빈 공간 */}
           <Box sx={{ flexGrow: 1 }} />
           <Tooltip title={'Infomation'}>
@@ -74,9 +76,9 @@ const SettingHeader = (props) => {
         </Toolbar>
       </StyledAppBar>
       {hasDrawer && <SettingSideMenu />}
-      <SideMenu drawerWidth="200px" />
+      <SideMenu drawerWidth='200px' />
     </Box>
-
+  
   );
 };
 
