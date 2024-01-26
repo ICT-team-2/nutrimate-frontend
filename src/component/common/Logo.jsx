@@ -2,14 +2,16 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import { TITLE } from '@src/utils/const';
 import { NoDecoLink } from '@src/component/common/GlobalComponents.jsx';
+import styled from 'styled-components';
+
+const StyledLogo = styled.img`
+    cursor: pointer;
+    width: 108px;
+`;
 
 const Logo = () => {
   return (
-    <Typography variant="h6" noWrap component="div" color="inherit">
-      <NoDecoLink to={'/'}>
-        {TITLE.APP}
-      </NoDecoLink>
-    </Typography>
+    <StyledLogo src="/src/asset/image/logo.png" alt="logo"/>
   );
 };
 

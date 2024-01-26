@@ -2,7 +2,6 @@ import Header from '@src/component/common/Header/Header.jsx';
 import Footer from '@src/component/common/Footer/Footer.jsx';
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
-
 import { Outlet } from 'react-router-dom';
 import { FOOTER_HEIGHT } from '@src/utils/const.js';
 
