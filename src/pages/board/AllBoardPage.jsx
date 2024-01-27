@@ -1,5 +1,6 @@
 import React from 'react';
-import InfoBoardListContent from '@src/component/board/info/InfoBoardListContent.jsx';
+import InfoBoardListContent
+  from '@src/component/board/info/list/InfoBoardListContent.jsx';
 
 const AllBoardPage = () => {
   return (

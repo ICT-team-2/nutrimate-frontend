@@ -70,10 +70,6 @@ const StyledCalendar = styled(Calendar)`
         background-color: ${(theme) => theme.theme['primary-color']};
     }
 
-    & .rbc-off-range-bg {
-        cursor: default;
-    }
-
 `;
 
 const CalendarContainer = muiStyled(Container)`
@@ -113,7 +109,7 @@ const CalendarComponent = (props) => {
         selectable
         //날짜 칸 클릭 이벤트
         onSelectSlot={(slotInfo) => {
-          // console.log(slotInfo);
+          
           alert(`selected slot: \n\nstart ${slotInfo.start.toLocaleString()} ` +
             `\nend: ${slotInfo.end.toLocaleString()}` +
             `\naction: ${slotInfo.action}`);
@@ -124,7 +120,8 @@ const CalendarComponent = (props) => {
           //요일을 한글로 변경하기 위한 오버라이딩
           header: DayHeader,
         }}
-        onDrillDown={(date, view) => {
+        onDrillDown={(date, view, e) => {
+          
           alert(`Drilled down on ${date.toLocaleString()}`);
         }}
       />

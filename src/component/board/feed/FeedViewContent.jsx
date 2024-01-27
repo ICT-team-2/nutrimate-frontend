@@ -26,7 +26,7 @@ const ViewContentContainer = styled.div`
     margin: 20px 0;
 `;
 const StyledCard = muiStyled(Card)`
-  max-width: 600px;
+
 `;
 const ContentTypo = styled(Typography)`
     overflow: ${({ clickMoreView }) => clickMoreView ? 'auto' : 'hidden'};

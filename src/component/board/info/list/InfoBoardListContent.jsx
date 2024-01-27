@@ -4,12 +4,14 @@ import { Button } from '@mui/material';
 import styled from 'styled-components';
 import { CustomSearchInput } from '@src/component/common/GlobalComponents.jsx';
 import Box from '@mui/material/Box';
-import InfoBoardTable from '@src/component/board/info/InfoBoardTable.jsx';
+import InfoBoardTable from '@src/component/board/info/list/InfoBoardTable.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LINKS, PATH_PARAMS, TITLE } from '@src/utils/const.js';
-import InfoBoardCategory from '@src/component/board/info/InfoBoardCategoryMenu.jsx';
+import InfoBoardCategory
+  from '@src/component/board/info/list/InfoBoardCategoryMenu.jsx';
 import PagnationComponent from '@src/component/common/PagnationComponent.jsx';
-
+import SelectInfoSearchTitle
+  from '@src/component/board/info/list/SelectInfoSearchTitle.jsx';
 
 const ContentsCotainerBox = muiStyled(Box)`
     margin: 0
@@ -34,23 +36,22 @@ const FlexGrowDiv = styled.div`
 `;
 
 const InfoBoardListContent = ({ data, title, category }) => {
-
-
+  
   const { page } = useParams(); // 현재 페이지
   const [pageState, setPageState] = useState(parseInt(page));
-
+  
   useEffect(() => {
     if (isNaN(pageState)) {
       setPageState(1);
     }
   }, [pageState]);
-
+  
   const navigate = useNavigate();
   const handlePageChange = (event, value) => {
     setPageState(value);
     navigate(LINKS.INFO_BOARD + `/${category}/${value}`);
   };
-
+  
   const gotoWritePage = () => {
     navigate(LINKS.INFO_BOARD_WRITE,
       {
@@ -62,8 +63,7 @@ const InfoBoardListContent = ({ data, title, category }) => {
         },
       });
   };
-
-
+  
   return (
     <ContentsCotainerBox>
       {/* title */}
@@ -71,17 +71,19 @@ const InfoBoardListContent = ({ data, title, category }) => {
       <br />
       <TextFieldContainerDiv>
         {/* 글 찾기 인풋 */}
-        <CustomSearchInput label="Search" id="search" size="small" />
+        <SelectInfoSearchTitle />
+        <CustomSearchInput label='Search' id='search' size='small' />
         <FlexGrowDiv></FlexGrowDiv>
         {/* 글 작성 버튼*/}
-        <Button variant="contained" onClick={gotoWritePage}>
+        <Button variant='contained' onClick={gotoWritePage}>
           글 작성
         </Button>
       </TextFieldContainerDiv>
       {/* 글 목록 테이블 */}
       <InfoBoardTable />
       {/* 페이지네이션 */}
-      <PagnationComponent pageState={pageState} handlePageChange={handlePageChange} />
+      <PagnationComponent pageState={pageState}
+                          handlePageChange={handlePageChange} />
     </ContentsCotainerBox>
   );
 };

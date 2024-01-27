@@ -1,5 +1,6 @@
-import React from 'react';
-import NameProfileComponent from '@src/component/setting/userinfo/NameProfileComponent.jsx';
+import React, { useEffect } from 'react';
+import NameProfileComponent
+  from '@src/component/setting/userinfo/NameProfileComponent.jsx';
 import Typography from '@mui/material/Typography';
 import { styled as muiStyled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
@@ -8,9 +9,11 @@ import { Button } from '@mui/material';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
-import AdditionalInfos from '@src/component/setting/userinfo/AdditionalInfos.jsx';
+import AdditionalInfos
+  from '@src/component/setting/userinfo/AdditionalInfos.jsx';
 import DietRatioInfo from '@src/component/setting/userinfo/DietRatioInfo.jsx';
-import HeightWeightInfo from '@src/component/setting/userinfo/HeightWeightInfo.jsx';
+import HeightWeightInfo
+  from '@src/component/setting/userinfo/HeightWeightInfo.jsx';
 import GenderInfo from '@src/component/setting/userinfo/GenderInfo.jsx';
 import SportSelectBox from '@src/component/setting/userinfo/SportSelectBox.jsx';
 import { useAtom } from 'jotai/react';
@@ -50,21 +53,22 @@ const StyledDiv = styled.div`
     margin-bottom: 40px;
 `;
 
-
 const UserEditInfo = () => {
   const [diet, setDiet] = useAtom(dietStateAtom);
   const navigate = useNavigate();
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <NameProfileComponent profileButton />
-      <StyledTypography variant="h5">소개</StyledTypography>
+      <StyledTypography variant='h5'>소개</StyledTypography>
       <StyledTextField
         variant={'outlined'} multiline rows={4}
-        label="자기소개" placeholder="자기 소개를 입력해주세요"
+        label='자기소개' placeholder='자기 소개를 입력해주세요'
       />
-      <StyledTypography variant="h5">추가정보</StyledTypography>
-      <InfoContainer height="auto">
+      <StyledTypography variant='h5'>추가정보</StyledTypography>
+      <InfoContainer height='auto'>
         <InfoInnerContainer>
           <AdditionalInfos
             title={USERINFOS.EMAIL.TITLE}
@@ -88,15 +92,14 @@ const UserEditInfo = () => {
       <StyledDiv>
         <FlexGrowDiv />
         <Button
-          variant="contained"
+          variant='contained'
           onClick={() => {
             navigate(LINKS.VIEW_INFO);
           }}
-        >수정</Button>
+        >수정 완료</Button>
       </StyledDiv>
     </>
-
-
+  
   )
     ;
 };

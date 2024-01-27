@@ -66,12 +66,8 @@ const SettingHeader = (props) => {
           {/* {hasDrawer && <SettingMenuButton />} */}
           {/* 빈 공간 */}
           <Box sx={{ flexGrow: 1 }} />
-          <Tooltip title={'Infomation'}>
             <StyledButton onClick={gotoInfo}>Infomation</StyledButton>
-          </Tooltip>
-          <Tooltip title={'Board'}>
             <StyledButton onClick={gotoBoard}>Board</StyledButton>
-          </Tooltip>
           <ProfileImgMenu />
         </Toolbar>
       </StyledAppBar>

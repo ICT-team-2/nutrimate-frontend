@@ -14,6 +14,7 @@ import InfomationRoutes from '@src/routes/InfomationRoutes.jsx';
 import MainRoutes from '@src/routes/MainRoutes.jsx';
 import CalendarRoutes from '@src/routes/CalendarRoutes.jsx';
 import SettingRoutes from '@src/routes/SettingRoutes.jsx';
+import ChallengeRoutes from '@src/routes/ChallengeRoutes.jsx';
 
 function App () {
   const darkMode = useAtomValue(isDarkModeAtom);
@@ -39,6 +40,10 @@ function App () {
     {
       path: '/' + ROUTER_LINKS.SETTING + '/*',
       element: <SettingRoutes />,
+    },
+    {
+      path: '/' + ROUTER_LINKS.CHALLENGE + '/*',
+      element: <ChallengeRoutes />,
     },
   ]);
   return (

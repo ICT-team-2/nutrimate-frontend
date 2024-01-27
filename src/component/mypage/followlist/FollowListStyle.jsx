@@ -2,7 +2,10 @@ import React from 'react';
 import FollowList from '@src/component/mypage/followlist/FollowList.jsx';
 import Modal from '@mui/material/Modal';
 import { useAtom } from 'jotai/react';
-import { followerListModalAtom, followingListModalAtom } from '@src/component/mypage/atom.js';
+import {
+  followerListModalAtom,
+  followingListModalAtom,
+} from '@src/component/mypage/atom.js';
 import { FOLLOW_MODAL } from '@src/component/mypage/const.js';
 import CloseIcon from '@mui/icons-material/Close';
 import styled from 'styled-components';
@@ -31,11 +34,12 @@ const StyleBox = muiStyled(Box)`
   border-radius: 10px;
 `;
 
-
 const FollowListStyle = ({ data, category, title }) => {
-  const [followerModalState, setFollowerModalState] = useAtom(followerListModalAtom);
-  const [followingModalState, setFollowingModalState] = useAtom(followingListModalAtom);
-
+  const [followerModalState, setFollowerModalState] = useAtom(
+    followerListModalAtom);
+  const [followingModalState, setFollowingModalState] = useAtom(
+    followingListModalAtom);
+  
   const handleClose = () => {
     if (category === FOLLOW_MODAL.FOLLOWER.KEY) {
       setFollowerModalState(false);
@@ -43,12 +47,13 @@ const FollowListStyle = ({ data, category, title }) => {
       setFollowingModalState(false);
     }
   };
-
+  
   return (
     <Modal
       open={category === FOLLOW_MODAL.FOLLOWER.KEY
         ? followerModalState
         : followingModalState}
+      onClose={handleClose}
     >
       <StyleBox>
         <TitleContainer>

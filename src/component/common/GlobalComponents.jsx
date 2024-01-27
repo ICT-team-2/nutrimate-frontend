@@ -25,10 +25,28 @@ export const StyledSearchInput = muiStyled(TextField)({
     backgroundColor: '#fff',
   },
 });
-
+/**
+ * 검색창을 커스텀한 컴포넌트입니다.
+ * @param props {{label: string, id: string, size: string, value: string,
+ *   callback: function}} - 검색창을 커스텀한 컴포넌트의 속성들입니다.
+ * @param props.label {string} - 검색창의 라벨입니다.
+ * @param props.id {string} - 검색창의 id입니다.
+ * @param props.size {string} - 검색창의 크기입니다.
+ * @param props.value {string} - 검색창의 값입니다.
+ * @param props.callback {function} - 검색창에서 엔터를 눌렀을 때 실행될 콜백함수입니다.
+ * @returns {Element}
+ * @constructor
+ */
 export const CustomSearchInput = (props) => {
   // eslint-disable-next-line react/prop-types
-  const { label, id, size } = props;
+  const { label, id, size, value, callback } = props;
+  
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      callback();
+    }
+  };
+  
   return <StyledSearchInput
     InputProps={{
       endAdornment: (
@@ -37,13 +55,18 @@ export const CustomSearchInput = (props) => {
         </InputAdornment>
       ),
     }}
-    label={label} id={id} size={size}
+    label={label} id={id} size={size} value={value}
+    onKeyPress={handleKeyPress}
   />;
 };
 CustomSearchInput.defaultProps = {
   label: 'Search',
   id: 'search',
   size: 'small',
+  value: '',
+  callback: () => {
+    console.log('Enter key pressed');
+  },
 };
 
 const StyledAvatar = muiStyled(Avatar)`
@@ -91,6 +114,10 @@ export const BoardSubtitleTypo = ({ text }) => {
 
 export const FlexGrowDiv = styled.div`
     flex-grow: 1;
+`;
+
+export const FlexDiv = styled.div`
+    display: flex;
 `;
 
 export const Seperator = '·';
