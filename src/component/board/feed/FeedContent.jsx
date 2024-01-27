@@ -7,7 +7,7 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
 
-function srcset(image, size, rows = 1, cols = 1) {
+function srcset (image, size, rows = 1, cols = 1) {
   return {
     src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
     srcSet: `${image}?w=${size * cols}&h=${
@@ -22,6 +22,7 @@ const ContentContainer = styled.div`
     flex-direction: column;
     align-items: center;
 `;
+
 const StyledImageList = muiStyled(ImageList)`
     width: 80%;
 `;
@@ -43,26 +44,26 @@ const StyledImageListItem = muiStyled(ImageListItem)`
  * @return {JSX.Element} 피드 컨텐츠 컴포넌트
  */
 const FeedContent = () => {
-
+  
   const navigate = useNavigate();
-
+  
   const gotoWrite = () => {
     navigate(LINKS.FEEDBOARD_WRITE);
   };
   const gotoView = () => {
     navigate(LINKS.FEEDBOARD_VIEW);
   };
-
+  
   return (
     <ContentContainer>
       <ButtonContainer>
         <StyledButton
-          variant="contained"
+          variant='contained'
           onClick={gotoWrite}>
           글 작성
         </StyledButton>
       </ButtonContainer>
-      <StyledImageList variant="quilted" cols={6} rowHeight={121}>
+      <StyledImageList variant='quilted' cols={6} rowHeight={121}>
         {itemData.map((item, index) => (
           <StyledImageListItem
             key={item.img + index}
@@ -73,13 +74,13 @@ const FeedContent = () => {
             <img
               {...srcset(item.img, 121, item.rows, item.cols)}
               alt={item.title}
-              loading="lazy"
+              loading='lazy'
             />
           </StyledImageListItem>
         ))}
       </StyledImageList>
     </ContentContainer>
-
+  
   );
 };
 export default FeedContent;
@@ -137,7 +138,7 @@ const itemData = [
   {
     img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
     title: 'Sea star',
-
+    
   },
   {
     img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
@@ -196,7 +197,7 @@ const itemData = [
   {
     img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
     title: 'Sea star',
-
+    
   },
   {
     img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',

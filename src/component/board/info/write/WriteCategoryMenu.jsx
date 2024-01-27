@@ -12,7 +12,13 @@ display: inline-block;
 padding: 0;
 width: 30px;
 `;
-
+/**
+ *  사용되지 않은 컴포넌트임
+ * @param setTitle
+ * @param title
+ * @returns {Element}
+ * @constructor
+ */
 const WriteCategoryMenu = ({ setTitle, title }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -25,18 +31,18 @@ const WriteCategoryMenu = ({ setTitle, title }) => {
   return (
     <>
       <StyledButton
-        id="fade-button"
+        id='fade-button'
         aria-controls={open ? 'fade-menu' : undefined}
-        aria-haspopup="true"
+        aria-haspopup='true'
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        <Typography variant="subtitle2"
+        <Typography variant='subtitle2'
                     color={(theme) => theme['gray-light-text']}>{title}
         </Typography>
       </StyledButton>
       <Menu
-        id="fade-menu"
+        id='fade-menu'
         MenuListProps={{
           'aria-labelledby': 'fade-button',
         }}

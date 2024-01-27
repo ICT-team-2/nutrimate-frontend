@@ -6,7 +6,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import Avatar from '@mui/material/Avatar';
 import React from 'react';
 
-
 export const StyledContainer = muiStyled(Container)`
     margin: 0 6vw;
 `;
@@ -27,14 +26,13 @@ export const StyledSearchInput = muiStyled(TextField)({
   },
 });
 
-
 export const CustomSearchInput = (props) => {
   // eslint-disable-next-line react/prop-types
   const { label, id, size } = props;
   return <StyledSearchInput
     InputProps={{
       endAdornment: (
-        <InputAdornment position="end">
+        <InputAdornment position='end'>
           <SearchIcon />
         </InputAdornment>
       ),
@@ -59,7 +57,8 @@ const StyledAvatar = muiStyled(Avatar)`
 /**
  * 유저의 프로필 사진을 보여주는 컴포넌트입니다.
  *
- * @param props {{userNick: string, src: string, size: number, variant: string}} - 유저의 프로필 사진을 보여주는 컴포넌트의 속성들입니다.
+ * @param props {{userNick: string, src: string, size: number, variant:
+ *   string}} - 유저의 프로필 사진을 보여주는 컴포넌트의 속성들입니다.
  * @param props.userNick {string} - 유저의 닉네임입니다.
  * @param props.src {string} - 유저의 프로필 사진의 url입니다.(혹은 base64, blob)
  * src의 내용은 const uploadImg = useAtomValue(uploadedImageAtom);로 받아올 수 있습니다.
@@ -68,14 +67,14 @@ const StyledAvatar = muiStyled(Avatar)`
  * @returns {Element} 유저의 프로필 사진을 보여주는 컴포넌트에 대한 JSX
  */
 export const UserAvatar = (props) => {
-  const { userNick, src, size, variant } = props;
-
-
+  const { userNick, src, size, variant, sx } = props;
+  
   return <StyledAvatar
     alt={userNick}
     src={src || '/static/images/avatar/2.jpg'}
     size={size}
     variant={variant}
+    sx={sx}
   />;
 };
 

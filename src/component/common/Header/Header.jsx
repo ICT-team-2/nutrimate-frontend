@@ -7,14 +7,13 @@ import Toolbar from '@mui/material/Toolbar';
 import { useAtomValue } from 'jotai/react';
 
 import SideMenu from '@src/component/common/Header/SideMenu';
-import SideMenuButton from '@src/component/common/Header/SideMenuButton';
 import { drawerStateAtom } from '@src/component/common/Header/atom.js';
 import ProfileImgMenu from '@src/component/common/Header/ProfileImgMenu';
 import Logo from '@src/component/common/Logo';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
-import Tooltip from '@mui/material/Tooltip';
+import styled from 'styled-components';
 
 const AppBar = muiStyled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -23,17 +22,19 @@ const AppBar = muiStyled(MuiAppBar, {
 }));
 
 //sidemenu css 설정
-const StyledAppBar = muiStyled(AppBar)`
+const StyledAppBar = styled(AppBar)`
     background-color: ${({ theme }) => theme['main-background']};
     color: black;
     min-height: 56px;
     box-shadow: none;
     position: static;
+    padding: 0;
+    padding-right: 0 !important; //프로필 메뉴 클릭시 패딩 생기는거 날리는 용
 `;
-const StyledButton = muiStyled(Button)`
-      color: ${({ theme }) => theme['gray-light-text']};
-      margin-right: 1rem;
-  `;
+const StyledButton = styled(Button)`
+    color: ${({ theme }) => theme['gray-light-text']};
+    margin-right: 1rem;
+`;
 
 /**
  * @param props {{hasDrawer: boolean}}
