@@ -14,6 +14,7 @@ import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import styled from 'styled-components';
 import { useAtomValue } from 'jotai/react';
 import { uploadedImageAtom } from '@src/component/mypage/atom.js';
+import Paper from '@mui/material/Paper';
 
 const exampleDatas = [
   {
@@ -63,23 +64,27 @@ const UserNameContainer = styled.div`
     color: ${({ theme }) => theme['light-text']};
 `;
 
+const StyledPaper = styled(Paper)`
+    width: 100%;
+    max-width: 300px;
+    margin-left: 30px;
+    height: 400px;
+
+`;
+
 const RecommendFriendList = ({ datas = exampleDatas }) => {
   const uploadImg = useAtomValue(uploadedImageAtom);
-
+  
   return (
     <FriendListContainer>
       <AvatarContainer>
         <UserAvatar src={uploadImg} />
         <UserNameContainer>username</UserNameContainer>
       </AvatarContainer>
-
+      <StyledPaper>
       <List
-        sx={{
-          width: '100%', maxWidth: 300, bgcolor: 'background.paper',
-          marginLeft: '30px', height: '400px',
-        }}
         subheader={
-          <ListSubheader component="div" id="nested-list-subheader">
+          <ListSubheader component='div' id='nested-list-subheader'>
             회원님을 위한 추천
           </ListSubheader>
         }
@@ -90,10 +95,11 @@ const RecommendFriendList = ({ datas = exampleDatas }) => {
               <Avatar>{data.profile}</Avatar>
             </ListItemAvatar>
             <ListItemText primary={data.userNick} />
-            <Button color="info">팔로우</Button>
+            <Button color='info'>팔로우</Button>
           </StyledListItem>
         ))}
       </List>
+      </StyledPaper>
 
     </FriendListContainer>
   );

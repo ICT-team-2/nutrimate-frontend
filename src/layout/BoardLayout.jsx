@@ -3,7 +3,7 @@ import { styled as muiStyled } from '@mui/material/styles';
 import { Container } from '@mui/material';
 import styled from 'styled-components';
 import Box from '@mui/material/Box';
-import RecommendFriendList from '@src/component/board/RecommendFriendList.jsx';
+import RecommendFriendList from '@src/component/common/RecommendFriendList.jsx';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 const InfoBoardContainer = muiStyled(Box)`
@@ -11,7 +11,6 @@ const InfoBoardContainer = muiStyled(Box)`
   margin-right: 1vw;
   display: block;
 `;
-
 
 const ContentsCotainerBox = muiStyled(Box)`
     margin: 0
@@ -43,7 +42,7 @@ const FlexGrowDiv = styled.div`
 `;
 
 const BoardLayout = ({ data, title = '전체', category = 'all' }) => {
-
+  
   const { page } = useParams();
   const [pageState, setPageState] = useState(page);
   const navigate = useNavigate();
@@ -54,8 +53,7 @@ const BoardLayout = ({ data, title = '전체', category = 'all' }) => {
   const OutletContainer = muiStyled(Container)`
     
   `;
-
-
+  
   return (
     <InfoBoardContainer>
       <RowFlexDiv>
