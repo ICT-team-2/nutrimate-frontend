@@ -24,5 +24,5 @@ module.exports = {
     'no-undef': 'off',
     'react/prop-types': 'warn',
   },
-
+  
 };

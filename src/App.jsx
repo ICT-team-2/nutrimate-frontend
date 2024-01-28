@@ -1,35 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useRoutes } from 'react-router-dom';
 
-function App() {
-  const [count, setCount] = useState(0)
+import { theme } from '@src/config/theme/themeVariables.js';
+import MuiGlobalStyles from '@src/styles/MuiGlobalStyles.jsx';
+import { useAtomValue } from 'jotai/react';
+import { isDarkModeAtom } from '@src/config/theme/atom.js';
+import useMuiTheme from '@src/config/theme/useMuiTheme.js';
+import { ThemeProvider } from 'styled-components';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { ROUTER_LINKS } from '@src/utils/const.js';
+import BoardRoutes from '@src/routes/BoardRoutes.jsx';
+import MyPageRoutes from '@src/routes/MyPageRoutes.jsx';
+import InfomationRoutes from '@src/routes/InfomationRoutes.jsx';
+import MainRoutes from '@src/routes/MainRoutes.jsx';
+import CalendarRoutes from '@src/routes/CalendarRoutes.jsx';
+import SettingRoutes from '@src/routes/SettingRoutes.jsx';
+import ChallengeRoutes from '@src/routes/ChallengeRoutes.jsx';
 
+function App () {
+  const darkMode = useAtomValue(isDarkModeAtom);
+  const muiTheme = useMuiTheme();
+  const routes = useRoutes([
+    { path: '/*', element: <MainRoutes /> },
+    {
+      path: '/' + ROUTER_LINKS.BOARD + '/*',
+      element: <BoardRoutes />,
+    },
+    {
+      path: '/' + ROUTER_LINKS.MYINFO + '/*',
+      element: <MyPageRoutes />,
+    },
+    {
+      path: '/' + ROUTER_LINKS.INFO + '/*',
+      element: <InfomationRoutes />,
+    },
+    {
+      path: '/' + ROUTER_LINKS.CALENDAR + '/*',
+      element: <CalendarRoutes />,
+    },
+    {
+      path: '/' + ROUTER_LINKS.SETTING + '/*',
+      element: <SettingRoutes />,
+    },
+    {
+      path: '/' + ROUTER_LINKS.CHALLENGE + '/*',
+      element: <ChallengeRoutes />,
+    },
+  ]);
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <MuiThemeProvider theme={muiTheme}>
+      <ThemeProvider theme={{
+        ...theme,
+        ...(darkMode ? theme.darkMode : theme.lightMode),
+      }}>
+        <MuiGlobalStyles />
+        {routes}
+
+      </ThemeProvider>
+    </MuiThemeProvider>
   )
+    ;
 }
 
-export default App
+export default App;
