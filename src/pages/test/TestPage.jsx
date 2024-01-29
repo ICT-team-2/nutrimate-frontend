@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import ChatBotComponent from '@src/component/chat/bot/ChatBotComponent.jsx';
+import ChatBotComponent from '@src/component/chat/chatbot/ChatBotComponent.jsx';
 
 
 const PageContainer = styled.div`

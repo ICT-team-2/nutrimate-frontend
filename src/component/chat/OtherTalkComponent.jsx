@@ -4,8 +4,7 @@ import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import Typography from '@mui/material/Typography';
 import { Paper } from '@mui/material';
 
-const MyTalkContainer = styled.div`
-    width: 100%;
+const OtherTalkContainer = styled.div`
     display: flex;
     padding: 30px;
 `;
@@ -22,14 +21,14 @@ const TalkContentBody = styled(Paper)`
     color: ${({ theme }) => theme['chat-reply-text']};
     padding: 15px;
     width: fit-content;
-
+    max-width: 70%;
 `;
 
 const OtherTalkComponent = (props) => {
   const { nick, content, date } = props;
 
   return (
-    <MyTalkContainer>
+    <OtherTalkContainer>
       <StyledUserAvatar />
       <TalkContentContainer>
         <Typography variant="caption" fontWeight="bold">{nick}</Typography>
@@ -37,7 +36,7 @@ const OtherTalkComponent = (props) => {
           {content}
         </TalkContentBody>
       </TalkContentContainer>
-    </MyTalkContainer>
+    </OtherTalkContainer>
   );
 };
 

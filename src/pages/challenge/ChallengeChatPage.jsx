@@ -4,7 +4,7 @@ import { Paper } from '@mui/material';
 import styled from 'styled-components';
 
 const ChallengeChatContainer = styled(Paper)`
-    width: 90%;
+    width: 60%;
     min-height: 83vh;
     display: flex;
     flex-direction: column;

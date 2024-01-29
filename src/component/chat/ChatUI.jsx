@@ -19,21 +19,23 @@ const ChatHeader = styled.div`
 `;
 const ChatBody = styled.div`
         //background-color: ${({ theme }) => theme['chat-bg']};
-    min-height: 100%;
     flex-grow: 1;
+    overflow-y: ${({ overflow }) => overflow ? 'auto' : 'visible'};
+    height: ${({ height }) => height ? height : 'auto'};
 `;
 
 const ChatUI = (props) => {
-  const { title } = props;
+  const { title, overflow, height, data } = props;
   return (
     <ChatContainer>
       <ChatHeader>
         <Typography variant="h6">{title}</Typography>
       </ChatHeader>
       <Divider />
-      <ChatBody>
+      <ChatBody overflow={overflow} height={height}>
         <MyTalkComponent />
         <OtherTalkComponent />
+        <MyTalkComponent content="아무거나 쓰기 귀찮은데 뭐쓰지 뚜뚜뚜뚜따따따따 ㅁㄴㅇㅁㄴㅐㅇㄴㅁㅇㅁㄴㅇ" />
         <MyTalkComponent content="아무거나 쓰기 귀찮은데 뭐쓰지 뚜뚜뚜뚜따따따따 ㅁㄴㅇㅁㄴㅐㅇㄴㅁㅇㅁㄴㅇ" />
 
       </ChatBody>
