@@ -20,7 +20,6 @@ const MainPageImgContent = styled.div`
 
     & h1, h2, h3 {
         text-shadow: 1px 1px 1px black;
-        text-shadow: 1px 1px 1px black;
     }
 `;
 

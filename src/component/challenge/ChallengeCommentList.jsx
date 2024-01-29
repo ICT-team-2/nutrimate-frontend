@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useRef } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -15,25 +16,32 @@ const StyledList = muiStyled(List)({
   height: '730px',
 });
 
-function ChallengeCommentList () {
+function ChallengeCommentList() {
   const len = 20;
+  const listRef = useRef();
+
+  // 스크롤을 맨 아래로 내림
+  useEffect(() => {
+    listRef.current.scrollTop = listRef.current.scrollHeight;
+  }, []);
+
   return (
-    <StyledList>
+    <StyledList ref={listRef}>
       {Array.from(new Array(len)).fill(0).map((item, index) => (
           <React.Fragment key={index}>
-            <ListItem alignItems='flex-start'>
+            <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar alt='Remy Sharp' src='/static/images/avatar/1.jpg' />
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
               </ListItemAvatar>
               <ListItemText
-                primary='Brunch this weekend?'
+                primary="Brunch this weekend?"
                 secondary={
                   <React.Fragment>
                     <Typography
                       sx={{ display: 'inline' }}
-                      component='span'
-                      variant='body2'
-                      color='text.primary'
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
                     >
                       Ali Connors
                     </Typography>
@@ -42,11 +50,11 @@ function ChallengeCommentList () {
                 }
               />
             </ListItem>
-            {len - 1 !== index && <Divider variant='inset' component='li' />}
+            {len - 1 !== index && <Divider variant="inset" component="li" />}
           </React.Fragment>
         ),
       )}
-</StyledList>
+    </StyledList>
   )
     ;
 }

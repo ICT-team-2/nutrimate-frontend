@@ -40,17 +40,17 @@ export const StyledSearchInput = muiStyled(TextField)({
 export const CustomSearchInput = (props) => {
   // eslint-disable-next-line react/prop-types
   const { label, id, size, value, callback } = props;
-  
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       callback();
     }
   };
-  
+
   return <StyledSearchInput
     InputProps={{
       endAdornment: (
-        <InputAdornment position='end'>
+        <InputAdornment position="end">
           <SearchIcon />
         </InputAdornment>
       ),
@@ -87,17 +87,20 @@ const StyledAvatar = muiStyled(Avatar)`
  * src의 내용은 const uploadImg = useAtomValue(uploadedImageAtom);로 받아올 수 있습니다.
  * @param props.size {number} - 유저의 프로필 사진의 크기입니다.
  * @param props.variant {'circular'|'rounded'} - 유저의 프로필 사진의 모양입니다.
+ * @param props.sx {object} - 유저의 프로필 사진의 sx입니다.(mui의 sx)
+ * @param props.className {string} - 유저의 프로필 사진의 className입니다.(styled-components를 위해서)
  * @returns {Element} 유저의 프로필 사진을 보여주는 컴포넌트에 대한 JSX
  */
 export const UserAvatar = (props) => {
-  const { userNick, src, size, variant, sx } = props;
-  
+  const { userNick, src, size, variant, sx, className } = props;
+
   return <StyledAvatar
     alt={userNick}
     src={src || '/static/images/avatar/2.jpg'}
     size={size}
     variant={variant}
     sx={sx}
+    className={className}
   />;
 };
 
