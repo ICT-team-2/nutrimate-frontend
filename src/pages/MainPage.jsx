@@ -17,6 +17,11 @@ const MainPageImgContent = styled.div`
     position: absolute;
     transform: translateY(-400px); // transform 속성을 사용하여 위치 이동
     color: white;
+
+    & h1, h2, h3 {
+        text-shadow: 1px 1px 1px black;
+        text-shadow: 1px 1px 1px black;
+    }
 `;
 
 const MainContent = styled.div`
