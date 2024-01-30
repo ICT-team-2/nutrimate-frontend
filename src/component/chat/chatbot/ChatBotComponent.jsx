@@ -10,7 +10,7 @@ const ChatBotPaper = styled(Paper)`
     width: 450px;
     background-color: white;
     margin-bottom: 10px;
-
+    display: ${({ openchat }) => openchat === 'true' ? 'block' : 'none'};
 `;
 const CircleButton = styled(Button)`
     border-radius: 50%;
@@ -34,7 +34,7 @@ const ChatBotComponent = () => {
   return (
     <ChatBotContainer>
       <Fade in={openChat} timeout={250}>
-        <ChatBotPaper openChat={openChat}>
+        <ChatBotPaper openchat={openChat + ''}>
           <ChatUI title="챗봇" overflow height={'450px'} />
         </ChatBotPaper>
       </Fade>

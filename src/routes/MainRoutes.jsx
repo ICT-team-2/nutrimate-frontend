@@ -8,8 +8,10 @@ import NotFound404Page from '@src/pages/NotFound404Page.jsx';
 const MainRoutes = () => {
   return (
     <Routes>
-      <Route path={'/'} element={<LayoutWithoutSideBar />}>
+      <Route path={'/'} element={<LayoutWithoutSideBar logoWhite />}>
         <Route path={''} element={<MainPage />}></Route>
+      </Route>
+      <Route path={'/'} element={<LayoutWithoutSideBar />}>
         <Route path="test" element={<TestPage />}></Route>
         <Route path={'*'} element={<NotFound404Page />}></Route>
       </Route>

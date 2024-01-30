@@ -86,10 +86,7 @@ export const MENU_LIST = {
     TITLE: '홈',
     PATH: '/',
   },
-  SEARCH: {
-    TITLE: '검색',
-    PATH: '/',
-  },
+
   RECORD: {
     TITLE: '기록',
     PATH: LINKS.RECORD,
@@ -114,10 +111,7 @@ export const MENU_LIST = {
     TITLE: '프로필',
     PATH: LINKS.MYINFO,
   },
-  BOOKMARK: {
-    TITLE: '북마크',
-    PATH: LINKS.BOOKMARK,
-  },
+
   SETTING: {
     TITLE: '설정',
     PATH: LINKS.SETTING,

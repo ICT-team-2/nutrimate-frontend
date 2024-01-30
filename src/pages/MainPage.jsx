@@ -1,5 +1,5 @@
 import React from 'react';
-import MainPageImg from '@src/asset/image/MainPageImg.png';
+import MainPageImg from '@src/asset/image/MainPageImg.jpg';
 import styled from 'styled-components';
 import { TITLE } from '@src/utils/const.js';
 import { Button } from '@mui/material';
@@ -18,9 +18,9 @@ const MainPageImgContent = styled.div`
     transform: translateY(-400px); // transform 속성을 사용하여 위치 이동
     color: white;
 
-    & h1, h2, h3 {
-        text-shadow: 1px 1px 1px black;
-    }
+    font-family: 'Noto Serif KR', sans-serif;
+
+
 `;
 
 const MainContent = styled.div`
@@ -35,8 +35,9 @@ const MainPage = ({ size }) => {
         <RelativeWrapper>
           <MainPageImgContent>
             <h2>{TITLE.APP}</h2>
-            <h1>건강한 식습관으로 더 나은 삶의<br /> 시작을 경험하세요.</h1>
-            <h3>당신만의 맞춤식 프로그램으로<br />건강한 식습관을 만나보세요.</h3>
+            <div>건강한 식습관으로 더 나은 삶의<br /> 시작을 경험하세요.</div>
+            <div>당신만의 맞춤식 프로그램으로 건강한 식습관을 만나보세요.</div>
+            <br />
             <Button variant="contained">식습관 검사하기</Button>
           </MainPageImgContent>
         </RelativeWrapper>
