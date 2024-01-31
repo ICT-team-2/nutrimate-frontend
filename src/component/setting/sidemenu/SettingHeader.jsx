@@ -54,7 +54,7 @@ const SettingHeader = (props) => {
     navigate(LINKS.ALL_INFO_BOARD + '/1');
   };
   const gotoFeed = () => {
-    navigate(LINKS.FEED_BOARD);
+    navigate(LINKS.FEEDBOARD_VIEW);
   };
 
   return (

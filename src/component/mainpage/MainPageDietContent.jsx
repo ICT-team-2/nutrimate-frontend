@@ -103,6 +103,7 @@ const DietInfoContent = (props) => {
       <Zoom in={zoom} timeout={500}>
         <DietImg src={src} alt={title} ref={imgRef} />
       </Zoom>
+      <FlexGrowDiv />
       <ColumnFlexDiv index={index + ''}>
         <FlexGrowDiv grow={2} />
         <FlexGrowDiv>

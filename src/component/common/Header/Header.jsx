@@ -50,21 +50,21 @@ const StyledButton = styled(Button)`
 const Header = (props) => {
   // const theme = useTheme();
   const { hasDrawer, logoWhite } = props;
-  
+
   const open = useAtomValue(drawerStateAtom);
   const navigate = useNavigate();
   const gotoInfo = () => {
     navigate(LINKS.INFO);
   };
-  
+
   const gotoBoard = () => {
     navigate(LINKS.ALL_INFO_BOARD + '/1');
   };
-  
+
   const gotoFeed = () => {
-    navigate(LINKS.FEED_BOARD);
+    navigate(LINKS.FEEDBOARD_VIEW);
   };
-  
+
   return (
     <Box sx={{ display: 'flex' }}>
       <StyledAppBar open={open} logowhite={logoWhite + ''}>

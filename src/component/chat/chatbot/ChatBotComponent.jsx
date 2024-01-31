@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ChatUI from '@src/component/chat/ChatUI.jsx';
 import styled from 'styled-components';
 import { Button, Paper } from '@mui/material';
@@ -30,11 +30,27 @@ const ChatBotContainer = styled.div`
 
 const ChatBotComponent = () => {
   const [openChat, setOpenChat] = useState(false);
+  const documentRef = useRef(document);
+  const chatBotRef = useRef(null);
+  const chatBotButtonRef = useRef(null);
+  //chatbot 밖을 클릭하면 챗봇 닫힘
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!chatBotRef.current.contains(event.target)
+        && !chatBotButtonRef.current.contains(event.target)) {
+        setOpenChat(false);
+      }
+    };
+    documentRef.current.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <ChatBotContainer>
       <Fade in={openChat} timeout={250}>
-        <ChatBotPaper openchat={openChat + ''}>
+        <ChatBotPaper openchat={openChat + ''} ref={chatBotRef}>
           <ChatUI title="챗봇" overflow height={'450px'} />
         </ChatBotPaper>
       </Fade>
@@ -43,6 +59,7 @@ const ChatBotComponent = () => {
         onClick={() => {
           setOpenChat(!openChat);
         }}
+        ref={chatBotButtonRef}
       >
         <FontAwesomeIcon icon={faComments} />
       </CircleButton>
