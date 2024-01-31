@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { FlexGrowDiv, StyledContainer } from '@src/component/common/GlobalComponents.jsx';
 import useIntersectionObserver from '@src/hooks/useIntersectionObserver.jsx';
 import { Zoom } from '@mui/material';
-import { styled as muiStyled } from '@mui/material/styles';
 
 const DIET_INFOS = [
   {
@@ -64,7 +63,8 @@ const ColumnFlexDiv = styled.div`
     display: flex;
     flex-direction: column;
     padding: 30px;
-    margin-left: 150px;
+    margin-left: ${({ index }) => (parseInt(index) % 2 === 0 ? '150px' : '0')};
+    margin-right: ${({ index }) => (parseInt(index) % 2 === 0 ? '0' : '150px')};
     height: 700px;
 
 `;
@@ -81,10 +81,6 @@ const DietImg = styled.img`
     width: 700px;
     height: 600px;
 `;
-
-const StyledZoom = muiStyled((props) => <Zoom {...props} />)(({ theme }) => ({
-  transitionDuration: `200ms`,
-}));
 
 
 const DietInfoContent = (props) => {
@@ -104,10 +100,10 @@ const DietInfoContent = (props) => {
   const [zoom, setZoom] = useState(false);
   return (
     <InfoContainer index={index + ''}>
-      <StyledZoom in={zoom}>
+      <Zoom in={zoom} timeout={500}>
         <DietImg src={src} alt={title} ref={imgRef} />
-      </StyledZoom>
-      <ColumnFlexDiv>
+      </Zoom>
+      <ColumnFlexDiv index={index + ''}>
         <FlexGrowDiv grow={2} />
         <FlexGrowDiv>
           <DietInfoTitle color={titleColor}>{title}</DietInfoTitle>
