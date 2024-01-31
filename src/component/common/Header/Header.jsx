@@ -30,7 +30,7 @@ const StyledAppBar = styled(AppBar)`
     min-height: 56px;
     box-shadow: none;
     position: ${({ logowhite }) =>
-            logowhite === 'true' ? '' : 'static'
+            logowhite === 'true' ? 'absolute' : 'static'
     };
     padding: 0;
     padding-right: 0 !important; //프로필 메뉴 클릭시 패딩 생기는거 날리는 용
@@ -50,21 +50,21 @@ const StyledButton = styled(Button)`
 const Header = (props) => {
   // const theme = useTheme();
   const { hasDrawer, logoWhite } = props;
-
+  
   const open = useAtomValue(drawerStateAtom);
   const navigate = useNavigate();
   const gotoInfo = () => {
     navigate(LINKS.INFO);
   };
-
+  
   const gotoBoard = () => {
     navigate(LINKS.ALL_INFO_BOARD + '/1');
   };
-
+  
   const gotoFeed = () => {
     navigate(LINKS.FEED_BOARD);
   };
-
+  
   return (
     <Box sx={{ display: 'flex' }}>
       <StyledAppBar open={open} logowhite={logoWhite + ''}>

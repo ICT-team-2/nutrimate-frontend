@@ -15,13 +15,13 @@ const ChatBotPaper = styled(Paper)`
 const CircleButton = styled(Button)`
     border-radius: 50%;
     aspect-ratio: 1/1;
-    padding: 0;
+    padding: 20px;
     min-width: 50px;
 `;
 const ChatBotContainer = styled.div`
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 2vh;
+    right: 2vw;
     z-index: 20000;
     display: flex;
     flex-direction: column;
@@ -30,21 +30,21 @@ const ChatBotContainer = styled.div`
 
 const ChatBotComponent = () => {
   const [openChat, setOpenChat] = useState(false);
-
+  
   return (
     <ChatBotContainer>
       <Fade in={openChat} timeout={250}>
         <ChatBotPaper openchat={openChat + ''}>
-          <ChatUI title="챗봇" overflow height={'450px'} />
+          <ChatUI title='챗봇' overflow height={'450px'} />
         </ChatBotPaper>
       </Fade>
       <CircleButton
-        variant="contained"
+        variant='contained'
         onClick={() => {
           setOpenChat(!openChat);
         }}
       >
-        <FontAwesomeIcon icon={faComments} />
+        <FontAwesomeIcon icon={faComments} size='2x' />
       </CircleButton>
     </ChatBotContainer>
   );
