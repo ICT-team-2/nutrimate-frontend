@@ -58,11 +58,12 @@ const LastTitle = styled.div`
     font-size: 64px;
 `;
 
-const MainPage = ({ size }) => {
+
+const MainPage = ({ imgSize }) => {
   return (
     <>
-      <MainImg src={MainPageImg} size={size} />
-      <MainImgCover size={size} />
+      <MainImg src={MainPageImg} size={imgSize} />
+      <MainImgCover size={imgSize} />
       <StyledContainer>
         <RelativeWrapper>
           <MainPageImgContent>
@@ -95,7 +96,7 @@ const MainPage = ({ size }) => {
 };
 
 MainPage.defaultProps = {
-  size: '100vh',
+  imgSize: '100vh',
 };
 
 export default MainPage;

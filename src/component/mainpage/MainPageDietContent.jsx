@@ -83,7 +83,7 @@ const DietInfoContent = (props) => {
   const { titleColor, index, title, content, src } = props;
   return (
     <InfoContainer index={index + ''}>
-      <DietImg src={src} alt="식단정보" />
+      <DietImg src={src} alt={title} />
       <ColumnFlexDiv>
         <FlexGrowDiv grow={2} />
         <FlexGrowDiv>

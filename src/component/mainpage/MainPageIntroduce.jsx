@@ -3,9 +3,10 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { Container } from '@mui/material';
 
 const GlobalStyle = createGlobalStyle`
-    * {
-        font-size: 22px;
+    div, p {
+        font-size: 1.15rem;
     }
+
 `;
 
 const MainContentContainer = styled(Container)`

@@ -8,9 +8,11 @@ const StyledLogo = styled.img`
 `;
 
 const StyledLogoWhite = styled(StyledLogo)`
-    position: absolute;
-    top: 2px;
-    height: 66.7px;
+    position: relative;
+    top: 7px;
+    right: 5px;
+    width: 118px;
+
 `;
 
 const Logo = ({ logoWhite }) => {
