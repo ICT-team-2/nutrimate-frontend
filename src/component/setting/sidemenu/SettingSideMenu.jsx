@@ -8,14 +8,14 @@ import { styled as muiStyled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import { useAtom, useAtomValue } from 'jotai/react';
 
-import { drawerStateAtom, sideMenuIconRefAtom } from '@src/component/common/Header/atom.js';
+import { drawerStateAtom, firstDrawerRefAtom, sideMenuIconRefAtom } from '@src/component/common/Header/atom.js';
 import { faCircleXmark, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { settingDrawerHeightAtom, settingDrawerStateAtom } from '@src/component/setting/atom.js';
 import styled from 'styled-components';
 import { SETTING_LIST } from '@src/component/setting/const.js';
-import { firstDrawerRefAtom } from '@src/utils/atom.js';
+
 
 const innerDrawerWidth = '220px';
 const fullOpenDrawerWidth = 380;

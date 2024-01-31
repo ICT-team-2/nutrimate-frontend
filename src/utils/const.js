@@ -101,7 +101,7 @@ export const MENU_LIST = {
   },
   FEEDBOARD: {
     TITLE: '피드',
-    PATH: LINKS.FEED_BOARD,
+    PATH: LINKS.FEEDBOARD_VIEW,
   },
   CHALLENGE: {
     TITLE: '챌린지',

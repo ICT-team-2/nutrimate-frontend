@@ -8,7 +8,7 @@ import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import { useAtom, useAtomValue } from 'jotai/react';
 
-import { drawerStateAtom, sideMenuIconRefAtom } from '@src/component/common/Header/atom.js';
+import { drawerStateAtom, firstDrawerRefAtom, sideMenuIconRefAtom } from '@src/component/common/Header/atom.js';
 import { MENU_LIST } from '@src/utils/const.js';
 import {
   faCalendar,
@@ -22,7 +22,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
-import { firstDrawerRefAtom } from '@src/utils/atom.js';
+
 
 const drawerWidth = 240;
 

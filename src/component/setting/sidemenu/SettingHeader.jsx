@@ -53,6 +53,9 @@ const SettingHeader = (props) => {
   const gotoBoard = () => {
     navigate(LINKS.ALL_INFO_BOARD + '/1');
   };
+  const gotoFeed = () => {
+    navigate(LINKS.FEED_BOARD);
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -66,6 +69,7 @@ const SettingHeader = (props) => {
           <Box sx={{ flexGrow: 1 }} />
           <StyledButton onClick={gotoInfo}>Infomation</StyledButton>
           <StyledButton onClick={gotoBoard}>Board</StyledButton>
+          <StyledButton onClick={gotoFeed}>Feed</StyledButton>
           <ProfileImgMenu />
         </Toolbar>
       </StyledAppBar>
