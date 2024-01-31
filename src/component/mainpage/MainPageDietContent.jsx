@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FlexGrowDiv, StyledContainer } from '@src/component/common/GlobalComponents.jsx';
+import useIntersectionObserver from '@src/hooks/useIntersectionObserver.jsx';
+import { Zoom } from '@mui/material';
+import { styled as muiStyled } from '@mui/material/styles';
 
 const DIET_INFOS = [
   {
@@ -79,11 +82,31 @@ const DietImg = styled.img`
     height: 600px;
 `;
 
+const StyledZoom = muiStyled((props) => <Zoom {...props} />)(({ theme }) => ({
+  transitionDuration: `200ms`,
+}));
+
+
 const DietInfoContent = (props) => {
   const { titleColor, index, title, content, src } = props;
+  const imgRef = useRef();
+  const [observe, unobserve] = useIntersectionObserver(() => {
+    setZoom(true);
+  });
+  useEffect(() => {
+    const img = imgRef.current;
+    observe(img);
+    return () => {
+      unobserve(img);
+    };
+  }, []);
+
+  const [zoom, setZoom] = useState(false);
   return (
     <InfoContainer index={index + ''}>
-      <DietImg src={src} alt={title} />
+      <StyledZoom in={zoom}>
+        <DietImg src={src} alt={title} ref={imgRef} />
+      </StyledZoom>
       <ColumnFlexDiv>
         <FlexGrowDiv grow={2} />
         <FlexGrowDiv>
