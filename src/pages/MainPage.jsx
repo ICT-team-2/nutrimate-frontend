@@ -1,13 +1,8 @@
 import React from 'react';
 import MainPageImg from '@src/asset/image/MainPageImg.jpg';
 import styled from 'styled-components';
-import { TITLE } from '@src/utils/const.js';
 import { Button } from '@mui/material';
-import {
-  RelativeWrapper,
-  StyledContainer,
-} from '@src/component/common/GlobalComponents.jsx';
-import Typography from '@mui/material/Typography';
+import { RelativeWrapper, StyledContainer } from '@src/component/common/GlobalComponents.jsx';
 import MainContent from '@src/component/mainpage/MainContent.jsx';
 
 const MainImg = styled.img`
@@ -19,7 +14,7 @@ const MainImg = styled.img`
 const MainPageImgContent = styled.div`
 
     position: relative;
-    transform: translateY(-500px); // transform 속성을 사용하여 위치 이동
+    transform: translateY(-400px); // transform 속성을 사용하여 위치 이동
     color: white;
     z-index: 10;
 
@@ -66,8 +61,8 @@ const MainPage = ({ size }) => {
               당신만의 맞춤식 프로그램으로 건강한 식습관을 만나보세요
             </MainSecondTypo>
             <StyledButton
-              variant='contained'
-              size='large'>식습관 검사하기</StyledButton>
+              variant="contained"
+              size="large">식습관 검사하기</StyledButton>
           </MainPageImgContent>
         </RelativeWrapper>
         <MainContent />

@@ -30,21 +30,21 @@ const ChatBotContainer = styled.div`
 
 const ChatBotComponent = () => {
   const [openChat, setOpenChat] = useState(false);
-  
+
   return (
     <ChatBotContainer>
       <Fade in={openChat} timeout={250}>
         <ChatBotPaper openchat={openChat + ''}>
-          <ChatUI title='챗봇' overflow height={'450px'} />
+          <ChatUI title="챗봇" overflow height={'450px'} />
         </ChatBotPaper>
       </Fade>
       <CircleButton
-        variant='contained'
+        variant="contained"
         onClick={() => {
           setOpenChat(!openChat);
         }}
       >
-        <FontAwesomeIcon icon={faComments} size='2x' />
+        <FontAwesomeIcon icon={faComments} />
       </CircleButton>
     </ChatBotContainer>
   );
