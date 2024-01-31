@@ -116,7 +116,7 @@ export const BoardSubtitleTypo = ({ text }) => {
 };
 
 export const FlexGrowDiv = styled.div`
-    flex-grow: 1;
+    flex-grow: ${({ grow }) => grow || 1};
 `;
 
 export const FlexDiv = styled.div`

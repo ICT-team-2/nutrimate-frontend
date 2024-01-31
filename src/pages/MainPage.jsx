@@ -2,8 +2,9 @@ import React from 'react';
 import MainPageImg from '@src/asset/image/MainPageImg.jpg';
 import styled from 'styled-components';
 import { Button } from '@mui/material';
-import { RelativeWrapper, StyledContainer } from '@src/component/common/GlobalComponents.jsx';
-import MainContent from '@src/component/mainpage/MainContent.jsx';
+import { FlexDiv, RelativeWrapper, StyledContainer } from '@src/component/common/GlobalComponents.jsx';
+import MainPageIntroduce from '@src/component/mainpage/MainPageIntroduce.jsx';
+import MainPageDietContent from '@src/component/mainpage/MainPageDietContent.jsx';
 
 const MainImg = styled.img`
     width: 100%;
@@ -12,7 +13,6 @@ const MainImg = styled.img`
 `;
 
 const MainPageImgContent = styled.div`
-
     position: relative;
     transform: translateY(-400px); // transform 속성을 사용하여 위치 이동
     color: white;
@@ -44,6 +44,20 @@ const StyledButton = styled(Button)`
     height: 55px;
     font-size: 20px;
 `;
+const LastTitleContainer = styled.div`
+    margin: 300px auto 200px;
+    display: flex;
+    flex-direction: column;
+`;
+const LastButtonContainer = styled.div`
+    margin: 30px auto;
+`;
+
+const LastTitle = styled.div`
+    font-family: 'Noto Serif KR', sans-serif;
+    font-size: 64px;
+`;
+
 const MainPage = ({ size }) => {
   return (
     <>
@@ -65,8 +79,17 @@ const MainPage = ({ size }) => {
               size="large">식습관 검사하기</StyledButton>
           </MainPageImgContent>
         </RelativeWrapper>
-        <MainContent />
       </StyledContainer>
+      <MainPageIntroduce />
+      <MainPageDietContent />
+      <FlexDiv>
+        <LastTitleContainer>
+          <LastTitle>지금 내가 먹고있는 식단이 궁금하다면? </LastTitle>
+          <LastButtonContainer>
+            <StyledButton variant="contained">내 식단 분석하기</StyledButton>
+          </LastButtonContainer>
+        </LastTitleContainer>
+      </FlexDiv>
     </>
   );
 };
