@@ -1,12 +1,21 @@
 import React from 'react';
-import SettingHeader from '@src/component/setting/sidemenu/SettingHeader.jsx';
-import TestComp from '@src/pages/test/TestComp.jsx';
+import styled from 'styled-components';
+import ChatBotComponent from '@src/component/chat/chatbot/ChatBotComponent.jsx';
+
+
+const PageContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+`;
 
 const TestPage = () => {
   return (
-    <div>
-      <TestComp />
-    </div>
+
+    <ChatBotComponent />
+
+
   );
 };
 

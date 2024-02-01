@@ -65,13 +65,14 @@ const LikeContainer = styled(Label)`
 /**
  * 좋아요 버튼을 표시하고 상호 작용하기 위한 LikeButton 컴포넌트입니다.
  *
- * @param props {{className: string, clicked: boolean, like: number, size:
- *   number, heartColor: string}} - 좋아요 버튼을 구성하는 속성들입니다.
+ * @param props {Object} - 좋아요 버튼을 구성하는 속성들입니다.
  * @param props.className {string} - 좋아요 버튼의 className입니다.
  * @param props.clicked {boolean} - 좋아요 버튼의 클릭 여부입니다.
  * @param props.like {number} - 좋아요 버튼의 좋아요 개수입니다.
  * @param props.size {number} - 좋아요 버튼의 크기입니다.
  * @param props.heartColor {string} - 좋아요 버튼의 하트 색상입니다.
+ * @param props.onClick {function} - 좋아요 버튼 클릭 시 실행되는 함수입니다.
+ * @param props.viewCount {boolean} - 좋아요 개수를 표시할지 여부입니다
  *
  * @return {JSX.Element} 좋아요 버튼 컴포넌트입니다.
  *
@@ -89,8 +90,8 @@ const LikeButton = (props) => {
   const heart = useRef();
   const svg = useRef();
   const span = useRef();
-  const checkbox = useRef();
   const disabledColor = '#eee';
+  const [disabled, setDisabled] = useState(false);
   
   const animateHeart = () => {
     heart.current.animate(
@@ -157,10 +158,11 @@ const LikeButton = (props) => {
       heart.current.style.fill = heartColor;
       heart.current.style.stroke = heartColor;
       
-      checkbox.current.setAttribute('disabled', true);
+      setDisabled(true);
       // 1.1초 후에 버튼을 다시 활성화합니다.
       setTimeout(function() {
-        checkbox.current.removeAttribute('disabled');
+        setDisabled(false);
+        
       }, 1100); // 1.1초 후
       
       animateHeart();
@@ -188,7 +190,8 @@ const LikeButton = (props) => {
           id='checkbox'
           hidden
           onClick={clickLikeCount}
-          ref={checkbox}
+          
+          disabled={disabled}
         />
         <Svg
           ref={svg}

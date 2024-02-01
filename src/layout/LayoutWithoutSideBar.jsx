@@ -20,13 +20,13 @@ const Content = styled.div`
     padding-bottom: ${FOOTER_HEIGHT}; // 푸터의 높이만큼 padding-bottom을 추가
 `;
 
-function LayoutWithoutSideBar() {
+function LayoutWithoutSideBar({ logoWhite }) {
 
 
   return (
     <>
       <Wrapper>
-        <Header hasDrawer={false} />
+        <Header hasDrawer={false} logoWhite={logoWhite} />
         <Content>
           <Outlet />
         </Content>

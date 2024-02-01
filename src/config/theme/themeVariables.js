@@ -2,8 +2,8 @@ import themes from '@src/config/theme/themeConfigure';
 
 const { lightMode, darkMode } = themes;
 
-const primaryColor = '#8231D3';
-const primaryHover = '#6726A8';
+const primaryColor = '#0F4A15';
+const primaryHover = '#051d0c';
 const secondaryColor = '#5840FF';
 const secondaryHover = '#3520C8';
 const linkColor = '#1890ff';
