@@ -1,34 +1,44 @@
-import * as React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Menu, MenuItem, Tab, Tabs } from '@mui/material';
 
-import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
+export default function TestComp() {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { TextField } from '@mui/material';
-
-function MyComponent () {
-  const [selectedDate, setSelectedDate] = useState(null);
-  
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
-  
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setAnchorEl(null);
+  };
+
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePicker
-        label='날짜 선택'
-        value={selectedDate}
-        onChange={handleDateChange}
-        views={['year', 'month']}
-        format='YYYY/MM'
-        renderInput={(props) => <TextField {...props} />}
-      
-      />
-    </LocalizationProvider>
+    <div>
+      <Tabs value={selectedIndex} onChange={handleMenuItemClick}>
+        <Tab label="뉴스" />
+        <Tab label="추천" onClick={handleClick} />
+        <Tab label="알레르기" />
+        {/* 이하 동일하게 추가... */}
+      </Tabs>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={(event) => handleMenuItemClick(event, 0)}>영양제 추천</MenuItem>
+        <MenuItem onClick={(event) => handleMenuItemClick(event, 1)}>운동 추천</MenuItem>
+        <MenuItem onClick={(event) => handleMenuItemClick(event, 2)}>장소 추천</MenuItem>
+        <MenuItem onClick={(event) => handleMenuItemClick(event, 3)}>음식 추천</MenuItem>
+        {/* 이하 동일하게 추가... */}
+      </Menu>
+    </div>
   );
 }
-
-export default MyComponent;

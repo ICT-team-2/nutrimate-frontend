@@ -34,17 +34,24 @@ export const StyledSearchInput = muiStyled(TextField)({
  * @param props.size {string} - 검색창의 크기입니다.
  * @param props.value {string} - 검색창의 값입니다.
  * @param props.callback {function} - 검색창에서 엔터를 눌렀을 때 실행될 콜백함수입니다.
+ * @param props.searchValue {string} - 검색창의 값을 변경할 수 있는 state(변수)입니다.
+ * @param props.setSearchValue {function} - 검색창의 값을 변경할 수 있는 콜백함수입니다.
  * @returns {Element}
  * @constructor
  */
 export const CustomSearchInput = (props) => {
   // eslint-disable-next-line react/prop-types
-  const { label, id, size, value, callback } = props;
+  const { label, id, size, callback, searchValue, setSearchValue } = props;
+
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       callback();
     }
+  };
+
+  const handleChange = (e) => {
+    setSearchValue(e.target.value);
   };
 
   return <StyledSearchInput
@@ -55,19 +62,21 @@ export const CustomSearchInput = (props) => {
         </InputAdornment>
       ),
     }}
-    label={label} id={id} size={size} value={value}
+    label={label} id={id} size={size} value={searchValue}
     onKeyPress={handleKeyPress}
+    onChange={handleChange}  // onChange 핸들러를 추가합니다.
   />;
 };
+
 CustomSearchInput.defaultProps = {
   label: 'Search',
   id: 'search',
   size: 'small',
-  value: '',
   callback: () => {
     console.log('Enter key pressed');
   },
 };
+
 
 const StyledAvatar = muiStyled(Avatar)`
   width: ${({ size }) => size || '40'}px;
