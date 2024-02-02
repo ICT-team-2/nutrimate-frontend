@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button, Checkbox, Container, FormControlLabel, TextField } from '@mui/material';
 import Paper from '@mui/material/Paper';
@@ -51,10 +51,10 @@ const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
 
-  //todo 로깅용 - 나중에 지울것
-  useEffect(() => {
-    console.log(`id: ${id}, password: ${password}, checked: ${checked}`);
-  }, [checked, id, password]);
+  //todo 로깅용 - 나중에 지울 것
+  // useEffect(() => {
+  //   console.log(`id: ${id}, password: ${password}, checked: ${checked}`);
+  // }, [checked, id, password]);
 
   return (
     <LoginContainer>
