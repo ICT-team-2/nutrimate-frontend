@@ -13,6 +13,7 @@ const FooterPaper = muiStyled(Paper)(({ theme, footerheight }) => ({
   marginLeft: '15px',
   backgroundColor: theme['main-background'],
   transform: 'translateY(-100%)',
+  marginBottom: '20px',
 }));
 
 const FooterTypo = muiStyled(Typography)`

@@ -1,53 +1,102 @@
 import React from 'react';
-import MainPageImg from '@src/asset/image/MainPageImg.png';
+import MainPageImg from '@src/asset/image/MainPageImg.jpg';
 import styled from 'styled-components';
-import { TITLE } from '@src/utils/const.js';
 import { Button } from '@mui/material';
-import { RelativeWrapper, StyledContainer } from '@src/component/common/GlobalComponents.jsx';
+import { FlexDiv, RelativeWrapper, StyledContainer } from '@src/component/common/GlobalComponents.jsx';
+import MainPageIntroduce from '@src/component/mainpage/MainPageIntroduce.jsx';
+import MainPageDietContent from '@src/component/mainpage/MainPageDietContent.jsx';
 
 const MainImg = styled.img`
     width: 100%;
-    height: ${(props) => props.size}px;
+    height: ${(props) => props.size};
     object-fit: cover;
 `;
 
 const MainPageImgContent = styled.div`
-    width: 500px;
-    height: 300px;
-    position: absolute;
+    position: relative;
     transform: translateY(-400px); // transform 속성을 사용하여 위치 이동
     color: white;
+    z-index: 10;
+
 `;
 
-const MainContent = styled.div`
-    margin-top: 50px;
+const MainFirstTypo = styled.div`
+    font-size: 40px;
+    font-family: 'Noto Serif KR', sans-serif;
+    margin-bottom: 30px;
+`;
+const MainSecondTypo = styled.div`
+    font-size: 26px;
+`;
+const MainImgCover = styled.div`
+    width: 100%;
+    height: ${(props) => props.size};
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
 `;
 
-const MainPage = ({ size }) => {
+const StyledButton = styled(Button)`
+    margin: 40px 0px 0 30px;
+    width: 200px;
+    height: 55px;
+    font-size: 20px;
+`;
+const LastTitleContainer = styled.div`
+    margin: 300px auto 200px;
+    display: flex;
+    flex-direction: column;
+`;
+const LastButtonContainer = styled.div`
+    margin: 30px auto;
+`;
+
+const LastTitle = styled.div`
+    font-family: 'Noto Serif KR', sans-serif;
+    font-size: 64px;
+`;
+
+
+const MainPage = ({ imgSize }) => {
   return (
     <>
-      <MainImg src={MainPageImg} size={size} />
+      <MainImg src={MainPageImg} size={imgSize} />
+      <MainImgCover size={imgSize} />
       <StyledContainer>
         <RelativeWrapper>
           <MainPageImgContent>
-            <h2>{TITLE.APP}</h2>
-            <h1>건강한 식습관으로 더 나은 삶의<br /> 시작을 경험하세요.</h1>
-            <h3>당신만의 맞춤식 프로그램으로<br />건강한 식습관을 만나보세요.</h3>
-            <Button variant="contained">식습관 검사하기</Button>
+            {/* <h2>{TITLE.APP}</h2> */}
+            <MainFirstTypo>
+              건강한 식습관으로 더 나은 삶의<br />
+              시작을 경험하세요
+            </MainFirstTypo>
+            <MainSecondTypo>
+              당신만의 맞춤식 프로그램으로 건강한 식습관을 만나보세요
+            </MainSecondTypo>
+            <StyledButton
+              variant="contained"
+              size="large">식습관 검사하기</StyledButton>
           </MainPageImgContent>
         </RelativeWrapper>
-        <MainContent>
-          <h3>{TITLE.APP}</h3>
-          <h3>지속 가능한 식습관으로 더 나은 자신을 찾아보세요.</h3>
-          <h3>Nutri Mate는 당신의 목표를 이루기 위한 올바른 식습관을 지원합니다.</h3>
-        </MainContent>
       </StyledContainer>
+      <MainPageIntroduce />
+      <MainPageDietContent />
+      <FlexDiv>
+        <LastTitleContainer>
+          <LastTitle>지금 내가 먹고있는 식단이 궁금하다면? </LastTitle>
+          <LastButtonContainer>
+            <StyledButton variant="contained">내 식단 분석하기</StyledButton>
+          </LastButtonContainer>
+        </LastTitleContainer>
+      </FlexDiv>
     </>
   );
 };
 
 MainPage.defaultProps = {
-  size: 500,
+  imgSize: '100vh',
 };
 
 export default MainPage;

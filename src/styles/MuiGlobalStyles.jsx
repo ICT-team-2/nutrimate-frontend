@@ -7,7 +7,7 @@ const themeColor = {
 };
 
 const MuiGlobalStyles = () => {
-  
+
   return (<GlobalStyles styles={{
     body: {
       backgroundColor: themeColor['main-background'],
@@ -17,6 +17,7 @@ const MuiGlobalStyles = () => {
       fontWeight: themeColor['main-font-weight'],
       lineHeight: themeColor['main-line-height'],
       letterSpacing: themeColor['main-letter-spacing'],
+      margin: 0,
     },
     ':root': {
       '--main-background': themeColor['main-background'],

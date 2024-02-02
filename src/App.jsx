@@ -15,8 +15,10 @@ import MainRoutes from '@src/routes/MainRoutes.jsx';
 import CalendarRoutes from '@src/routes/CalendarRoutes.jsx';
 import SettingRoutes from '@src/routes/SettingRoutes.jsx';
 import ChallengeRoutes from '@src/routes/ChallengeRoutes.jsx';
+import ChatBotComponent from '@src/component/chat/chatbot/ChatBotComponent.jsx';
+import LoginRoutes from '@src/routes/LoginRoutes.jsx';
 
-function App () {
+function App() {
   const darkMode = useAtomValue(isDarkModeAtom);
   const muiTheme = useMuiTheme();
   const routes = useRoutes([
@@ -45,6 +47,10 @@ function App () {
       path: '/' + ROUTER_LINKS.CHALLENGE + '/*',
       element: <ChallengeRoutes />,
     },
+    {
+      path: '/' + ROUTER_LINKS.MEMBER + '/*',
+      element: <LoginRoutes />,
+    },
   ]);
   return (
     <MuiThemeProvider theme={muiTheme}>
@@ -54,7 +60,7 @@ function App () {
       }}>
         <MuiGlobalStyles />
         {routes}
-
+        <ChatBotComponent />
       </ThemeProvider>
     </MuiThemeProvider>
   )

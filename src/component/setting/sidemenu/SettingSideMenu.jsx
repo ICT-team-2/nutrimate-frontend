@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -8,23 +8,14 @@ import { styled as muiStyled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import { useAtom, useAtomValue } from 'jotai/react';
 
-import {
-  drawerStateAtom,
-  sideMenuIconRefAtom,
-} from '@src/component/common/Header/atom.js';
-import {
-  faCircleXmark,
-  faClipboardList,
-} from '@fortawesome/free-solid-svg-icons';
+import { drawerStateAtom, firstDrawerRefAtom, sideMenuIconRefAtom } from '@src/component/common/Header/atom.js';
+import { faCircleXmark, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
-import {
-  settingDrawerHeightAtom,
-  settingDrawerStateAtom,
-} from '@src/component/setting/atom.js';
+import { settingDrawerHeightAtom, settingDrawerStateAtom } from '@src/component/setting/atom.js';
 import styled from 'styled-components';
 import { SETTING_LIST } from '@src/component/setting/const.js';
-import { firstDrawerRefAtom } from '@src/utils/atom.js';
+
 
 const innerDrawerWidth = '220px';
 const fullOpenDrawerWidth = 380;
@@ -49,7 +40,7 @@ const closedMixin = (theme) => ({
   overflowX: 'hidden',
   border: 'none',
   backgroundColor: theme['main-background'],
-  
+
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
@@ -75,7 +66,7 @@ const Drawer = muiStyled(MuiDrawer, {
     ...closedMixin(theme),
     '& .MuiDrawer-paper': closedMixin(theme),
   }),
-  
+
 }));
 
 const StyledDrawer = muiStyled(Drawer)`
@@ -113,15 +104,15 @@ const itemMargin = [0, 3];
 
 //메뉴 아이콘들
 const menuIcon = [
-  <FontAwesomeIcon key='icon1' icon={faClipboardList}
+  <FontAwesomeIcon key="icon1" icon={faClipboardList}
                    style={{ paddingLeft: '4px' }} />,
-  <FontAwesomeIcon key='icon2' icon={faCircleXmark}
+  <FontAwesomeIcon key="icon2" icon={faCircleXmark}
                    style={{ paddingLeft: '1px' }} />,
 
 ];
 
 const SettingSideMenu = () => {
-  
+
   const [drawerOpen, setDrawerOpen] = useAtom(settingDrawerStateAtom);
   const navigate = useNavigate();
   const drawerRef = useRef();
@@ -131,7 +122,7 @@ const SettingSideMenu = () => {
   const [firstDrawerRef, setFirstDrawerRef] = useAtom(firstDrawerRefAtom);
   // const [sideDivState, setSideDivState] = useState(false);
   const [firstDrawerState, setFirstDrawerState] = useAtom(drawerStateAtom);
-  
+
   // drawer 밖을 클릭하면 drawer가 닫히도록
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -143,20 +134,19 @@ const SettingSideMenu = () => {
         setDrawerOpen(false);
       }
     };
-    console.log(drawerHeight);
     documentRef.current.addEventListener('mousedown', handleClickOutside);
     return () => {
       documentRef.current.removeEventListener('mousedown', handleClickOutside);
     };
   }, [iconButtonRef]);
-  
+
   useEffect(() => {
     console.log(firstDrawerRef);
-    
+
     drawerRef.current.addEventListener('mouseover', (event) => {
       setDrawerOpen(true);
     });
-    
+
     drawerRef.current.addEventListener('mouseleave', (event) => {
       setDrawerOpen(false);
     });
@@ -164,19 +154,17 @@ const SettingSideMenu = () => {
       firstDrawerRef.addEventListener('mouseover', (event) => {
         setDrawerOpen(true);
       });
-      
+
       firstDrawerRef.addEventListener('mouseleave', (event) => {
         setDrawerOpen(false);
       });
     }
   }, [firstDrawerRef]);
-  useEffect(() => {
-    console.log(firstDrawerRef);
-  }, [firstDrawerRef]);
-  
+
+
   return (
     <StyledDrawer
-      variant='permanent'
+      variant="permanent"
       open={drawerOpen}
       onClose={() => setDrawerOpen(false)}
       ref={drawerRef}

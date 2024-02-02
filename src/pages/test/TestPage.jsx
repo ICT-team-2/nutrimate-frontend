@@ -1,12 +1,18 @@
 import React from 'react';
-import SettingHeader from '@src/component/setting/sidemenu/SettingHeader.jsx';
+import styled from 'styled-components';
 import TestComp from '@src/pages/test/TestComp.jsx';
+
+
+const PageContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+`;
 
 const TestPage = () => {
   return (
-    <div>
-      <TestComp />
-    </div>
+    <TestComp />
   );
 };
 

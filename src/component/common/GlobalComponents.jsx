@@ -34,40 +34,49 @@ export const StyledSearchInput = muiStyled(TextField)({
  * @param props.size {string} - 검색창의 크기입니다.
  * @param props.value {string} - 검색창의 값입니다.
  * @param props.callback {function} - 검색창에서 엔터를 눌렀을 때 실행될 콜백함수입니다.
+ * @param props.searchValue {string} - 검색창의 값을 변경할 수 있는 state(변수)입니다.
+ * @param props.setSearchValue {function} - 검색창의 값을 변경할 수 있는 콜백함수입니다.
  * @returns {Element}
  * @constructor
  */
 export const CustomSearchInput = (props) => {
   // eslint-disable-next-line react/prop-types
-  const { label, id, size, value, callback } = props;
-  
+  const { label, id, size, callback, searchValue, setSearchValue } = props;
+
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       callback();
     }
   };
-  
+
+  const handleChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
   return <StyledSearchInput
     InputProps={{
       endAdornment: (
-        <InputAdornment position='end'>
+        <InputAdornment position="end">
           <SearchIcon />
         </InputAdornment>
       ),
     }}
-    label={label} id={id} size={size} value={value}
+    label={label} id={id} size={size} value={searchValue}
     onKeyPress={handleKeyPress}
+    onChange={handleChange}  // onChange 핸들러를 추가합니다.
   />;
 };
+
 CustomSearchInput.defaultProps = {
   label: 'Search',
   id: 'search',
   size: 'small',
-  value: '',
   callback: () => {
     console.log('Enter key pressed');
   },
 };
+
 
 const StyledAvatar = muiStyled(Avatar)`
   width: ${({ size }) => size || '40'}px;
@@ -87,17 +96,20 @@ const StyledAvatar = muiStyled(Avatar)`
  * src의 내용은 const uploadImg = useAtomValue(uploadedImageAtom);로 받아올 수 있습니다.
  * @param props.size {number} - 유저의 프로필 사진의 크기입니다.
  * @param props.variant {'circular'|'rounded'} - 유저의 프로필 사진의 모양입니다.
+ * @param props.sx {object} - 유저의 프로필 사진의 sx입니다.(mui의 sx)
+ * @param props.className {string} - 유저의 프로필 사진의 className입니다.(styled-components를 위해서)
  * @returns {Element} 유저의 프로필 사진을 보여주는 컴포넌트에 대한 JSX
  */
 export const UserAvatar = (props) => {
-  const { userNick, src, size, variant, sx } = props;
-  
+  const { userNick, src, size, variant, sx, className } = props;
+
   return <StyledAvatar
     alt={userNick}
     src={src || '/static/images/avatar/2.jpg'}
     size={size}
     variant={variant}
     sx={sx}
+    className={className}
   />;
 };
 
@@ -113,7 +125,7 @@ export const BoardSubtitleTypo = ({ text }) => {
 };
 
 export const FlexGrowDiv = styled.div`
-    flex-grow: 1;
+    flex-grow: ${({ grow }) => grow || 1};
 `;
 
 export const FlexDiv = styled.div`

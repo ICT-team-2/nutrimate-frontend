@@ -23,16 +23,22 @@ const AppBar = muiStyled(MuiAppBar, {
 
 //sidemenu css 설정
 const StyledAppBar = styled(AppBar)`
-    background-color: ${({ theme }) => theme['main-background']};
+    background-color: ${({ theme, logowhite }) =>
+            logowhite === 'true' ?
+                    'rgba(255, 255, 255, 0)' : theme['main-background']};
     color: black;
     min-height: 56px;
     box-shadow: none;
-    position: static;
+    position: ${({ logowhite }) =>
+            logowhite === 'true' ? 'absolute' : 'static'
+    };
     padding: 0;
     padding-right: 0 !important; //프로필 메뉴 클릭시 패딩 생기는거 날리는 용
 `;
 const StyledButton = styled(Button)`
-    color: ${({ theme }) => theme['gray-light-text']};
+    color: ${({ theme, logowhite }) =>
+            logowhite === 'true' ?
+                    'white' : theme['gray-light-text']};
     margin-right: 1rem;
 `;
 
@@ -43,30 +49,44 @@ const StyledButton = styled(Button)`
  */
 const Header = (props) => {
   // const theme = useTheme();
-  const { hasDrawer } = props;
-  
+  const { hasDrawer, logoWhite } = props;
+
   const open = useAtomValue(drawerStateAtom);
   const navigate = useNavigate();
   const gotoInfo = () => {
     navigate(LINKS.INFO);
   };
-  
+
   const gotoBoard = () => {
     navigate(LINKS.ALL_INFO_BOARD + '/1');
   };
-  
+
+  const gotoFeed = () => {
+    navigate(LINKS.FEEDBOARD_VIEW);
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
-      <StyledAppBar open={open}>
+      <StyledAppBar open={open} logowhite={logoWhite + ''}>
         <Toolbar sx={{ flexGrow: 0 }}>
           {/* 로고 */}
-          <Logo />
+          <Logo logoWhite={logoWhite} />
           {/* 햄버거 아이콘 */}
           {/* {hasDrawer && <SideMenuButton />} */}
           {/* 빈 공간 */}
           <Box sx={{ flexGrow: 1 }} />
-            <StyledButton onClick={gotoInfo}>Infomation</StyledButton>
-            <StyledButton onClick={gotoBoard}>Board</StyledButton>
+          <StyledButton
+            onClick={gotoInfo}
+            logowhite={logoWhite + ''}
+          >Infomation</StyledButton>
+          <StyledButton
+            onClick={gotoBoard}
+            logowhite={logoWhite + ''}
+          >Board</StyledButton>
+          <StyledButton
+            onClick={gotoFeed}
+            logowhite={logoWhite + ''}
+          >FEED</StyledButton>
           <ProfileImgMenu />
         </Toolbar>
       </StyledAppBar>

@@ -11,12 +11,9 @@ import Logo from '@src/component/common/Logo.jsx';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
-import Tooltip from '@mui/material/Tooltip';
-import SettingSideMenu
-  from '@src/component/setting/sidemenu/SettingSideMenu.jsx';
-import SettingMenuButton
-  from '@src/component/setting/sidemenu/SettingMenuButton.jsx';
+import SettingSideMenu from '@src/component/setting/sidemenu/SettingSideMenu.jsx';
 import SideMenu from '@src/component/common/Header/SideMenu.jsx';
+import { settingDrawerHeightAtom } from '@src/component/setting/atom.js';
 
 const AppBar = muiStyled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -46,17 +43,21 @@ const SettingHeader = (props) => {
   // const theme = useTheme();
   const { hasDrawer } = props;
   const settingDrawerOpen = useAtomValue(drawerStateAtom);
+  const drawerHeight = useAtomValue(settingDrawerHeightAtom);
   const navigate = useNavigate();
+
   const gotoInfo = () => {
     navigate(LINKS.INFO);
   };
-  
+
   const gotoBoard = () => {
     navigate(LINKS.ALL_INFO_BOARD + '/1');
   };
-  
+  const gotoFeed = () => {
+    navigate(LINKS.FEEDBOARD_VIEW);
+  };
+
   return (
-    
     <Box sx={{ display: 'flex' }}>
       <StyledAppBar open={settingDrawerOpen}>
         <Toolbar sx={{ flexGrow: 0 }}>
@@ -66,15 +67,16 @@ const SettingHeader = (props) => {
           {/* {hasDrawer && <SettingMenuButton />} */}
           {/* 빈 공간 */}
           <Box sx={{ flexGrow: 1 }} />
-            <StyledButton onClick={gotoInfo}>Infomation</StyledButton>
-            <StyledButton onClick={gotoBoard}>Board</StyledButton>
+          <StyledButton onClick={gotoInfo}>Infomation</StyledButton>
+          <StyledButton onClick={gotoBoard}>Board</StyledButton>
+          <StyledButton onClick={gotoFeed}>Feed</StyledButton>
           <ProfileImgMenu />
         </Toolbar>
       </StyledAppBar>
       {hasDrawer && <SettingSideMenu />}
-      <SideMenu drawerWidth='200px' />
+      <SideMenu drawerWidth="200px" drawerHeight={drawerHeight} />
     </Box>
-  
+
   );
 };
 
