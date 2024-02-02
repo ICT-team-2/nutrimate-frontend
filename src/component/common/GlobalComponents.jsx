@@ -43,7 +43,6 @@ export const CustomSearchInput = (props) => {
   // eslint-disable-next-line react/prop-types
   const { label, id, size, callback, searchValue, setSearchValue } = props;
 
-
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       callback();
@@ -63,7 +62,7 @@ export const CustomSearchInput = (props) => {
       ),
     }}
     label={label} id={id} size={size} value={searchValue}
-    onKeyPress={handleKeyPress}
+    onKeyPress={handleKeyPress} 
     onChange={handleChange}  // onChange 핸들러를 추가합니다.
   />;
 };

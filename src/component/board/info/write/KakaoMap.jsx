@@ -1,8 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CustomOverlayMap, Map, Polyline } from 'react-kakao-maps-sdk';
 import { Paper } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
 import { createGlobalStyle } from 'styled-components';
+import { CustomSearchInput } from '@src/component/common/GlobalComponents.jsx';
+
+import React, { useRef } from 'react';
+import html2canvas from 'html2canvas';
+import { saveAs } from 'file-saver';
 
 const GlobalStyle = createGlobalStyle`
     .number {
@@ -16,7 +21,9 @@ const StyledPaper = muiStyled(Paper)`
   font-size: 0.8rem;
   justify-content: space-between;
 `;
+
 const KakaoMap = () => {
+  
   const [isdrawing, setIsdrawing] = useState(false);
   const [clickLine, setClickLine] = useState();
   const [paths, setPaths] = useState([]);
@@ -101,17 +108,70 @@ const KakaoMap = () => {
     );
   };
 
+  const [center, setCenter] = useState({
+    lat: 37.498004414546934, // 초기값
+    lng: 127.02770621963765
+  });
+
+  useEffect(() => { // 사용자의 현재 위치로 중심좌표 설정
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setCenter({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+      });
+    } else {
+      alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.")
+    }
+  }, []);
+
+  // 검색 값을 관리할 상태 추가
+  const [searchValue, setSearchValue] = useState("");
+ 
+  // 검색 값이 변경될 때마다 장소를 검색하고, 검색 결과에 따라 지도 중심을 이동시키는 useEffect 추가
+  useEffect(() => {
+    if (searchValue) {
+      const places = new window.kakao.maps.services.Places();
+
+      // 객체 생성 확인 로그 추가
+      console.log(places);
+
+      places.keywordSearch(searchValue, function(result, status) {
+        if (status === window.kakao.maps.services.Status.OK) {
+          setCenter({
+            lat: result[0].y,
+            lng: result[0].x
+          });
+        } else {
+          //alert("장소 검색에 실패했습니다.");
+        }
+      });
+    }
+  }, [searchValue]);
+
+  useEffect(()=>{ console.log(`유저가 검색한 단어:${searchValue}`) },[searchValue])
+
+  const mapRef = useRef(null);
+  const saveMapAsImage = () => {
+    const node = mapRef.current;
+  
+    html2canvas(node).then(canvas => {
+      canvas.toBlob(function(blob) {
+        saveAs(blob, 'map.png');
+      });
+    });
+  };
+
   return (
     <>
-      <GlobalStyle />
+      <GlobalStyle /> 
+      <CustomSearchInput searchValue={searchValue} setSearchValue={setSearchValue}/>
+      <div ref={mapRef} id="map">
       <Map // 지도를 표시할 Container
         id={`;
 map`}
-        center={{
-          // 지도의 중심좌표
-          lat: 37.498004414546934,
-          lng: 127.02770621963765,
-        }}
+        center={center} // 지도의 중심좌표
         style={{
           // 지도의 크기
           width: '100%',
@@ -179,6 +239,8 @@ distance -${paths[index + 1].lat},${paths[index + 1].lng}`}
           </CustomOverlayMap>
         )}
       </Map>
+      </div>
+      <button onClick={saveMapAsImage}>지도 저장하기</button>
     </>
   );
 };

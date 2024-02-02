@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { EDITOR_HEIGHT, TITLE } from '@src/utils/const.js';
@@ -52,6 +52,9 @@ const InputHashtagContainer = styled.div`
 //정보 공유 게시판 글 작성 내용
 const InfoBoardWritePage = (props) => {
   const [title, setTitle] = useState(useLocation()?.state.title);
+  const [searchValue, setSearchValue] = useState('');
+
+  useEffect(()=>{ console.log(`유저가 검색한 단어:${searchValue}`) },[searchValue])
   
   return (
     <InfoBoardContainer>
@@ -68,7 +71,6 @@ const InfoBoardWritePage = (props) => {
       {title !== BOARD.INFO.FOOD.TITLE ?
         <LoadableMap /> : <FoodImgAnaylsis />
       }
-      
       {/* 해시태그 입력 */}
       <InputHashtagContainer>
         <InputHashtag />
