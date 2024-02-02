@@ -4,6 +4,8 @@ import { Button, Checkbox, Container, FormControlLabel, TextField } from '@mui/m
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
+import axios from 'axios';
+
 
 const LoginContainer = styled(Container)`
     display: flex;
@@ -51,6 +53,41 @@ const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
 
+  const handleLogin = (provider) => {
+    if (id === "" || password === "") {
+      window.alert("아이디와 비밀번호를 입력해주세요.");
+      return;
+    }
+    if (!/^[a-zA-Z0-9]+$/.test(id)) {
+      window.alert("아이디가 잘못입력되었습니다.");
+      return;
+    }
+    if(!/^[a-zA-Z0-9]+$/.test(password)) {
+      window.alert("비밀번호가 잘못 입력되었습니다.");
+      return;
+    }
+
+    console.log(`Logging in with id: ${id}, password: ${password}`);
+    console.log('ddd');
+
+    axios.post('http://localhost:9999/login', {
+      userUid: id,
+      userPwd:password
+    })
+    .then(response => {
+      console.log(response.data); // 서버로부터의 응답을 확인
+      if (response.data === 'success') {
+        alert('로그인 성공');
+      } else {
+        alert('로그인 실패');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });    
+  }
+    
+
   //todo 로깅용 - 나중에 지울것
   useEffect(() => {
     console.log(`id: ${id}, password: ${password}, checked: ${checked}`);
@@ -79,7 +116,9 @@ const LoginPage = () => {
                 onChange={() => setChecked(!checked)} />} label="아이디 저장" />
             <FlexGrowDiv />
           </AdditionalContainer>
-          <LoginButton variant="contained">Login</LoginButton>
+          <LoginButton 
+          onClick={handleLogin}
+          variant="contained">Login</LoginButton>
         </LoginBody>
         <Divider>간편 로그인</Divider>
         <OAuthContainer>
