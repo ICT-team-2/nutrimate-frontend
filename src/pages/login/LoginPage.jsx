@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Button, Container, TextField } from '@mui/material';
+import { Button, Checkbox, Container, FormControlLabel, TextField } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
@@ -33,6 +33,7 @@ const LoginButton = styled(Button)`
 `;
 const AdditionalContainer = styled.div`
     display: flex;
+    margin-bottom: 15px;
 `;
 const OAuthContainer = styled.div`
     display: flex;
@@ -45,6 +46,16 @@ const OAuthButton = styled.div`
 `;
 
 const LoginPage = () => {
+
+  const [checked, setChecked] = useState(false);
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+
+  //todo 로깅용 - 나중에 지울것
+  useEffect(() => {
+    console.log(`id: ${id}, password: ${password}, checked: ${checked}`);
+  }, [checked, id, password]);
+
   return (
     <LoginContainer>
       <LoginPaper>
@@ -53,12 +64,20 @@ const LoginPage = () => {
         </LoginHeader>
         <Divider />
         <LoginBody>
-          <StyledTextField label="아이디" />
-          <StyledTextField label="비밀번호" type="password" />
+          <StyledTextField
+            label="아이디" value={id}
+            onChange={(e) => setId(e.target.value)}
+          />
+          <StyledTextField
+            label="비밀번호" type="password" value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <AdditionalContainer>
-
+            <FormControlLabel control={
+              <Checkbox
+                value={checked}
+                onChange={() => setChecked(!checked)} />} label="아이디 저장" />
             <FlexGrowDiv />
-
           </AdditionalContainer>
           <LoginButton variant="contained">Login</LoginButton>
         </LoginBody>
