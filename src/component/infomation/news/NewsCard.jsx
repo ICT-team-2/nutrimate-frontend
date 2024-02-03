@@ -7,13 +7,13 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const CustomCard = styled(Card)`
-    width: 275px;
-    margin: 10px;
-    height: 400px;
+    width: 250px;
+    //margin: 20px;
+    height: 340px;
 `;
 
 const CustomCardMedia = styled(CardMedia)`
-    height: 220px;
+    height: 180px;
 `;
 
 /// ...처리
@@ -23,7 +23,7 @@ const ContentTypography = styled(Typography)`
     text-overflow: ellipsis;
     word-break: break-all;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
 `;
 
 const TitleTypography = styled(Typography)`
@@ -38,8 +38,8 @@ const TitleTypography = styled(Typography)`
 export default function NewsCard(props) {
   const { title, content, img, url, date } = props;
   return (
-    <Link to={url} style={{ textDecoration: 'none' }}>
-      <CustomCard>
+    <CustomCard>
+      <Link to={url} style={{ textDecoration: 'none' }}>
         <CustomCardMedia
           image={img}
           title={title}
@@ -62,8 +62,8 @@ export default function NewsCard(props) {
             발행일: {date}
           </Typography>
         </CardContent>
-      </CustomCard>
-    </Link>
+      </Link>
+    </CustomCard>
   );
 }
 
@@ -72,7 +72,7 @@ NewsCard.defaultProps = {
   img: '/src/asset/image/loading.png',
   content: 'Lizards are a widespread group of squamate reptiles, with over 6,000\n' +
     'species, ranging across all continents except Antarctica',
-  url: 'http://naver.com',
+  url: 'https://naver.com',
   date: '2022.01.12',
 };
 

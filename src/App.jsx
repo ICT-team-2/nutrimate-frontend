@@ -17,6 +17,7 @@ import SettingRoutes from '@src/routes/SettingRoutes.jsx';
 import ChallengeRoutes from '@src/routes/ChallengeRoutes.jsx';
 import ChatBotComponent from '@src/component/chat/chatbot/ChatBotComponent.jsx';
 import LoginRoutes from '@src/routes/LoginRoutes.jsx';
+import SurveyRoutes from '@src/routes/SurveyRoutes.jsx';
 
 function App() {
   const darkMode = useAtomValue(isDarkModeAtom);
@@ -50,6 +51,10 @@ function App() {
     {
       path: '/' + ROUTER_LINKS.MEMBER + '/*',
       element: <LoginRoutes />,
+    },
+    {
+      path: '/' + ROUTER_LINKS.SURVEY + '/*',
+      element: <SurveyRoutes />,
     },
   ]);
   return (

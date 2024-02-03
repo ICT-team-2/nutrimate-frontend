@@ -1,0 +1,13 @@
+export const SURVEY_PROGRESS = {
+  START: 0,
+  NAME: 1,
+  BIRTHDAY: 2,
+  GENDER: 3,
+  HEIGHT: 4,
+  WEIGHT: 5,
+  HEALTH_REASON: 6,
+  DIET: 7,
+  EATING_HABIT: 8,
+  EXERCISE_COUNT: 9,
+  ALLERGY: 10,
+};

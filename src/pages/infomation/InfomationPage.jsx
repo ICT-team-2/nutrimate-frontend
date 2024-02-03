@@ -9,6 +9,8 @@ import { infoTabStateAtom, recommandMenuStateAtom } from '@src/component/infomat
 import NewsContents from '@src/component/infomation/news/NewsContents.jsx';
 import { INFO_TABS, RECOMMAND_MENU } from '@src/component/infomation/const.js';
 import NutrientContents from '@src/component/infomation/nutrient/NutrientContents.jsx';
+import SportContents from '@src/component/infomation/sport/SportContents.jsx';
+import RecipeContents from '@src/component/infomation/recipe/RecipeContents.jsx';
 
 const InfomationContainer = styled(Container)`
     margin-top: 20px;
@@ -54,13 +56,13 @@ const Contents = () => {
       return <NutrientContents />;
     }
     if (selectedMenu === RECOMMAND_MENU.SPORT) {
-      return <div>운동 추천</div>;
+      return <SportContents />;
     }
     if (selectedMenu === RECOMMAND_MENU.PLACE) {
       return <div>장소 추천</div>;
     }
     if (selectedMenu === RECOMMAND_MENU.FOOD) {
-      return <div>음식 추천</div>;
+      return <RecipeContents />;
     }
   }
   if (selectedTab === INFO_TABS.ALLERGY) {

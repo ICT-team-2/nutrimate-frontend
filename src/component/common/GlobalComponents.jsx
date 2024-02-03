@@ -8,6 +8,7 @@ import React from 'react';
 
 export const StyledContainer = muiStyled(Container)`
     margin: 0 6vw;
+    width: auto;
 `;
 
 export const RelativeWrapper = styled.div`

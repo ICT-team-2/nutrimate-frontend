@@ -31,6 +31,7 @@ export const PATH_PARAMS = {
   LOGIN: 'login',
   REGISTER: 'register',
   MEMBER: 'member',
+  SURVEY: 'survey',
 };
 
 //
@@ -58,6 +59,7 @@ export const ROUTER_LINKS = {
   LOGIN: PATH_PARAMS.LOGIN,
   REGISTER: PATH_PARAMS.REGISTER,
   MEMBER: PATH_PARAMS.MEMBER,
+  SURVEY: PATH_PARAMS.SURVEY,
 
 };
 
@@ -85,6 +87,7 @@ export const LINKS = {
   DELETE_USER: '/' + ROUTER_LINKS.SETTING + '/' + ROUTER_LINKS.DELETE_USER,
   LOGIN: '/' + ROUTER_LINKS.MEMBER + '/' + ROUTER_LINKS.LOGIN,
   REGISTER: '/' + ROUTER_LINKS.MEMBER + '/' + ROUTER_LINKS.REGISTER,
+  SURVEY: '/' + ROUTER_LINKS.SURVEY,
 };
 
 export const FOOTER_HEIGHT = '13px';

@@ -5,6 +5,8 @@ import { Button } from '@mui/material';
 import { FlexDiv, RelativeWrapper, StyledContainer } from '@src/component/common/GlobalComponents.jsx';
 import MainPageIntroduce from '@src/component/mainpage/MainPageIntroduce.jsx';
 import MainPageDietContent from '@src/component/mainpage/MainPageDietContent.jsx';
+import { useNavigate } from 'react-router-dom';
+import { LINKS } from '@src/utils/const.js';
 
 const MainImg = styled.img`
     width: 100%;
@@ -17,7 +19,6 @@ const MainPageImgContent = styled.div`
     transform: translateY(-400px); // transform 속성을 사용하여 위치 이동
     color: white;
     z-index: 10;
-
 `;
 
 const MainFirstTypo = styled.div`
@@ -60,6 +61,13 @@ const LastTitle = styled.div`
 
 
 const MainPage = ({ imgSize }) => {
+
+  const navigate = useNavigate();
+
+  const gotoSurvey = () => {
+    navigate(LINKS.SURVEY);
+  };
+
   return (
     <>
       <MainImg src={MainPageImg} size={imgSize} />
@@ -77,7 +85,8 @@ const MainPage = ({ imgSize }) => {
             </MainSecondTypo>
             <StyledButton
               variant="contained"
-              size="large">식습관 검사하기</StyledButton>
+              size="large"
+              onClick={gotoSurvey}>식습관 검사하기</StyledButton>
           </MainPageImgContent>
         </RelativeWrapper>
       </StyledContainer>
@@ -87,7 +96,9 @@ const MainPage = ({ imgSize }) => {
         <LastTitleContainer>
           <LastTitle>지금 내가 먹고있는 식단이 궁금하다면? </LastTitle>
           <LastButtonContainer>
-            <StyledButton variant="contained">내 식단 분석하기</StyledButton>
+            <StyledButton
+              variant="contained"
+              onClick={gotoSurvey}>내 식단 분석하기</StyledButton>
           </LastButtonContainer>
         </LastTitleContainer>
       </FlexDiv>
