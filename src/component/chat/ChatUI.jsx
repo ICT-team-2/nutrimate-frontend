@@ -39,10 +39,9 @@ const ChatUI = (props) => {
                          nick={'가길동'} />
         <MyTalkComponent content='아무거나 쓰기 귀찮은데 뭐쓰지 뚜뚜뚜뚜따따따따 ㅁㄴㅇㅁㄴㅐㅇㄴㅁㅇㅁㄴㅇ'
                          nick={'나길동'} />
-        {data.map((d, i) => <OtherTalkComponent
+        {data.length !== 0 && data.map((d, i) => <OtherTalkComponent
           key={i} content={d.content}
           nick={d.nick} />)}
-
       </ChatBody>
       <ChatInput />
     </ChatContainer>
@@ -50,6 +49,7 @@ const ChatUI = (props) => {
 };
 ChatUI.defaultProps = {
   title: '챌린지 주제',
+  data: [],
 };
 
 export default ChatUI;
