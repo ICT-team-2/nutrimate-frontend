@@ -13,15 +13,15 @@ export const SURVEY_PROGRESS = {
 };
 
 export const INIT_SURVEY_DATA = {
-  userName: null,
-  userBirth: null,
-  userGender: null,
-  userHeight: null,
-  userWeight: null,
-  healthReason: null,
-  userDiet: null,
-  eatingHabit: null,
-  userSportHard: null,
+  userName: '',
+  userBirth: '',
+  userGender: '',
+  userHeight: '',
+  userWeight: '',
+  healthReason: '',
+  userDiet: '',
+  eatingHabit: '',
+  userSportHard: '',
   userAllergy: [],
 };
 
