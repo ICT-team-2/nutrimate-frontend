@@ -14,7 +14,7 @@ export const SURVEY_PROGRESS = {
 
 export const INIT_SURVEY_DATA = {
   userName: '',
-  userBirth: '',
+  userBirth: new Date(),
   userGender: '',
   userHeight: '',
   userWeight: '',
@@ -23,5 +23,38 @@ export const INIT_SURVEY_DATA = {
   eatingHabit: '',
   userSportHard: '',
   userAllergy: [],
+};
+
+export const SURVEY_SELECT = {
+  GENDER: {
+    MALE: 'M',
+    FEMALE: 'F',
+  },
+  HEALTH_REASON: {
+    DISEASE: {
+      KEY: 'A',
+      VALUE: '질병으로 인한 관리 목적',
+    },
+    DIET: {
+      KEY: 'B',
+      VALUE: '다이어트(미용 목적)',
+    },
+    BULK_UP: {
+      KEY: 'C',
+      VALUE: '벌크업(근육량 증가)',
+    },
+    IMMUNITY: {
+      KEY: 'D',
+      VALUE: '면역력을 높이기 위해',
+    },
+    EATING_PATTERN: {
+      KEY: 'E',
+      VALUE: '불규칙한 식사 패턴을 바꾸기 위해',
+    },
+    ETC: {
+      KEY: 'F',
+      VALUE: '또 다른 이유가 있어요!',
+    },
+  },
 };
 

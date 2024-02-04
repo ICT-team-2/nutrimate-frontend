@@ -4,6 +4,11 @@ import { useAtom } from 'jotai/react';
 import { surveyProgressAtom } from '@src/component/survey/atom.js';
 import { SURVEY_PROGRESS } from '@src/component/survey/const.js';
 import SurveyName from '@src/component/survey/SurveyName.jsx';
+import SurveyBirth from '@src/component/survey/SurveyBirth.jsx';
+import SurveyGender from '@src/component/survey/SurveyGender.jsx';
+import SurveyHeight from '@src/component/survey/SurveyHeight.jsx';
+import SurveyWeight from '@src/component/survey/SurveyWeight.jsx';
+import SurveyHealthReason from '@src/component/survey/SurveyHealthReason.jsx';
 
 export const SurveyContainer = styled.div`
     margin: auto;
@@ -35,6 +40,16 @@ const SurveyProgress = () => {
   switch (progress) {
     case SURVEY_PROGRESS.NAME:
       return <SurveyName />;
+    case SURVEY_PROGRESS.BIRTHDAY:
+      return <SurveyBirth />;
+    case SURVEY_PROGRESS.GENDER:
+      return <SurveyGender />;
+    case SURVEY_PROGRESS.HEIGHT:
+      return <SurveyHeight />;
+    case SURVEY_PROGRESS.WEIGHT:
+      return <SurveyWeight />;
+    case SURVEY_PROGRESS.HEALTH_REASON:
+      return <SurveyHealthReason />;
     default:
       return <div>Unknown progress {progress}</div>;
   }
