@@ -11,3 +11,17 @@ export const SURVEY_PROGRESS = {
   EXERCISE_COUNT: 9,
   ALLERGY: 10,
 };
+
+export const INIT_SURVEY_DATA = {
+  userName: null,
+  userBirth: null,
+  userGender: null,
+  userHeight: null,
+  userWeight: null,
+  healthReason: null,
+  userDiet: null,
+  eatingHabit: null,
+  userSportHard: null,
+  userAllergy: [],
+};
+
