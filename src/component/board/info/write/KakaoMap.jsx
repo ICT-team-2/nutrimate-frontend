@@ -7,7 +7,7 @@ import { CustomSearchInput } from '@src/component/common/GlobalComponents.jsx';
 
 import React, { useRef } from 'react';
 import html2canvas from 'html2canvas';
-import { saveAs } from 'file-saver';
+import axios from 'axios';
 
 const GlobalStyle = createGlobalStyle`
     .number {
@@ -23,7 +23,9 @@ const StyledPaper = muiStyled(Paper)`
 `;
 
 const KakaoMap = () => {
-  
+
+  const [walkTime, setWalkTime] = useState(0);
+  const [bikeTime, setBikeTime] = useState(0);
   const [isdrawing, setIsdrawing] = useState(false);
   const [clickLine, setClickLine] = useState();
   const [paths, setPaths] = useState([]);
@@ -74,8 +76,8 @@ const KakaoMap = () => {
   };
 
   const DistanceInfo = ({ distance }) => {
-    const walkkTime = (distance / 67) | 0;
-    const bycicleTime = (distance / 227) | 0;
+    const walkTime = (distance / 67) | 0;
+    const bikeTime = (distance / 227) | 0;
 
     return (
 
@@ -87,22 +89,21 @@ const KakaoMap = () => {
         </li>
         <li>
           <span className="label">도보</span>{' '}
-          {walkkTime > 60 && (
+          {walkTime > 60 && (
             <>
-              <span className="number">{Math.floor(walkkTime / 60)}</span> 시간{' '}
+              <span className="number">{Math.floor(walkTime / 60)}</span> 시간{' '}
             </>
           )}
-          <span className="number">{walkkTime % 60}</span> 분
+          <span className="number">{walkTime % 60}</span> 분
         </li>
         <li>
           <span className="label">자전거</span>{' '}
-          {bycicleTime > 60 && (
+          {bikeTime > 60 && (
             <>
-              <span className="number">{Math.floor(bycicleTime / 60)}</span>{' '}
-              시간{' '}
+              <span className="number">{Math.floor(bikeTime / 60)}</span> 시간{' '}
             </>
           )}
-          <span className="number">{bycicleTime % 60}</span> 분
+          <span className="number">{bikeTime % 60}</span> 분
         </li>
       </StyledPaper>
     );
@@ -112,6 +113,43 @@ const KakaoMap = () => {
     lat: 37.498004414546934, // 초기값
     lng: 127.02770621963765
   });
+  
+  // 검색 값을 관리할 상태 추가
+  const [searchValue, setSearchValue] = useState("");
+ 
+  const [walkCalories, setWalkCalories] = useState(0);
+  const [runCalories, setRunCalories] = useState(0);
+  const [bikeCalories, setBikeCalories] = useState(0);
+
+  // 몸무게를 평균 65kg으로 가정
+  const weight = 65;
+
+  // 지도 이미지 저장
+  const mapRef = useRef(null);
+
+  // 지도 이미지 저장 및 서버로 전송
+  const saveAndSendMapImage = async () => {
+    const node = mapRef.current;
+
+    // 지도를 이미지로 변환
+    const canvas = await html2canvas(node);
+    const dataUrl = canvas.toDataURL('image/png');
+    const blob = await (await fetch(dataUrl)).blob();
+
+    // FormData를 생성하고 이미지를 추가
+    const formData = new FormData();
+    formData.append('mapImage', blob, 'map.png');
+
+    // 서버로 이미지 전송
+    const response = await axios.post('/boards/sport', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      withCredentials: true,
+    });
+
+    console.log(response);
+  };
 
   useEffect(() => { // 사용자의 현재 위치로 중심좌표 설정
     if (navigator.geolocation) {
@@ -126,9 +164,6 @@ const KakaoMap = () => {
     }
   }, []);
 
-  // 검색 값을 관리할 상태 추가
-  const [searchValue, setSearchValue] = useState("");
- 
   // 검색 값이 변경될 때마다 장소를 검색하고, 검색 결과에 따라 지도 중심을 이동시키는 useEffect 추가
   useEffect(() => {
     if (searchValue) {
@@ -152,16 +187,27 @@ const KakaoMap = () => {
 
   useEffect(()=>{ console.log(`유저가 검색한 단어:${searchValue}`) },[searchValue])
 
-  const mapRef = useRef(null);
-  const saveMapAsImage = () => {
-    const node = mapRef.current;
+  // 걷기,달리기,자전거 소모 칼로리
+  useEffect(() => {
+    const totalDistance = distances[distances.length - 1] || 0;
+    const walkTime = (totalDistance / 67) | 0; // 분 단위
+    const bikeTime = (totalDistance / 227) | 0; // 분 단위
   
-    html2canvas(node).then(canvas => {
-      canvas.toBlob(function(blob) {
-        saveAs(blob, 'map.png');
-      });
-    });
-  };
+    const walkCalories = calculateCalories(3.9, weight, walkTime);
+    const runCalories = calculateCalories(9.8, weight, walkTime);
+    const bikeCalories = calculateCalories(6.8, weight, bikeTime);
+  
+    setWalkTime(walkTime);
+    setBikeTime(bikeTime);
+    setWalkCalories(walkCalories);
+    setRunCalories(runCalories);
+    setBikeCalories(bikeCalories);
+  }, [distances]);  
+  
+  // 칼로리 계산 함수
+  function calculateCalories(mets, weight, time) {
+    return mets * weight * (time / 60);
+  }
 
   return (
     <>
@@ -240,7 +286,12 @@ distance -${paths[index + 1].lat},${paths[index + 1].lng}`}
         )}
       </Map>
       </div>
-      <button onClick={saveMapAsImage}>지도 저장하기</button>
+      <button onClick={saveAndSendMapImage}>지도 저장하기</button>
+      <div>
+        걷기 칼로리: {walkCalories.toFixed(2)} kcal
+        달리기 칼로리: {runCalories.toFixed(2)} kcal
+        자전거 칼로리: {bikeCalories.toFixed(2)} kcal
+      </div>
     </>
   );
 };

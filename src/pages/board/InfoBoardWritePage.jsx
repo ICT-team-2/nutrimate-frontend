@@ -17,6 +17,7 @@ import loadable from '@loadable/component';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
 import WriteCategoryButtons
   from '@src/component/board/info/write/WriteCategoryButtons.jsx';
+import TextField from '@mui/material/TextField';
 
 const LoadableMap = loadable(
   () => import('@src/component/board/info/write/KakaoMap.jsx'),
@@ -53,6 +54,7 @@ const InputHashtagContainer = styled.div`
 const InfoBoardWritePage = (props) => {
   const [title, setTitle] = useState(useLocation()?.state.title);
   const [searchValue, setSearchValue] = useState('');
+  const [tit, setTit] = useState('')
 
   useEffect(()=>{ console.log(`유저가 검색한 단어:${searchValue}`) },[searchValue])
   
@@ -65,8 +67,10 @@ const InfoBoardWritePage = (props) => {
         <WriteCategoryButtons title={title} setTitle={setTitle} />
         {/* <WriteCategoryMenu setTitle={setTitle} title={title} /> */}
         <FlexGrowDiv />
-        <Button variant='contained'>등록</Button>
+        <Button variant='contained'>등록</Button>    
       </TitleContainer>
+      <TextField label="제목" size="small" value={tit} onChange={(e) => setTit(e.target.value)} />
+      
       {/* 식단 or 운동코스 등록(지도) */}
       {title !== BOARD.INFO.FOOD.TITLE ?
         <LoadableMap /> : <FoodImgAnaylsis />
