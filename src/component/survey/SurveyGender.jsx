@@ -52,11 +52,11 @@ const SurveyGender = () => {
         <SurveyCheckList
           onClick={onClickMan}
           checked={surveyData.userGender === SURVEY_SELECT.GENDER.MALE.VALUES}
-        >1. {SURVEY_SELECT.GENDER.MALE.LABEL}</SurveyCheckList>
+        >A. {SURVEY_SELECT.GENDER.MALE.LABEL}</SurveyCheckList>
         <SurveyCheckList
           onClick={onClickWoman}
           checked={surveyData.userGender === SURVEY_SELECT.GENDER.FEMALE.VALUES}
-        >2. {SURVEY_SELECT.GENDER.FEMALE.LABEL}</SurveyCheckList>
+        >B. {SURVEY_SELECT.GENDER.FEMALE.LABEL}</SurveyCheckList>
       </List>
     </SurveyLayout>
   );

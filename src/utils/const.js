@@ -141,7 +141,7 @@ export const USER_INFOS = {
     TITLE: '식단',
     LABEL: '식단',
     KEYS: ['NORMAL', 'EXERCISE', 'KITO', 'VEGAN', 'CUSTOM'],
-    VALUES: ['일반 식단', '운동 식단', '케토 식단', '비건 식단', '사용자 정의'],
+    VALUES: ['일반 식단', '운동 식단', '키토 식단', '비건 식단', '사용자 정의'],
     NORMAL: {
       KEYS: 'NORMAL',
       VALUES: '일반 식단',

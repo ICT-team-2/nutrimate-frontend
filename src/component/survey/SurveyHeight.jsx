@@ -28,10 +28,20 @@ const SurveyHeight = () => {
       userHeight: e.target.value,
     });
   };
+
+  const onClickNext = () => {
+    if (surveyData.userHeight === '' || surveyData.userHeight === 0) {
+      alert('키를 입력해주세요.');
+      return false;
+    }
+    return true;
+  };
+
   return (
     <SurveyLayout
       title="키(cm)를 알려주세요."
       subtitle="ex) 175"
+      clickNext={onClickNext}
     >
       <TextFieldContainer>
         <StyledTextField

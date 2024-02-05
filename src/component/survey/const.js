@@ -20,9 +20,12 @@ export const INIT_SURVEY_DATA = {
   userGender: '',
   userHeight: '',
   userWeight: '',
-  healthReason: '',
+  userHealthReason: [],
   userDiet: '',
-  eatingHabit: '',
+  carbo: USER_INFOS.DIET.NORMAL.CARBO,
+  protein: USER_INFOS.DIET.NORMAL.PROTEIN,
+  fat: USER_INFOS.DIET.NORMAL.FAT,
+  eatingHabit: [],
   userSportHard: '',
   userAllergy: [],
 };
@@ -33,32 +36,61 @@ export const SURVEY_SELECT = {
   },
   HEALTH_REASON: {
     DISEASE: {
-      KEYS: 'A',
+      KEYS: 'DISEASE',
       VALUES: '질병으로 인한 관리 목적',
     },
     DIET: {
-      KEYS: 'B',
+      KEYS: 'DIET',
       VALUES: '다이어트(미용 목적)',
     },
     BULK_UP: {
-      KEYS: 'C',
+      KEYS: 'BULK_UP',
       VALUES: '벌크업(근육량 증가)',
     },
     IMMUNITY: {
-      KEYS: 'D',
+      KEYS: 'IMMUNITY',
       VALUES: '면역력을 높이기 위해',
     },
     EATING_PATTERN: {
-      KEYS: 'E',
+      KEYS: 'EATING_PATTERN',
       VALUES: '불규칙한 식사 패턴을 바꾸기 위해',
     },
     ETC: {
-      KEYS: 'F',
+      KEYS: 'ETC',
       VALUES: '또 다른 이유가 있어요!',
     },
   },
   DIET: {
     ...USER_INFOS.DIET,
+  },
+  EATING_HABIT: {
+    INSTANT: {
+      KEYS: 'INSTANT',
+      VALUES: '인스턴트 식품을 자주 먹는다',
+    },
+    SKIP_MEAL: {
+      KEYS: 'SKIP_MEAL',
+      VALUES: '식사를 자주 거른다',
+    },
+    SALTY_SWEET: {
+      KEYS: 'SALTY_SWEET',
+      VALUES: '짜고 단 음식을 많이 먹는다',
+    },
+    CAFEINE: {
+      KEYS: 'CAFEINE',
+      VALUES: '카페인이 든 음료를 하루 3잔 이상 마신다',
+    },
+    DRUNK: {
+      KEYS: 'DRUNK',
+      VALUES: '주류를 자주 마신다',
+    },
+    PICKY: {
+      KEYS: 'PICKY',
+      VALUES: '편식을 한다',
+    },
+  },
+  EXERCISE_COUNT: {
+    ...USER_INFOS.SPORT,
   },
 };
 

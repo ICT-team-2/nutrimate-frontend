@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SubTitleTypography,
   TitleTypography,
@@ -24,7 +24,12 @@ const PrevButton = styled(Button)`
 const SurveyName = () => {
 
   const [surveyData, setSurveyData] = useAtom(surveyDataAtom);
-  const [name, setName] = useState(surveyData.userName);
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    setName(surveyData.userName);
+  }, [surveyData.userName]);
+  
 
   const onClickNext = () => {
     if (name === null || name.trim().length === 0) {

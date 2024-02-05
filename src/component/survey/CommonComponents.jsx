@@ -51,7 +51,12 @@ export const SurveyList = styled(ListItemButton)`
         margin-bottom: 0;
     }
 `;
-
+/**
+ * @param checked {boolean}  - 체크 여부
+ * @param onClick {function}  - 클릭 이벤트
+ * @param children {React.ReactNode}  - 내용
+ * @return {JSX.Element}
+ */
 export const SurveyCheckList = (props) => {
   const { children, checked, onClick } = props;
   return (
