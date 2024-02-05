@@ -1,3 +1,5 @@
+import { USER_INFOS } from '@src/utils/const.js';
+
 export const SURVEY_PROGRESS = {
   START: 0,
   NAME: 1,
@@ -27,34 +29,36 @@ export const INIT_SURVEY_DATA = {
 
 export const SURVEY_SELECT = {
   GENDER: {
-    MALE: 'M',
-    FEMALE: 'F',
+    ...USER_INFOS.GENDER,
   },
   HEALTH_REASON: {
     DISEASE: {
-      KEY: 'A',
-      VALUE: '질병으로 인한 관리 목적',
+      KEYS: 'A',
+      VALUES: '질병으로 인한 관리 목적',
     },
     DIET: {
-      KEY: 'B',
-      VALUE: '다이어트(미용 목적)',
+      KEYS: 'B',
+      VALUES: '다이어트(미용 목적)',
     },
     BULK_UP: {
-      KEY: 'C',
-      VALUE: '벌크업(근육량 증가)',
+      KEYS: 'C',
+      VALUES: '벌크업(근육량 증가)',
     },
     IMMUNITY: {
-      KEY: 'D',
-      VALUE: '면역력을 높이기 위해',
+      KEYS: 'D',
+      VALUES: '면역력을 높이기 위해',
     },
     EATING_PATTERN: {
-      KEY: 'E',
-      VALUE: '불규칙한 식사 패턴을 바꾸기 위해',
+      KEYS: 'E',
+      VALUES: '불규칙한 식사 패턴을 바꾸기 위해',
     },
     ETC: {
-      KEY: 'F',
-      VALUE: '또 다른 이유가 있어요!',
+      KEYS: 'F',
+      VALUES: '또 다른 이유가 있어요!',
     },
+  },
+  DIET: {
+    ...USER_INFOS.DIET,
   },
 };
 

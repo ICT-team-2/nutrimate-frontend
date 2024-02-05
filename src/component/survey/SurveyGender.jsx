@@ -11,7 +11,7 @@ const SurveyGender = () => {
   const [surveyData, setSurveyData] = useAtom(surveyDataAtom);
 
   const onClickMan = () => {
-    if (surveyData.userGender === SURVEY_SELECT.GENDER.MALE) {
+    if (surveyData.userGender === SURVEY_SELECT.GENDER.MALE.VALUES) {
       setSurveyData({
         ...surveyData,
         userGender: null,
@@ -20,11 +20,11 @@ const SurveyGender = () => {
     }
     setSurveyData({
       ...surveyData,
-      userGender: SURVEY_SELECT.GENDER.MALE,
+      userGender: SURVEY_SELECT.GENDER.MALE.VALUES,
     });
   };
   const onClickWoman = () => {
-    if (surveyData.userGender === SURVEY_SELECT.GENDER.FEMALE) {
+    if (surveyData.userGender === SURVEY_SELECT.GENDER.FEMALE.VALUES) {
       setSurveyData({
         ...surveyData,
         userGender: null,
@@ -33,13 +33,13 @@ const SurveyGender = () => {
     }
     setSurveyData({
       ...surveyData,
-      userGender: SURVEY_SELECT.GENDER.FEMALE,
+      userGender: SURVEY_SELECT.GENDER.FEMALE.VALUES,
     });
   };
 
   const onClickNext = () => {
-    return !!(surveyData.userGender === SURVEY_SELECT.GENDER.MALE
-      || surveyData.userGender === SURVEY_SELECT.GENDER.FEMALE);
+    return !!(surveyData.userGender === SURVEY_SELECT.GENDER.MALE.VALUES
+      || surveyData.userGender === SURVEY_SELECT.GENDER.FEMALE.VALUES);
   };
 
 
@@ -51,12 +51,12 @@ const SurveyGender = () => {
       <List>
         <SurveyCheckList
           onClick={onClickMan}
-          checked={surveyData.userGender === SURVEY_SELECT.GENDER.MALE}
-        >1. 남성</SurveyCheckList>
+          checked={surveyData.userGender === SURVEY_SELECT.GENDER.MALE.VALUES}
+        >1. {SURVEY_SELECT.GENDER.MALE.LABEL}</SurveyCheckList>
         <SurveyCheckList
           onClick={onClickWoman}
-          checked={surveyData.userGender === SURVEY_SELECT.GENDER.FEMALE}
-        >2. 여성</SurveyCheckList>
+          checked={surveyData.userGender === SURVEY_SELECT.GENDER.FEMALE.VALUES}
+        >2. {SURVEY_SELECT.GENDER.FEMALE.LABEL}</SurveyCheckList>
       </List>
     </SurveyLayout>
   );

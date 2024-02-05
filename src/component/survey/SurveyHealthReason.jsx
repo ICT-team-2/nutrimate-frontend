@@ -37,14 +37,15 @@ const SurveyHealthReason = () => {
   return (
     <SurveyLayout
       title="건강관리를 시작하게 된 계기는 무엇인가요?"
+      clickNext={onClickNext}
     >
       {Object.values(SURVEY_SELECT.HEALTH_REASON).map(
         (reason) => (
           <SurveyCheckList
             onClick={() => onClickHealthReason(reason)}
-            checked={checkedHealthReason[reason.KEY]}
-            key={reason.KEY}>
-            {`${reason.KEY}. ${reason.VALUE}`}
+            checked={checkedHealthReason[reason.LABEL]}
+            key={reason.LABEL}>
+            {`${reason.LABEL}. ${reason.VALUES}`}
           </SurveyCheckList>
         ))}
     </SurveyLayout>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { styled as muiStyled } from '@mui/material/styles';
 import { InputLabel, TextField } from '@mui/material';
-import { USERINFOS } from '@src/component/setting/const.js';
+import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
 import { UserInfoContainerDiv } from '@src/component/setting/userinfo/UserViewInfo.jsx';
 
 const StyledTextField = muiStyled(TextField)`
@@ -26,14 +26,14 @@ const HeightWeightInfo = ({ disabled }) => {
   return (
     <UserInfoContainerDiv>
       <StyledLabel
-        htmlFor={USERINFOS.HEIGHT.ID}
+        htmlFor={SETTING_USER_INFOS.HEIGHT.ID}
         focus={isHeightFocused}
       >
-        {USERINFOS.HEIGHT.TITLE}
+        {SETTING_USER_INFOS.HEIGHT.TITLE}
       </StyledLabel>
       <StyledTextField
-        label={USERINFOS.HEIGHT.LABEL}
-        id={USERINFOS.HEIGHT.ID}
+        label={SETTING_USER_INFOS.HEIGHT.LABEL}
+        id={SETTING_USER_INFOS.HEIGHT.ID}
         onFocus={() => setIsHeightFocused('true')}
         onBlur={() => setIsHeightFocused(undefined)}
         disabled={disabled}
@@ -41,13 +41,13 @@ const HeightWeightInfo = ({ disabled }) => {
       </StyledTextField>
 
       <StyledLabel
-        htmlFor={USERINFOS.WEIGHT.ID}
+        htmlFor={SETTING_USER_INFOS.WEIGHT.ID}
         focus={isWeightFocused}
       >
-        {USERINFOS.WEIGHT.TITLE}
+        {SETTING_USER_INFOS.WEIGHT.TITLE}
       </StyledLabel>
       <StyledTextField
-        label={USERINFOS.WEIGHT.LABEL} id={USERINFOS.WEIGHT.ID}
+        label={SETTING_USER_INFOS.WEIGHT.LABEL} id={SETTING_USER_INFOS.WEIGHT.ID}
         onFocus={() => setIsWeightFocused('true')}
         onBlur={() => setIsWeightFocused(undefined)}
         disabled={disabled}

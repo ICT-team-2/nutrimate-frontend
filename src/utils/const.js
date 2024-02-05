@@ -130,3 +130,60 @@ export const MENU_LIST = {
   },
 };
 
+export const USER_INFOS = {
+  SPORT: {
+    TITLE: '일주일에 운동을 하는 횟수',
+    LABEL: '운동횟수',
+    KEYS: ['LOW', 'MEDIUM', 'HIGH'],
+    VALUES: ['적게(0-2회)', '보통(3-4회)', '많이(5회 이상)'],
+  },
+  DIET: {
+    TITLE: '식단',
+    LABEL: '식단',
+    KEYS: ['NORMAL', 'EXERCISE', 'KITO', 'VEGAN', 'CUSTOM'],
+    VALUES: ['일반 식단', '운동 식단', '케토 식단', '비건 식단', '사용자 정의'],
+    NORMAL: {
+      KEYS: 'NORMAL',
+      VALUES: '일반 식단',
+      CARBO: 50,
+      PROTEIN: 20,
+      FAT: 30,
+    },
+    EXERCISE: {
+      KEYS: 'EXERCISE',
+      VALUES: '운동 식단',
+      CARBO: 45,
+      PROTEIN: 35,
+      FAT: 20,
+    },
+    KITO: {
+      KEYS: 'KITO',
+      VALUES: '케토 식단',
+      CARBO: 5,
+      PROTEIN: 20,
+      FAT: 75,
+    },
+    VEGAN: {
+      KEYS: 'VEGAN',
+      VALUES: '비건 식단',
+      CARBO: 50,
+      PROTEIN: 25,
+      FAT: 25,
+    },
+    CUSTOM: {
+      KEYS: 'CUSTOM',
+      VALUES: '사용자 정의',
+    },
+  },
+  GENDER: {
+    TITLE: '성별',
+    MALE: {
+      LABEL: '남자',
+      VALUES: 'M',
+    },
+    FEMALE: {
+      LABEL: '여자',
+      VALUES: 'F',
+    },
+  },
+};
