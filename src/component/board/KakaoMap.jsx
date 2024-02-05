@@ -284,12 +284,6 @@ const KakaoMap = (props) => {
 };
 
 KakaoMap.defaultProps = {
-  center: {
-    lat: 37.498004414546934, // 초기값
-    lng: 127.02770621963765,
-  },
-  paths: [],
-  distances: [],
   nogps: false,
   zoomlevel: 3,
 };

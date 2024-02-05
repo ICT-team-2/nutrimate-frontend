@@ -10,7 +10,7 @@ import FoodImgAnaylsis
   from '@src/component/board/info/write/FoodImgAnaylsis.jsx';
 import InputHashtag from '@src/component/board/InputHashtag.jsx';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
-import { BOARD } from '@src/component/board/const.js';
+import { BOARD, INIT_MAP_STATE } from '@src/component/board/const.js';
 import loadable from '@loadable/component';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
 import WriteCategoryButtons
@@ -20,7 +20,7 @@ import { useSetAtom } from 'jotai/react';
 import { mapCenterAtom, mapDistancesAtom, mapPathsAtom } from '@src/component/board/atom.js';
 
 //테스트용 더미 데이터 - 추후 삭제 예정
-const paths = [
+const dummyPaths = [
   {
     'lat': 37.40046141857395,
     'lng': 126.97577439745241,
@@ -38,13 +38,13 @@ const paths = [
     'lng': 126.9791739522065,
   },
 ];
-const distances = [
+const dummyDistances = [
   0,
   143,
   277,
   446,
 ];
-const center = {
+const dummyCenter = {
   lat: 37.4,
   lng: 126.9780,
 };
@@ -102,10 +102,16 @@ const InfoBoardWritePage = (props) => {
   // 지도 정보를 초기화 - 쓰기에는 필요가 없으니까
   // 서버에서 데이터를 받은 후 상세보기나 수정 페이지에서나 사용하고
   // 이건 추후 삭제하면 됨(테스트용)
+  const initMapState = (paths, distances, center) => {
+    setMapPath(paths || dummyPaths);
+    setMapDistances(distances || dummyDistances);
+    setMapCenter(center || dummyCenter);
+  };
   useEffect(() => {
-    setMapPath(paths);
-    setMapDistances(distances);
-    setMapCenter(center);
+    initMapState(INIT_MAP_STATE.PATHS,
+      INIT_MAP_STATE.DISTANCES,
+      INIT_MAP_STATE.CENTER);
+    initMapState(dummyPaths, dummyDistances, dummyCenter);
   }, []);
 
   return (
