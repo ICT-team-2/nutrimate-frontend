@@ -3,18 +3,21 @@ import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { EDITOR_HEIGHT } from '@src/utils/const.js';
 import styled from 'styled-components';
+import { useAtom } from 'jotai/react';
+import { quillRefAtom } from '@src/component/board/atom.js';
 
 const StyledEditor = styled(ReactQuill)`
     min-height: ${EDITOR_HEIGHT}px;
 `;
 
-function BoardEditor() {
+function BoardEditor({ content }) {
   const quillRef = useRef(null);
-
+  const [quillRefState, setQuillRefState] = useAtom(quillRefAtom);
   useEffect(() => {
     if (quillRef.current) {
       const quill = quillRef.current.getEditor();
       quill.getModule('toolbar').addHandler('image', imageHandler);
+      setQuillRefState(quillRef.current);
     }
   }, []);
 

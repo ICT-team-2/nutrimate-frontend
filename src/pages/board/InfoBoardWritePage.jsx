@@ -17,7 +17,16 @@ import WriteCategoryButtons
   from '@src/component/board/info/write/WriteCategoryButtons.jsx';
 import TextField from '@mui/material/TextField';
 import { useAtom, useSetAtom } from 'jotai/react';
-import { mapCenterAtom, mapDistancesAtom, mapPathsAtom, mapRefAtom } from '@src/component/board/atom.js';
+import {
+  inputHashTagAtom,
+  mapCenterAtom,
+  mapDistancesAtom,
+  mapPathsAtom,
+  mapRefAtom,
+  quillRefAtom,
+} from '@src/component/board/atom.js';
+import useInitMapData from '@src/component/board/hooks/useInitMapData.jsx';
+import DOMPurify from 'dompurify';
 
 //테스트용 더미 데이터 - 추후 삭제 예정
 const dummyPaths = [
@@ -85,13 +94,20 @@ const InfoBoardWritePage = (props) => {
   const [category, setCategory] = useState(useLocation()?.state.title);
   const [searchValue, setSearchValue] = useState('');
   const [title, setTitle] = useState('');
-  //라이브러리 jotai 참조
-  const [mapPath, setMapPath] = useAtom(mapPathsAtom);
+
+  // 지도 정보 서버 저장용
+  const [mapPaths, setMapPaths] = useAtom(mapPathsAtom);
   const [mapDistances, setMapDistances] = useAtom(mapDistancesAtom);
   const [mapCenter, setMapCenter] = useAtom(mapCenterAtom);
+  //라이브러리 jotai 참조
   const [mapRefState, setMapRefState] = useAtom(mapRefAtom);
-  const mapRef = useRef(null);
+  //에디터 글 가져오기
+  const [quillRefState, setQuillRefState] = useAtom(quillRefAtom);
+  const [inputHashTag, setInputHashTag] = useAtom(inputHashTagAtom);
 
+  // 지도 정보를 초기화
+  // useInitMapData(dummyPaths, dummyDistances, dummyCenter);
+  useInitMapData();
 
   const handleSearch = (e) => {
     setSearchValue(e.target.value);
@@ -104,23 +120,29 @@ const InfoBoardWritePage = (props) => {
   // 지도 정보를 초기화 - 쓰기에는 필요가 없으니까
   // 서버에서 데이터를 받은 후 상세보기나 수정 페이지에서나 사용하고
   // 이건 추후 삭제하면 됨(테스트용)
-  const initMapState = (paths, distances, center) => {
-    setMapPath(paths || dummyPaths);
-    setMapDistances(distances || dummyDistances);
-    setMapCenter(center || dummyCenter);
-  };
-  useEffect(() => {
 
-    initMapState(INIT_MAP_STATE.PATHS,
-      INIT_MAP_STATE.DISTANCES,
-      INIT_MAP_STATE.CENTER);
-    initMapState(dummyPaths, dummyDistances, dummyCenter);
-  }, []);
 
   useEffect(() => {
     console.log('zoomlevel:', mapRefState?.getLevel());//지도의 확대 레벨
     console.log('center:', mapRefState?.getCenter());//지도의 중심좌표
   }, [mapRefState]);
+
+  const onClickRegister = () => {
+    //식단 게시판 글쓰기
+
+    //--------------------
+    //운동 게시판 글 쓰기
+    console.log('category:', category);
+    console.log('title:', title);
+    console.log('paths:', mapPaths);
+    console.log('distances:', mapDistances);
+    console.log('center:', mapCenter);
+    console.log('zoomlevel:', mapRefState?.getLevel());
+    let content = quillRefState.getEditor().root.innerHTML;
+    content = DOMPurify.sanitize(content);
+    console.log('DOMPurify content:', content);
+    console.log('hashTag:', inputHashTag);
+  };
 
 
   return (
@@ -132,7 +154,9 @@ const InfoBoardWritePage = (props) => {
         <WriteCategoryButtons title={category} setTitle={setCategory} />
         {/* <WriteCategoryMenu setTitle={setTitle} title={title} /> */}
         <FlexGrowDiv />
-        <Button variant="contained">등록</Button>
+        <Button
+          onClick={onClickRegister}
+          variant="contained">등록</Button>
       </TitleContainer>
       <TextField label="제목" size="small" value={title} onChange={(e) => setTitle(e.target.value)} />
 
@@ -140,7 +164,7 @@ const InfoBoardWritePage = (props) => {
       {/* nogps는 gps사용하지 않겠다는 옵션 - 쓰기에는 불필요하니 추후 삭제하면 됨 */}
       {category !== BOARD.INFO.FOOD.TITLE ?
         <LoadableMap
-          nogps
+          nogps zoomlevel={3}
         /> : <FoodImgAnaylsis />
       }
       {/* 해시태그 입력 */}
