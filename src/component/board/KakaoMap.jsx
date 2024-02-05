@@ -6,8 +6,7 @@ import { createGlobalStyle } from 'styled-components';
 import { CustomSearchInput } from '@src/component/common/GlobalComponents.jsx';
 
 import React, { useRef } from 'react';
-import html2canvas from 'html2canvas';
-import axios from 'axios';
+
 import { useAtom } from 'jotai/react';
 import { mapCenterAtom, mapDistancesAtom, mapPathsAtom, mapRefAtom } from '@src/component/board/atom.js';
 
@@ -51,7 +50,7 @@ const KakaoMap = (props) => {
   const [searchValue, setSearchValue] = useState('');
 
   const [walkCalories, setWalkCalories] = useState(0);
-  const [runCalories, setRunCalories] = useState(0);
+  // const [runCalories, setRunCalories] = useState(0);
   const [bikeCalories, setBikeCalories] = useState(0);
 
   //지도 정보를 가져오는 용도
@@ -117,7 +116,8 @@ const KakaoMap = (props) => {
               <span className="number">{Math.floor(walkTime / 60)}</span> 시간{' '}
             </>
           )}
-          <span className="number">{walkTime % 60}</span> 분
+          <span className="number">{walkTime % 60}</span> 분,{' '}
+          <span className="number">{walkCalories.toFixed(2)}</span> kcal
         </li>
         <li>
           <span className="label">자전거</span>{' '}
@@ -126,7 +126,8 @@ const KakaoMap = (props) => {
               <span className="number">{Math.floor(bikeTime / 60)}</span> 시간{' '}
             </>
           )}
-          <span className="number">{bikeTime % 60}</span> 분
+          <span className="number">{bikeTime % 60}</span> 분,{' '}
+          <span className="number">{bikeCalories.toFixed(2)}</span> kcal
         </li>
       </StyledPaper>
     );
@@ -168,9 +169,9 @@ const KakaoMap = (props) => {
     }
   }, [searchValue]);
 
-  useEffect(() => {
-    console.log(`유저가 검색한 단어:${searchValue}`);
-  }, [searchValue]);
+  // useEffect(() => {
+  //   console.log(`유저가 검색한 단어:${searchValue}`);
+  // }, [searchValue]);
 
   // 걷기,달리기,자전거 소모 칼로리
   useEffect(() => {
@@ -184,7 +185,7 @@ const KakaoMap = (props) => {
 
 
     setWalkCalories(walkCalories);
-    setRunCalories(runCalories);
+    // setRunCalories(runCalories);
     setBikeCalories(bikeCalories);
   }, [distanceValues]);
 
@@ -208,6 +209,7 @@ const KakaoMap = (props) => {
   return (
     <>
       <GlobalStyle />
+      <br />
       <CustomSearchInput searchValue={searchValue} setSearchValue={setSearchValue} />
       <div id="map">
         <Map // 지도를 표시할 Container
@@ -271,23 +273,23 @@ const KakaoMap = (props) => {
           />
           {isdrawing && (
             <CustomOverlayMap position={mousePosition} yAnchor={1} zIndex={2}>
-              <div className="dotOverlay distanceInfo">
+              <StyledPaper className="dotOverlay distanceInfo">
                 총거리{' '}
                 <span className="number">
                 {Math.round(clickLine.getLength() + moveLine.getLength())}
               </span>
                 m
-              </div>
+              </StyledPaper>
             </CustomOverlayMap>
           )}
         </Map>
       </div>
       {/*<button onClick={saveAndSendMapImage}>지도 저장하기</button>*/}
-      <div>
-        걷기 칼로리: {walkCalories.toFixed(2)} kcal
-        달리기 칼로리: {runCalories.toFixed(2)} kcal
-        자전거 칼로리: {bikeCalories.toFixed(2)} kcal
-      </div>
+      {/*<div>*/}
+      {/*  걷기 칼로리: {walkCalories.toFixed(2)} kcal*/}
+      {/*  달리기 칼로리: {runCalories.toFixed(2)} kcal*/}
+      {/*  자전거 칼로리: {bikeCalories.toFixed(2)} kcal*/}
+      {/*</div>*/}
     </>
   );
 };
