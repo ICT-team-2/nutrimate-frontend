@@ -9,6 +9,7 @@ import SurveyGender from '@src/component/survey/SurveyGender.jsx';
 import SurveyHeight from '@src/component/survey/SurveyHeight.jsx';
 import SurveyWeight from '@src/component/survey/SurveyWeight.jsx';
 import SurveyHealthReason from '@src/component/survey/SurveyHealthReason.jsx';
+import SurveyDiet from '@src/component/survey/SurveyDiet.jsx';
 
 export const SurveyContainer = styled.div`
     margin: auto;
@@ -50,6 +51,8 @@ const SurveyProgress = () => {
       return <SurveyWeight />;
     case SURVEY_PROGRESS.HEALTH_REASON:
       return <SurveyHealthReason />;
+    case SURVEY_PROGRESS.DIET:
+      return <SurveyDiet />;
     default:
       return <div>Unknown progress {progress}</div>;
   }

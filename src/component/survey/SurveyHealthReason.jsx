@@ -10,16 +10,16 @@ const SurveyHealthReason = () => {
   const [surveyData, setSurveyData] = useAtom(surveyDataAtom);
 
   const onClickHealthReason = (reason) => {
-    if (checkedHealthReason[reason.KEY]) {
+    if (checkedHealthReason[reason.KEYS]) {
       setCheckedHealthReason({
         ...checkedHealthReason,
-        [reason.KEY]: false,
+        [reason.KEYS]: false,
       });
       return;
     }
     setCheckedHealthReason({
       ...checkedHealthReason,
-      [reason.KEY]: true,
+      [reason.KEYS]: true,
     });
   };
 
@@ -43,9 +43,9 @@ const SurveyHealthReason = () => {
         (reason) => (
           <SurveyCheckList
             onClick={() => onClickHealthReason(reason)}
-            checked={checkedHealthReason[reason.LABEL]}
-            key={reason.LABEL}>
-            {`${reason.LABEL}. ${reason.VALUES}`}
+            checked={checkedHealthReason[reason.KEYS]}
+            key={reason.KEYS}>
+            {`${reason.KEYS}. ${reason.VALUES}`}
           </SurveyCheckList>
         ))}
     </SurveyLayout>
