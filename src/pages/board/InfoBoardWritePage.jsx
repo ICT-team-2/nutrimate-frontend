@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { EDITOR_HEIGHT, TITLE } from '@src/utils/const.js';
@@ -16,8 +16,8 @@ import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
 import WriteCategoryButtons
   from '@src/component/board/info/write/WriteCategoryButtons.jsx';
 import TextField from '@mui/material/TextField';
-import { useSetAtom } from 'jotai/react';
-import { mapCenterAtom, mapDistancesAtom, mapPathsAtom } from '@src/component/board/atom.js';
+import { useAtom, useSetAtom } from 'jotai/react';
+import { mapCenterAtom, mapDistancesAtom, mapPathsAtom, mapRefAtom } from '@src/component/board/atom.js';
 
 //테스트용 더미 데이터 - 추후 삭제 예정
 const dummyPaths = [
@@ -86,9 +86,11 @@ const InfoBoardWritePage = (props) => {
   const [searchValue, setSearchValue] = useState('');
   const [title, setTitle] = useState('');
   //라이브러리 jotai 참조
-  const setMapPath = useSetAtom(mapPathsAtom);
-  const setMapDistances = useSetAtom(mapDistancesAtom);
-  const setMapCenter = useSetAtom(mapCenterAtom);
+  const [mapPath, setMapPath] = useAtom(mapPathsAtom);
+  const [mapDistances, setMapDistances] = useAtom(mapDistancesAtom);
+  const [mapCenter, setMapCenter] = useAtom(mapCenterAtom);
+  const [mapRefState, setMapRefState] = useAtom(mapRefAtom);
+  const mapRef = useRef(null);
 
 
   const handleSearch = (e) => {
@@ -108,11 +110,18 @@ const InfoBoardWritePage = (props) => {
     setMapCenter(center || dummyCenter);
   };
   useEffect(() => {
+
     initMapState(INIT_MAP_STATE.PATHS,
       INIT_MAP_STATE.DISTANCES,
       INIT_MAP_STATE.CENTER);
     initMapState(dummyPaths, dummyDistances, dummyCenter);
   }, []);
+
+  useEffect(() => {
+    console.log('zoomlevel:', mapRefState?.getLevel());//지도의 확대 레벨
+    console.log('center:', mapRefState?.getCenter());//지도의 중심좌표
+  }, [mapRefState]);
+
 
   return (
     <InfoBoardContainer>

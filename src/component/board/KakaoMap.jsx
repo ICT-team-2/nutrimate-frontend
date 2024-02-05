@@ -9,7 +9,7 @@ import React, { useRef } from 'react';
 import html2canvas from 'html2canvas';
 import axios from 'axios';
 import { useAtom } from 'jotai/react';
-import { mapCenterAtom, mapDistancesAtom, mapPathsAtom } from '@src/component/board/atom.js';
+import { mapCenterAtom, mapDistancesAtom, mapPathsAtom, mapRefAtom } from '@src/component/board/atom.js';
 
 const GlobalStyle = createGlobalStyle`
     .number {
@@ -54,8 +54,8 @@ const KakaoMap = (props) => {
   const [runCalories, setRunCalories] = useState(0);
   const [bikeCalories, setBikeCalories] = useState(0);
 
-  // 지도 이미지 저장
-  const mapRef = useRef(null);
+  //지도 정보를 가져오는 용도
+  const [mapRefState, setMapRefState] = useAtom(mapRefAtom);
 
   // 몸무게를 평균 65kg으로 가정
   const weight = 65;
@@ -153,7 +153,7 @@ const KakaoMap = (props) => {
       const places = new window.kakao.maps.services.Places();
 
       // 객체 생성 확인 로그 추가
-      console.log(places);
+      // console.log(places);
 
       places.keywordSearch(searchValue, function(result, status) {
         if (status === window.kakao.maps.services.Status.OK) {
@@ -188,22 +188,28 @@ const KakaoMap = (props) => {
     setBikeCalories(bikeCalories);
   }, [distanceValues]);
 
+
+  // useEffect(() => {
+  //   console.log('KakaoMap: mapRefState:', mapRefState);
+  // }, [mapRefState]);
+
+
   // 칼로리 계산 함수
   function calculateCalories(mets, weight, time) {
     return mets * weight * (time / 60);
   }
 
   // todo console.log 주석처리할 것
-  useEffect(() => {
-    console.log('pathValues:', pathValues, 'distanceValues:', distanceValues,
-      'centerValue:', centerValue);
-  }, [centerValue, distanceValues, pathValues]);
+  // useEffect(() => {
+  //   console.log('pathValues:', pathValues, 'distanceValues:', distanceValues,
+  //     'centerValue:', centerValue);
+  // }, [centerValue, distanceValues, pathValues]);
 
   return (
     <>
       <GlobalStyle />
       <CustomSearchInput searchValue={searchValue} setSearchValue={setSearchValue} />
-      <div ref={mapRef} id="map">
+      <div id="map">
         <Map // 지도를 표시할 Container
           id={`;map`}
           center={centerValue} // 지도의 중심좌표
@@ -216,6 +222,9 @@ const KakaoMap = (props) => {
           onClick={handleClick}
           onRightClick={handleRightClick}
           onMouseMove={handleMouseMove}
+          onCreate={(map) => {
+            setMapRefState(map);
+          }}
         >
           <Polyline
             path={pathValues}
