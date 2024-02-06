@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SurveyLayout from '@src/layout/SurveyLayout.jsx';
 import { SURVEY_SELECT } from '@src/component/survey/const.js';
 import { SurveyCheckList } from '@src/component/survey/CommonComponents.jsx';
@@ -9,6 +9,10 @@ const SurveySportHard = () => {
 
   const [checkedSportHard, setCheckedSportHard] = useState(null);
   const [surveyData, setSurveyData] = useAtom(surveyDataAtom);
+
+  useEffect(() => {
+    setCheckedSportHard(surveyData.userSportHard);
+  }, [surveyData.userSportHard]);
 
 
   const onClickSportHard = (sportHard) => {
@@ -22,7 +26,6 @@ const SurveySportHard = () => {
   const onClickNext = () => {
     if (!checkedSportHard) return false;
     setSurveyData({ ...surveyData, userSportHard: checkedSportHard });
-    console.log(checkedSportHard);
     return true;
   };
   return (

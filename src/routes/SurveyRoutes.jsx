@@ -6,7 +6,6 @@ import NotFound404Page from '@src/pages/NotFound404Page.jsx';
 const SurveyRoutes = () => {
   return (
     <Routes>
-
       <Route path={''} element={<SurveyPage />} />
       <Route path={'*'} element={<NotFound404Page />} />
     </Routes>

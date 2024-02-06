@@ -12,11 +12,13 @@ import SurveyHealthReason from '@src/component/survey/SurveyHealthReason.jsx';
 import SurveyDiet from '@src/component/survey/SurveyDiet.jsx';
 import SurveyEatingHabits from '@src/component/survey/SurveyEatingHabits.jsx';
 import SurveySportHard from '@src/component/survey/SurveySportHard.jsx';
+import SurveyAllergy from '@src/component/survey/SurveyAllergy.jsx';
+import RegisterPage from '@src/pages/login/RegisterPage.jsx';
 
 export const SurveyContainer = styled.div`
     margin: auto;
     display: inline-block;
-    max-width: 720px;
+    max-width: ${({ progress }) => progress === SURVEY_PROGRESS.ALLERGY ? '1200px' : '720px'};
     width: 100%;
 `;
 export const SurveyFlexDiv = styled.div`
@@ -24,21 +26,24 @@ export const SurveyFlexDiv = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: ${({ progress }) => progress === SURVEY_PROGRESS.ALLERGY ? 'auto' : '100vh'};
+    margin-top: ${({ progress }) => progress === SURVEY_PROGRESS.ALLERGY ? '40px' : 0};
     width: 100%;
 `;
 
 const SurveyContents = () => {
+  const [progress, setProgress] = useAtom(surveyProgressAtom);
+
   return (
-    <SurveyFlexDiv>
-      <SurveyContainer>
-        <SurveyProgress />
+    <SurveyFlexDiv progress={progress}>
+      <SurveyContainer progress={progress}>
+        <SurveyProgressContent />
       </SurveyContainer>
     </SurveyFlexDiv>
   );
 };
 
-const SurveyProgress = () => {
+const SurveyProgressContent = () => {
   const [progress, setProgress] = useAtom(surveyProgressAtom);
   switch (progress) {
     case SURVEY_PROGRESS.NAME:
@@ -59,6 +64,8 @@ const SurveyProgress = () => {
       return <SurveyEatingHabits />;
     case SURVEY_PROGRESS.EXERCISE_COUNT:
       return <SurveySportHard />;
+    case SURVEY_PROGRESS.ALLERGY:
+      return <SurveyAllergy />;
     default:
       return <div>Unknown progress {progress}</div>;
   }

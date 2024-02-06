@@ -12,6 +12,10 @@ const ChildrenContainer = styled.div`
     margin: 20px 0;
 `;
 
+const ButtonContainer = styled.div`
+    margin-bottom: 40px;
+`;
+
 const SurveyLayout = (props) => {
   const { children, title, subtitle, clickNext } = props;
   const [progress, setProgress] = useAtom(surveyProgressAtom);
@@ -35,14 +39,16 @@ const SurveyLayout = (props) => {
       <ChildrenContainer>
         {children}
       </ChildrenContainer>
-      <PrevButton
-        onClick={onClickPrev}
-        variant="contained" size="large"
-      >이전</PrevButton>
-      <Button
-        onClick={onClickNext}
-        variant="contained" size="large"
-      >다음</Button>
+      <ButtonContainer>
+        <PrevButton
+          onClick={onClickPrev}
+          variant="contained" size="large"
+        >이전</PrevButton>
+        <Button
+          onClick={onClickNext}
+          variant="contained" size="large"
+        >다음</Button>
+      </ButtonContainer>
     </>
   );
 };

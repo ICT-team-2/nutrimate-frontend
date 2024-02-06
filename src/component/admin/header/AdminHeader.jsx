@@ -14,6 +14,7 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
 import styled from 'styled-components';
+import AdminSideMenu from '@src/component/admin/header/AdminSidebar.jsx';
 
 const AppBar = muiStyled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -75,30 +76,9 @@ const Header = (props) => {
           {/* {hasDrawer && <SideMenuButton />} */}
           {/* 빈 공간 */}
           <Box sx={{ flexGrow: 1 }} />
-          <StyledButton
-            onClick={gotoInfo}
-            logowhite={logoWhite + ''}
-          >Infomation</StyledButton>
-          <StyledButton
-            onClick={gotoBoard}
-            logowhite={logoWhite + ''}
-          >Board</StyledButton>
-          <StyledButton
-            onClick={gotoFeed}
-            logowhite={logoWhite + ''}
-          >Feed</StyledButton>
-          <ProfileImgMenu />
-          <StyledButton
-            onClick={() => {
-              navigate(LINKS.LOGIN);
-            }}
-            logowhite={logoWhite + ''}
-          >
-            Login
-          </StyledButton>
         </Toolbar>
       </StyledAppBar>
-      {hasDrawer && <SideMenu />}
+      {hasDrawer && <AdminSideMenu />}
     </Box>
   );
 };
