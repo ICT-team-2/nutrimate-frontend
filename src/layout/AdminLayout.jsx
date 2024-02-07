@@ -5,7 +5,7 @@ import { styled as muiStyled } from '@mui/material/styles';
 import { Outlet } from 'react-router-dom';
 import { FOOTER_HEIGHT } from '@src/utils/const.js';
 import AdminHeader from '@src/component/admin/header/AdminHeader.jsx';
-import { adminDrawerWidth } from '@src/component/admin/const.js';
+import { ADMIN_DRAWER_WIDTH } from '@src/component/admin/const.js';
 
 
 const Wrapper = styled.div`
@@ -22,22 +22,20 @@ const Content = styled.div`
     flex-grow: 1;
     padding-bottom: ${FOOTER_HEIGHT}; // 푸터의 높이만큼 padding-bottom을 추가
     display: flex;
-    width: 100vw;
 `;
 const DrawerDiv = styled.div`
-    width: ${adminDrawerWidth}px;
+    width: ${ADMIN_DRAWER_WIDTH}px;
 `;
 
 const GlobalStyles = createGlobalStyle`
     body {
-        width: calc(100% - ${adminDrawerWidth}px);
         background-color: ${({ theme }) => theme['main-background']};
     }
 `;
 const OutletContainer = styled.div`
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 100vw;
     margin-top: 20px;
 `;
 
@@ -50,7 +48,6 @@ function AdminLayout() {
       <Wrapper>
         <AdminHeader />
         <Content>
-          <DrawerDiv />
           <OutletContainer>
             <Outlet />
           </OutletContainer>
