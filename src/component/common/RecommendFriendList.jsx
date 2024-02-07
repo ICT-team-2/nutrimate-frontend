@@ -55,7 +55,7 @@ const AvatarContainer = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
-    padding-left: 50px;
+    padding-left: 20px;
 `;
 
 const UserNameContainer = styled.div`
@@ -74,7 +74,7 @@ const StyledPaper = styled(Paper)`
 
 const RecommendFriendList = ({ datas = exampleDatas }) => {
   const uploadImg = useAtomValue(uploadedImageAtom);
-  
+
   return (
     <FriendListContainer>
       <AvatarContainer>
@@ -82,23 +82,23 @@ const RecommendFriendList = ({ datas = exampleDatas }) => {
         <UserNameContainer>username</UserNameContainer>
       </AvatarContainer>
       <StyledPaper>
-      <List
-        subheader={
-          <ListSubheader component='div' id='nested-list-subheader'>
-            회원님을 위한 추천
-          </ListSubheader>
-        }
-      >
-        {datas.map((data, index) => (
-          <StyledListItem key={data.userNick + index}>
-            <ListItemAvatar>
-              <Avatar>{data.profile}</Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={data.userNick} />
-            <Button color='info'>팔로우</Button>
-          </StyledListItem>
-        ))}
-      </List>
+        <List
+          subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              회원님을 위한 추천
+            </ListSubheader>
+          }
+        >
+          {datas.map((data, index) => (
+            <StyledListItem key={data.userNick + index}>
+              <ListItemAvatar>
+                <Avatar>{data.profile}</Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={data.userNick} />
+              <Button color="info">팔로우</Button>
+            </StyledListItem>
+          ))}
+        </List>
       </StyledPaper>
 
     </FriendListContainer>

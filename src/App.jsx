@@ -19,6 +19,7 @@ import ChatBotComponent from '@src/component/chat/chatbot/ChatBotComponent.jsx';
 import LoginRoutes from '@src/routes/LoginRoutes.jsx';
 import SurveyRoutes from '@src/routes/SurveyRoutes.jsx';
 import AdminRoutes from '@src/routes/AdminRoutes.jsx';
+import RecordRoutes from '@src/routes/RecordRoutes.jsx';
 
 function App() {
   const darkMode = useAtomValue(isDarkModeAtom);
@@ -60,6 +61,10 @@ function App() {
     {
       path: '/' + ROUTER_LINKS.ADMIN + '/*',
       element: <AdminRoutes />,
+    },
+    {
+      path: '/' + ROUTER_LINKS.RECORD + '/*',
+      element: <RecordRoutes />,
     },
   ]);
   return (

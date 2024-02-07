@@ -49,23 +49,32 @@ const options = {
   },
 };
 const DoughnutChartContainer = styled.div`
-    width: 90%;
-    height: 100%;
+    padding-bottom: 55%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+`;
+const TitleTypo = styled(Typography)`
+    padding: 20px 0 0 20px;
 `;
 
 export function CategoricalBoardDoughnutChart() {
   return (
     <StatisticsCard
-      titleComponent={<Typography variant="h6">
-        오늘 신규회원: 0, 오늘 방문자: 0
-      </Typography>}
+      titleComponent={(<><TitleTypo variant="h6">
+          오늘 신규회원: 0&nbsp;&nbsp;&nbsp; 오늘 방문자: 0
+        </TitleTypo>
+          <TitleTypo variant="h6">카테고리 별 게시글 수</TitleTypo>
+        </>
+      )}
     >
-      <FlexDiv flexdirection="column">
-        <Typography variant="subtitle1">카테고리 별 게시글 수</Typography>
-        <DoughnutChartContainer>
-          <Doughnut data={data} options={options} />
-        </DoughnutChartContainer>
-      </FlexDiv>
+
+      <DoughnutChartContainer>
+        <Doughnut data={data} options={options} />
+      </DoughnutChartContainer>
+
     </StatisticsCard>
   );
 }

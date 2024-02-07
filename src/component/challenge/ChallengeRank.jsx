@@ -20,7 +20,7 @@ const StyledIcon = styled(FontAwesomeIcon)`
 `;
 const IconContainer = styled.div`
     background-color: ${({ theme }) => theme['primary-transparent']};
-    padding: 10px;
+    padding: 10px 25px;
     border-radius: 10px;
     width: 36px;
     align-items: center;

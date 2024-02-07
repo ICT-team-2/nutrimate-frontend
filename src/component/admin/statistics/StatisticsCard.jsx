@@ -26,7 +26,7 @@ const ChartOuterContainer = styled.div`
 const ChartPaper = styled(Paper)`
     width: 100%;
     height: 0;
-    padding-bottom: ${({ paddingbottom }) => paddingbottom + 5}%; // 가로 세로 비율 1.5:1에 맞는 padding-bottom 값
+    padding-bottom: ${({ paddingbottom }) => paddingbottom + 15}%; // 가로 세로 비율 1.5:1에 맞는 padding-bottom 값
     position: relative; // 내부 요소를 absolute positioning하기 위해
 `;
 
@@ -37,7 +37,7 @@ const ChartTitleTypo = styled(Typography)`
 
 const StatisticsCard = (props) => {
   const { children, title, paddingbottom, titleVariant, titleComponent } = props;
-  
+
   return (
     <ChartPaper paddingbottom={paddingbottom}>
       {titleComponent}
