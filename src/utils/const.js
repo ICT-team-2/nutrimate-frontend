@@ -127,3 +127,7 @@ export const MENU_LIST = {
   },
 };
 
+export const DUMMY_USER = {
+  USER_ID: 3,
+  USER_NICK: 'ExampleUser2'
+}

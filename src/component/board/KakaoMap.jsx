@@ -46,9 +46,9 @@ const KakaoMap = (props) => {
     lng: 0,
   });
   const [moveLine, setMoveLine] = useState();
+
   // 검색 값을 관리할 상태 추가
   const [searchValue, setSearchValue] = useState('');
-
   const [walkCalories, setWalkCalories] = useState(0);
   // const [runCalories, setRunCalories] = useState(0);
   const [bikeCalories, setBikeCalories] = useState(0);
@@ -58,7 +58,6 @@ const KakaoMap = (props) => {
 
   // 몸무게를 평균 65kg으로 가정
   const weight = 65;
-
 
   const handleClick = (
     _map,
@@ -183,17 +182,14 @@ const KakaoMap = (props) => {
     const runCalories = calculateCalories(9.8, weight, walkTime);
     const bikeCalories = calculateCalories(6.8, weight, bikeTime);
 
-
     setWalkCalories(walkCalories);
     // setRunCalories(runCalories);
     setBikeCalories(bikeCalories);
   }, [distanceValues]);
 
-
   // useEffect(() => {
   //   console.log('KakaoMap: mapRefState:', mapRefState);
   // }, [mapRefState]);
-
 
   // 칼로리 계산 함수
   function calculateCalories(mets, weight, time) {
@@ -284,7 +280,6 @@ const KakaoMap = (props) => {
           )}
         </Map>
       </div>
-      {/*<button onClick={saveAndSendMapImage}>지도 저장하기</button>*/}
       {/*<div>*/}
       {/*  걷기 칼로리: {walkCalories.toFixed(2)} kcal*/}
       {/*  달리기 칼로리: {runCalories.toFixed(2)} kcal*/}
