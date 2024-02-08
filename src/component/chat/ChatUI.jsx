@@ -5,6 +5,7 @@ import Divider from '@mui/material/Divider';
 import MyTalkComponent from '@src/component/chat/MyTalkComponent.jsx';
 import ChatInput from '@src/component/chat/ChatInput.jsx';
 import OtherTalkComponent from '@src/component/chat/OtherTalkComponent.jsx';
+import { useRef, useEffect } from "react";
 
 const ChatContainer = styled.div`
     width: 100%;
@@ -24,32 +25,62 @@ const ChatBody = styled.div`
     height: ${({ height }) => height ? height : 'auto'};
 `;
 
+const ChatOutAndEnter = styled.div`
+    padding: 20px;
+    text-align: center;
+`;
+
+
+
 const ChatUI = (props) => {
-  const { title, overflow, height, data } = props;
+  const { title, overflow, height, data, onSend,nickname } = props;
+
+  const scrollRef = useRef();
+  useEffect(() => {
+    // useEffect 훅 내부에서 스크롤 이동을 처리합니다. 
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [data]);
+
+
+
   return (
     <ChatContainer>
       <ChatHeader>
         <Typography variant='h6'>{title}</Typography>
       </ChatHeader>
       <Divider />
-      <ChatBody overflow={overflow + ''} height={height}>
-        <MyTalkComponent />
-        <OtherTalkComponent />
-        <MyTalkComponent content='아무거나 쓰기 귀찮은데 뭐쓰지 뚜뚜뚜뚜따따따따 ㅁㄴㅇㅁㄴㅐㅇㄴㅁㅇㅁㄴㅇ'
-                         nick={'가길동'} />
-        <MyTalkComponent content='아무거나 쓰기 귀찮은데 뭐쓰지 뚜뚜뚜뚜따따따따 ㅁㄴㅇㅁㄴㅐㅇㄴㅁㅇㅁㄴㅇ'
-                         nick={'나길동'} />
-        {data.map((d, i) => <OtherTalkComponent
-          key={i} content={d.content}
-          nick={d.nick} />)}
+      <ChatBody ref={scrollRef}  overflow={overflow + ''} height={height}>
+      
+      {
+        Array.isArray(data) 
+              ? data.map((d, i) => 
+                d.messageType == 'CHAT' ?
+                    d.challengeNick == nickname ? 
+                        <MyTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
+                        :<OtherTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
+                  : <ChatOutAndEnter key={i}> {d.chatMessage}</ChatOutAndEnter>
+                )
+              : data.messageType == 'CHAT' ? 
+                  data.challengeNick == nickname ? 
+                      <MyTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
+                      :<OtherTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
+                :<ChatOutAndEnter> {data.chatMessagee}</ChatOutAndEnter>
+        
+      }
+         
+
+
 
       </ChatBody>
-      <ChatInput />
+      <ChatInput onSend={onSend} />
     </ChatContainer>
   );
 };
+
 ChatUI.defaultProps = {
   title: '챌린지 주제',
+  data: [],  // data의 기본값을 빈 배열로 설정
 };
-
 export default ChatUI;

@@ -54,11 +54,11 @@ const ChatBotComponent = () => {
           <ChatUI title='챗봇' overflow height={'450px'} data={[
             {
               content: '대사1',
-              nick: '가길동',
+              nickname: '가길동',
             },
             {
               content: '대사2',
-              nick: '나길동',
+              nickname: '나길동',
             }]} />
         </ChatBotPaper>
       </Fade>

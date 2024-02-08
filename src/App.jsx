@@ -17,6 +17,10 @@ import SettingRoutes from '@src/routes/SettingRoutes.jsx';
 import ChallengeRoutes from '@src/routes/ChallengeRoutes.jsx';
 import ChatBotComponent from '@src/component/chat/chatbot/ChatBotComponent.jsx';
 
+
+
+
+
 function App() {
   const darkMode = useAtomValue(isDarkModeAtom);
   const muiTheme = useMuiTheme();
