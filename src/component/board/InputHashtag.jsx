@@ -6,6 +6,8 @@ import Paper from '@mui/material/Paper';
 import styled from 'styled-components';
 import Box from '@mui/material/Box';
 import { BoardSubtitleTypo } from '@src/component/common/GlobalComponents.jsx';
+import { useAtom } from 'jotai/react';
+import { inputHashTagAtom } from '@src/component/board/atom.js';
 
 const ListItem = muiStyled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -40,8 +42,7 @@ const StyledListItem = muiStyled(ListItem)`
  * @return {JSX.Element} InputHashtag 컴포넌트에 대한 JSX
  */
 const InputHashtag = () => {
-  const [chipData, setChipData] = useState([]);
-
+  const [chipData, setChipData] = useAtom(inputHashTagAtom);
   const [inputValue, setInputValue] = useState('');
 
   const handleInputChange = (event) => {

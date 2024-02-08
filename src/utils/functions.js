@@ -7,3 +7,7 @@ export const debounce = (func, wait) => {
     timeout = setTimeout(() => func.apply(context, args), wait);
   };
 };
+
+export const convertDateToUrlParam = (date = new Date()) => {
+  return date.toISOString().split('T')[0].split('-').join('');
+};

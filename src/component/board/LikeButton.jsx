@@ -79,20 +79,21 @@ const LikeContainer = styled(Label)`
  */
 
 const LikeButton = (props) => {
-  
+
   const {
     className, clicked, like, size,
     heartColor, onClick, viewCount,
   } = props;
-  
+
   const [click, setClick] = useState(clicked);
   const [likeCount, setLikeCount] = useState(like);
+
   const heart = useRef();
   const svg = useRef();
   const span = useRef();
   const disabledColor = '#eee';
   const [disabled, setDisabled] = useState(false);
-  
+
   const animateHeart = () => {
     heart.current.animate(
       [
@@ -110,7 +111,7 @@ const LikeButton = (props) => {
       },
     );
   };
-  
+
   const animateBeats = () => {
     svg.current.animate(
       [
@@ -126,7 +127,7 @@ const LikeButton = (props) => {
       },
     );
   };
-  
+
   const animateBlinks = () => {
     span.current.animate(
       [
@@ -146,25 +147,25 @@ const LikeButton = (props) => {
       },
     );
   };
-  
+
   const clickLikeCount = () => {
     if (!click) {
       setClick(true);
       setLikeCount(likeCount + 1);
-      
+
       span.current.style.transform = 'translate(-50%, -50%) scale(0)';
       span.current.style.opacity = '0.8';
       span.current.style.backgroundColor = heartColor;
       heart.current.style.fill = heartColor;
       heart.current.style.stroke = heartColor;
-      
+
       setDisabled(true);
       // 1.1초 후에 버튼을 다시 활성화합니다.
       setTimeout(function() {
         setDisabled(false);
-        
+
       }, 1100); // 1.1초 후
-      
+
       animateHeart();
       animateBeats();
       animateBlinks();
@@ -176,37 +177,37 @@ const LikeButton = (props) => {
       heart.current.style.stroke = disabledColor;
     }
   };
-  
+
   return (
     <>
       <GlobalStyle />
       <LikeContainer
-        htmlFor='checkbox'
+        htmlFor="checkbox"
         className={`like-container ${className}`}
         onClick={onClick}
       >
         <input
-          type='checkbox'
-          id='checkbox'
+          type="checkbox"
+          id="checkbox"
           hidden
           onClick={clickLikeCount}
-          
+
           disabled={disabled}
         />
         <Svg
           ref={svg}
-          t='1689815540548'
-          className='icon '
-          viewBox='0 0 1024 1024'
-          xmlns='http://www.w3.org/2000/svg'
-          p-id='2271'
+          t="1689815540548"
+          className="icon "
+          viewBox="0 0 1024 1024"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="2271"
           size={size}
         >
           <Heart
-            d='M742.4 101.12A249.6 249.6 0 0 0 512 256a249.6 249.6 0 0 0-230.72-154.88C143.68 101.12 32 238.4 32 376.32c0 301.44 416 546.56 480 546.56s480-245.12 480-546.56c0-137.92-111.68-275.2-249.6-275.2z'
+            d="M742.4 101.12A249.6 249.6 0 0 0 512 256a249.6 249.6 0 0 0-230.72-154.88C143.68 101.12 32 238.4 32 376.32c0 301.44 416 546.56 480 546.56s480-245.12 480-546.56c0-137.92-111.68-275.2-249.6-275.2z"
             fill={click ? heartColor : disabledColor}
-            p-id='2272'
-            id='heart'
+            p-id="2272"
+            id="heart"
             ref={heart}
             color={heartColor}
           ></Heart>

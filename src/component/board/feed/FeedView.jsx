@@ -26,6 +26,7 @@ const StyledButton = styled(Button)`
  * @return {JSX.Element} 피드 뷰 컴포넌트
  */
 const FeedView = () => {
+  const [searchValue, setSearchValue] = React.useState('');
 
   const navigate = useNavigate();
   const gotoWrite = () => {
@@ -40,7 +41,9 @@ const FeedView = () => {
     <ViewContainer>
       <StyledWidthDiv>
         <FlexDiv>
-          <CustomSearchInput />
+          <CustomSearchInput
+            searchValue={searchValue} setSearchValue={setSearchValue}
+          />
           <FlexGrowDiv />
           <Button
             variant="contained"

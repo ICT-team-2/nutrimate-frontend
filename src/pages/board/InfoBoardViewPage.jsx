@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { EDITOR_HEIGHT } from '@src/utils/const.js';
 import ViewHashtag from '@src/component/board/info/view/ViewHashtag.jsx';
 import InfoComments from '@src/component/board/info/view/InfoComments.jsx';
+import KakaoMap from '@src/component/board/KakaoMap';
 
 import KakaoMap from '@src/component/board/KakaoMap';
 import axios from 'axios';
@@ -67,6 +68,7 @@ const InfoBoardViewPage = () => {
 
   return (
     <InfoBoardViewContainer>
+
     <Typography variant="h6">{board.title}</Typography>
     <WriterTypo variant="subtitle2">
       <div>{board.writer} {Seperator} </div>
@@ -83,6 +85,7 @@ const InfoBoardViewPage = () => {
     </BodyTypo>
     <InfoComments />
   </InfoBoardViewContainer>
+
   );
 };
 

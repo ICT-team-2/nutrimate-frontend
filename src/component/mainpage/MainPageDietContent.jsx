@@ -63,8 +63,8 @@ const ColumnFlexDiv = styled.div`
     display: flex;
     flex-direction: column;
     padding: 30px;
-    margin-left: ${({ index }) => (parseInt(index) % 2 === 0 ? '150px' : '0')};
-    margin-right: ${({ index }) => (parseInt(index) % 2 === 0 ? '0' : '150px')};
+    margin-left: ${({ index }) => (parseInt(index) % 2 === 0 ? '5vw' : '0')};
+    margin-right: ${({ index }) => (parseInt(index) % 2 === 0 ? '0' : '5vw')};
     height: 700px;
 
 `;

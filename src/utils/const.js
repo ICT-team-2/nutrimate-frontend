@@ -1,3 +1,5 @@
+import { convertDateToUrlParam } from '@src/utils/functions.js';
+
 export const TITLE = {
   APP: 'NutriMate',
   ALL_INFO_BOARD: '전체',
@@ -28,6 +30,13 @@ export const PATH_PARAMS = {
   EDIT: 'edit',
   DELETE: 'delete',
   CHAT: 'chat',
+  LOGIN: 'login',
+  REGISTER: 'register',
+  MEMBER: 'member',
+  SURVEY: 'survey',
+  ADMIN: 'admin',
+  CHART: 'chart',
+  MANAGE: 'manage',
 };
 
 //
@@ -52,6 +61,14 @@ export const ROUTER_LINKS = {
   VIEW_INFO: PATH_PARAMS.INFO + '/' + PATH_PARAMS.VIEW,
   EDIT_INFO: PATH_PARAMS.INFO + '/' + PATH_PARAMS.EDIT,
   DELETE_USER: PATH_PARAMS.INFO + '/' + PATH_PARAMS.DELETE,
+  LOGIN: PATH_PARAMS.LOGIN,
+  REGISTER: PATH_PARAMS.REGISTER,
+  MEMBER: PATH_PARAMS.MEMBER,
+  SURVEY: PATH_PARAMS.SURVEY,
+  ADMIN: PATH_PARAMS.ADMIN,
+  CHART: PATH_PARAMS.CHART,
+  MANAGE: PATH_PARAMS.MANAGE,
+  WRITE: PATH_PARAMS.WRITE,
 };
 
 export const LINKS = {
@@ -79,8 +96,11 @@ export const LINKS = {
 
   LOGIN: '/' + ROUTER_LINKS.MEMBER + '/' + ROUTER_LINKS.LOGIN,
   REGISTER: '/' + ROUTER_LINKS.MEMBER + '/' + ROUTER_LINKS.REGISTER,
-
-  INFO_BOARD_VIEW: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_VIEW + '/:boardId',
+  SURVEY: '/' + ROUTER_LINKS.SURVEY,
+  ADMIN_CHART: '/' + ROUTER_LINKS.ADMIN + '/' + ROUTER_LINKS.CHART,
+  ADMIN_MANAGE: '/' + ROUTER_LINKS.ADMIN + '/' + ROUTER_LINKS.MANAGE,
+  RECORD_CHART: '/' + ROUTER_LINKS.RECORD + '/' + ROUTER_LINKS.CHART,
+  RECORD_WRITE: '/' + ROUTER_LINKS.RECORD + '/' + ROUTER_LINKS.WRITE,
 
 };
 
@@ -95,7 +115,7 @@ export const MENU_LIST = {
 
   RECORD: {
     TITLE: '기록',
-    PATH: LINKS.RECORD,
+    PATH: `${LINKS.RECORD_WRITE}/${convertDateToUrlParam()}`,
   },
   CALENDAR: {
     TITLE: '캘린더',
@@ -122,5 +142,68 @@ export const MENU_LIST = {
     TITLE: '설정',
     PATH: LINKS.SETTING,
   },
+};
+
+export const USER_INFOS = {
+  SPORT: {
+    TITLE: '일주일에 운동을 하는 횟수',
+    LABEL: '운동횟수',
+    KEYS: ['LOW', 'MEDIUM', 'HIGH'],
+    VALUES: ['적게(0-2회)', '보통(3-4회)', '많이(5회 이상)'],
+  },
+  DIET: {
+    TITLE: '식단',
+    LABEL: '식단',
+    KEYS: ['NORMAL', 'EXERCISE', 'KITO', 'VEGAN', 'CUSTOM'],
+    VALUES: ['일반 식단', '운동 식단', '키토 식단', '비건 식단', '사용자 정의'],
+    NORMAL: {
+      KEYS: 'NORMAL',
+      VALUES: '일반 식단',
+      CARBO: 50,
+      PROTEIN: 20,
+      FAT: 30,
+    },
+    EXERCISE: {
+      KEYS: 'EXERCISE',
+      VALUES: '운동 식단',
+      CARBO: 45,
+      PROTEIN: 35,
+      FAT: 20,
+    },
+    KITO: {
+      KEYS: 'KITO',
+      VALUES: '케토 식단',
+      CARBO: 5,
+      PROTEIN: 20,
+      FAT: 75,
+    },
+    VEGAN: {
+      KEYS: 'VEGAN',
+      VALUES: '비건 식단',
+      CARBO: 50,
+      PROTEIN: 25,
+      FAT: 25,
+    },
+    CUSTOM: {
+      KEYS: 'CUSTOM',
+      VALUES: '사용자 정의',
+    },
+  },
+  GENDER: {
+    TITLE: '성별',
+    MALE: {
+      LABEL: '남자',
+      VALUES: 'M',
+    },
+    FEMALE: {
+      LABEL: '여자',
+      VALUES: 'F',
+    },
+  },
+};
+
+export const DUMMY_USER = {
+  USER_ID: 3,
+  USER_NICK: 'ExampleUser2',
 };
 
