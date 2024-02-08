@@ -11,7 +11,6 @@ import ViewHashtag from '@src/component/board/info/view/ViewHashtag.jsx';
 import InfoComments from '@src/component/board/info/view/InfoComments.jsx';
 import KakaoMap from '@src/component/board/KakaoMap';
 
-import KakaoMap from '@src/component/board/KakaoMap';
 import axios from 'axios';
 
 
@@ -53,7 +52,7 @@ const InfoBoardViewPage = () => {
   useEffect(() => {
     const fetchBoard = async () => {
       try {
-        const response = await axios.get(`/boards/sport/${boardId}`); 
+        const response = await axios.get(`/boards/sport/${boardId}`);
         setBoard(response.data);
       } catch (error) {
         console.error(error);
@@ -69,22 +68,22 @@ const InfoBoardViewPage = () => {
   return (
     <InfoBoardViewContainer>
 
-    <Typography variant="h6">{board.title}</Typography>
-    <WriterTypo variant="subtitle2">
-      <div>{board.writer} {Seperator} </div>
-      <Categorydiv>{board.category}</Categorydiv>
-      <FlexGrowDiv />
-      <LikeButton viewCount />
-      <div>{board.mapPaths}</div>  
-    </WriterTypo>
-    <HashtagContainer>
-      <ViewHashtag hashtag={board.hashtag} />  
-    </HashtagContainer>
-    <BodyTypo variant="body1">
-      {board.content}
-    </BodyTypo>
-    <InfoComments />
-  </InfoBoardViewContainer>
+      <Typography variant="h6">{board.title}</Typography>
+      <WriterTypo variant="subtitle2">
+        <div>{board.writer} {Seperator} </div>
+        <Categorydiv>{board.category}</Categorydiv>
+        <FlexGrowDiv />
+        <LikeButton viewCount />
+        <div>{board.mapPaths}</div>
+      </WriterTypo>
+      <HashtagContainer>
+        <ViewHashtag hashtag={board.hashtag} />
+      </HashtagContainer>
+      <BodyTypo variant="body1">
+        {board.content}
+      </BodyTypo>
+      <InfoComments />
+    </InfoBoardViewContainer>
 
   );
 };
