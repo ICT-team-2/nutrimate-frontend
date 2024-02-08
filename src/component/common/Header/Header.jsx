@@ -86,8 +86,16 @@ const Header = (props) => {
           <StyledButton
             onClick={gotoFeed}
             logowhite={logoWhite + ''}
-          >FEED</StyledButton>
+          >Feed</StyledButton>
           <ProfileImgMenu />
+          <StyledButton
+            onClick={() => {
+              navigate(LINKS.LOGIN);
+            }}
+            logowhite={logoWhite + ''}
+          >
+            Login
+          </StyledButton>
         </Toolbar>
       </StyledAppBar>
       {hasDrawer && <SideMenu />}

@@ -8,6 +8,7 @@ import React from 'react';
 
 export const StyledContainer = muiStyled(Container)`
     margin: 0 6vw;
+    width: auto;
 `;
 
 export const RelativeWrapper = styled.div`
@@ -62,7 +63,7 @@ export const CustomSearchInput = (props) => {
       ),
     }}
     label={label} id={id} size={size} value={searchValue}
-    onKeyPress={handleKeyPress} 
+    onKeyPress={handleKeyPress}
     onChange={handleChange}  // onChange 핸들러를 추가합니다.
   />;
 };
@@ -129,6 +130,7 @@ export const FlexGrowDiv = styled.div`
 
 export const FlexDiv = styled.div`
     display: flex;
+    flex-direction: ${({ flexdirection }) => flexdirection || 'row'};
 `;
 
 export const Seperator = '·';

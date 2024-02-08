@@ -15,7 +15,10 @@ export const ResetStyleInput = styled.input`
 const StyledUploadImgDiv = styled.div`
     width: ${({ width }) => width || '200px'};
     height: ${({ height }) => height || '100px'};
-
+    min-width: ${({ minwidth, afterupload }) => afterupload === 'true' ? 'auto' : minwidth || 'auto'};
+    min-height: ${({ minheight, afterupload }) => afterupload === 'true' ? 'auto' : minheight || 'auto'};
+    max-width: ${({ maxwidth }) => maxwidth || 'auto'};
+    max-height: ${({ maxheight }) => maxheight || 'auto'};
     border: 1px dashed ${({ theme }) => theme['border-color-deep']};
     background-color: ${({ theme }) => theme['white']};
     display: flex;
@@ -34,7 +37,7 @@ const StyledUploadImgDivInner = styled.div`
 const StyledUploadImg = styled.img`
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    //object-fit: cover;
 `;
 
 const StyledButton = muiStyled(Button)`
@@ -42,9 +45,13 @@ const StyledButton = muiStyled(Button)`
 `;
 
 export const ImgUploader = (props) => {
-  const { width, height, children: title } = props;
-  const [selectedImage, setSelectedImage] = useState(null);
+  const {
+    width, height, children: title,
+    selectedImage, setSelectedImage, minheight, maxwidth,
+    maxheight, minwidth,
+  } = props;
   const fileInputRef = useRef();
+  const [afterUpload, setAfterUpload] = useState(false);
 
   const handleUploadClick = () => {
     fileInputRef.current.click();
@@ -57,6 +64,7 @@ export const ImgUploader = (props) => {
       setSelectedImage(reader.result);
     };
     reader.readAsDataURL(file);
+    setAfterUpload(true);
   };
 
   const handleDrop = (event) => {
@@ -69,6 +77,7 @@ export const ImgUploader = (props) => {
     if (file) {
       reader.readAsDataURL(file);
     }
+    setAfterUpload(true);
   };
 
   const handleDragOver = (event) => {
@@ -89,6 +98,11 @@ export const ImgUploader = (props) => {
         onDragOver={handleDragOver}
         width={width}
         height={height}
+        minheight={minheight}
+        maxwidth={maxwidth}
+        maxheight={maxheight}
+        minwidth={minwidth}
+        afterupload={afterUpload + ''}
       >
         {selectedImage ? (
           <StyledUploadImg src={selectedImage} />
@@ -101,4 +115,9 @@ export const ImgUploader = (props) => {
       </StyledUploadImgDiv>
     </div>
   );
+};
+ImgUploader.defaultProps = {
+  width: '200px',
+  height: '100px',
+  children: '이미지 업로드',
 };
