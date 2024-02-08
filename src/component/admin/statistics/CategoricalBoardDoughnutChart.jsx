@@ -59,22 +59,23 @@ const DoughnutChartContainer = styled.div`
 const TitleTypo = styled(Typography)`
     padding: 20px 0 0 20px;
 `;
+const SubTitleTypo = styled(TitleTypo)`
+    color: ${({ theme }) => theme['gray-light-text']};
+`;
 
 export function CategoricalBoardDoughnutChart() {
   return (
     <StatisticsCard
-      titleComponent={(<><TitleTypo variant="h6">
+      titleComponent={(<><SubTitleTypo variant="h6">
           오늘 신규회원: 0&nbsp;&nbsp;&nbsp; 오늘 방문자: 0
-        </TitleTypo>
+        </SubTitleTypo>
           <TitleTypo variant="h6">카테고리 별 게시글 수</TitleTypo>
         </>
       )}
     >
-
       <DoughnutChartContainer>
         <Doughnut data={data} options={options} />
       </DoughnutChartContainer>
-
     </StatisticsCard>
   );
 }

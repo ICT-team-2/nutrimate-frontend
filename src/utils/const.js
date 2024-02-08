@@ -1,3 +1,5 @@
+import { convertDateToUrlParam } from '@src/utils/functions.js';
+
 export const TITLE = {
   APP: 'NutriMate',
   ALL_INFO_BOARD: '전체',
@@ -111,7 +113,7 @@ export const MENU_LIST = {
 
   RECORD: {
     TITLE: '기록',
-    PATH: LINKS.RECORD,
+    PATH: `${LINKS.RECORD_WRITE}/${convertDateToUrlParam()}`,
   },
   CALENDAR: {
     TITLE: '캘린더',
