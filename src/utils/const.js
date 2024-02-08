@@ -28,6 +28,9 @@ export const PATH_PARAMS = {
   EDIT: 'edit',
   DELETE: 'delete',
   CHAT: 'chat',
+  LOGIN: 'login',
+  REGISTER: 'register',
+  MEMBER: 'member',
 };
 
 //
@@ -52,6 +55,10 @@ export const ROUTER_LINKS = {
   VIEW_INFO: PATH_PARAMS.INFO + '/' + PATH_PARAMS.VIEW,
   EDIT_INFO: PATH_PARAMS.INFO + '/' + PATH_PARAMS.EDIT,
   DELETE_USER: PATH_PARAMS.INFO + '/' + PATH_PARAMS.DELETE,
+  LOGIN: PATH_PARAMS.LOGIN,
+  REGISTER: PATH_PARAMS.REGISTER,
+  MEMBER: PATH_PARAMS.MEMBER,
+
 };
 
 export const LINKS = {
@@ -76,6 +83,8 @@ export const LINKS = {
   VIEW_INFO: '/' + ROUTER_LINKS.SETTING + '/' + ROUTER_LINKS.VIEW_INFO,
   EDIT_INFO: '/' + ROUTER_LINKS.SETTING + '/' + ROUTER_LINKS.EDIT_INFO,
   DELETE_USER: '/' + ROUTER_LINKS.SETTING + '/' + ROUTER_LINKS.DELETE_USER,
+  LOGIN: '/' + ROUTER_LINKS.MEMBER + '/' + ROUTER_LINKS.LOGIN,
+  REGISTER: '/' + ROUTER_LINKS.MEMBER + '/' + ROUTER_LINKS.REGISTER,
 };
 
 export const FOOTER_HEIGHT = '13px';
@@ -118,3 +127,7 @@ export const MENU_LIST = {
   },
 };
 
+export const DUMMY_USER = {
+  USER_ID: 3,
+  USER_NICK: 'ExampleUser2'
+}
