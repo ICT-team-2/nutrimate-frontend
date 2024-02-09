@@ -16,7 +16,7 @@ import HeightWeightInfo
   from '@src/component/setting/userinfo/HeightWeightInfo.jsx';
 import GenderInfo from '@src/component/setting/userinfo/GenderInfo.jsx';
 import SportSelectBox from '@src/component/setting/userinfo/SportSelectBox.jsx';
-import { USERINFOS } from '@src/component/setting/const.js';
+import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
 import DietSelectBox from '@src/component/setting/userinfo/DietSelectBox.jsx';
 
 const FIELD_WIDTH = 'calc(100% + 60px)';
@@ -62,42 +62,42 @@ const StyledDiv = styled.div`
 `;
 
 const UserViewInfo = () => {
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
+
   const navigate = useNavigate();
   return (
     <>
       <NameProfileComponent />
-      <StyledTypography variant='h5'>소개</StyledTypography>
+      <StyledTypography variant="h5">소개</StyledTypography>
       <StyledTextField
         variant={'outlined'} multiline rows={4}
-        label='자기소개' placeholder='자기 소개를 입력해주세요'
+        label="자기소개" placeholder="자기 소개를 입력해주세요"
         disabled
         value={'자기소개를 입력해주세요'}
       />
-      <StyledTypography variant='h5'>추가정보</StyledTypography>
-      <InfoContainer height='auto'>
+      <StyledTypography variant="h5">추가정보</StyledTypography>
+      <InfoContainer height="auto">
         <InfoInnerContainer>
           <AdditionalInfos
-            title={USERINFOS.EMAIL.TITLE}
-            label={USERINFOS.EMAIL.LABEL}
+            title={SETTING_USER_INFOS.EMAIL.TITLE}
+            label={SETTING_USER_INFOS.EMAIL.LABEL}
             value={'email@email.com'}
             disabled
           />
           <AdditionalInfos
-            title={USERINFOS.CALORY.TITLE}
-            label={USERINFOS.CALORY.LABEL}
+            title={SETTING_USER_INFOS.CALORY.TITLE}
+            label={SETTING_USER_INFOS.CALORY.LABEL}
             value={'2000kcal'}
             disabled
           />
           <DietSelectBox
-            title={USERINFOS.DIET.TITLE} label={USERINFOS.DIET.LABEL}
-            keys={USERINFOS.DIET.KEYS}
-            values={USERINFOS.DIET.VALUES}
-            defaultValue={USERINFOS.DIET.CUSTOM.KEYS}
+            title={SETTING_USER_INFOS.DIET.TITLE} label={SETTING_USER_INFOS.DIET.LABEL}
+            keys={SETTING_USER_INFOS.DIET.KEYS}
+            values={SETTING_USER_INFOS.DIET.VALUES}
+            defaultValue={SETTING_USER_INFOS.DIET.CUSTOM.KEYS}
             disabled
           />
           <DietRatioInfo disabled />
@@ -109,14 +109,14 @@ const UserViewInfo = () => {
       <StyledDiv>
         <FlexGrowDiv />
         <Button
-          variant='contained'
+          variant="contained"
           onClick={() => {
             navigate(LINKS.EDIT_INFO);
           }}
         >개인정보 수정</Button>
       </StyledDiv>
     </>
-  
+
   );
 };
 

@@ -8,6 +8,7 @@ import React from 'react';
 
 export const StyledContainer = muiStyled(Container)`
     margin: 0 6vw;
+    width: auto;
 `;
 
 export const RelativeWrapper = styled.div`
@@ -42,7 +43,6 @@ export const StyledSearchInput = muiStyled(TextField)({
 export const CustomSearchInput = (props) => {
   // eslint-disable-next-line react/prop-types
   const { label, id, size, callback, searchValue, setSearchValue } = props;
-
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
@@ -130,6 +130,7 @@ export const FlexGrowDiv = styled.div`
 
 export const FlexDiv = styled.div`
     display: flex;
+    flex-direction: ${({ flexdirection }) => flexdirection || 'row'};
 `;
 
 export const Seperator = '·';

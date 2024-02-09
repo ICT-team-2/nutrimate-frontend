@@ -1,4 +1,4 @@
-import { LINKS, ROUTER_LINKS } from '@src/utils/const.js';
+import { LINKS, ROUTER_LINKS, USER_INFOS } from '@src/utils/const.js';
 
 export const SETTING_LIST = {
   USERINFO: {
@@ -22,62 +22,10 @@ export const SETTING_DRAWER_HEIGHT = {
   DELETE_USER: '465px',
 };
 
-export const USERINFOS = {
-  SPORT: {
-    TITLE: '일주일에 운동을 하는 횟수',
-    LABEL: '운동횟수',
-    KEYS: ['LOW', 'MEDIUM', 'HIGH'],
-    VALUES: ['적게(0-2회)', '보통(3-5회)', '많이(5-7회)'],
-  },
-  DIET: {
-    TITLE: '식단',
-    LABEL: '식단',
-    KEYS: ['NORMAL', 'EXERCISE', 'KITO', 'VEGAN', 'CUSTOM'],
-    VALUES: ['일반 식단', '운동 식단', '케토 식단', '비건 식단', '사용자 정의'],
-    NORMAL: {
-      KEYS: 'NORMAL',
-      VALUES: '일반 식단',
-      CARBO: 50,
-      PROTEIN: 20,
-      FAT: 30,
-    },
-    EXERCISE: {
-      KEYS: 'EXERCISE',
-      VALUES: '운동 식단',
-      CARBO: 45,
-      PROTEIN: 35,
-      FAT: 20,
-    },
-    KITO: {
-      KEYS: 'KITO',
-      VALUES: '케토 식단',
-      CARBO: 5,
-      PROTEIN: 20,
-      FAT: 75,
-    },
-    VEGAN: {
-      KEYS: 'VEGAN',
-      VALUES: '비건 식단',
-      CARBO: 50,
-      PROTEIN: 25,
-      FAT: 25,
-    },
-    CUSTOM: {
-      KEYS: 'CUSTOM',
-      VALUES: '사용자 정의',
-    },
-  },
-  GENDER: {
-    TITLE: '성별',
-    MALE: {
-      LABEL: '남자',
-      VALUES: 'M',
-    },
-    FEMALE: {
-      LABEL: '여자',
-      VALUES: 'F',
-    },
-  },
+export const SETTING_USER_INFOS = {
+  SPORT: { ...USER_INFOS.SPORT },
+  DIET: { ...USER_INFOS.DIET },
+  GENDER: { ...USER_INFOS.GENDER },
   INTRODUCE: {
     TITLE: '자기소개',
     LABEL: '자기 소개를 입력해주세요',

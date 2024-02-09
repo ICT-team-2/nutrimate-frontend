@@ -46,24 +46,27 @@ const ChatBotComponent = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-  
+
   return (
     <ChatBotContainer>
       <Fade in={openChat} timeout={250}>
         <ChatBotPaper openchat={openChat + ''} ref={chatBotRef}>
-          <ChatUI title='챗봇' overflow height={'450px'} data={[
-            {
-              content: '대사1',
-              nick: '가길동',
-            },
-            {
-              content: '대사2',
-              nick: '나길동',
-            }]} />
+          <ChatUI title="챗봇" overflow
+                  height={'50vh'}
+                  maxheight={'450px'}
+                  data={[
+                    {
+                      content: '대사1',
+                      nick: '가길동',
+                    },
+                    {
+                      content: '대사2',
+                      nick: '나길동',
+                    }]} />
         </ChatBotPaper>
       </Fade>
       <CircleButton
-        variant='contained'
+        variant="contained"
         onClick={() => {
           setOpenChat(!openChat);
         }}

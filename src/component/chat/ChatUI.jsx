@@ -22,24 +22,25 @@ const ChatBody = styled.div`
     flex-grow: 1;
     overflow-y: ${({ overflow }) => overflow === 'true' ? 'auto' : 'visible'};
     height: ${({ height }) => height ? height : 'auto'};
+    max-height: ${({ maxheight }) => maxheight ? maxheight : 'auto'};
 `;
 
 const ChatUI = (props) => {
-  const { title, overflow, height, data } = props;
+  const { title, overflow, height, data, maxheight } = props;
   return (
     <ChatContainer>
       <ChatHeader>
-        <Typography variant='h6'>{title}</Typography>
+        <Typography variant="h6">{title}</Typography>
       </ChatHeader>
       <Divider />
       <ChatBody overflow={overflow + ''} height={height}>
         <MyTalkComponent />
         <OtherTalkComponent />
-        <MyTalkComponent content='아무거나 쓰기 귀찮은데 뭐쓰지 뚜뚜뚜뚜따따따따 ㅁㄴㅇㅁㄴㅐㅇㄴㅁㅇㅁㄴㅇ'
+        <MyTalkComponent content="아무거나 쓰기 귀찮은데 뭐쓰지 뚜뚜뚜뚜따따따따 ㅁㄴㅇㅁㄴㅐㅇㄴㅁㅇㅁㄴㅇ"
                          nick={'가길동'} />
-        <MyTalkComponent content='아무거나 쓰기 귀찮은데 뭐쓰지 뚜뚜뚜뚜따따따따 ㅁㄴㅇㅁㄴㅐㅇㄴㅁㅇㅁㄴㅇ'
+        <MyTalkComponent content="아무거나 쓰기 귀찮은데 뭐쓰지 뚜뚜뚜뚜따따따따 ㅁㄴㅇㅁㄴㅐㅇㄴㅁㅇㅁㄴㅇ"
                          nick={'나길동'} />
-        {data.length !== 0 && data.map((d, i) => <OtherTalkComponent
+        {data && data.map((d, i) => <OtherTalkComponent
           key={i} content={d.content}
           nick={d.nick} />)}
       </ChatBody>
@@ -49,7 +50,6 @@ const ChatUI = (props) => {
 };
 ChatUI.defaultProps = {
   title: '챌린지 주제',
-  data: [],
 };
 
 export default ChatUI;

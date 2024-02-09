@@ -4,7 +4,7 @@ import { TextField } from '@mui/material';
 import styled from 'styled-components';
 import { useAtom } from 'jotai/react';
 import { carboAtom, dietStateAtom, fatAtom, proteinAtom } from '@src/component/setting/atom.js';
-import { USERINFOS } from '@src/component/setting/const.js';
+import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
 import { UserInfoContainerDiv } from '@src/component/setting/userinfo/UserViewInfo.jsx';
 
 
@@ -82,7 +82,7 @@ const DietRatioInfo = ({ disabled }) => {
           onFocus={() => setIsCarboFocused('true')}
           onBlur={() => setIsCarboFocused(undefined)}
           value={carbo}
-          disabled={disabled || diet !== USERINFOS.DIET.CUSTOM.KEYS}
+          disabled={disabled || diet !== SETTING_USER_INFOS.DIET.CUSTOM.KEYS}
         ></StyledTextField>
         <ColonDiv>:</ColonDiv>
         <StyledTextField
@@ -90,7 +90,7 @@ const DietRatioInfo = ({ disabled }) => {
           onFocus={() => setIsProteinFocused('true')}
           onBlur={() => setIsProteinFocused(undefined)}
           value={protein}
-          disabled={disabled || diet !== USERINFOS.DIET.CUSTOM.KEYS}
+          disabled={disabled || diet !== SETTING_USER_INFOS.DIET.CUSTOM.KEYS}
 
         ></StyledTextField>
         <ColonDiv>:</ColonDiv>
@@ -99,7 +99,7 @@ const DietRatioInfo = ({ disabled }) => {
           onFocus={() => setIsFatFocused('true')}
           onBlur={() => setIsFatFocused(undefined)}
           value={fat}
-          disabled={disabled || diet !== USERINFOS.DIET.CUSTOM.KEYS}
+          disabled={disabled || diet !== SETTING_USER_INFOS.DIET.CUSTOM.KEYS}
         ></StyledTextField>
       </UserInfoContainerDiv>
     </>

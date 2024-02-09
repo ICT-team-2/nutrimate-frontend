@@ -28,3 +28,13 @@ export const BOARD = {
     ROUTER_LINKS: ROUTER_LINKS.FEED_BOARD,
   },
 };
+
+export const INIT_MAP_STATE = {
+  CENTER: {
+    lat: 37.498004414546934, // 초기값
+    lng: 127.02770621963765,
+  },
+  ZOOM_LEVEL: 3,
+  PATHS: [],
+  DISTANCES: [],
+};

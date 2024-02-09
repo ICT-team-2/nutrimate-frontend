@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { EDITOR_HEIGHT } from '@src/utils/const.js';
 import ViewHashtag from '@src/component/board/info/view/ViewHashtag.jsx';
 import InfoComments from '@src/component/board/info/view/InfoComments.jsx';
+import KakaoMap from '@src/component/board/KakaoMap';
 
 const InfoBoardViewContainer = muiStyled(Container)`
   margin-top: 20px;
@@ -59,7 +60,10 @@ const InfoBoardViewPage = () => {
         <ViewHashtag />
       </HashtagContainer>
       {/* 내용 */}
-      <BodyTypo variant="body1">내용1</BodyTypo>
+      <BodyTypo variant="body1">
+    
+      내용1
+      </BodyTypo>
       <InfoComments />
     </InfoBoardViewContainer>
   );

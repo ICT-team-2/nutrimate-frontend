@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 import { Button, TextField } from '@mui/material';
@@ -22,13 +22,18 @@ const StyledTextField = muiStyled(TextField)`
  * @return {JSX} 피드 글 작성 화면
  */
 const FeedWrite = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
   return (
     <>
       <TitleContainer>
         <Typography variant="h5">피드 작성</Typography>
         <Button variant="contained">등록</Button>
       </TitleContainer>
-      <ImgUploader width="100%" height="400px">이미지 업로드</ImgUploader>
+      <ImgUploader
+        width="100%" height="400px"
+        selectedImage={selectedImage} setSelectedImage={setSelectedImage}
+      >이미지 업로드</ImgUploader>
       <InputHashtag />
       <StyledTextField
         id="outlined-textarea"

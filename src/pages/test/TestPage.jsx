@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import TestComp from '@src/pages/test/TestComp.jsx';
+import SurveyAllergy from '@src/component/survey/SurveyAllergy.jsx';
 
 
 const PageContainer = styled.div`
@@ -12,7 +13,7 @@ const PageContainer = styled.div`
 
 const TestPage = () => {
   return (
-    <TestComp />
+    <SurveyAllergy />
   );
 };
 
