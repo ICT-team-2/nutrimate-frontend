@@ -87,15 +87,18 @@ const Header = (props) => {
             onClick={gotoFeed}
             logowhite={logoWhite + ''}
           >FEED</StyledButton>
-          <ProfileImgMenu />
-          <StyledButton
-            onClick={() => {
-              navigate(LINKS.LOGIN);
-            }}
-            logowhite={logoWhite + ''}
-          >
-            Login
-          </StyledButton>
+          {sessionStorage.getItem('userId') ? (
+            <ProfileImgMenu />
+          ) : (
+            <StyledButton
+              onClick={() => {
+                navigate(LINKS.LOGIN);
+              }}
+              logowhite={logoWhite + ''}
+            >
+              Login
+            </StyledButton>
+          )}
         </Toolbar>
       </StyledAppBar>
       {hasDrawer && <SideMenu />}

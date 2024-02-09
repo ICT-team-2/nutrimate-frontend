@@ -59,7 +59,9 @@ const LastTitle = styled.div`
 `;
 
 
+
 const MainPage = ({ imgSize }) => {
+
   return (
     <>
       <MainImg src={MainPageImg} size={imgSize} />

@@ -50,9 +50,16 @@ const ProfileImgMenu = () => {
         onClose={handleCloseUserMenu}
       >
         {settings.map((setting) => (
-          <MenuItem key={setting} onClick={handleCloseUserMenu}>
-            <Typography textAlign='center'>{setting}</Typography>
-          </MenuItem>
+          <MenuItem key={setting} onClick={() => {
+            handleCloseUserMenu();
+            if (setting === 'Logout') {
+              sessionStorage.removeItem('userId');
+              window.location.href = '/'; //로그아웃 후 메인화면
+            }
+          }}
+        >
+          <Typography textAlign='center'>{setting}</Typography>
+        </MenuItem>
         ))}
       </Menu>
     </Box>
