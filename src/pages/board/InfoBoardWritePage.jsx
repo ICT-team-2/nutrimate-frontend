@@ -29,6 +29,11 @@ import useInitMapData from '@src/component/board/hooks/useInitMapData.jsx';
 import DOMPurify from 'dompurify';
 import axios from 'axios';
 
+import { LINKS } from '@src/utils/const.js';
+import { useNavigate } from 'react-router-dom';
+import { border } from '@mui/system';
+
+
 //테스트용 더미 데이터 - 추후 삭제 예정
 const dummyPaths = [
   {
