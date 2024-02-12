@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -6,6 +6,10 @@ import MyTalkComponent from '@src/component/chat/MyTalkComponent.jsx';
 import ChatInput from '@src/component/chat/ChatInput.jsx';
 import OtherTalkComponent from '@src/component/chat/OtherTalkComponent.jsx';
 import { useRef, useEffect } from "react";
+import ChatLoading from '@src/component/chat/chatbot/ChatLoading.jsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
+import ChatBotComponent from '@src/component/chat/chatbot/ChatBotComponent';
 
 const ChatContainer = styled.div`
     width: 100%;
@@ -33,7 +37,8 @@ const ChatOutAndEnter = styled.div`
 
 
 const ChatUI = (props) => {
-  const { title, overflow, height, data, onSend,nickname } = props;
+  const { title, overflow, height, data, onSend,nickname,loading,micicon } = props;
+  const [voiceReading, setVoiceReading] = useState(false);
 
   const scrollRef = useRef();
   useEffect(() => {
@@ -43,15 +48,20 @@ const ChatUI = (props) => {
     }
   }, [data]);
 
+  const Voice = () => {
+     setVoiceReading(true);
+  };
+
 
 
   return (
     <ChatContainer>
       <ChatHeader>
-        <Typography variant='h6'>{title}</Typography>
+        <Typography variant='h6'>{title}{micicon && <FontAwesomeIcon onClick={Voice} icon={faMicrophone} style={{ fontSize: '24px', color: 'red', float: 'right' }} />} </Typography>
       </ChatHeader>
       <Divider />
       <ChatBody ref={scrollRef}  overflow={overflow + ''} height={height}>
+      
       
       {
         Array.isArray(data) 
@@ -69,8 +79,8 @@ const ChatUI = (props) => {
                 :<ChatOutAndEnter> {data.chatMessagee}</ChatOutAndEnter>
         
       }
-         
-
+      {loading && <ChatLoading></ChatLoading>}   
+      {voiceReading && <ChatBotComponent voiceReading={voiceReading}/>}
 
 
       </ChatBody>
