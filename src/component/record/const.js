@@ -4,7 +4,20 @@ export const RECORD_TABS = {
   ALARM: 2,
 };
 
-export const FOOD_RECORD_BUTTONS = {};
+export const FOOD_RECORD_BUTTONS = {
+  IMAGE: {
+    LABEL: '이미지로 등록',
+    VALUE: 'IMAGE',
+  },
+  SEARCH_DB: {
+    LABEL: '검색하기',
+    VALUE: 'SEARCH_DB',
+  },
+  MANUAL: {
+    LABEL: '직접 등록',
+    VALUE: 'MANUAL',
+  },
+};
 
 export const SELECT_MEAL_TIME = {
   BREAKFAST: {

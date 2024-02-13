@@ -9,6 +9,9 @@ import { Button } from '@mui/material';
 import SelectMealTime from '@src/component/record/diet/SelectMealTime.jsx';
 import RecordImgUploader
   from '@src/component/record/diet/RecordImgUploader.jsx';
+import { FOOD_RECORD_BUTTONS } from '@src/component/record/const.js';
+import SearchFoodDB from '@src/component/record/diet/SearchFoodDB.jsx';
+import ManualRecordDiet from '@src/component/record/diet/ManualRecordDiet.jsx';
 
 const RecordContainer = styled.div`
     //margin: 0 auto;
@@ -31,28 +34,43 @@ const SelectContainer = styled.div`
     margin-bottom: 30px;
     display: flex;
     flex-direction: row;
-
 `;
 
 const DietRecord = () => {
-  
+
+  const [btnValue, setBtnValue] = useState(FOOD_RECORD_BUTTONS.IMAGE.VALUE);
+
+  const handleBtnClick = (value) => {
+    setBtnValue(value);
+  };
+
   return (
     <OuterContainer>
       <SelectContainer>
         <SelectMealTime />
         <FlexGrowDiv />
         <div>
-          <StyledButton variant='contained'>이미지로 등록</StyledButton>
-          <StyledButton variant='contained'>검색하기</StyledButton>
-          <StyledButton variant='contained'>직접 등록</StyledButton>
+          {Object.values(FOOD_RECORD_BUTTONS).map((button, index) => (
+            <StyledButton
+              variant="contained" key={button.VALUE}
+              onClick={() => {
+                handleBtnClick(button.VALUE);
+              }}
+            >
+              {button.LABEL}
+            </StyledButton>
+          ))}
+
         </div>
       </SelectContainer>
       <RecordContainer>
-        <RecordImgUploader />
+        {btnValue === FOOD_RECORD_BUTTONS.IMAGE.VALUE && <RecordImgUploader />}
+        {btnValue === FOOD_RECORD_BUTTONS.SEARCH_DB.VALUE && <SearchFoodDB />}
+        {btnValue === FOOD_RECORD_BUTTONS.MANUAL.VALUE && <ManualRecordDiet />}
       </RecordContainer>
       <div>대충 분석 결과</div>
     </OuterContainer>
-  
+
   );
 };
 
