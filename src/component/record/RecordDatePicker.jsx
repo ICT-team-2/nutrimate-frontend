@@ -10,11 +10,13 @@ import 'dayjs/locale/ko';
 import { useAtom } from 'jotai/react';
 import { datePickerAtom } from '@src/component/calendar/atom.js';
 import dayjs from 'dayjs';
+import useNavigateToRecord from '@src/hooks/useNavigateToRecord.jsx';
 
-export default function MonthPicker ({ children, date, onNavigate }) {
+export default function RecordDatePicker ({ children, date }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [selectedDate, setSelectedDate] = useAtom(datePickerAtom);
+  const gotoRecord = useNavigateToRecord();
   
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -23,11 +25,7 @@ export default function MonthPicker ({ children, date, onNavigate }) {
     setAnchorEl(null);
   };
   const handleDateChange = (d) => {
-    setSelectedDate(d['$d']);
-    console.log(d);
-    date.setYear(d['$d'].getFullYear());
-    date.setMonth(d['$d'].getMonth());
-    onNavigate('current');
+    gotoRecord(d['$d']);
   };
   
   return (
@@ -55,8 +53,8 @@ export default function MonthPicker ({ children, date, onNavigate }) {
               label='날짜 선택'
               value={dayjs(selectedDate)}
               onChange={handleDateChange}
-              views={['year', 'month']}
-              format='YYYY/MM'
+              views={['year', 'month', 'day']}
+              format='YYYY/MM/DD'
               renderInput={(props) => <TextField {...props} />}
             />
           </LocalizationProvider>

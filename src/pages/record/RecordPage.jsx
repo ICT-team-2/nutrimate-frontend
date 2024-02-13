@@ -14,12 +14,11 @@ const TabsContainer = styled.div`
 `;
 
 const RecordPageContainer = styled(Container)`
-    margin: 0 10vw 0 10vw;
-
+    margin: 0 auto;
 `;
 const InnerContainer = styled.div`
-    margin: 0 auto;
-    width: 80%;
+    padding: 0 50px;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -27,20 +26,20 @@ const InnerContainer = styled.div`
 
 const RecordPage = () => {
   const [value, setValue] = useState(0);
-
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  
   return (
     <RecordPageContainer>
       <InnerContainer>
         <DisplayRecordDate />
         <TabsContainer>
           <Tabs value={value} onChange={handleChange}>
-            <Tab label="식단기록" />
-            <Tab label="운동기록" />
-            <Tab label="알람" />
+            <Tab label='식단기록' />
+            <Tab label='운동기록' />
+            <Tab label='알람' />
           </Tabs>
         </TabsContainer>
         <DietRecord />
