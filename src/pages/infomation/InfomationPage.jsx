@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import Box from '@mui/material/Box';
 import InfomationTabs from '@src/component/infomation/InfomationTabs.jsx';
-import { CustomSearchInput } from '@src/component/common/GlobalComponents.jsx';
-import { useAtomValue } from 'jotai/react';
-import { infoTabStateAtom, recommandMenuStateAtom } from '@src/component/infomation/atom.js';
-import NewsContents from '@src/component/infomation/news/NewsContents.jsx';
+import { CustomSearchInput, FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
+import { useAtom, useAtomValue } from 'jotai/react';
+import { infoTabStateAtom, recommandMenuStateAtom, searchKeywordAtom } from '@src/component/infomation/atom.js';
+
 import { INFO_TABS, RECOMMAND_MENU } from '@src/component/infomation/const.js';
-import NutrientContents from '@src/component/infomation/nutrient/NutrientContents.jsx';
-import SportContents from '@src/component/infomation/sport/SportContents.jsx';
-import RecipeContents from '@src/component/infomation/recipe/RecipeContents.jsx';
+import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
+
+//lazy loading
+const NewsContents = lazy(() =>
+  import('@src/component/infomation/news/NewsContents.jsx'));
+const NutrientContents = lazy(() => import('@src/component/infomation/nutrient/NutrientContents.jsx'));
+const SportContents = lazy(() => import('@src/component/infomation/sport/SportContents.jsx'));
+const RecipeContents = lazy(() => import('@src/component/infomation/recipe/RecipeContents.jsx'));
 
 const InfomationContainer = styled(Container)`
     margin-top: 20px;
@@ -18,27 +23,29 @@ const InfomationContainer = styled(Container)`
 `;
 const TabContainer = styled.div`
     display: flex;
-    justify-content: space-between;
 
 
 `;
 
 
 const InfomationPage = () => {
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useAtom(searchKeywordAtom);
 
 
   return (
     <InfomationContainer>
       <TabContainer>
         <InfomationTabs />
+        <FlexGrowDiv />
         <CustomSearchInput
           searchValue={searchValue}
           setSearchValue={setSearchValue}
         />
       </TabContainer>
       <Box>
-        <Contents />
+        <Suspense fallback={<LoadingComponent />}>
+          <Contents />
+        </Suspense>
       </Box>
     </InfomationContainer>
   );

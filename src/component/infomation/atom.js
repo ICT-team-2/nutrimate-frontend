@@ -11,3 +11,6 @@ export const recommandMenuStateAtom = atom(RECOMMAND_MENU.NUTRIENTS);
 export const selectedNewsCategoryAtom = atom(NEWS_CATEGORY.FOOD);
 export const selectedNutrientsGenderCategoryAtom = atom(NUTRIENTS_GENDER_CATEGORY.ALL);
 export const selectedNutrientsAgeCategoryAtom = atom(NUTRIENTS_GENDER_CATEGORY.ALL);
+
+export const searchKeywordAtom = atom('');
+export const searchCategoryAtom = atom('');

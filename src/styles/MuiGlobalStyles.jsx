@@ -34,6 +34,7 @@ const MuiGlobalStyles = () => {
       '--main-font-weight': themeColor['main-font-weight'],
       '--main-line-height': themeColor['main-line-height'],
       '--main-letter-spacing': themeColor['main-letter-spacing'],
+
     },
   }} />);
 };
