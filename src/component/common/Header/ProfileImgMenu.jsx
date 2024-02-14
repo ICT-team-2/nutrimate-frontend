@@ -8,6 +8,11 @@ import Typography from '@mui/material/Typography';
 import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import { useAtomValue } from 'jotai/react';
 import { uploadedImageAtom } from '@src/component/mypage/atom.js';
+import { useAtom } from 'jotai';
+import { userIdAtom } from '@src/pages/login/atom';
+import { useCookies } from 'react-cookie';
+import axios from 'axios';
+
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -15,6 +20,7 @@ const ProfileImgMenu = () => {
   
   const [anchorElUser, setAnchorElUser] = useState();
   const uploadImg = useAtomValue(uploadedImageAtom);
+  const [userId, setUserId] = useAtom(userIdAtom);
   
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -50,11 +56,12 @@ const ProfileImgMenu = () => {
         onClose={handleCloseUserMenu}
       >
         {settings.map((setting) => (
-          <MenuItem key={setting} onClick={() => {
+          <MenuItem key={setting} onClick={ async () => {
             handleCloseUserMenu();
             if (setting === 'Logout') {
+              await axios.get('/logout');
               sessionStorage.removeItem('userId');
-              window.location.href = '/'; //로그아웃 후 메인화면
+              //window.location.href = '/'; //로그아웃 후 메인화면
             }
           }}
         >

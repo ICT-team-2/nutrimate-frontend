@@ -12,10 +12,8 @@ import Divider from '@mui/material/Divider';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import axios from 'axios';
 import { useAtom } from 'jotai';
-import { userIdAtom } from './atom';
-import { sub } from 'date-fns';
+import { userIdAtom } from '@src/pages/login/atom';
 
-axios.defaults.withCredentials = true;
 
 const LoginContainer = styled(Container)`
     display: flex;
@@ -62,7 +60,7 @@ const LoginPage = () => {
   const [checked, setChecked] = useState(false);
   const [id, setId] = useState(localStorage.getItem('savedId') || '');
   const [password, setPassword] = useState('');
-  const [, setUserId] = useAtom(userIdAtom);
+  // const [userId, setUserId] = useAtom(userIdAtom);
 
   
   const handleLogin = (provider) => {
@@ -88,41 +86,51 @@ const LoginPage = () => {
       userPwd: password,
     })
     .then(response => {
-      const { accessToken } = response.data;
-      axios.defaults.headers.common['ACCESS'] = `${accessToken}`;
-
-      console.log(response.data); // 서버로부터의 응답을 확인
-
-      if (response.data.sub) {
-        // alert('로그인 성공');
-        //window.localStorage.setItem('accessToken', JSON.stringify(accessToken));
-        //userIdAtom.set(sub);
-        //setData(response.data.sub);
-        window.sessionStorage.setItem('userId', JSON.stringify(response.data.sub));
-        setUserId(response.data.sub);
-        console.log('찍히니');
-        window.location.href = '/';
-      } else {
-        alert('로그인 실패');
-      }
+    const { accessToken } = response.data;
+    window.location.href = '/';
     })
-    .catch(error => {
-      console.error('Error:', error);
-    });
- };
+  };
+    //axios.defaults.headers.common['ACCESS'] = `${accessToken}`;
+
+
+    //   console.log(response.data); // 서버로부터의 응답을 확인
+
+//       if (response.data.sub) {
+//         // alert('로그인 성공');
+//         //window.localStorage.setItem('accessToken', JSON.stringify(accessToken));
+//         //userIdAtom.set(sub);
+//         //setData(response.data.sub);
+//         window.sessionStorage.setItem('userId', JSON.stringify(response.data.sub));
+//         setUserId(response.data.sub);
+//         console.log('찍히니');
+//         window.location.href = '/';
+//       } else {
+//         alert('로그인 실패');
+//       }
+//     })
+//     .catch(error => {
+//       console.error('Error:', error);
+    // });
+//  };
+
+ const handleSocialLogin = (provider) => {
+  window.location.href = `http://localhost:9999/oauth2/authorization/${provider}`;
+};
+
+
 
   const setSignupStatus = (status) => {
-    // window.sessionStorage.setItem('userId', JSON.stringify(response.data.sub));
-    // setUserId(response.data.sub);
-    // console.log('찍히니');
-    // window.location.href = '/board/info/all/1';
     window.sessionStorage.setItem('signup_status', status);
   };
 
-  const handleSocialLogin = (provider) => {
-    window.location.href = `http://localhost:9999/oauth2/authorization/${provider}`;
-  };
-
+  // window.onload = function() {
+  //   const params = new URLSearchParams(window.location.search);
+  //   const userId = params.get('userId');
+    
+  //   if (userId) {
+  //     window.sessionStorage.setItem('userId', userId);
+  //   }
+  // };
 
   // // 구글 로그인 처리 함수
   // const handleGoogleLogin = () => {
@@ -206,18 +214,18 @@ const LoginPage = () => {
           <img src='/src/asset/image/oauth/KakaoLogin.png' alt='카카오 로그인' />
         </OAuthButton> */}
 
-        <OAuthButton onClick={() => handleSocialLogin('google')}>
-          <img src='/src/asset/image/oauth/GoogleLogin.png' alt='구글 로그인' />
-        </OAuthButton>
-        <OAuthButton onClick={() => handleSocialLogin('facebook')}>
-          <img src='/src/asset/image/oauth/FacebookLogin.png' alt='페이스북 로그인' />
-        </OAuthButton>
-        <OAuthButton onClick={() => handleSocialLogin('naver')}>
-          <img src='/src/asset/image/oauth/NaverLogin.png' alt='네이버 로그인' />
-        </OAuthButton>
-        <OAuthButton onClick={() => handleSocialLogin('kakao')}>
-          <img src='/src/asset/image/oauth/KakaoLogin.png' alt='카카오 로그인' />
-        </OAuthButton>
+      <OAuthButton onClick={() => { handleSocialLogin('google'); setSignupStatus('google'); }}>
+        <img src='/src/asset/image/oauth/GoogleLogin.png' alt='구글 로그인' />
+      </OAuthButton>
+      <OAuthButton onClick={() => { handleSocialLogin('facebook'); setSignupStatus('facebook'); }}>
+        <img src='/src/asset/image/oauth/FacebookLogin.png' alt='페이스북 로그인' />
+      </OAuthButton>
+      <OAuthButton onClick={() => { handleSocialLogin('naver'); setSignupStatus('naver'); }}>
+        <img src='/src/asset/image/oauth/NaverLogin.png' alt='네이버 로그인' />
+      </OAuthButton>
+      <OAuthButton onClick={() => { handleSocialLogin('kakao'); setSignupStatus('kakao'); }}>
+        <img src='/src/asset/image/oauth/KakaoLogin.png' alt='카카오 로그인' />
+      </OAuthButton>
         </OAuthContainer>
       </LoginPaper>
     </LoginContainer>

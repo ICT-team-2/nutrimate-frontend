@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import MainPageImg from '@src/asset/image/MainPageImg.jpg';
 import styled from 'styled-components';
 import { Button } from '@mui/material';
@@ -12,6 +12,13 @@ import MainPageDietContent
   from '@src/component/mainpage/MainPageDietContent.jsx';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
+import { useCookies } from 'react-cookie';
+import { jwtDecode } from 'jwt-decode';
+import { useAtom } from 'jotai';
+import { userIdAtom } from '@src/pages/login/atom';
+
+
+  
 
 const MainImg = styled.img`
     width: 100%;
@@ -66,11 +73,45 @@ const LastTitle = styled.div`
 
 const MainPage = ({ imgSize }) => {
   
+// const [token,setToken] = useState('');
+// const cookies = useCookies(['access']);
+// useEffect(() => {
+//   if (cookies.access) {
+//     console.log('aa');
+//     setToken(cookies.access);
+//     sessionStorage.setItem(token);
+//   }
+// });
+
+
+const [token, setToken] = useState('');
+const [cookies] = useCookies(['ACCESS']);
+// 사용자 정보를 저장할 상태를 추가합니다.
+const [userInfo, setUserInfo] = useState(null);
+const [userId, setUserId] = useAtom(userIdAtom);
+  useEffect(() => {
+    if (cookies.ACCESS) {
+      //console.log('Token found:', cookies.ACCESS);
+      setToken(cookies.ACCESS);
+      //sessionStorage.setItem('token', cookies.ACCESS);
+      // 토큰을 디코딩하여 사용자 정보를 추출하고 상태에 저장합니다.
+      const decodedToken = jwtDecode(cookies.ACCESS);
+      setUserInfo(decodedToken);
+      console.log('Decoded Token:', decodedToken);
+      console.log("userId:",decodedToken.userInfo.userId)
+      setUserId(decodedToken.userInfo.userId);
+    }
+  }, [cookies]);
+
   const navigate = useNavigate();
-  
   const gotoSurvey = () => {
     navigate(LINKS.SURVEY);
   };
+
+  useEffect(() => {
+    console.log("userId:",userId)
+  },[userId])
+  
   
   return (
     <>
@@ -113,5 +154,7 @@ const MainPage = ({ imgSize }) => {
 MainPage.defaultProps = {
   imgSize: '100vh',
 };
+
+
 
 export default MainPage;
