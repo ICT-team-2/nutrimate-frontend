@@ -160,6 +160,7 @@ const InfoBoardWritePage = (props) => {
   const onClickRegister = async () => {
     // 유효성 검사
     if (!validateForm()) return;
+
     function removeHtmlTags(content) {
       return content.replace(/<[^>]*>?/gm, '').trim();
     }
@@ -179,7 +180,7 @@ const InfoBoardWritePage = (props) => {
     console.log('DOMPurify content:', content);
     console.log('hashTag:', inputHashTag);
 
-    
+
     // 데이터를 JSON 형식으로 준비
     const data = {
       boardCategory: category === '운동' ? 'exercise' : category,
@@ -193,7 +194,7 @@ const InfoBoardWritePage = (props) => {
       hashTag: JSON.stringify(inputHashTag),
       userId: DUMMY_USER.USER_ID,  // 더미 유저 ID 추가
     };
-    
+
     // axios를 통해 서버에 데이터 전송
     try {
       const response = await axios.post('/boards/sport', data, {
@@ -202,7 +203,7 @@ const InfoBoardWritePage = (props) => {
       console.log(response.data);
       if (response.status === 200) {  // HTTP 상태 코드가 200인 경우(요청 성공)
         alert('등록 완료');  // 등록 완료 알림
-      //
+        //
       } else {
         alert('등록 실패');  // 등록 실패 알림
       }
@@ -210,7 +211,7 @@ const InfoBoardWritePage = (props) => {
       console.error(error);
       alert('등록 중 오류가 발생');  // 오류 발생 알림
     }
-    
+
   };
 
   return (

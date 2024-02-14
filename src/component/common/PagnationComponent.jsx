@@ -8,13 +8,21 @@ const PagingContainer = styled.div`
     justify-content: space-between;
     margin: 40px 0;
 `;
-
+/**
+ *
+ * @param props {object} - props
+ * @param {number} props.pageState 현재 페이지
+ * @param {function} props.handlePageChange 페이지 변경 핸들러
+ * @param {number} props.totalPage 전체 페이지
+ * @returns {Element}
+ * @constructor
+ */
 const PagnationComponent = (props) => {
-  const { pageState, handlePageChange, allPage } = props;
+  const { pageState, handlePageChange, totalPage } = props;
   return (
     <PagingContainer>
       <FlexGrowDiv></FlexGrowDiv>
-      <Pagination count={allPage} color="primary" showFirstButton showLastButton
+      <Pagination count={totalPage} color="primary" showFirstButton showLastButton
                   shape="rounded" page={pageState} onChange={handlePageChange}
       />
     </PagingContainer>
@@ -25,7 +33,7 @@ PagnationComponent.defaultProps = {
   pageState: 1,
   handlePageChange: () => {
   },
-  allPage: 10,
+  totalPage: 10,
 };
 
 export default PagnationComponent;

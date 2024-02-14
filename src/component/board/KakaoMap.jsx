@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { CustomOverlayMap, Map, Polyline } from 'react-kakao-maps-sdk';
 import { Paper } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { CustomSearchInput } from '@src/component/common/GlobalComponents.jsx';
 
 import React, { useRef } from 'react';
@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
     .number {
         color: red;
     }
+
 `;
 
 const StyledPaper = muiStyled(Paper)`
@@ -23,16 +24,18 @@ const StyledPaper = muiStyled(Paper)`
   justify-content: space-between;
 `;
 
+
 /**
  * 카카오 지도를 표시하는 컴포넌트
  * @param props {Object}
  * @param props.nogps {boolean} GPS를 사용하지 않을 때 true
  * @param props.zoomlevel {number} 지도의 확대 레벨
+ * @param props.readonly {boolean} true일 때 지도를 읽기 전용으로 함
  * @returns {Element}
  * @constructor
  */
 const KakaoMap = (props) => {
-  const { nogps, zoomlevel } = props;
+  const { nogps, zoomlevel, readonly } = props;
   const [isdrawing, setIsdrawing] = useState(false);
   const [clickLine, setClickLine] = useState();
   // paths, distances, center는 서버의 데이터로 넘기고,
@@ -63,6 +66,8 @@ const KakaoMap = (props) => {
     _map,
     mouseEvent,
   ) => {
+    if (readonly) return;
+
     if (!isdrawing) {
       setDistanceValues([]);
       setPathValues([]);
@@ -85,16 +90,23 @@ const KakaoMap = (props) => {
     _map,
     mouseEvent,
   ) => {
+    if (readonly) return;
+
     setMousePosition({
       lat: mouseEvent.latLng.getLat(),
       lng: mouseEvent.latLng.getLng(),
     });
+
   };
+  useEffect(() => {
+    console.log('centerValue:', centerValue);
+  }, [centerValue]);
 
   const handleRightClick = (
     _map,
     _mouseEvent,
   ) => {
+    if (readonly) return;
     setIsdrawing(false);
   };
 
@@ -103,6 +115,7 @@ const KakaoMap = (props) => {
     const bikeTime = (distance / 227) | 0;
     return (
       <StyledPaper className="dotOverlay distanceInfo">
+        <GlobalStyle />
         {/* todo 이거 스타일 입히기 */}
         <li>
           <span className="label">총거리</span>{' '}
@@ -191,6 +204,24 @@ const KakaoMap = (props) => {
   //   console.log('KakaoMap: mapRefState:', mapRefState);
   // }, [mapRefState]);
 
+  useEffect(() => {
+    if (mapRefState == null) return;
+
+    const mapDragend = function(mouseEvent) {
+      setCenterValue({
+        lat: mapRefState?.getCenter().getLat(),
+        lng: mapRefState?.getCenter().getLng(),
+      });
+    };
+    window.kakao.maps.event.addListener(mapRefState, 'dragend', mapDragend);
+    return () => {
+      if (mapRefState != null) {
+        window.kakao.maps.event.removeListener(mapRefState, 'dragend', mapDragend);
+      }
+    };
+  }, [mapRefState]);
+
+
   // 칼로리 계산 함수
   function calculateCalories(mets, weight, time) {
     return mets * weight * (time / 60);
@@ -208,6 +239,7 @@ const KakaoMap = (props) => {
       <br />
       <CustomSearchInput searchValue={searchValue} setSearchValue={setSearchValue} />
       <div id="map">
+
         <Map // 지도를 표시할 Container
           id={`;map`}
           center={centerValue} // 지도의 중심좌표
@@ -223,6 +255,8 @@ const KakaoMap = (props) => {
           onCreate={(map) => {
             setMapRefState(map);
           }}
+          draggable={!readonly}
+          zoomable={!readonly}
         >
           <Polyline
             path={pathValues}
@@ -292,5 +326,6 @@ const KakaoMap = (props) => {
 KakaoMap.defaultProps = {
   nogps: false,
   zoomlevel: 3,
+  readonly: false,
 };
 export default KakaoMap;
