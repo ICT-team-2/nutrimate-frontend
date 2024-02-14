@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImgUploader } from '@src/component/common/ImgUploader.jsx';
 import { Container } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
@@ -6,6 +6,10 @@ import Tab from '@mui/material/Tab';
 import styled from 'styled-components';
 import DietRecord from '@src/component/record/diet/DietRecord.jsx';
 import DisplayRecordDate from '@src/component/record/DisplayRecordDate.jsx';
+import { useParams } from 'react-router-dom';
+import { useAtom } from 'jotai/react';
+import { datePickerAtom } from '@src/component/calendar/atom.js';
+import { convertUrlParamToDate } from '@src/utils/functions.js';
 
 const TabsContainer = styled.div`
     margin: 20px 0 40px;
@@ -14,12 +18,11 @@ const TabsContainer = styled.div`
 `;
 
 const RecordPageContainer = styled(Container)`
-    margin: 0 10vw 0 10vw;
-
+    margin: 0 auto;
 `;
 const InnerContainer = styled.div`
-    margin: 0 auto;
-    width: 80%;
+    padding: 0 50px;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -27,6 +30,13 @@ const InnerContainer = styled.div`
 
 const RecordPage = () => {
   const [value, setValue] = useState(0);
+  const params = useParams();
+  const [date, setDate] = useAtom(datePickerAtom);
+
+  useEffect(() => {
+    setDate(convertUrlParamToDate(params.recordDate));
+  }, []);
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

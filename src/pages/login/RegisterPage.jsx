@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Button, Checkbox, Container, FormControlLabel, TextField } from '@mui/material';
+import {
+  Button,
+  Checkbox,
+  Container,
+  FormControlLabel,
+  TextField,
+} from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
@@ -48,16 +54,16 @@ const OAuthButton = styled.div`
 `;
 
 const LoginPage = () => {
-
+  
   const [checked, setChecked] = useState(false);
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-
+  
   //todo 로깅용 - 나중에 지울 것
   // useEffect(() => {
   //   console.log(`id: ${id}, password: ${password}, checked: ${checked}`);
   // }, [checked, id, password]);
-
+  
   return (
     <LoginContainer>
       <LoginPaper>
@@ -67,30 +73,31 @@ const LoginPage = () => {
         <Divider />
         <LoginBody>
           <StyledTextField
-            label="아이디" value={id}
+            label='아이디' value={id}
             onChange={(e) => setId(e.target.value)}
           />
           <StyledTextField
-            label="비밀번호" type="password" value={password}
+            label='비밀번호' type='password' value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <AdditionalContainer>
           </AdditionalContainer>
-          <LoginButton variant="contained">Login</LoginButton>
+          <LoginButton variant='contained'>Register</LoginButton>
         </LoginBody>
-        <Divider>간편 로그인</Divider>
+        <Divider>간편 회원가입</Divider>
         <OAuthContainer>
           <OAuthButton>
-            <img src="/src/asset/image/oauth/GoogleLogin.png" alt="구글 로그인" />
+            <img src='/src/asset/image/oauth/GoogleLogin.png' alt='구글 로그인' />
           </OAuthButton>
           <OAuthButton>
-            <img src="/src/asset/image/oauth/FacebookLogin.png" alt="페이스북 로그인" />
+            <img src='/src/asset/image/oauth/FacebookLogin.png'
+                 alt='페이스북 로그인' />
           </OAuthButton>
           <OAuthButton>
-            <img src="/src/asset/image/oauth/NaverLogin.png" alt="네이버 로그인" />
+            <img src='/src/asset/image/oauth/NaverLogin.png' alt='네이버 로그인' />
           </OAuthButton>
           <OAuthButton>
-            <img src="/src/asset/image/oauth/KakaoLogin.png" alt="카카오 로그인" />
+            <img src='/src/asset/image/oauth/KakaoLogin.png' alt='카카오 로그인' />
           </OAuthButton>
         </OAuthContainer>
       </LoginPaper>

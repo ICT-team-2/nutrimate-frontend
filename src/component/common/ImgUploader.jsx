@@ -15,8 +15,12 @@ export const ResetStyleInput = styled.input`
 const StyledUploadImgDiv = styled.div`
     width: ${({ width }) => width || '200px'};
     height: ${({ height }) => height || '100px'};
-    min-width: ${({ minwidth, afterupload }) => afterupload === 'true' ? 'auto' : minwidth || 'auto'};
-    min-height: ${({ minheight, afterupload }) => afterupload === 'true' ? 'auto' : minheight || 'auto'};
+    min-width: ${({ minwidth, afterupload }) => afterupload === 'true'
+            ? 'auto'
+            : minwidth || 'auto'};
+    min-height: ${({ minheight, afterupload }) => afterupload === 'true'
+            ? 'auto'
+            : minheight || 'auto'};
     max-width: ${({ maxwidth }) => maxwidth || 'auto'};
     max-height: ${({ maxheight }) => maxheight || 'auto'};
     border: 1px dashed ${({ theme }) => theme['border-color-deep']};
@@ -24,6 +28,7 @@ const StyledUploadImgDiv = styled.div`
     display: flex;
     align-items: center;
     cursor: pointer;
+    margin: 0 auto;
 `;
 const StyledUploadImgDivInner = styled.div`
     margin: auto;
@@ -32,7 +37,6 @@ const StyledUploadImgDivInner = styled.div`
     flex-direction: column;
     align-items: center;
 `;
-
 
 const StyledUploadImg = styled.img`
     width: 100%;
@@ -44,6 +48,12 @@ const StyledButton = muiStyled(Button)`
     margin-top: 10px;
 `;
 
+const ImgUploaderContainer = styled.div`
+    display: flex;
+    width: 100%;
+    height: 100%;
+`;
+
 export const ImgUploader = (props) => {
   const {
     width, height, children: title,
@@ -52,11 +62,11 @@ export const ImgUploader = (props) => {
   } = props;
   const fileInputRef = useRef();
   const [afterUpload, setAfterUpload] = useState(false);
-
+  
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
-
+  
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -66,7 +76,7 @@ export const ImgUploader = (props) => {
     reader.readAsDataURL(file);
     setAfterUpload(true);
   };
-
+  
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
@@ -79,16 +89,17 @@ export const ImgUploader = (props) => {
     }
     setAfterUpload(true);
   };
-
+  
   const handleDragOver = (event) => {
     event.preventDefault();
   };
-
+  
   return (
-    <div>
+    <ImgUploaderContainer
+    >
       <ResetStyleInput
-        type="file"
-        accept="image/*"
+        type='file'
+        accept='image/*'
         ref={fileInputRef}
         onChange={handleImageUpload}
       />
@@ -109,11 +120,12 @@ export const ImgUploader = (props) => {
         ) : (
           <StyledUploadImgDivInner>
             <FontAwesomeIcon icon={faArrowUpFromBracket} />
-            <StyledButton variant="contained" size="small" color="primary">{title}</StyledButton>
+            <StyledButton variant='contained' size='small'
+                          color='primary'>{title}</StyledButton>
           </StyledUploadImgDivInner>
         )}
       </StyledUploadImgDiv>
-    </div>
+    </ImgUploaderContainer>
   );
 };
 ImgUploader.defaultProps = {
