@@ -12,7 +12,7 @@ const LoginContainer = styled(Container)`
     height: 100vh;
 `;
 const LoginHeader = styled.div`
-
+    padding: 20px 0;
 `;
 const LoginBody = styled.div`
     padding: 30px;
