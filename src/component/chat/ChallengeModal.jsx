@@ -173,8 +173,8 @@ const ChallengeModal = (props) => {
      //className:클래스명(분류명)
      //probability:확률
      //toFixed(소수점 자리수):자리수까지 표현(반올림)
-     console.log(prediction)
-     if(parseInt(prediction[0].probability.toFixed(2))*100 >=70){
+     console.log((prediction[0].probability.toFixed(2))*100)
+     if(prediction[0].probability >= 0.7){
 
       fetch(`http://localhost:9999/challenge/success/record?chatroomId=${chatroom}&userId=${userId}`)
       .then(response=>response.json())
