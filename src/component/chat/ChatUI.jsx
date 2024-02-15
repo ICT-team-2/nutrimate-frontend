@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import MyTalkComponent from '@src/component/chat/MyTalkComponent.jsx';
@@ -36,6 +36,35 @@ const ChatOutAndEnter = styled.div`
 
 
 
+const hueAnimation = keyframes`
+  from {
+    -webkit-filter: hue-rotate(0deg);
+  }
+  to {
+    -webkit-filter: hue-rotate(-360deg);
+  }
+`;
+
+  
+
+const ChallengeSuccess = styled.div`
+      font-family: 'Helvetica Neue, Helvetica, Arial, sans-serif';
+      font-size: 20px;
+      font-weight: 100;
+      letter-spacing: 2px;
+      text-align: center;
+      color: #f35626;
+      background-image: -webkit-linear-gradient(92deg, #f35626, #feab3a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: ${hueAnimation} 10s infinite linear;
+`;
+
+const AvatarWrapper = styled.div`
+    margin-right: 10px; // Avatar와 텍스트 사이의 간격 조절을 위해 추가
+`;
+
+
 const ChatUI = (props) => {
   const { title, overflow, height, data, onSend,nickname,loading,micicon } = props;
   const [voiceReading, setVoiceReading] = useState(false);
@@ -70,18 +99,21 @@ const ChatUI = (props) => {
                     d.challengeNick == nickname ? 
                         <MyTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
                         :<OtherTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
-                  : <ChatOutAndEnter key={i}> {d.chatMessage}</ChatOutAndEnter>
+                  : d.messageType == 'CHALLENGE'?
+                     <ChallengeSuccess key={i} > -- {d.chatMessage} --</ChallengeSuccess>
+                      :<ChatOutAndEnter key={i}>{d.chatMessage}</ChatOutAndEnter>
                 )
               : data.messageType == 'CHAT' ? 
                   data.challengeNick == nickname ? 
-                      <MyTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
-                      :<OtherTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
-                :<ChatOutAndEnter> {data.chatMessagee}</ChatOutAndEnter>
+                      <MyTalkComponent content={data.chatMessage} nick={data.challengeNick} />
+                      :<OtherTalkComponent content={data.chatMessage} nick={data.challengeNick} />
+                :d.messageType == 'CHALLENGE'?
+                  <ChallengeSuccess > {data.chatMessage}</ChallengeSuccess>
+                 :<ChatOutAndEnter>{data.chatMessage}</ChatOutAndEnter>
         
       }
       {loading && <ChatLoading></ChatLoading>}   
       {voiceReading && <ChatBotComponent voiceReading={voiceReading}/>}
-
 
       </ChatBody>
       <ChatInput onSend={onSend} />

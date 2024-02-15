@@ -58,7 +58,12 @@ const ChallengeChatPage = () => {
     const handleTooltipOpen = () => {
       setOpen(true);
     };
+     
 
+    const handleChallengeSuccess = (success) => {
+      // Handle the challenge success state here
+      stompClient.send('/pub/chat/'+RoomType, {}, JSON.stringify({ 'chatMessage' : nickname + '가(이) 챌린지를 성공했습니다.', 'challengeNick': nickname,'chatroomId': chatroom,'messageType':'CHALLENGE','userId':userId}));
+    };
 
     const ChatLoading = () => {
       fetch(`http://localhost:9999/challenge/chat/prev?chatroomId=${chatroom}`)
@@ -91,7 +96,7 @@ const ChallengeChatPage = () => {
     
       stompClient.connect({}, () => {
 
-          fetch(`http://localhost:9999/challenge/chatMember?chatroomId=${chatroom}&userId=3`, {
+          fetch(`http://localhost:9999/challenge/chat/member?chatroomId=${chatroom}&userId=3`, {
             method: "POST"
               })//@RequestBody로 받는다
               .then(response=>response.json())
@@ -177,7 +182,7 @@ const ChallengeChatPage = () => {
                   <StyledButton variant="contained" onClick={handleChallengeModalClick}>챌린지에 참여하세요</StyledButton>
                   
                 </Tooltip>
-                {showChallengeModal && <ChallengeModal showChallengeModal={showChallengeModal} setChallengeModal={setChallengeModal} />} 
+                {showChallengeModal && <ChallengeModal setChallengeSuccess={handleChallengeSuccess} showChallengeModal={showChallengeModal} setChallengeModal={setChallengeModal} nickname={nickname} chatroom={chatroom} userId={userId} RoomType={RoomType} />} 
             </ChallengeChatContainer>
             
         </PageContainer>  

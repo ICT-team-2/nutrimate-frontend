@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import { Button } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
+
 
 export const ResetStyleInput = styled.input`
     text-indent: 100%;
@@ -42,19 +43,38 @@ const StyledButton = muiStyled(Button)`
 `;
 
 export const ImgUploader = (props) => {
-  const { width, height, children: title } = props;
+
+
+
+
+  const { width, height, children: title,onImageSelect } = props;
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef();
 
+  useEffect(() => {
+    
+    if (selectedImage) {
+      // 이미지가 선택되면 부모 컴포넌트로 전달
+      onImageSelect(selectedImage);
+    }
+  }, [selectedImage, onImageSelect]);
+
+
+
   const handleUploadClick = () => {
     fileInputRef.current.click();
+
   };
+
+
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      setSelectedImage(reader.result);
+      const imageDataURL = reader.result;
+      setSelectedImage(imageDataURL);
+
     };
     reader.readAsDataURL(file);
   };
@@ -64,7 +84,8 @@ export const ImgUploader = (props) => {
     const file = event.dataTransfer.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      setSelectedImage(reader.result);
+      const imageDataURL = reader.result;
+      setSelectedImage(imageDataURL);
     };
     if (file) {
       reader.readAsDataURL(file);
@@ -98,7 +119,7 @@ export const ImgUploader = (props) => {
             <StyledButton variant="contained" size="small" color="primary">{title}</StyledButton>
           </StyledUploadImgDivInner>
         )}
-      </StyledUploadImgDiv>
+      </StyledUploadImgDiv >
     </div>
   );
 };

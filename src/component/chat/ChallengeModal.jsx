@@ -1,7 +1,9 @@
 import React, { useEffect,useState } from "react";
-import styled from 'styled-components';
+import styled,{ keyframes, css } from 'styled-components';
 import { Button,TextField } from '@mui/material';
 import { ImgUploader } from '@src/component/common/ImgUploader.jsx';
+import * as tmImage from '@teachablemachine/image';
+
 
 const ModalBg = styled.div`
   display: flex;
@@ -16,6 +18,7 @@ const ModalBg = styled.div`
   background-color: #ffffffe2;
 `;
 
+
 const ModalBox = styled.div`
   position: absolute;
   width: 500px;
@@ -26,6 +29,8 @@ const ModalBox = styled.div`
   border-radius: 10px;
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 `;
+
+
 
 const ModalCloseBtn = styled.button`
   position: absolute;
@@ -51,6 +56,67 @@ const StyledButton = styled(Button)`
     
 `;
 
+/////////////////
+// Keyframes 정의
+const rotateLoading = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+const loadingTextOpacity = keyframes`
+  0% { opacity: 0; }
+  20% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+`;
+
+
+
+const Loading = styled.div`
+  height: 250px;
+  width: 250px;
+  position: absolute;
+  border: 2px solid transparent;
+  border-color: transparent #2ecc71 transparent #2ecc71;
+  border-radius: 50%;
+  animation: ${rotateLoading} 1.5s linear infinite normal;
+  transform-origin: 50% 50%;
+
+
+`;
+
+const LoadingText = styled.div`
+  color: rgb(46, 139, 87);
+  font-family: "Helvetica Neue", "Helvetica", "Arial";
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 110px;
+  margin-left: 30px;
+  opacity: 0;
+  position: absolute;
+  text-align: center;
+  text-transform: uppercase;
+  top: 0;
+  width: 200px;
+  animation: ${loadingTextOpacity} 2s linear infinite normal;
+`;
+
+const LoadingContainer = styled.div`
+  height: 250px;
+  width: 250px;
+  position: relative;
+  margin: 30px auto;
+  &:hover {
+    /* 로딩 아이콘 색상 변경 */
+    & > div {
+      transition: border-color 0.5s ease-in-out;
+      border-color: transparent #32CD32 transparent #32CD32;
+    }
+  }
+`;
+
+
+
 // 스크롤을 비활성화하는 함수
 export function disableScroll() {
   document.body.style.overflow = 'hidden';
@@ -61,8 +127,84 @@ export function enableScroll() {
   document.body.style.overflow = 'auto';
 }
 
-const ChatJoinModal = ({ showChallengeModal, setChallengeModal}) => {
+let model, //메모리에 로드한 모델 저장용
+//webcam,//웹캠 사용시 
+maxPredictions;//클래스(분류) 갯수 저장용
+
+
+
+
+
+
+const ChallengeModal = (props) => {
+  const { showChallengeModal, setChallengeModal, nickname ,chatroom, userId, setChallengeSuccess} = props;
+  
   const [inputValue, setInputValue] = useState('');
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [loadingStart,setLoadingStart]=useState(false);
+
+
+  //티처블 머신 코드
+
+  async function initialize() {
+    //setLoadingStart(true)
+    let URL='';
+    if(chatroom == 1){
+      URL ='https://teachablemachine.withgoogle.com/models/FFNAWMNDG/'
+    }else{
+      URL ='https://teachablemachine.withgoogle.com/models/49JT5k0r4/'
+    }
+    const modelURL = URL + "model.json";
+    const metadataURL = URL + "metadata.json";
+  
+    model = await tmImage.load(modelURL, metadataURL);
+    maxPredictions = model.getTotalClasses();
+  
+  
+    predict();
+  }
+  
+  
+  async function predict() {
+    const img = new Image();
+    img.src = await uploadedImage;
+    const prediction = await model.predict(img);
+    //예측 결과를 labelContainer에 표시주는 반복문
+     //className:클래스명(분류명)
+     //probability:확률
+     //toFixed(소수점 자리수):자리수까지 표현(반올림)
+     console.log(prediction)
+     if(parseInt(prediction[0].probability.toFixed(2))*100 >=70){
+
+      fetch(`http://localhost:9999/challenge/success/record?chatroomId=${chatroom}&userId=${userId}`)
+      .then(response=>response.json())
+      .then(data=>{
+        if(data.SUCCESSNOT == null){     
+          if(data.SUCCESS==1) {
+            setChallengeSuccess(true);
+            alert(nickname+'님 챌린지에 성공했습니다.');
+            setChallengeModal(false)
+          } else {
+              alert(nickname+'님 오늘 이미 챌린지에 참여했습니다.'); 
+              setChallengeModal(false)
+                    
+          }
+        }else{
+          alert(nickname+'님 챌린지에 실패했습니다. 만약 올바른 이미지를 등록했다면 다시 한 번 시도해주세요!!'); 
+          setChallengeModal(false)
+        }
+      });
+     }else{
+        setChallengeModal(false)
+        alert(nickname+'님 챌린지에 실패했습니다. 만약 올바른 이미지를 등록했다면 다시 한 번 시도해주세요.');
+     }
+  }
+
+
+
+
+
+
 
   const closeModal = () => {
     setChallengeModal(false);
@@ -72,10 +214,30 @@ const ChatJoinModal = ({ showChallengeModal, setChallengeModal}) => {
     // 모달 바깥 영역 클릭 시에는 모달을 닫지 않도록 이벤트 전파 막기
     e.stopPropagation();
   };
+   
+  // 이미지가 업로드될 때 호출되는 콜백 함수
+  const handleImageSelect = (imageData) => {
+    setUploadedImage(imageData);
+  };
 
   const handleClick = () => {
-    setInputValue("");
+    if (uploadedImage) {
+      setLoadingStart(true);
+      setTimeout(() => { 
+        initialize();    
+       }, 3000);
+       
+
+    } else {
+      console.log('이미지가 선택되지 않았습니다.');
+    }
+   
+
   };
+
+
+
+
 
   useEffect(() => {
     // modal이 떠 있을 땐 스크롤 막음
@@ -84,22 +246,38 @@ const ChatJoinModal = ({ showChallengeModal, setChallengeModal}) => {
     return () => enableScroll();
   }, [showChallengeModal]);
 
+
   return (
     <ModalBg>
-      <ModalBox onClick={handleModalClick}>
-        <ModalCloseBtn onClick={closeModal}>
-          ✖
-        </ModalCloseBtn>
-        <ModalContent>
-        <ImgUploader width="100% " height="200px">이미지 업로드</ImgUploader>
-          <StyledButton variant="contained" onClick={handleClick}>
-            확인
-          </StyledButton>
-          
-        </ModalContent>
-      </ModalBox>
-    </ModalBg>
+    <ModalBox onClick={handleModalClick}>
+      {loadingStart ? (
+          <LoadingContainer>
+            <Loading />
+            <LoadingText>챌린지 확인중...</LoadingText>
+          </LoadingContainer>
+        ) : (
+          <>
+            <ModalCloseBtn onClick={closeModal}>
+              ✖
+            </ModalCloseBtn>
+          <ModalContent>
+            <ImgUploader onImageSelect={handleImageSelect} width="100%" height="200px">
+              이미지 업로드
+            </ImgUploader>
+            <StyledButton variant="contained" onClick={handleClick}>
+              확인
+            </StyledButton>
+            </ModalContent>
+          </>
+        )}
+
+
+      
+    </ModalBox>
+  </ModalBg>
+   
+    
   );
 };
 
-export default ChatJoinModal;
+export default ChallengeModal;

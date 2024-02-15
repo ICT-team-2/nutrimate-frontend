@@ -31,6 +31,12 @@ const ChatInput = ({ onSend }) => {
     setMessage('');
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSendClick();
+    }
+  };
+
   return (
     <ChatInputContainer>
       <StyledTextField
@@ -39,6 +45,7 @@ const ChatInput = ({ onSend }) => {
         multiline
         value={message}
         onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
       />
       <StyledButton variant="contained" onClick={handleSendClick}>
         <SendIcon />
