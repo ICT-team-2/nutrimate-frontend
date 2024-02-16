@@ -108,9 +108,9 @@ const [userId, setUserId] = useAtom(userIdAtom);
     navigate(LINKS.SURVEY);
   };
 
-  useEffect(() => {
-    console.log("userId:",userId)
-  },[userId])
+  // useEffect(() => {
+  //   console.log("userId:",userId)
+  // },[userId])
   
   
   return (
