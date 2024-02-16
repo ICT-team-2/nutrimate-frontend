@@ -12,19 +12,18 @@ import { INIT_MAP_STATE } from '@src/component/board/const.js';
  * @param center.lng{number} - 지도 중심 좌표의 경도
  * @returns {void}
  */
-const useInitMapData = (
-  paths = INIT_MAP_STATE.PATHS,
-  distances = INIT_MAP_STATE.DISTANCES,
-  center = INIT_MAP_STATE.CENTER) => {
+const useInitMapData = () => {
   const [mapPaths, setMapPaths] = useAtom(mapPathsAtom);
   const [mapDistances, setMapDistances] = useAtom(mapDistancesAtom);
   const [mapCenter, setMapCenter] = useAtom(mapCenterAtom);
 
-  useEffect(() => {
-    setMapPaths(paths);
-    setMapDistances(distances);
-    setMapCenter(center);
-  }, []);
+  return (paths = INIT_MAP_STATE.PATHS,
+    distances = INIT_MAP_STATE.DISTANCES,
+    center = INIT_MAP_STATE.CENTER) => {
+    setMapPaths(paths ?? INIT_MAP_STATE.PATHS);
+    setMapDistances(distances ?? INIT_MAP_STATE.DISTANCES);
+    setMapCenter(center ?? INIT_MAP_STATE.CENTER);
+  }
 };
 
 export default useInitMapData;

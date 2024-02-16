@@ -31,8 +31,6 @@ import axios from 'axios';
 
 import { LINKS } from '@src/utils/const.js';
 import { useNavigate } from 'react-router-dom';
-import { border } from '@mui/system';
-
 
 //테스트용 더미 데이터 - 추후 삭제 예정
 const dummyPaths = [
@@ -112,8 +110,12 @@ const InfoBoardWritePage = (props) => {
   const [inputHashTag, setInputHashTag] = useAtom(inputHashTagAtom);
 
   // 지도 정보를 초기화
-  // useInitMapData(dummyPaths, dummyDistances, dummyCenter);
-  useInitMapData();
+  const initMapData = useInitMapData();
+    // initMapData(dummyPaths, dummyDistances, dummyCenter);
+  useEffect(()=>{
+    initMapData();
+  },[])
+  
 
   const handleSearch = (e) => {
     setSearchValue(e.target.value);
@@ -128,8 +130,8 @@ const InfoBoardWritePage = (props) => {
   // 이건 추후 삭제하면 됨(테스트용)
 
   useEffect(() => {
-    console.log('zoomlevel:', mapRefState?.getLevel());//지도의 확대 레벨
-    console.log('center:', mapRefState?.getCenter());//지도의 중심좌표
+    console.log('zoomlevel:', mapRefState?.getLevel()); //지도의 확대 레벨
+    console.log('center:', mapRefState?.getCenter()); //지도의 중심좌표
   }, [mapRefState]);
 
   // 유효성 검사
@@ -156,8 +158,9 @@ const InfoBoardWritePage = (props) => {
 
     return true;
   };
-
+  const navigate = useNavigate();
   const onClickRegister = async () => {
+    
     // 유효성 검사
     if (!validateForm()) return;
 
@@ -178,8 +181,8 @@ const InfoBoardWritePage = (props) => {
     let content = quillRefState.getEditor().root.innerHTML;
     content = removeHtmlTags(content);
     console.log('DOMPurify content:', content);
-    console.log('hashTag:', inputHashTag);
-
+    const hashTagData = inputHashTag.map(tag => tag.label);
+    console.log('hashTag:', hashTagData);
 
     // 데이터를 JSON 형식으로 준비
     const data = {
@@ -190,9 +193,9 @@ const InfoBoardWritePage = (props) => {
       mapCenterLat: mapCenter.lat,
       mapCenterLng: mapCenter.lng,
       mapZoomlevel: mapRefState?.getLevel(),
-      boardContent: removeHtmlTags(content),  // HTML 태그 제거
-      hashTag: JSON.stringify(inputHashTag),
-      userId: DUMMY_USER.USER_ID,  // 더미 유저 ID 추가
+      boardContent: removeHtmlTags(content), // HTML 태그 제거
+      hashtag: hashTagData,
+      userId: DUMMY_USER.USER_ID, // 더미 유저 ID 추가
     };
 
     // axios를 통해 서버에 데이터 전송
@@ -201,15 +204,23 @@ const InfoBoardWritePage = (props) => {
         headers: { 'Content-Type': 'application/json' },
       });
       console.log(response.data);
-      if (response.status === 200) {  // HTTP 상태 코드가 200인 경우(요청 성공)
-        alert('등록 완료');  // 등록 완료 알림
-        //
+      if (response.status === 200) { // HTTP 상태 코드가 200인 경우(요청 성공)
+        alert('등록 완료'); // 등록 완료 알림
+
+        // 상세 조회 페이지로 이동
+        let boardId = response.data.boardId; 
+        let link = LINKS.INFO_BOARD_VIEW.replace(':boardId', boardId);
+        navigate(link);
+        const gotoBoardView = () => {
+          navigate(LINKS.INFO_BOARD_VIEW + '/boardId');
+        };
+
       } else {
-        alert('등록 실패');  // 등록 실패 알림
+        alert('등록 실패'); // 등록 실패 알림
       }
     } catch (error) {
       console.error(error);
-      alert('등록 중 오류가 발생');  // 오류 발생 알림
+      alert('등록 중 오류가 발생'); // 오류 발생 알림
     }
 
   };

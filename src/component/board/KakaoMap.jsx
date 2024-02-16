@@ -237,7 +237,9 @@ const KakaoMap = (props) => {
     <>
       <GlobalStyle />
       <br />
+      {!readonly && (
       <CustomSearchInput searchValue={searchValue} setSearchValue={setSearchValue} />
+      )}
       <div id="map">
 
         <Map // 지도를 표시할 Container
