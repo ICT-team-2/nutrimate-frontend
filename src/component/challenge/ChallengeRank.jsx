@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
@@ -20,7 +20,7 @@ const StyledIcon = styled(FontAwesomeIcon)`
 `;
 const IconContainer = styled.div`
     background-color: ${({ theme }) => theme['primary-transparent']};
-    padding: 10px 25px;
+    padding: 10px;
     border-radius: 10px;
     width: 36px;
     align-items: center;
@@ -37,32 +37,69 @@ const ChallengeTableContainer = styled.div`
 `;
 
 const ChallengeRank = () => {
+  var chatroomId=1;
   const [value, setValue] = React.useState(0);
+  const [challengeListData, setChallengeListData] = React.useState(0);  
+        //랭크 리스트를 부르는 함수
+        const ChallengeRankList =()=>{
+        
+              fetch(`http://localhost:9999/challenge/success?chatroomId=${chatroomId}`)
+              .then(response => response.json())
+              .then(datas => { 
+                  console.log(datas);
+                  setChallengeListData(datas)
 
+              })
+              .catch(error => {
+                  console.error('Error fetching chat data:', error);
+              });
+        
+        }
+
+  useEffect(() => {
+    if(challengeListData == 0){
+      ChallengeRankList();
+    }
+ 
+  })
+
+
+
+  
+ 
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    if(value==0) {
+      chatroomId = 3
+    }else{
+      chatroomId = 1
+    }
+    ChallengeRankList() 
+    
   };
   return (
     <>
-      <ChallengeContainer>
-        <div>
-          <Typography variant="h5">오늘의 순위</Typography>
-          <Typography variant="body1">챌린지 이름</Typography>
-        </div>
+    <ChallengeContainer>
+      <div>
+        <Typography variant='h5'>오늘의 순위</Typography>
+        <Typography variant='body1'>챌린지 이름</Typography>
+      </div>
         <FlexGrowDiv />
-        <IconContainer>
-          <StyledIcon icon={faAward} size="2x" />
-        </IconContainer>
+      <IconContainer>
+        <StyledIcon icon={faAward} size='2x' />
+      </IconContainer>
       </ChallengeContainer>
       <ChallengeTableContainer>
         <Tabs value={value} onChange={handleChange} centered>
-          <Tab label="챌린지 주제 1" />
-          <Tab label="챌린지 주제 2" />
-        </Tabs>
+        <Tab label='하루에 한 번 물마시기' />
+        <Tab label='샐러드 챌린지' />
+      </Tabs>
         <br />
-        <RankTable />
+      <RankTable data={challengeListData} />
       </ChallengeTableContainer>
     </>);
+
 };
 
 export default ChallengeRank;

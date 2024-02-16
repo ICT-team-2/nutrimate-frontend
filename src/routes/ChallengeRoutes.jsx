@@ -14,7 +14,7 @@ const ChallengeRoutes = () => {
         <Route path={''} element={<BoardLayout />}>
           <Route path="" element={<ChallengePage />}></Route>
           <Route path={ROUTER_LINKS.CHALLENGE_CHAT + '/:chatroomId'}
-                 element={<ChallengeChatPage />}></Route>
+                element={<ChallengeChatPage />}></Route>
         </Route>
       </Route>
       <Route path={'*'} element={<NotFound404Page />}></Route>

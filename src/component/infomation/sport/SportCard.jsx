@@ -27,6 +27,7 @@ const TitleTypography = styled(Typography)`
     word-break: break-all;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+    color: black;
 `;
 const CardContentContainer = styled.div`
     display: flex;
@@ -38,49 +39,55 @@ const TypoContainer = styled.div`
     margin: auto 20px;
 `;
 
-
+/**
+ *
+ * @param props {{title: string, url: string, category: string, img: string}}
+ * @returns {Element}
+ * @constructor
+ */
 export default function SportCard(props) {
-  const { title, video, url, youtuber } = props;
+  const { title, url, category, img } = props;
   const [isHover, setIsHover] = useState(false);
   return (
-    <CustomCard>
-      <CustomCardMedia
-        component="video"
-        controls={isHover}
-        image={video}
-        title={title}
-        // 마우스 오버하면 controls가 나오도록
-        onMouseOver={(e) => setIsHover(true)}
-        onMouseOut={(e) => setIsHover(false)}
-      />
-      <Link to={url} style={{ textDecoration: 'none' }}>
-        <CardContent>
-          <CardContentContainer>
-            <UserAvatar size={80} />
-            <TypoContainer>
-              <TitleTypography
-                gutterBottom
-                variant="h6"
-                component="div"
-                sx={{ margin: 0 }}
-              >
-                {title}
-              </TitleTypography>
-              <Typography variant="subtitle2" color="text.secondary">
-                {youtuber}
-              </Typography>
-            </TypoContainer>
-          </CardContentContainer>
-        </CardContent>
-      </Link>
-    </CustomCard>
+    <Link to={url} style={{ textDecoration: 'none' }}>
+
+      <CustomCard>
+        <CustomCardMedia
+          component="img"
+          controls={isHover}
+          image={img}
+          title={title}
+          // 마우스 오버하면 controls가 나오도록
+          onMouseOver={(e) => setIsHover(true)}
+          onMouseOut={(e) => setIsHover(false)}
+        /> <CardContent>
+        <CardContentContainer>
+          {/*<UserAvatar size={80} />*/}
+          <TypoContainer>
+            <TitleTypography
+              gutterBottom
+              variant="h6"
+              component="div"
+              sx={{ margin: 0 }}
+            >
+              {title}
+            </TitleTypography>
+            <Typography variant="subtitle2" color="text.secondary">
+              {category}
+            </Typography>
+          </TypoContainer>
+        </CardContentContainer>
+      </CardContent>
+      </CustomCard>
+    </Link>
+
   );
 }
 
 SportCard.defaultProps = {
   title: '운동영상',
-  video: '/src/asset/video/MockupVideo.mp4',
+  img: '/src/asset/image/loading.png',
   url: 'https://naver.com',
-  youtuber: '유튜버',
+  category: '전신',
 };
 

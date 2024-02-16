@@ -12,11 +12,9 @@ const PROFILE_IMG_SIZE = 100;
 const StyledContainerDiv = styled.div`
     background-color: ${({ theme }) => theme['dark-background']};
     border-radius: 10px;
-    height: ${PROFILE_IMG_SIZE}px;
-    width: 100%;
+    width: calc(100% + 60px);
     padding: 30px;
     display: flex;
-
 `;
 
 const NameContainer = styled.div`

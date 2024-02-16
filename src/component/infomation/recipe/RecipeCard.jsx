@@ -14,7 +14,6 @@ const CustomCard = styled(Card)`
 
 const CustomCardMedia = styled(CardMedia)`
     height: 220px;
-
     //object-fit: cover;
 `;
 
@@ -42,12 +41,13 @@ export default function RecipeCard(props) {
   const { title, image, url } = props;
 
   return (
-    <CustomCard>
-      <CustomCardMedia
-        image={image}
-        title={title}
-      />
-      <Link to={url} style={{ textDecoration: 'none' }}>
+    <Link to={url} style={{ textDecoration: 'none' }}>
+      <CustomCard>
+        <CustomCardMedia
+          image={image}
+          title={title}
+        />
+
         <CardContent>
           <TitleTypography
             gutterBottom
@@ -58,8 +58,9 @@ export default function RecipeCard(props) {
             {title}
           </TitleTypography>
         </CardContent>
-      </Link>
-    </CustomCard>
+      </CustomCard>
+    </Link>
+
   );
 }
 

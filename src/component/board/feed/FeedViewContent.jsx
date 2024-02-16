@@ -29,11 +29,11 @@ const StyledCard = muiStyled(Card)`
 
 `;
 const ContentTypo = styled(Typography)`
-    overflow: ${({ clickMoreView }) => clickMoreView ? 'auto' : 'hidden'};
-    text-overflow: ${({ clickMoreView }) => clickMoreView
+    overflow: ${({ clickmoreview }) => clickmoreview ? 'auto' : 'hidden'};
+    text-overflow: ${({ clickmoreview }) => clickmoreview
             ? 'clip'
             : 'ellipsis'};
-    white-space: ${({ clickMoreView }) => clickMoreView ? 'normal' : 'nowrap'};
+    white-space: ${({ clickmoreview }) => clickmoreview ? 'normal' : 'nowrap'};
 `;
 
 const MoreViewButton = styled(Typography)`
@@ -48,20 +48,20 @@ const MoreViewButton = styled(Typography)`
  *
  * @return {JSX.Element} 피드 뷰의 콘텐츠
  */
-function FeedViewContent () {
+function FeedViewContent() {
   const [clickMoreView, setClickMoreView] = useState(false);
-  
+
   return (
     <ViewContentContainer>
       <StyledCard>
         <CardHeader
           avatar={
-            <UserAvatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
+            <UserAvatar sx={{ bgcolor: red[500] }} aria-label="recipe">
               R
             </UserAvatar>
           }
           action={
-            <IconButton aria-label='settings'>
+            <IconButton aria-label="settings">
               <MoreVertIcon />
             </IconButton>
           }
@@ -69,49 +69,49 @@ function FeedViewContent () {
           // subheader='September 14, 2016'
         />
         <CardMedia
-          component='img'
-          height='500'
-          image='/src/asset/image/loading.png'
-          alt='Paella dish'
+          component="img"
+          height="500"
+          image="/src/asset/image/loading.png"
+          alt="Paella dish"
         />
         <CardActions disableSpacing>
           <Tooltip title={'좋아요'}>
-            <IconButton aria-label='add to favorites'>
+            <IconButton aria-label="add to favorites">
               <FavoriteIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title='댓글'>
-            <IconButton aria-label='comment'>
+          <Tooltip title="댓글">
+            <IconButton aria-label="comment">
               <CommentIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title='공유'>
-            <IconButton aria-label='share'>
+          <Tooltip title="공유">
+            <IconButton aria-label="share">
               <ShareIcon />
             </IconButton>
           </Tooltip>
           <FlexGrowDiv />
-          <Tooltip title='북마크'>
-            <IconButton aria-label='bookmark'>
+          <Tooltip title="북마크">
+            <IconButton aria-label="bookmark">
               <BookmarkIcon />
             </IconButton>
           </Tooltip>
         </CardActions>
         <CardContent>
           <ContentTypo
-            variant='body2' color='text.secondary'
-            clickMoreView={clickMoreView}>
+            variant="body2" color="text.secondary"
+            clickmoreview={clickMoreView}>
             This impressive paella is a perfect party dish and a fun meal to cook
             together with your guests. Add 1 cup of frozen peas along with the mussels,
             if you like.
           </ContentTypo>
-          
+
           {!clickMoreView &&
             <MoreViewButton
               onClick={() => setClickMoreView(true)}
-              variant='body2' color='text.secondary'>
-            더보기
-          </MoreViewButton>}
+              variant="body2" color="text.secondary">
+              더보기
+            </MoreViewButton>}
         </CardContent>
       </StyledCard>
     </ViewContentContainer>
