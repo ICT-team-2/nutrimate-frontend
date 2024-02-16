@@ -47,19 +47,18 @@ const InfoBoardViewPage = () => {
   const [likeCount, setLikeCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   //const [likeId, setLikeId] = useState(null);
-  const [disabled, setDisabled] = useState(false); 
+  const [disabled, setDisabled] = useState(false);
 
   // useInitMapData(JSON.parse(board?.mapPaths ?? '[]'), board?.mapDistances, { lat: board?.mapCenterLat, lng: board?.mapCenterLng });
-  const initMapData = useInitMapData()
+  const initMapData = useInitMapData();
 
   const fetchBoard = async () => {
     try {
       const response = await axios.get(`/boards/sport/${boardId}`);
       console.log(response.data);
       setBoard(response.data.current);  // current만 저장
-      setLikeCount(response.data.current.likeCount);  // 좋아요 수 업데이트
-      //await fetchLikeStatus();  // 좋아요 상태 업데이트
-      return response.data.current; 
+      setLikeCount(response.data.current.likeCount);
+      return response.data.current;
     } catch (error) {
       console.error(error);
       alert('게시글을 불러오는 중 오류가 발생했습니다.');
@@ -79,51 +78,46 @@ const InfoBoardViewPage = () => {
       alert('해시태그를 불러오는 중 오류가 발생했습니다.');
     }
   };
-  
+
   const fetchLikeStatus = async () => {
     try {
       const response = await axios.post(`boards/sport/like/check`, {
         userId: DUMMY_USER.USER_ID,
-        boardId: boardId
+        boardId: boardId,
       });
-      setIsLiked(response.data.message === "좋아요를 이미 눌렀어요");
-      //setLikeId(response.data.likeId);
+      setIsLiked(response.data.message === '좋아요를 이미 눌렀어요');
+      // setLikeId(response.data.likeId);
     } catch (error) {
       console.error(error);
       alert('좋아요 상태를 불러오는 중 오류가 발생했습니다.');
     }
-};
+  };
 
-const handleLikeClick = async () => {
-  setDisabled(true);  
-  try {
-    const likeDto = {
-      //likeId,
-      userId: DUMMY_USER.USER_ID,
-      boardId: boardId,
-    };
-    let response;
-    if (isLiked) {
-      console.log('likeDto:', likeDto);
-      response = await axios.delete(`/boards/sport/${boardId}/likes`, { data: likeDto });
-    } else {
-      response = await axios.post(`/boards/sport/${boardId}/likes`, likeDto);
+  const handleLikeClick = async (e) => {
+
+    setDisabled(true);
+    try {
+      const likeDto = {
+        //likeId,
+        userId: DUMMY_USER.USER_ID,
+        boardId: boardId,
+      };
+      let response;
+      if (isLiked) {
+        console.log('likeDto:', likeDto);
+        response = await axios.delete(`/boards/sport/${boardId}/likes`, { data: likeDto });
+      } else {
+        response = await axios.post(`/boards/sport/${boardId}/likes`, likeDto);
+      }
+      await fetchLikeStatus();
+      console.log(response.data.message);
+      return response.data.message;
+    } catch (error) {
+      console.error('좋아요 업데이트 중 오류 발생:', error);
+    } finally {
+      setDisabled(false);
     }
-    await fetchBoard();  // fetchBoard 함수 호출을 await 키워드로 기다림
-    await fetchLikeStatus();
-    console.log(response.data.message);
-    return response.data.message;
-  } catch (error) {
-    console.error('좋아요 업데이트 중 오류 발생:', error);
-    if (error.response && error.response.data) {
-      alert(error.response.data.message);
-    } else {
-      alert('좋아요 업데이트 중 오류가 발생했습니다.');
-    }
-  } finally {
-    setDisabled(false);
-  }
-};
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,7 +126,7 @@ const handleLikeClick = async () => {
       // setHashTag(hashtagsResponse);
     };
     fetchData();
-  }, []); 
+  }, []);
 
   // useEffect(() => {
   //   fetchBoard();
@@ -140,10 +134,13 @@ const handleLikeClick = async () => {
   // }, []);
 
   useEffect(() => {
-    if(board == null) return;
-    initMapData(JSON.parse(board?.mapPaths), JSON.parse(board?.mapDistances), { lat: board?.mapCenterLat, lng: board?.mapCenterLng });
-  },[board])
- 
+    if (board == null) return;
+    initMapData(JSON.parse(board?.mapPaths), JSON.parse(board?.mapDistances), {
+      lat: board?.mapCenterLat,
+      lng: board?.mapCenterLng,
+    });
+  }, [board]);
+
   useEffect(() => {
     if (isNaN(boardId)) {
       navigate('/404NotFound');
@@ -151,12 +148,17 @@ const handleLikeClick = async () => {
   }, [boardId]);
 
   useEffect(() => {
-    fetchBoard();
+    fetchBoard().then((board) => {
+      console.log('BOARD:', board);
+    });
+    fetchLikeStatus().then((likeStatus) => {
+
+    });
   }, [boardId]);
 
   useEffect(() => {
-    console.log('HASHTAG',hashtag);
-  },[hashtag])
+    console.log('HASHTAG', hashtag);
+  }, [hashtag]);
 
   if (!board) return null;  // 게시글 데이터가 아직 없는 경우
 
@@ -165,29 +167,29 @@ const handleLikeClick = async () => {
       <Typography variant="h6">{board.boardTitle}</Typography>
       <WriterTypo variant="subtitle2">
         <div>{board.userNick} {Seperator} </div>
-        <Categorydiv>{board.boardCategory  === 'exercise' ? '운동' : category}</Categorydiv>
+        <Categorydiv>{board.boardCategory === 'exercise' ? '운동' : category}</Categorydiv>
         <FlexGrowDiv />
-        <LikeButton 
-          viewCount 
-          like={likeCount} 
-          clicked={isLiked} 
-          boardId={boardId} 
-          onLike={fetchBoard}
-          onClick={handleLikeClick} 
-          disabled={disabled} 
+        <LikeButton
+          viewCount
+          like={likeCount}
+          clicked={isLiked}
+          boardId={boardId}
+          onClick={handleLikeClick}
+          disabled={disabled}
         /> {/* 좋아요 수 */}
-        <div>{board.createdDate}</div> {/* 작성일 */}
+        <div>{board.createdDate}</div>
+        {/* 작성일 */}
       </WriterTypo>
-      <KakaoMap 
-      nogps
-        mapZoomlevel={board.mapZoomlevel} 
-        readonly={true}
-      />
       {hashtag && (
         <HashtagContainer>
           <ViewHashtag hashtags={hashtag} />
         </HashtagContainer>
       )}
+      <KakaoMap
+        nogps
+        mapZoomlevel={board.mapZoomlevel}
+        readonly={true}
+      />
       <BodyTypo variant="body3">
         {board.boardContent}
       </BodyTypo>

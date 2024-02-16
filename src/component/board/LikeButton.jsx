@@ -1,7 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
+
 import styled, { createGlobalStyle } from 'styled-components';
-import { DUMMY_USER } from '@src/utils/const.js';
-import axios from 'axios';
 
 const GlobalStyle = createGlobalStyle({
   margin: 0,
@@ -80,6 +79,7 @@ const LikeContainer = styled(Label)`
  */
 
 const LikeButton = (props) => {
+
   const {
     className, clicked, like, size,
     heartColor, onClick, viewCount,
@@ -148,22 +148,7 @@ const LikeButton = (props) => {
     );
   };
 
-  useEffect(() => {
-    // 클릭 상태 업데이트
-    setClick(clicked);
-  }, [clicked]);
-  const handleLikeClick = async () => {
-    onClick(); 
-  };
-  
-  const clickLikeCount = async () => {
-    // 서버로부터 응답을 받아옴
-    const response = await handleLikeClick();
-    // 이미 좋아요를 눌렀다는 메시지를 받았을 경우 함수를 종료
-    if (response === "이미 좋아요를 눌렀습니다.") {
-      return;
-    }
-
+  const clickLikeCount = () => {
     if (!click) {
       setClick(true);
       setLikeCount(likeCount + 1);
@@ -191,7 +176,7 @@ const LikeButton = (props) => {
       heart.current.style.strokeDashoffset = '3000';
       heart.current.style.stroke = disabledColor;
     }
- 
+    onClick();
   };
 
   return (
@@ -200,16 +185,15 @@ const LikeButton = (props) => {
       <LikeContainer
         htmlFor="checkbox"
         className={`like-container ${className}`}
-        onClick={clickLikeCount} // clickLikeCount 함수를 onClick 핸들러로 사용
       >
-      <input
-        type="checkbox"
-        id="checkbox"
-        hidden
-        //onClick={clickLikeCount} 
-        disabled={disabled}
-      />
+        <input
+          type="checkbox"
+          id="checkbox"
+          hidden
+          onClick={clickLikeCount}
 
+          disabled={disabled}
+        />
         <Svg
           ref={svg}
           t="1689815540548"
