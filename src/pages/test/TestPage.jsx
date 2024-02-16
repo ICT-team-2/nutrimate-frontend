@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import ChatBotComponent from '@src/component/chat/chatbot/ChatBotComponent.jsx';
+import TestComp from '@src/pages/test/TestComp.jsx';
+import SurveyAllergy from '@src/component/survey/SurveyAllergy.jsx';
 
 
 const PageContainer = styled.div`
@@ -12,10 +13,7 @@ const PageContainer = styled.div`
 
 const TestPage = () => {
   return (
-
-    <ChatBotComponent />
-
-
+    <SurveyAllergy />
   );
 };
 

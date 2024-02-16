@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import MenuItem from '@mui/material/MenuItem';
 import { FormControl, InputLabel, Select } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
-import { USERINFOS } from '@src/component/setting/const.js';
+import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
 import { useAtom, useSetAtom } from 'jotai/react';
 import { carboAtom, dietStateAtom, fatAtom, proteinAtom } from '@src/component/setting/atom.js';
 
@@ -39,25 +39,25 @@ const DietSelectBox = (props) => {
 
   useEffect(() => {
     switch (diet) {
-      case USERINFOS.DIET.NORMAL.KEYS:
-        setCarbo(USERINFOS.DIET.NORMAL.CARBO);
-        setProtein(USERINFOS.DIET.NORMAL.PROTEIN);
-        setFat(USERINFOS.DIET.NORMAL.FAT);
+      case SETTING_USER_INFOS.DIET.NORMAL.KEYS:
+        setCarbo(SETTING_USER_INFOS.DIET.NORMAL.CARBO);
+        setProtein(SETTING_USER_INFOS.DIET.NORMAL.PROTEIN);
+        setFat(SETTING_USER_INFOS.DIET.NORMAL.FAT);
         break;
-      case USERINFOS.DIET.EXERCISE.KEYS:
-        setCarbo(USERINFOS.DIET.EXERCISE.CARBO);
-        setProtein(USERINFOS.DIET.EXERCISE.PROTEIN);
-        setFat(USERINFOS.DIET.EXERCISE.FAT);
+      case SETTING_USER_INFOS.DIET.EXERCISE.KEYS:
+        setCarbo(SETTING_USER_INFOS.DIET.EXERCISE.CARBO);
+        setProtein(SETTING_USER_INFOS.DIET.EXERCISE.PROTEIN);
+        setFat(SETTING_USER_INFOS.DIET.EXERCISE.FAT);
         break;
-      case USERINFOS.DIET.KITO.KEYS:
-        setCarbo(USERINFOS.DIET.KITO.CARBO);
-        setProtein(USERINFOS.DIET.KITO.PROTEIN);
-        setFat(USERINFOS.DIET.KITO.FAT);
+      case SETTING_USER_INFOS.DIET.KITO.KEYS:
+        setCarbo(SETTING_USER_INFOS.DIET.KITO.CARBO);
+        setProtein(SETTING_USER_INFOS.DIET.KITO.PROTEIN);
+        setFat(SETTING_USER_INFOS.DIET.KITO.FAT);
         break;
-      case USERINFOS.DIET.VEGAN.KEYS:
-        setCarbo(USERINFOS.DIET.VEGAN.CARBO);
-        setProtein(USERINFOS.DIET.VEGAN.PROTEIN);
-        setFat(USERINFOS.DIET.VEGAN.FAT);
+      case SETTING_USER_INFOS.DIET.VEGAN.KEYS:
+        setCarbo(SETTING_USER_INFOS.DIET.VEGAN.CARBO);
+        setProtein(SETTING_USER_INFOS.DIET.VEGAN.PROTEIN);
+        setFat(SETTING_USER_INFOS.DIET.VEGAN.FAT);
         break;
       default:
         break;
@@ -101,10 +101,10 @@ const DietSelectBox = (props) => {
   );
 };
 DietSelectBox.defaultProps = {
-  title: USERINFOS.DIET.TITLE,
-  label: USERINFOS.DIET.LABEL,
-  values: USERINFOS.DIET.VALUES,
-  keys: USERINFOS.DIET.KEYS,
+  title: SETTING_USER_INFOS.DIET.TITLE,
+  label: SETTING_USER_INFOS.DIET.LABEL,
+  values: SETTING_USER_INFOS.DIET.VALUES,
+  keys: SETTING_USER_INFOS.DIET.KEYS,
 };
 
 export default DietSelectBox;

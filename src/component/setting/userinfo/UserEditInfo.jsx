@@ -18,7 +18,7 @@ import GenderInfo from '@src/component/setting/userinfo/GenderInfo.jsx';
 import SportSelectBox from '@src/component/setting/userinfo/SportSelectBox.jsx';
 import { useAtom } from 'jotai/react';
 import { dietStateAtom } from '@src/component/setting/atom.js';
-import { USERINFOS } from '@src/component/setting/const.js';
+import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
 import DietSelectBox from '@src/component/setting/userinfo/DietSelectBox.jsx';
 
 const FIELD_WIDTH = 'calc(100% + 60px)';
@@ -62,26 +62,26 @@ const UserEditInfo = () => {
   return (
     <>
       <NameProfileComponent profileButton />
-      <StyledTypography variant='h5'>소개</StyledTypography>
+      <StyledTypography variant="h5">소개</StyledTypography>
       <StyledTextField
         variant={'outlined'} multiline rows={4}
-        label='자기소개' placeholder='자기 소개를 입력해주세요'
+        label="자기소개" placeholder="자기 소개를 입력해주세요"
       />
-      <StyledTypography variant='h5'>추가정보</StyledTypography>
-      <InfoContainer height='auto'>
+      <StyledTypography variant="h5">추가정보</StyledTypography>
+      <InfoContainer height="auto">
         <InfoInnerContainer>
           <AdditionalInfos
-            title={USERINFOS.EMAIL.TITLE}
-            label={USERINFOS.EMAIL.LABEL} />
+            title={SETTING_USER_INFOS.EMAIL.TITLE}
+            label={SETTING_USER_INFOS.EMAIL.LABEL} />
           <AdditionalInfos
-            title={USERINFOS.CALORY.TITLE}
-            label={USERINFOS.CALORY.LABEL} />
+            title={SETTING_USER_INFOS.CALORY.TITLE}
+            label={SETTING_USER_INFOS.CALORY.LABEL} />
           <DietSelectBox
-            title={USERINFOS.DIET.TITLE} label={USERINFOS.DIET.LABEL}
-            keys={USERINFOS.DIET.KEYS}
-            values={USERINFOS.DIET.VALUES}
+            title={SETTING_USER_INFOS.DIET.TITLE} label={SETTING_USER_INFOS.DIET.LABEL}
+            keys={SETTING_USER_INFOS.DIET.KEYS}
+            values={SETTING_USER_INFOS.DIET.VALUES}
             setDiet={setDiet}
-            id={USERINFOS.DIET.ID}
+            id={SETTING_USER_INFOS.DIET.ID}
           />
           <DietRatioInfo />
           <GenderInfo />
@@ -92,14 +92,14 @@ const UserEditInfo = () => {
       <StyledDiv>
         <FlexGrowDiv />
         <Button
-          variant='contained'
+          variant="contained"
           onClick={() => {
             navigate(LINKS.VIEW_INFO);
           }}
         >수정 완료</Button>
       </StyledDiv>
     </>
-  
+
   )
     ;
 };

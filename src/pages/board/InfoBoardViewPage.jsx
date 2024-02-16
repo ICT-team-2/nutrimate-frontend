@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { styled as muiStyled } from '@mui/material/styles';
@@ -9,6 +9,10 @@ import styled from 'styled-components';
 import { EDITOR_HEIGHT } from '@src/utils/const.js';
 import ViewHashtag from '@src/component/board/info/view/ViewHashtag.jsx';
 import InfoComments from '@src/component/board/info/view/InfoComments.jsx';
+import KakaoMap from '@src/component/board/KakaoMap';
+
+import axios from 'axios';
+
 
 const InfoBoardViewContainer = muiStyled(Container)`
   margin-top: 20px;
@@ -37,31 +41,50 @@ const InfoBoardViewPage = () => {
   const { boardId } = useParams();
   const navigate = useNavigate();
 
+  const [board, setBoard] = useState(null);
+
   useEffect(() => {
     if (isNaN(boardId)) {
       navigate('/404NotFound');
     }
   }, [boardId]);
 
+  useEffect(() => {
+    const fetchBoard = async () => {
+      try {
+        const response = await axios.get(`/boards/sport/${boardId}`);
+        setBoard(response.data);
+      } catch (error) {
+        console.error(error);
+        alert('게시글을 불러오는 중 오류가 발생했습니다.');
+      }
+    };
+
+    fetchBoard();
+  }, [boardId]);
+
+  if (!board) return null;  // 게시글 데이터가 아직 없는 경우 렌더링을 하지 않습니다.
+
   return (
     <InfoBoardViewContainer>
-      <Typography variant="h6">제목1</Typography>
-      {/* 작성자, 카테고리, 좋아요 버튼, 작성일 */}
+
+      <Typography variant="h6">{board.title}</Typography>
       <WriterTypo variant="subtitle2">
-        <div>작성자 {Seperator} </div>
-        <Categorydiv>식단</Categorydiv>
+        <div>{board.writer} {Seperator} </div>
+        <Categorydiv>{board.category}</Categorydiv>
         <FlexGrowDiv />
         <LikeButton viewCount />
-        <div>작성일: 2022.01.01</div>
+        <div>{board.mapPaths}</div>
       </WriterTypo>
-      {/* 해시태그 */}
       <HashtagContainer>
-        <ViewHashtag />
+        <ViewHashtag hashtag={board.hashtag} />
       </HashtagContainer>
-      {/* 내용 */}
-      <BodyTypo variant="body1">내용1</BodyTypo>
+      <BodyTypo variant="body1">
+        {board.content}
+      </BodyTypo>
       <InfoComments />
     </InfoBoardViewContainer>
+
   );
 };
 
