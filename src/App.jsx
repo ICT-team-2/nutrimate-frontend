@@ -20,6 +20,7 @@ import LoginRoutes from '@src/routes/LoginRoutes.jsx';
 import SurveyRoutes from '@src/routes/SurveyRoutes.jsx';
 import AdminRoutes from '@src/routes/AdminRoutes.jsx';
 import RecordRoutes from '@src/routes/RecordRoutes.jsx';
+import { CssBaseline } from '@mui/material';
 
 function App() {
   const darkMode = useAtomValue(isDarkModeAtom);
@@ -73,6 +74,7 @@ function App() {
         ...theme,
         ...(darkMode ? theme.darkMode : theme.lightMode),
       }}>
+        <CssBaseline />
         <MuiGlobalStyles />
         {routes}
         <ChatBotComponent />
