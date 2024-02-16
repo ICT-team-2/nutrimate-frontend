@@ -8,6 +8,7 @@ import ChatJoinModal from '@src/component/chat/ChatJoinModal.jsx';
 import ChallengeModal from '@src/component/chat/ChallengeModal.jsx';
 import { Button } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
+import axios from 'axios';
 
 const ChallengeChatContainer = styled(Paper)`
     width: 60%;
@@ -42,6 +43,10 @@ const ChallengeChatPage = () => {
   const [chatData, setChatData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showChallengeModal, setChallengeModal] = useState(false);
+  const [userId, setUserId] = useState(3);
+  const [nickname, setNickname] = useState('');
+  const [RoomType, setRoomType] = useState('');
+  const [chatroom, setChatroom] = useState(1);
 
 
   const [open, setOpen] = useState(false);
@@ -67,11 +72,11 @@ const ChallengeChatPage = () => {
   };
 
   const ChatLoading = () => {
-    fetch(`http://localhost:9999/challenge/chat/prev?chatroomId=${chatroom}`)
-      .then(response => response.json())
+    axios.get(`http://localhost:9999/challenge/chat/prev?chatroomId=${chatroom}`)
       .then(datas => {
-        console.log(datas);
-        for (const data of datas) {
+        console.log('datas: ', datas.data);
+        for (const data of datas.data) {
+          console.log('data: ', data);
           setChatData(prevChatData => [...prevChatData, data]);
         }
         stompClient.send('/pub/chat/' + RoomType, {}, JSON.stringify({
@@ -94,32 +99,26 @@ const ChallengeChatPage = () => {
 
   useEffect(() => {
     if (chatroomId == 1) {
-      RoomType = 'FIRST_ROOM';
-      chatroom = 1;
-    } else if (chatroomId == 2) {
-      RoomType = 'SECOND_ROOM';
-      chatroom = 3;
+      setRoomType('FIRST_ROOM');
+      setChatroom(1);
+    } else if (chatroomId == 3) {
+      setRoomType('SECOND_ROOM');
+      setChatroom(3);
     }
 
     stompClient.connect({}, () => {
-
-      fetch(`http://localhost:9999/challenge/chat/member?chatroomId=${chatroom}&userId=3`, {
-        method: 'POST',
-      })//@RequestBody로 받는다
-        .then(response => response.json())
+      axios.post(`http://localhost:9999/challenge/chat/member?chatroomId=${chatroom}&userId=${userId}`)//@RequestBody로 받는다
         .then(data => {
-          if (data.memberOk == 1) {
-            userId = data.userId;
-            nickname = data.challengeNick;
+          console.log(data.data);
+          if (data.data.memberOk === 1) {
+            setUserId(data.data.userId);
+            setNickname(data.data.challengeNick);
             ChatLoading();
-
-          } else if (data.memberOk == 0) {
+          } else if (data.data.memberOk === 0) {
             setShowModal(true);
-
           }
         })
         .catch(err => console.log(err));
-
       console.log('Connected to WebSocket');
       stompClient.subscribe('/sub/channel/' + RoomType, (message) => {
         const chatData = JSON.parse(message.body);
@@ -165,20 +164,20 @@ const ChallengeChatPage = () => {
 
   const handleSendModal = (inputValue) => {
     console.log(inputValue);
-    fetch(`http://localhost:9999/challenge/account`, {
-      method: 'POST', body: JSON.stringify({ 'chatroomId': chatroom, 'challengeNick': inputValue, 'userId': 3 }),
-      headers: { 'content-type': 'application/json' },
-    })//@RequestBody로 받는다
-      .then(response => response.json())
+    axios.post(`http://localhost:9999/challenge/account`,
+      {
+        'chatroomId': chatroom,
+        'challengeNick': inputValue,
+        'userId': userId,
+      })//@RequestBody로 받는다
       .then(data => {
-        if (data.memberOk == 1) {
-          userId = data.userId;
-          nickname = data.challengeNick;
+        if (data.data.memberOk === 1) {
+          setUserId(data.data.userId);
+          setNickname(data.data.challengeNick);
           ChatLoading();
           setShowModal(false);
-        } else if (data.memberDupl != null) {
-          alert(data.memberDupl);
-
+        } else if (data.data.memberDupl != null) {
+          alert(data.data.memberDupl);
         }
       });
   };
@@ -189,7 +188,11 @@ const ChallengeChatPage = () => {
     <PageContainer>
       <ChallengeChatContainer>
         {/* Pass props to ChatUI */}
-        <ChatUI title="Challenge Chat" overflow={true} height="300px" data={chatData} onSend={handleSend}
+        <ChatUI title="Challenge Chat"
+                overflow={true}
+                height="300px"
+                data={chatData}
+                onSend={handleSend}
                 nickname={nickname} />
         {showModal && <ChatJoinModal showModal={showModal} setShowModal={setShowModal} onSend={handleSendModal} />}
         <Tooltip

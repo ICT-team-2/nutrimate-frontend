@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -8,7 +8,7 @@ import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import styled from 'styled-components';
 
-function createData (name, calories, fat, carbs, protein) {
+function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
 
@@ -29,31 +29,28 @@ const RankTable = ({ data }) => {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <StyledTableHead>
           <TableRow>
             <TableCell>순위</TableCell>
             <TableCell>아이디</TableCell>
-            <TableCell align='right'>?</TableCell>
-            
+            <TableCell align="right">성공 횟수</TableCell>
           </TableRow>
         </StyledTableHead>
         <TableBody>
-
-        
-            {rows.map((row) => (
-              
-              <TableRow
-                key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component='th' scope='row'>
-                  {row.name}
-                </TableCell>
-                <TableCell>{data[parseInt(row.name)-1] ? data[parseInt(row.name)-1].challengeNick : ""}</TableCell>
-                <TableCell align='right'>{data[parseInt(row.name)-1] ? data[parseInt(row.name)-1].count : ""}</TableCell>
-              </TableRow>
-            ))}
+          {data && data.map((d, index) => (
+            <TableRow
+              key={index}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {index + 1}
+              </TableCell>
+              <TableCell>{d.challengeNick}</TableCell>
+              <TableCell
+                align="right">{d.count}</TableCell>
+            </TableRow>
+          ))}
 
         </TableBody>
       </Table>

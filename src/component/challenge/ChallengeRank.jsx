@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import RankTable from '@src/component/challenge/RankTable.jsx';
+import axios from 'axios';
 
 const ChallengeContainer = styled(Paper)`
     padding: 30px;
@@ -37,66 +38,57 @@ const ChallengeTableContainer = styled.div`
 `;
 
 const ChallengeRank = () => {
-  var chatroomId=1;
+  const [chatroomId, setChatroomId] = React.useState(1); // 1: 하루에 한 번 물마시기, 3: 샐러드 챌린지
   const [value, setValue] = React.useState(0);
-  const [challengeListData, setChallengeListData] = React.useState(0);  
-        //랭크 리스트를 부르는 함수
-        const ChallengeRankList =()=>{
-        
-              fetch(`http://localhost:9999/challenge/success?chatroomId=${chatroomId}`)
-              .then(response => response.json())
-              .then(datas => { 
-                  console.log(datas);
-                  setChallengeListData(datas)
+  const [challengeListData, setChallengeListData] = React.useState(undefined);
+  //랭크 리스트를 부르는 함수
+  const ChallengeRankList = () => {
+    axios.get(`http://localhost:9999/challenge/success?chatroomId=${chatroomId}`)
+      .then(datas => {
+        console.log(datas.data);
+        setChallengeListData(datas.data);
 
-              })
-              .catch(error => {
-                  console.error('Error fetching chat data:', error);
-              });
-        
-        }
+      })
+      .catch(error => {
+        console.error('Error fetching chat data:', error);
+      });
+  };
 
   useEffect(() => {
-    if(challengeListData == 0){
-      ChallengeRankList();
+    if (value === 0) {
+      setChatroomId(1);
+    } else {
+      setChatroomId(3);
     }
- 
-  })
+  }, [value]);
+
+  useEffect(() => {
+    ChallengeRankList();
+  }, [chatroomId]);
 
 
-
-  
- 
-  
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    if(value==0) {
-      chatroomId = 3
-    }else{
-      chatroomId = 1
-    }
-    ChallengeRankList() 
-    
   };
   return (
     <>
-    <ChallengeContainer>
-      <div>
-        <Typography variant='h5'>오늘의 순위</Typography>
-        <Typography variant='body1'>챌린지 이름</Typography>
-      </div>
+      <ChallengeContainer>
+        <div>
+          <Typography variant="h5">오늘의 순위</Typography>
+          <Typography variant="body1">챌린지 이름</Typography>
+        </div>
         <FlexGrowDiv />
-      <IconContainer>
-        <StyledIcon icon={faAward} size='2x' />
-      </IconContainer>
+        <IconContainer>
+          <StyledIcon icon={faAward} size="2x" />
+        </IconContainer>
       </ChallengeContainer>
       <ChallengeTableContainer>
         <Tabs value={value} onChange={handleChange} centered>
-        <Tab label='하루에 한 번 물마시기' />
-        <Tab label='샐러드 챌린지' />
-      </Tabs>
+          <Tab label="하루에 한 번 물마시기" />
+          <Tab label="샐러드 챌린지" />
+        </Tabs>
         <br />
-      <RankTable data={challengeListData} />
+        <RankTable data={challengeListData} />
       </ChallengeTableContainer>
     </>);
 
