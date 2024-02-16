@@ -12,11 +12,9 @@ const PROFILE_IMG_SIZE = 100;
 const StyledContainerDiv = styled.div`
     background-color: ${({ theme }) => theme['dark-background']};
     border-radius: 10px;
-    height: ${PROFILE_IMG_SIZE}px;
-    width: 100%;
+    width: calc(100% + 60px);
     padding: 30px;
     display: flex;
-
 `;
 
 const NameContainer = styled.div`
@@ -37,15 +35,15 @@ const ProfileContainer = styled.div`
 const SubTitleTypo = muiStyled(Typography)`
   color: ${({ theme }) => theme['gray-light-text']};
 `;
-const NameProfileComponent = ({ profileButton }) => {
+const NameProfileComponent = ({ profileButton,name,nickname }) => {
   const uploadImg = useAtomValue(uploadedImageAtom);
 
   return (
     <StyledContainerDiv>
       <UserAvatar size={PROFILE_IMG_SIZE} variant="rounded" src={uploadImg} />
       <NameContainer>
-        <Typography variant="h5">이름</Typography>
-        <SubTitleTypo variant="subtitle1">닉네임</SubTitleTypo>
+        <Typography variant="h5">{name}</Typography>
+        <SubTitleTypo variant="subtitle1">{nickname}</SubTitleTypo>
       </NameContainer>
       <FlexGrowDiv />
       {profileButton &&
@@ -59,6 +57,8 @@ const NameProfileComponent = ({ profileButton }) => {
 
 NameProfileComponent.defaultProps = {
   profileButton: false,
+  name: '이름',
+  nickname: '닉네임',
 };
 
 export default NameProfileComponent;

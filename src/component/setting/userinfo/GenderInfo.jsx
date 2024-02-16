@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
 import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
+import { useAtom } from 'jotai';
+import { genderAtom } from '../atom';
 
 const StyledFormControl = muiStyled(FormControl)`
     width: 50%;
@@ -30,7 +32,7 @@ const StyledFormLabel = muiStyled(FormLabel)`
 `;
 
 export default function GenderInfo({ disabled }) {
-  const [value, setValue] = useState('female');
+  const [value, setValue] = useAtom(genderAtom);
 
   const handleChange = (event) => {
     setValue(event.target.value);

@@ -8,7 +8,11 @@ import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import { useAtom, useAtomValue } from 'jotai/react';
 
-import { drawerStateAtom, firstDrawerRefAtom, sideMenuIconRefAtom } from '@src/component/common/Header/atom.js';
+import {
+  drawerStateAtom,
+  firstDrawerRefAtom,
+  sideMenuIconRefAtom,
+} from '@src/component/common/Header/atom.js';
 import { MENU_LIST } from '@src/utils/const.js';
 import {
   faCalendar,
@@ -22,7 +26,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
-
+import useNavigateToRecord from '@src/hooks/useNavigateToRecord.jsx';
 
 const drawerWidth = 240;
 
@@ -45,7 +49,7 @@ const closedMixin = (theme) => ({
   overflowX: 'hidden',
   border: 'none',
   backgroundColor: theme['main-background'],
-
+  
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
@@ -70,7 +74,7 @@ const Drawer = styled(MuiDrawer, {
     ...closedMixin(theme),
     '& .MuiDrawer-paper': closedMixin(theme),
   }),
-
+  
 }));
 
 const StyledDrawer = styled(Drawer)`
@@ -103,37 +107,42 @@ const itemMargin = [0, 3, 2, 1, 1, 0, 2, 1];
 
 //메뉴 아이콘들
 const menuIcon = [
-  <FontAwesomeIcon key="icon1" icon={faHouse} />,
-  <FontAwesomeIcon key="icon3" icon={faClipboard}
+  <FontAwesomeIcon key='icon1' icon={faHouse} />,
+  <FontAwesomeIcon key='icon3' icon={faClipboard}
                    style={{ paddingLeft: '3px' }} />,
-  <FontAwesomeIcon key="icon4" icon={faCalendar}
+  <FontAwesomeIcon key='icon4' icon={faCalendar}
                    style={{ paddingLeft: '2px' }} />,
-  <FontAwesomeIcon key="icon5" icon={faPaperPlane}
+  <FontAwesomeIcon key='icon5' icon={faPaperPlane}
                    style={{ paddingLeft: '1px' }} />,
-  <FontAwesomeIcon key="icon6" icon={faHeart}
+  <FontAwesomeIcon key='icon6' icon={faHeart}
                    style={{ paddingLeft: '1px' }} />,
-  <FontAwesomeIcon key="icon7" icon={faTrophy} />,
-  <FontAwesomeIcon key="icon8" icon={faUser}
+  <FontAwesomeIcon key='icon7' icon={faTrophy} />,
+  <FontAwesomeIcon key='icon8' icon={faUser}
                    style={{ paddingLeft: '2px' }} />,
-  <FontAwesomeIcon key="icon10" icon={faGear}
+  <FontAwesomeIcon key='icon10' icon={faGear}
                    style={{ paddingLeft: '1px' }} />,
 ];
 
 const SideMenu = ({ drawerWidth, drawerHeight }) => {
-
+  
   const [drawerOpen, setDrawerOpen] = useAtom(drawerStateAtom);
   const navigate = useNavigate();
   const drawerRef = useRef();
   const documentRef = useRef(window.document);
   const iconButtonRef = useAtomValue(sideMenuIconRefAtom);
   const [drawerRefAtom, setDrawerRefAtom] = useAtom(firstDrawerRefAtom);
-
+  const gotoRecord = useNavigateToRecord();
+  
   const itemOnClick = menuItem.map((item) => {
     return () => {
+      if (item.TITLE === MENU_LIST.RECORD.TITLE) {
+        gotoRecord();
+        return;
+      }
       navigate(item.PATH);
     };
   });
-
+  
   // drawer 밖을 클릭하면 drawer가 닫히도록
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -150,7 +159,7 @@ const SideMenu = ({ drawerWidth, drawerHeight }) => {
       documentRef.current.removeEventListener('mousedown', handleClickOutside);
     };
   }, [iconButtonRef]);
-
+  
   // drawer 안에 mouse가 들어오면 drawer가 열리도록
   useEffect(() => {
     const handleMouseEnter = () => {
@@ -162,14 +171,14 @@ const SideMenu = ({ drawerWidth, drawerHeight }) => {
     drawerRef.current.addEventListener('mouseover', handleMouseEnter);
     drawerRef.current.addEventListener('mouseleave', handleMouseLeave);
   }, []);
-
+  
   useEffect(() => {
     setDrawerRefAtom(drawerRef.current);
   }, [drawerRef]);
-
+  
   return (
     <StyledDrawer
-      variant="permanent"
+      variant='permanent'
       open={drawerOpen}
       onClose={() => setDrawerOpen(false)}
       ref={drawerRef}

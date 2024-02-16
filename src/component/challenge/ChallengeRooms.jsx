@@ -35,7 +35,7 @@ const ChallengeRooms = () => {
           }}>
             <StyledImg src="/src/asset/image/ChatImage.png" alt="채팅룸" />
             <StyledTypography variant="body1">
-              챌린지 주제 1
+              하루에 한 번 물마시기
             </StyledTypography>
           </StyledPaper>
         </Grid>
@@ -45,7 +45,7 @@ const ChallengeRooms = () => {
           }}>
             <StyledImg src="/src/asset/image/ChatImage.png" alt="채팅룸" />
             <StyledTypography variant="body1">
-              챌린지 주제 2
+              샐러드 챌린지
             </StyledTypography>
           </StyledPaper>
         </Grid>

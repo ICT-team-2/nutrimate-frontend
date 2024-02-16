@@ -163,6 +163,7 @@ const InfoBoardWritePage = (props) => {
     
     // 유효성 검사
     if (!validateForm()) return;
+
     function removeHtmlTags(content) {
       return content.replace(/<[^>]*>?/gm, '').trim();
     }
@@ -196,7 +197,7 @@ const InfoBoardWritePage = (props) => {
       hashtag: hashTagData,
       userId: DUMMY_USER.USER_ID, // 더미 유저 ID 추가
     };
-    
+
     // axios를 통해 서버에 데이터 전송
     try {
       const response = await axios.post('/boards/sport', data, {
@@ -221,7 +222,7 @@ const InfoBoardWritePage = (props) => {
       console.error(error);
       alert('등록 중 오류가 발생'); // 오류 발생 알림
     }
-    
+
   };
 
   return (

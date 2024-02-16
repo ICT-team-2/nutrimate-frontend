@@ -9,6 +9,7 @@ import { TextField } from '@mui/material';
 import 'dayjs/locale/ko';
 import { useAtom } from 'jotai/react';
 import { datePickerAtom } from '@src/component/calendar/atom.js';
+import dayjs from 'dayjs';
 
 export default function MonthPicker ({ children, date, onNavigate }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -22,7 +23,7 @@ export default function MonthPicker ({ children, date, onNavigate }) {
     setAnchorEl(null);
   };
   const handleDateChange = (d) => {
-    setSelectedDate(d);
+    setSelectedDate(d['$d']);
     console.log(d);
     date.setYear(d['$d'].getFullYear());
     date.setMonth(d['$d'].getMonth());
@@ -52,7 +53,7 @@ export default function MonthPicker ({ children, date, onNavigate }) {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label='날짜 선택'
-              value={selectedDate}
+              value={dayjs(selectedDate)}
               onChange={handleDateChange}
               views={['year', 'month']}
               format='YYYY/MM'

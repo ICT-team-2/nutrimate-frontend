@@ -24,7 +24,9 @@ const StyledTableHead = styled(TableHead)`
     background-color: ${({ theme }) => theme['main-background']};
 `;
 
+
 const RankTable = ({ data }) => {
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
@@ -33,21 +35,26 @@ const RankTable = ({ data }) => {
             <TableCell>순위</TableCell>
             <TableCell>아이디</TableCell>
             <TableCell align='right'>?</TableCell>
+            
           </TableRow>
         </StyledTableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component='th' scope='row'>
-                {row.name}
-              </TableCell>
-              <TableCell>{row.calories}</TableCell>
-              <TableCell align='right'>{row.fat}</TableCell>
-            </TableRow>
-          ))}
+
+        
+            {rows.map((row) => (
+              
+              <TableRow
+                key={row.name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component='th' scope='row'>
+                  {row.name}
+                </TableCell>
+                <TableCell>{data[parseInt(row.name)-1] ? data[parseInt(row.name)-1].challengeNick : ""}</TableCell>
+                <TableCell align='right'>{data[parseInt(row.name)-1] ? data[parseInt(row.name)-1].count : ""}</TableCell>
+              </TableRow>
+            ))}
+
         </TableBody>
       </Table>
     </TableContainer>

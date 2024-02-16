@@ -21,6 +21,10 @@ import SurveyRoutes from '@src/routes/SurveyRoutes.jsx';
 import AdminRoutes from '@src/routes/AdminRoutes.jsx';
 import RecordRoutes from '@src/routes/RecordRoutes.jsx';
 
+
+
+
+
 function App() {
   const darkMode = useAtomValue(isDarkModeAtom);
   const muiTheme = useMuiTheme();
