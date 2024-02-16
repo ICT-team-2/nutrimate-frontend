@@ -4,6 +4,9 @@ import { styled as muiStyled } from '@mui/material/styles';
 import { InputLabel, TextField } from '@mui/material';
 import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
 import { UserInfoContainerDiv } from '@src/component/setting/userinfo/UserViewInfo.jsx';
+import { heIL } from '@mui/x-date-pickers';
+import { heightStateAtom, weightStateAtom } from '../atom';
+import { useAtom } from 'jotai';
 
 const StyledTextField = muiStyled(TextField)`
     width: 35%;
@@ -23,6 +26,9 @@ const HeightWeightInfo = ({ disabled }) => {
   const [isHeightFocused, setIsHeightFocused] = useState(undefined);
   const [isWeightFocused, setIsWeightFocused] = useState(undefined);
 
+  const [height, setHeight] = useAtom(heightStateAtom);
+  const [weight, setWeight] = useAtom(weightStateAtom);
+
   return (
     <UserInfoContainerDiv>
       <StyledLabel
@@ -37,6 +43,8 @@ const HeightWeightInfo = ({ disabled }) => {
         onFocus={() => setIsHeightFocused('true')}
         onBlur={() => setIsHeightFocused(undefined)}
         disabled={disabled}
+        value={height}
+        onChange={(e) => setHeight(e.target.value)}
       >
       </StyledTextField>
 
@@ -51,6 +59,8 @@ const HeightWeightInfo = ({ disabled }) => {
         onFocus={() => setIsWeightFocused('true')}
         onBlur={() => setIsWeightFocused(undefined)}
         disabled={disabled}
+        value={weight}
+        onChange={(e) => setWeight(e.target.value)}
       ></StyledTextField>
     </UserInfoContainerDiv>
   );

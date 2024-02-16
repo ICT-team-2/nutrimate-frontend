@@ -57,7 +57,6 @@ const DietRatioInfo = ({ disabled }) => {
   const [carbo, setCarbo] = useAtom(carboAtom);
   const [protein, setProtein] = useAtom(proteinAtom);
   const [fat, setFat] = useAtom(fatAtom);
-
   const [diet, setDiet] = useAtom(dietStateAtom);
 
 
