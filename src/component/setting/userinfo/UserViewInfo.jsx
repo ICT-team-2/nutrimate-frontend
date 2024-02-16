@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NameProfileComponent
   from '@src/component/setting/userinfo/NameProfileComponent.jsx';
 import Typography from '@mui/material/Typography';
@@ -20,7 +20,16 @@ import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
 import DietSelectBox from '@src/component/setting/userinfo/DietSelectBox.jsx';
 import axios from 'axios';
 import { useAtom } from 'jotai';
-import { carboAtom, dietStateAtom, fatAtom, genderAtom, heightStateAtom, proteinAtom, sportStateAtom, weightStateAtom } from '../atom';
+import {
+  carboAtom,
+  dietStateAtom,
+  fatAtom,
+  genderAtom,
+  heightStateAtom,
+  proteinAtom,
+  sportStateAtom,
+  weightStateAtom,
+} from '../atom';
 import { userIdAtom } from '@src/pages/login/atom';
 
 const FIELD_WIDTH = 'calc(100% + 60px)';
@@ -71,55 +80,56 @@ const UserViewInfo = () => {
   const [carbo, setCarbo] = useAtom(carboAtom);
   const [protein, setProtein] = useAtom(proteinAtom);
   const [fat, setFat] = useAtom(fatAtom);
-  const [userId , setUserId] = useAtom(userIdAtom);
+  const [userId, setUserId] = useAtom(userIdAtom);
   const [diet, setDiet] = useAtom(dietStateAtom);
   const [gender, setGender] = useAtom(genderAtom);
   const [height, setHeight] = useAtom(heightStateAtom);
   const [weight, setWeight] = useAtom(weightStateAtom);
   const [sport, setSport] = useAtom(sportStateAtom);
-  
+
   useEffect(() => {
+    console.log('UserViewInfo useEffect - userId: ', userId);
     window.scrollTo(0, 0);
-    
+
     axios.get('/member/mypage', {
       params: {
         userId: sessionStorage.userId,
       },
     })
-    .then(response => {
-      console.log(response.data);
-      setUserInfo(response.data.memberDto);
-      setDiet(response.data.memberDto.userDiet);
-      setGender(response.data.memberDto.userGender);
-      setHeight(response.data.memberDto.userHeight);
-      setWeight(response.data.memberDto.userWeight);
-      setSport(response.data.memberDto.userSportHard);
+      .then(response => {
+        console.log(response.data);
+        setUserInfo(response.data.memberDto);
+        setDiet(response.data.memberDto.userDiet);
+        setGender(response.data.memberDto.userGender);
+        setHeight(response.data.memberDto.userHeight);
+        setWeight(response.data.memberDto.userWeight);
+        setSport(response.data.memberDto.userSportHard);
 
-      if(response.data.memberDto.userDiet===SETTING_USER_INFOS.DIET.CUSTOM.KEYS){
+        if (response.data.memberDto.userDiet === SETTING_USER_INFOS.DIET.CUSTOM.KEYS) {
+          setCarbo(response.data.memberDto.userCarbo);
+          setProtein(response.data.memberDto.userProtein);
+          setFat(response.data.memberDto.userFat);
+        }
 
-      setCarbo(response.data.memberDto.userCarbo);
-      setProtein(response.data.memberDto.userProtein);
-      setFat(response.data.memberDto.userFat);
-      }
-      
-    })
-    .catch(error => {
-      console.error('There was an error!', error);
-    });
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
   }, []);
 
   const navigate = useNavigate();
   return (
     <>
-    {userInfo && (
-      <>
-      <NameProfileComponent/>
+
+      <NameProfileComponent
+        name={userInfo?.userName}
+        nickname={userInfo?.userNick} />
       <StyledTypography variant="h5">소개</StyledTypography>
       <StyledTextField
         variant={'outlined'} multiline rows={4}
         label="자기소개" placeholder="자기 소개를 입력해주세요"
         disabled
-        value={userInfo.setUserInfo}
+        value={userInfo?.setUserInfo}
       />
       <StyledTypography variant="h5">추가정보</StyledTypography>
       <InfoContainer height="auto">
@@ -127,13 +137,13 @@ const UserViewInfo = () => {
           <AdditionalInfos
             title={SETTING_USER_INFOS.EMAIL.TITLE}
             label={SETTING_USER_INFOS.EMAIL.LABEL}
-            value={userInfo.userEmail}
+            value={userInfo?.userEmail}
             disabled
           />
           <AdditionalInfos
             title={SETTING_USER_INFOS.CALORY.TITLE}
             label={SETTING_USER_INFOS.CALORY.LABEL}
-            value={userInfo.userCal}
+            value={userInfo?.userCal}
             disabled
           />
           <DietSelectBox
@@ -158,8 +168,6 @@ const UserViewInfo = () => {
           }}
         >개인정보 수정</Button>
       </StyledDiv>
-    </>
-    )}
     </>
   );
 };
