@@ -12,6 +12,7 @@ import { profileModalAtom, profilePromptModalAtom, uploadedImageAtom } from '@sr
 import { ResetStyleInput } from '@src/component/common/ImgUploader.jsx';
 import { styled as muiStyled } from '@mui/material/styles';
 import ProfileAIPromptModal from '@src/component/mypage/myinfo/ProfileAIPromptModal.jsx';
+import styled from 'styled-components';
 
 const style = {
   position: 'absolute',
@@ -19,7 +20,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 200,
-  height: 200,
+  height: 230,
   bgcolor: 'background.paper',
   boxShadow: 24,
   padding: '20px',
@@ -28,6 +29,9 @@ const style = {
 
 const StyldListItemText = muiStyled(ListItemText)`
   text-align: center;
+`;
+const TitleH3 = styled.h3`
+    margin-bottom: 20px;
 `;
 
 export default function ChangeProfileModal() {
@@ -63,7 +67,7 @@ export default function ChangeProfileModal() {
               textAlign: 'center',
             }}
           >
-            <h3>프로필 변경</h3>
+            <TitleH3>프로필 변경</TitleH3>
             <Divider />
             <List>
               <ListItem disablePadding>
