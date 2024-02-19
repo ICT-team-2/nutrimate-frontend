@@ -59,8 +59,7 @@ const LikeContainer = styled(Label)`
     padding: 0.3rem;
     border-radius: 6px;
     width: fit-content;
-    min-width: 3rem;
-
+    min-width: ${({ viewcount }) => viewcount ? '1rem' : '3rem'};
 `;
 /**
  * 좋아요 버튼을 표시하고 상호 작용하기 위한 LikeButton 컴포넌트입니다.
@@ -185,6 +184,7 @@ const LikeButton = (props) => {
       <LikeContainer
         htmlFor="checkbox"
         className={`like-container ${className}`}
+        viewcount={viewCount + ''}
       >
         <input
           type="checkbox"

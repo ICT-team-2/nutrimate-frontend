@@ -14,8 +14,7 @@ const ViewContainer = styled.div`
 
 `;
 const StyledWidthDiv = styled.div`
-    max-width: 600px;
-    width: 60%;
+    width: 500px;
 `;
 const StyledButton = styled(Button)`
     margin-left: 10px;
