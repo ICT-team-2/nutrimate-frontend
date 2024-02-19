@@ -31,12 +31,6 @@ const StyledButton = styled(Button)`
 `;
 
 
-let RoomType = '';
-let chatroom;
-let userId;
-let nickname;
-
-
 const ChallengeChatPage = () => {
   const stompClient = Stomp.client('ws://localhost:9999/ws');
   const { chatroomId } = useParams();
@@ -45,7 +39,7 @@ const ChallengeChatPage = () => {
   const [showChallengeModal, setChallengeModal] = useState(false);
   const [userId, setUserId] = useState(3);
   const [nickname, setNickname] = useState('');
-  const [RoomType, setRoomType] = useState('');
+  const [roomType, setRoomType] = useState('');
   const [chatroom, setChatroom] = useState(1);
 
 
@@ -62,7 +56,7 @@ const ChallengeChatPage = () => {
 
   const handleChallengeSuccess = (success) => {
     // Handle the challenge success state here
-    stompClient.send('/pub/chat/' + RoomType, {}, JSON.stringify({
+    stompClient.send('/pub/chat/' + roomType, {}, JSON.stringify({
       'chatMessage': nickname + '가(이) 챌린지를 성공했습니다.',
       'challengeNick': nickname,
       'chatroomId': chatroom,
@@ -76,10 +70,9 @@ const ChallengeChatPage = () => {
       .then(datas => {
         console.log('datas: ', datas.data);
         for (const data of datas.data) {
-          console.log('data: ', data);
           setChatData(prevChatData => [...prevChatData, data]);
         }
-        stompClient.send('/pub/chat/' + RoomType, {}, JSON.stringify({
+        stompClient.send('/pub/chat/' + roomType, {}, JSON.stringify({
           'chatMessage': nickname + '가(이) 입장했어요',
           'challengeNick': nickname,
           'chatroomId': chatroom,
@@ -98,13 +91,14 @@ const ChallengeChatPage = () => {
 
 
   useEffect(() => {
-    if (chatroomId == 1) {
+    if (chatroomId === '1') {
       setRoomType('FIRST_ROOM');
       setChatroom(1);
-    } else if (chatroomId == 3) {
+    } else if (chatroomId === '3') {
       setRoomType('SECOND_ROOM');
       setChatroom(3);
     }
+    ChatLoading();
 
     stompClient.connect({}, () => {
       axios.post(`http://localhost:9999/challenge/chat/member?chatroomId=${chatroom}&userId=${userId}`)//@RequestBody로 받는다
@@ -120,25 +114,23 @@ const ChallengeChatPage = () => {
         })
         .catch(err => console.log(err));
       console.log('Connected to WebSocket');
-      stompClient.subscribe('/sub/channel/' + RoomType, (message) => {
+      stompClient.subscribe('/sub/channel/' + (chatroomId === '1' ? 'FIRST_ROOM' : 'SECOND_ROOM'), (message) => {
         const chatData = JSON.parse(message.body);
+        console.log('subscribe chatData:', chatData);
         setChatData(prevChatData => [...prevChatData, chatData]);
       });
-
-
     }, (error) => {
       console.error('Error during connection:', error);
     });
     const handleUnload = (ev) => {
       ev.preventDefault();
-      stompClient.send('/pub/chat/' + RoomType, {}, JSON.stringify({
+      stompClient.send('/pub/chat/' + roomType, {}, JSON.stringify({
         'chatMessage': nickname + '가(이) 퇴장했습니다.',
         'challengeNick': nickname,
         'chatroomId': chatroom,
         'messageType': 'LEAVE',
         'userId': userId,
       }));
-
     };
 
     window.addEventListener('beforeunload', handleUnload);
@@ -147,12 +139,19 @@ const ChallengeChatPage = () => {
       window.removeEventListener('beforeunload', handleUnload);
     };
 
-
   }, [chatroomId]);
+
+  useEffect(() => {
+    console.log('chatData:', chatData);
+  }, [chatData]);
+
+  useEffect(() => {
+    console.log('roomType:', roomType);
+  }, [roomType]);
 
 
   const handleSend = (message) => {
-    stompClient.send('/pub/chat/' + RoomType, {}, JSON.stringify({
+    stompClient.send('/pub/chat/' + roomType, {}, JSON.stringify({
       'chatMessage': message,
       'challengeNick': nickname,
       'chatroomId': chatroom,
@@ -194,7 +193,11 @@ const ChallengeChatPage = () => {
                 data={chatData}
                 onSend={handleSend}
                 nickname={nickname} />
-        {showModal && <ChatJoinModal showModal={showModal} setShowModal={setShowModal} onSend={handleSendModal} />}
+        {showModal &&
+          <ChatJoinModal
+            showModal={showModal}
+            setShowModal={setShowModal}
+            onSend={handleSendModal} />}
         <Tooltip
           open={open}
           onClose={handleTooltipClose}
@@ -206,9 +209,12 @@ const ChallengeChatPage = () => {
 
         </Tooltip>
         {showChallengeModal &&
-          <ChallengeModal setChallengeSuccess={handleChallengeSuccess} showChallengeModal={showChallengeModal}
-                          setChallengeModal={setChallengeModal} nickname={nickname} chatroom={chatroom} userId={userId}
-                          RoomType={RoomType} />}
+          <ChallengeModal
+            setChallengeSuccess={handleChallengeSuccess}
+            showChallengeModal={showChallengeModal}
+            setChallengeModal={setChallengeModal} nickname={nickname}
+            chatroom={chatroom} userId={userId}
+            RoomType={roomType} />}
       </ChallengeChatContainer>
 
     </PageContainer>

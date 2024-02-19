@@ -5,7 +5,7 @@ import Divider from '@mui/material/Divider';
 import MyTalkComponent from '@src/component/chat/MyTalkComponent.jsx';
 import ChatInput from '@src/component/chat/ChatInput.jsx';
 import OtherTalkComponent from '@src/component/chat/OtherTalkComponent.jsx';
-import { useRef, useEffect } from "react";
+import { useRef, useEffect } from 'react';
 import ChatLoading from '@src/component/chat/chatbot/ChatLoading.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
@@ -35,29 +35,27 @@ const ChatOutAndEnter = styled.div`
 `;
 
 
-
 const hueAnimation = keyframes`
-  from {
-    -webkit-filter: hue-rotate(0deg);
-  }
-  to {
-    -webkit-filter: hue-rotate(-360deg);
-  }
+    from {
+        -webkit-filter: hue-rotate(0deg);
+    }
+    to {
+        -webkit-filter: hue-rotate(-360deg);
+    }
 `;
 
-  
 
 const ChallengeSuccess = styled.div`
-      font-family: 'Helvetica Neue, Helvetica, Arial, sans-serif';
-      font-size: 20px;
-      font-weight: 100;
-      letter-spacing: 2px;
-      text-align: center;
-      color: #f35626;
-      background-image: -webkit-linear-gradient(92deg, #f35626, #feab3a);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: ${hueAnimation} 10s infinite linear;
+    font-family: 'Helvetica Neue, Helvetica, Arial, sans-serif';
+    font-size: 20px;
+    font-weight: 100;
+    letter-spacing: 2px;
+    text-align: center;
+    color: #f35626;
+    background-image: -webkit-linear-gradient(92deg, #f35626, #feab3a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: ${hueAnimation} 10s infinite linear;
 `;
 
 const AvatarWrapper = styled.div`
@@ -66,7 +64,7 @@ const AvatarWrapper = styled.div`
 
 
 const ChatUI = (props) => {
-  const { title, overflow, height, data, onSend,nickname,loading,micicon } = props;
+  const { title, overflow, height, data, onSend, nickname, loading, micicon } = props;
   const [voiceReading, setVoiceReading] = useState(false);
 
   const scrollRef = useRef();
@@ -78,42 +76,48 @@ const ChatUI = (props) => {
   }, [data]);
 
   const Voice = () => {
-     setVoiceReading(true);
+    setVoiceReading(true);
   };
-
 
 
   return (
     <ChatContainer>
       <ChatHeader>
-        <Typography variant='h6'>{title}{micicon && <FontAwesomeIcon onClick={Voice} icon={faMicrophone} style={{ fontSize: '24px', color: 'red', float: 'right' }} />} </Typography>
+        <Typography variant="h6">{title}{micicon && <FontAwesomeIcon onClick={Voice} icon={faMicrophone} style={{
+          fontSize: '24px',
+          color: 'red',
+          float: 'right',
+        }} />} </Typography>
       </ChatHeader>
       <Divider />
-      <ChatBody ref={scrollRef}  overflow={overflow + ''} height={height}>
-      
-      
-      {
-        Array.isArray(data) 
-              ? data.map((d, i) => 
-                d.messageType == 'CHAT' ?
-                    d.challengeNick == nickname ? 
-                        <MyTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
-                        :<OtherTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
-                  : d.messageType == 'CHALLENGE'?
-                     <ChallengeSuccess key={i} > -- {d.chatMessage} --</ChallengeSuccess>
-                      :<ChatOutAndEnter key={i}>{d.chatMessage}</ChatOutAndEnter>
-                )
-              : data.messageType == 'CHAT' ? 
-                  data.challengeNick == nickname ? 
-                      <MyTalkComponent content={data.chatMessage} nick={data.challengeNick} />
-                      :<OtherTalkComponent content={data.chatMessage} nick={data.challengeNick} />
-                :d.messageType == 'CHALLENGE'?
-                  <ChallengeSuccess > {data.chatMessage}</ChallengeSuccess>
-                 :<ChatOutAndEnter>{data.chatMessage}</ChatOutAndEnter>
-        
-      }
-      {loading && <ChatLoading></ChatLoading>}   
-      {voiceReading && <ChatBotComponent voiceReading={voiceReading}/>}
+      <ChatBody ref={scrollRef} overflow={overflow + ''} height={height}>
+
+
+        {
+          Array.isArray(data)
+            ? data.map((d, i) =>
+              d.messageType == 'CHAT' ?
+                d.challengeNick == nickname ?
+                  <MyTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
+                  : <OtherTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
+                : d.messageType == 'CHALLENGE' ?
+                  <ChallengeSuccess key={i}> -- {d.chatMessage} --</ChallengeSuccess>
+                  : <ChatOutAndEnter key={i}>{d.chatMessage}</ChatOutAndEnter>,
+            )
+            : d.messageType == 'CHAT' ?
+              d.challengeNick == nickname ?
+                <MyTalkComponent
+                  content={d.chatMessage}
+                  nick={d.challengeNick} />
+                : <OtherTalkComponent
+                  content={d.chatMessage} nick={d.challengeNick} />
+              : d.messageType == 'CHALLENGE' ?
+                <ChallengeSuccess> {d.chatMessage}</ChallengeSuccess>
+                : <ChatOutAndEnter>{d.chatMessage}</ChatOutAndEnter>
+
+        }
+        {loading && <ChatLoading></ChatLoading>}
+        {voiceReading && <ChatBotComponent voiceReading={voiceReading} />}
 
       </ChatBody>
       <ChatInput onSend={onSend} />

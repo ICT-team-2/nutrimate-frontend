@@ -50,7 +50,6 @@ const ChallengeImgUploader = (props) => {
   const fileInputRef = useRef();
 
   useEffect(() => {
-
     if (selectedImage) {
       // 이미지가 선택되면 부모 컴포넌트로 전달
       onImageSelect(selectedImage);
@@ -66,18 +65,22 @@ const ChallengeImgUploader = (props) => {
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+    console.log(file);
     const reader = new FileReader();
     reader.onloadend = () => {
       const imageDataURL = reader.result;
       setSelectedImage(imageDataURL);
 
     };
-    reader.readAsDataURL(file);
+    if (file) {
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
+    console.log(file);
     const reader = new FileReader();
     reader.onloadend = () => {
       const imageDataURL = reader.result;
@@ -91,6 +94,7 @@ const ChallengeImgUploader = (props) => {
   const handleDragOver = (event) => {
     event.preventDefault();
   };
+
 
   return (
     <div>
