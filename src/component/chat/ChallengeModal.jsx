@@ -23,7 +23,7 @@ const ModalBg = styled.div`
 const ModalBox = styled.div`
     position: absolute;
     width: 500px;
-    height: 300px;
+    height: 360px;
     padding: 40px;
     text-align: center;
     background-color: rgb(255, 255, 255);
@@ -167,16 +167,15 @@ const ChallengeModal = (props) => {
 
     model = await tmImage.load(modelURL, metadataURL);
     maxPredictions = model.getTotalClasses();
-
-
-    predict();
+    await predict();
   }
 
 
   async function predict() {
     const img = new Image();
-    img.src = await uploadedImage;
+    img.src = uploadedImage;
     const prediction = await model.predict(img);
+    console.log('에측확률: ', prediction);
     //예측 결과를 labelContainer에 표시주는 반복문
     //className:클래스명(분류명)
     //probability:확률
@@ -184,7 +183,9 @@ const ChallengeModal = (props) => {
     console.log((prediction[0].probability.toFixed(2)) * 100);
     if (prediction[0].probability >= 0.7) {
 
-      fetch(`http://localhost:9999/challenge/success/record?chatroomId=${chatroom}&userId=${userId}`)
+      fetch(`http://localhost:9999/challenge/success/record?chatroomId=${chatroom}&userId=${userId}`, {
+        credentials: 'include',
+      })
         .then(response => response.json())
         .then(data => {
           if (data.SUCCESSNOT == null) {
@@ -220,6 +221,7 @@ const ChallengeModal = (props) => {
 
   // 이미지가 업로드될 때 호출되는 콜백 함수
   const handleImageSelect = (imageData) => {
+    // console.log('imageData: ', imageData);
     setUploadedImage(imageData);
   };
 
@@ -234,8 +236,6 @@ const ChallengeModal = (props) => {
     } else {
       console.log('이미지가 선택되지 않았습니다.');
     }
-
-
   };
 
 
@@ -261,7 +261,9 @@ const ChallengeModal = (props) => {
               ✖
             </ModalCloseBtn>
             <ModalContent>
-              <ChallengeImgUploader onImageSelect={handleImageSelect} width="100%" height="200px">
+              <ChallengeImgUploader
+                onImageSelect={handleImageSelect}
+                width="100%" height="200px">
                 이미지 업로드
               </ChallengeImgUploader>
               <StyledButton variant="contained" onClick={handleClick}>
