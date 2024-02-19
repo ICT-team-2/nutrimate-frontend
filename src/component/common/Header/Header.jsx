@@ -14,6 +14,8 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
 import styled from 'styled-components';
+import { useAtom } from 'jotai';
+import { userIdAtom } from '@src/pages/login/atom';
 
 const AppBar = muiStyled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -42,6 +44,7 @@ const StyledButton = styled(Button)`
     margin-right: 1rem;
 `;
 
+
 /**
  * @param props {{hasDrawer: boolean}}
  * @returns {Element}
@@ -50,7 +53,8 @@ const StyledButton = styled(Button)`
 const Header = (props) => {
   // const theme = useTheme();
   const { hasDrawer, logoWhite } = props;
-
+  
+  const [userId, setUserId] = useAtom(userIdAtom);
   const open = useAtomValue(drawerStateAtom);
   const navigate = useNavigate();
   const gotoInfo = () => {
@@ -64,6 +68,7 @@ const Header = (props) => {
   const gotoFeed = () => {
     navigate(LINKS.FEEDBOARD_VIEW);
   };
+
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -86,16 +91,21 @@ const Header = (props) => {
           <StyledButton
             onClick={gotoFeed}
             logowhite={logoWhite + ''}
-          >Feed</StyledButton>
-          <ProfileImgMenu />
-          <StyledButton
-            onClick={() => {
-              navigate(LINKS.LOGIN);
-            }}
-            logowhite={logoWhite + ''}
-          >
-            Login
-          </StyledButton>
+          >FEED</StyledButton>
+          {!!userId ? (
+            <ProfileImgMenu />
+          ) : (
+            <div>
+              <StyledButton
+                onClick={() => {
+                  navigate(LINKS.LOGIN);
+                }}
+                logowhite={logoWhite + ''}
+              >
+                Login
+              </StyledButton>
+            </div>
+          )}
         </Toolbar>
       </StyledAppBar>
       {hasDrawer && <SideMenu />}

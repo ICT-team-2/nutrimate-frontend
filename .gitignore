@@ -24,6 +24,8 @@ dist-ssr
 # Built Visual Studio Code Extensions
 *.vsix
 
+**/.DS_STORE
+
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history

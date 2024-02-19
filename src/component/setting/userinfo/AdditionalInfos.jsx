@@ -22,7 +22,7 @@ const StyledLabel = styled.label`
 
 
 const AdditionalInfos = (props) => {
-  const { title, label, disabled, value } = props;
+  const { title, label, disabled, value,onChange } = props;
   const [isFocused, setIsFocused] = useState(undefined);
 
   return (
@@ -39,6 +39,7 @@ const AdditionalInfos = (props) => {
         value={value ?? ''}
         onFocus={() => setIsFocused('true')}
         onBlur={() => setIsFocused(undefined)}
+        onChange={onChange}
       ></StyledTextField>
     </UserInfoContainerDiv>
   );

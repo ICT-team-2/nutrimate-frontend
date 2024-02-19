@@ -28,6 +28,7 @@ const TitleTypography = styled(Typography)`
     word-break: break-all;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+    color: black;
 `;
 
 const RankTypography = styled(Typography)`
@@ -36,10 +37,26 @@ const RankTypography = styled(Typography)`
     font-weight: bold;
     display: inline-block;
 `;
+const PointTypography = styled(Typography)`
+    display: inline-block;
+    margin-left: 10px;
+    color: black;
+    font-weight: bold;
+`;
+const StyledRating = styled(Rating)`
+    position: relative;
+    top: 5px;
+`;
+
 const EfficacyChip = styled(Chip)`
     margin: 5px;
 `;
-
+/**
+ *
+ * @param props {{nutrient, img, url, company, ranking, point, efficacy}}
+ * @returns {Element}
+ * @constructor
+ */
 export default function NutrientCard(props) {
   const { nutrient, img, url, company, ranking, point, efficacy } = props;
   return (
@@ -51,7 +68,7 @@ export default function NutrientCard(props) {
           component="div"
           sx={{ margin: 0 }}
         >
-          {ranking}
+          {/*{ranking}*/}
         </RankTypography>
         <CustomCardMedia
           image={img}
@@ -69,11 +86,17 @@ export default function NutrientCard(props) {
           >
             {nutrient}
           </TitleTypography>
-          <Rating
-            precision={0.1}
-            name="read-only" value={point} readOnly />
+          <div>
+            <StyledRating
+              precision={0.1}
+              name="read-only" value={point} readOnly />
+            <PointTypography variant="subtitle1">{point}</PointTypography>
+          </div>
           <br />
           {efficacy.map((eff, index) => {
+            if (eff == null) {
+              return;
+            }
             return (
               <div key={eff + index}>
                 <EfficacyChip label={eff} />

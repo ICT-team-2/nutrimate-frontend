@@ -176,6 +176,7 @@ const LikeButton = (props) => {
       heart.current.style.strokeDashoffset = '3000';
       heart.current.style.stroke = disabledColor;
     }
+    onClick();
   };
 
   return (
@@ -184,7 +185,6 @@ const LikeButton = (props) => {
       <LikeContainer
         htmlFor="checkbox"
         className={`like-container ${className}`}
-        onClick={onClick}
       >
         <input
           type="checkbox"

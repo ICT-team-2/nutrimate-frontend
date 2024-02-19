@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import RankTable from '@src/component/challenge/RankTable.jsx';
+import axios from 'axios';
 
 const ChallengeContainer = styled(Paper)`
     padding: 30px;
@@ -20,7 +21,7 @@ const StyledIcon = styled(FontAwesomeIcon)`
 `;
 const IconContainer = styled.div`
     background-color: ${({ theme }) => theme['primary-transparent']};
-    padding: 10px 25px;
+    padding: 10px;
     border-radius: 10px;
     width: 36px;
     align-items: center;
@@ -37,7 +38,34 @@ const ChallengeTableContainer = styled.div`
 `;
 
 const ChallengeRank = () => {
+  const [chatroomId, setChatroomId] = React.useState(1); // 1: 하루에 한 번 물마시기, 3: 샐러드 챌린지
   const [value, setValue] = React.useState(0);
+  const [challengeListData, setChallengeListData] = React.useState(undefined);
+  //랭크 리스트를 부르는 함수
+  const ChallengeRankList = () => {
+    axios.get(`http://localhost:9999/challenge/success?chatroomId=${chatroomId}`)
+      .then(datas => {
+        console.log(datas.data);
+        setChallengeListData(datas.data);
+
+      })
+      .catch(error => {
+        console.error('Error fetching chat data:', error);
+      });
+  };
+
+  useEffect(() => {
+    if (value === 0) {
+      setChatroomId(1);
+    } else {
+      setChatroomId(3);
+    }
+  }, [value]);
+
+  useEffect(() => {
+    ChallengeRankList();
+  }, [chatroomId]);
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -56,13 +84,14 @@ const ChallengeRank = () => {
       </ChallengeContainer>
       <ChallengeTableContainer>
         <Tabs value={value} onChange={handleChange} centered>
-          <Tab label="챌린지 주제 1" />
-          <Tab label="챌린지 주제 2" />
+          <Tab label="하루에 한 번 물마시기" />
+          <Tab label="샐러드 챌린지" />
         </Tabs>
         <br />
-        <RankTable />
+        <RankTable data={challengeListData} />
       </ChallengeTableContainer>
     </>);
+
 };
 
 export default ChallengeRank;

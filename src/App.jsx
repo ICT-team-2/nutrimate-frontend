@@ -22,6 +22,10 @@ import AdminRoutes from '@src/routes/AdminRoutes.jsx';
 import RecordRoutes from '@src/routes/RecordRoutes.jsx';
 import { CssBaseline } from '@mui/material';
 
+
+
+
+
 function App() {
   const darkMode = useAtomValue(isDarkModeAtom);
   const muiTheme = useMuiTheme();

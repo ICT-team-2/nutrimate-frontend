@@ -65,7 +65,7 @@ export default function ProfileAIPromptModal() {
               <TextField
                 id="outlined-basic"
                 variant="outlined"
-                placeholder="프롬프트를 입력해주세요"
+                placeholder="원하는 이미지를 입력해주세요" 
                 size="small"
               />
               <Button

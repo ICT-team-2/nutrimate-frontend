@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 const CustomCard = styled(Card)`
     width: 250px;
     //margin: 20px;
-    height: 340px;
+    height: 330px;
 `;
 
 const CustomCardMedia = styled(CardMedia)`
@@ -23,7 +23,7 @@ const ContentTypography = styled(Typography)`
     text-overflow: ellipsis;
     word-break: break-all;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
 `;
 
 const TitleTypography = styled(Typography)`
@@ -32,7 +32,8 @@ const TitleTypography = styled(Typography)`
     text-overflow: ellipsis;
     word-break: break-all;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
+    color: black;
 `;
 
 export default function NewsCard(props) {
@@ -43,6 +44,7 @@ export default function NewsCard(props) {
         <CustomCardMedia
           image={img}
           title={title}
+          component="img"
         />
         <CardContent>
           <TitleTypography
@@ -58,9 +60,9 @@ export default function NewsCard(props) {
             {content}
           </ContentTypography>
           <br />
-          <Typography variant="caption" display="block" gutterBottom>
-            발행일: {date}
-          </Typography>
+          {/*<Typography variant="caption" display="block" gutterBottom>*/}
+          {/*  발행일: {date}*/}
+          {/*</Typography>*/}
         </CardContent>
       </Link>
     </CustomCard>
