@@ -14,4 +14,5 @@ const session = createJSONStorage(() => sessionStorage);
 export const surveyDataAtom = atomWithStorage('surveyData',
   INIT_SURVEY_DATA,
   session);
+surveyDataAtom.debugLabel = 'surveyDataAtom';
 

@@ -18,8 +18,11 @@ const ManualRecordDiet = () => {
         <Grid item xs={12}>
           <StyledTextField variant={'standard'} label={'음식명'} />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={6}>
           <StyledTextField variant={'standard'} label={'섭취 칼로리'} type="number" />
+        </Grid>
+        <Grid item xs={6}>
+          <StyledTextField variant={'standard'} label={'섭취량(g)'} type="number" />
         </Grid>
         <Grid item xs={4}>
           <StyledTextField variant={'standard'} label={'탄수화물'} type="number" />
