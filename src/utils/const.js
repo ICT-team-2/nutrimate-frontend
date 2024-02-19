@@ -202,8 +202,3 @@ export const USER_INFOS = {
   },
 };
 
-export const DUMMY_USER = {
-  USER_ID: 3,
-  USER_NICK: 'ExampleUser2',
-};
-

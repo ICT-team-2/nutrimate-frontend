@@ -12,7 +12,8 @@ import InfoComments from '@src/component/board/info/view/InfoComments.jsx';
 import KakaoMap from '@src/component/board/KakaoMap';
 import axios from 'axios';
 import useInitMapData from '@src/component/board/hooks/useInitMapData.jsx';
-import { DUMMY_USER } from '@src/utils/const.js';
+import { useAtom } from 'jotai';
+import { userIdAtom } from '@src/pages/login/atom.js';
 
 const InfoBoardViewContainer = muiStyled(Container)`
   margin-top: 20px;
@@ -48,6 +49,7 @@ const InfoBoardViewPage = () => {
   const [isLiked, setIsLiked] = useState(false);
   //const [likeId, setLikeId] = useState(null);
   const [disabled, setDisabled] = useState(false);
+  const [userId, setUserId] = useAtom(userIdAtom);
 
   // useInitMapData(JSON.parse(board?.mapPaths ?? '[]'), board?.mapDistances, { lat: board?.mapCenterLat, lng: board?.mapCenterLng });
   const initMapData = useInitMapData();
@@ -82,7 +84,7 @@ const InfoBoardViewPage = () => {
   const fetchLikeStatus = async () => {
     try {
       const response = await axios.post(`boards/sport/like/check`, {
-        userId: DUMMY_USER.USER_ID,
+        userId: userId,
         boardId: boardId,
       });
       setIsLiked(response.data.message === '좋아요를 이미 눌렀어요');
@@ -99,7 +101,7 @@ const InfoBoardViewPage = () => {
     try {
       const likeDto = {
         //likeId,
-        userId: DUMMY_USER.USER_ID,
+        userId: userId,
         boardId: boardId,
       };
       let response;

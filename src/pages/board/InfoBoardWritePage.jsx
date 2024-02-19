@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { DUMMY_USER, EDITOR_HEIGHT, TITLE } from '@src/utils/const.js';
+import { EDITOR_HEIGHT, TITLE } from '@src/utils/const.js';
 import { useLocation } from 'react-router-dom';
 import { styled as muiStyled } from '@mui/material/styles';
 import BoardEditor from '@src/component/board/info/write/BoardEditor.jsx';
@@ -31,6 +31,7 @@ import axios from 'axios';
 
 import { LINKS } from '@src/utils/const.js';
 import { useNavigate } from 'react-router-dom';
+import { userIdAtom } from '@src/pages/login/atom.js';
 
 //테스트용 더미 데이터 - 추후 삭제 예정
 const dummyPaths = [
@@ -98,6 +99,7 @@ const InfoBoardWritePage = (props) => {
   const [category, setCategory] = useState(useLocation()?.state.title);
   const [searchValue, setSearchValue] = useState('');
   const [title, setTitle] = useState('');
+  const [userId, setUserId] = useAtom(userIdAtom);
 
   // 지도 정보 서버 저장용
   const [mapPaths, setMapPaths] = useAtom(mapPathsAtom);
@@ -111,11 +113,11 @@ const InfoBoardWritePage = (props) => {
 
   // 지도 정보를 초기화
   const initMapData = useInitMapData();
-    // initMapData(dummyPaths, dummyDistances, dummyCenter);
-  useEffect(()=>{
+  // initMapData(dummyPaths, dummyDistances, dummyCenter);
+  useEffect(() => {
     initMapData();
-  },[])
-  
+  }, []);
+
 
   const handleSearch = (e) => {
     setSearchValue(e.target.value);
@@ -160,7 +162,7 @@ const InfoBoardWritePage = (props) => {
   };
   const navigate = useNavigate();
   const onClickRegister = async () => {
-    
+
     // 유효성 검사
     if (!validateForm()) return;
 
@@ -195,7 +197,7 @@ const InfoBoardWritePage = (props) => {
       mapZoomlevel: mapRefState?.getLevel(),
       boardContent: removeHtmlTags(content), // HTML 태그 제거
       hashtag: hashTagData,
-      userId: DUMMY_USER.USER_ID, // 더미 유저 ID 추가
+      userId: userId, // 더미 유저 ID 추가
     };
 
     // axios를 통해 서버에 데이터 전송
@@ -208,7 +210,7 @@ const InfoBoardWritePage = (props) => {
         alert('등록 완료'); // 등록 완료 알림
 
         // 상세 조회 페이지로 이동
-        let boardId = response.data.boardId; 
+        let boardId = response.data.boardId;
         let link = LINKS.INFO_BOARD_VIEW.replace(':boardId', boardId);
         navigate(link);
         const gotoBoardView = () => {
