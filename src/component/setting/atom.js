@@ -13,5 +13,6 @@ export const fatAtom = atom(SETTING_USER_INFOS.DIET.NORMAL.FAT);
 export const genderAtom = atom('');
 export const heightStateAtom = atom(0);
 export const weightStateAtom = atom(0);
+export const introAtom = atom('');
 
 export const sportStateAtom = atom(SETTING_USER_INFOS.SPORT.KEYS[0]);

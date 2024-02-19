@@ -26,6 +26,7 @@ import {
   fatAtom,
   genderAtom,
   heightStateAtom,
+  introAtom,
   proteinAtom,
   sportStateAtom,
   weightStateAtom,
@@ -86,6 +87,7 @@ const UserViewInfo = () => {
   const [height, setHeight] = useAtom(heightStateAtom);
   const [weight, setWeight] = useAtom(weightStateAtom);
   const [sport, setSport] = useAtom(sportStateAtom);
+  const [intro, setIntro] = useAtom(introAtom);
 
   useEffect(() => {
     console.log('UserViewInfo useEffect - userId: ', userId);
@@ -99,12 +101,13 @@ const UserViewInfo = () => {
       .then(response => {
         console.log(response.data);
         setUserInfo(response.data.memberDto);
-        setDiet(response.data.memberDto.userDiet);
         setGender(response.data.memberDto.userGender);
         setHeight(response.data.memberDto.userHeight);
         setWeight(response.data.memberDto.userWeight);
         setSport(response.data.memberDto.userSportHard);
+        setIntro(response.data.memberDto.userIntro);
 
+        setDiet(response.data.memberDto.userDiet);
         if (response.data.memberDto.userDiet === SETTING_USER_INFOS.DIET.CUSTOM.KEYS) {
           setCarbo(response.data.memberDto.userCarbo);
           setProtein(response.data.memberDto.userProtein);
@@ -120,16 +123,18 @@ const UserViewInfo = () => {
   const navigate = useNavigate();
   return (
     <>
-
       <NameProfileComponent
         name={userInfo?.userName}
         nickname={userInfo?.userNick} />
       <StyledTypography variant="h5">소개</StyledTypography>
       <StyledTextField
-        variant={'outlined'} multiline rows={4}
-        label="자기소개" placeholder="자기 소개를 입력해주세요"
+        variant={'outlined'} 
+        multiline 
+        rows={4}
+        //label="자기소개" 
+        placeholder="자기 소개를 입력해주세요"
         disabled
-        value={userInfo?.setUserInfo}
+        value={userInfo?.userIntro}
       />
       <StyledTypography variant="h5">추가정보</StyledTypography>
       <InfoContainer height="auto">
@@ -155,7 +160,7 @@ const UserViewInfo = () => {
           />
           <DietRatioInfo disabled />
           <GenderInfo disabled />
-          <HeightWeightInfo disabled />
+          <HeightWeightInfo height={height} weight={weight} disabled />
           <SportSelectBox disabled />
         </InfoInnerContainer>
       </InfoContainer>

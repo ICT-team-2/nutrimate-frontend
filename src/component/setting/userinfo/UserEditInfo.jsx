@@ -17,10 +17,12 @@ import HeightWeightInfo
 import GenderInfo from '@src/component/setting/userinfo/GenderInfo.jsx';
 import SportSelectBox from '@src/component/setting/userinfo/SportSelectBox.jsx';
 import { useAtom } from 'jotai/react';
-import { dietStateAtom } from '@src/component/setting/atom.js';
+import { carboAtom, dietStateAtom, fatAtom, genderAtom, heightStateAtom, introAtom, proteinAtom, sportStateAtom, weightStateAtom } from '@src/component/setting/atom.js';
 import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
 import DietSelectBox from '@src/component/setting/userinfo/DietSelectBox.jsx';
 import axios from 'axios';
+import { set } from 'date-fns';
+import { userIdAtom } from '@src/pages/login/atom';
 
 const FIELD_WIDTH = 'calc(100% + 60px)';
 
@@ -55,20 +57,6 @@ const StyledDiv = styled.div`
 `;
 
 const UserEditInfo = () => {
-  const handleUpdate = async () => {
-    try {
-      const response = await axios.put('/member/mypage', userInfo); // '/api/user'는 실제 API 엔드포인트로 변경해야 합니다.
-      if (response.status === 200) {
-        alert('정보가 성공적으로 수정되었습니다.');
-        navigate(LINKS.VIEW_INFO);
-      } else {
-        alert('정보 수정에 실패하였습니다. 다시 시도해 주세요.');
-      }
-    } catch (error) {
-      console.error(error);
-      alert('정보 수정에 실패하였습니다. 다시 시도해 주세요.');
-    }
-  };
   const [userInfo, setUserInfo] = useState({
     userEmail: '',
     userCal: 0,
@@ -76,12 +64,110 @@ const UserEditInfo = () => {
     userHeight: 0,
     userWeight: 0,
     userGender: '',
-    userSport: '',
-    userIntro:''
+    userSportHard: '',
+    userIntro: ''
   });
 
   const [diet, setDiet] = useAtom(dietStateAtom);
+  const [carbo, setCarbo] = useAtom(carboAtom);
+  const [protein, setProtein] = useAtom(proteinAtom);
+  const [fat, setFat] = useAtom(fatAtom);
+  const [userId, setUserId] = useAtom(userIdAtom);
+  const [gender, setGender] = useAtom(genderAtom);
+  const [height, setHeight] = useAtom(heightStateAtom);
+  const [weight, setWeight] = useAtom(weightStateAtom);
+  const [sport, setSport] = useAtom(sportStateAtom);
+  const [intro, setIntro] = useAtom(introAtom);
+
+  useEffect(() => {
+    console.log('UserViewInfo useEffect - userId: ', userId);
+    window.scrollTo(0, 0);
+
+    axios.get('/member/mypage', {
+      params: {
+        userId: sessionStorage.userId,
+      },
+    })
+      .then(response => {
+        console.log(response.data);
+        setUserInfo(response.data.memberDto);
+        setGender(response.data.memberDto.userGender);
+        setHeight(response.data.memberDto.userHeight);
+        setWeight(response.data.memberDto.userWeight);
+        setSport(response.data.memberDto.userSportHard);
+        setIntro(response.data.memberDto.userIntro);
+
+        setDiet(response.data.memberDto.userDiet);
+        if (response.data.memberDto.userDiet === SETTING_USER_INFOS.DIET.CUSTOM.KEYS) {
+          setCarbo(response.data.memberDto.userCarbo);
+          setProtein(response.data.memberDto.userProtein);
+          setFat(response.data.memberDto.userFat);
+        }
+
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
+  }, []);
+
+
   const navigate = useNavigate();
+  const handleUpdate = async () => {
+    try {
+      console.log('axios put',{      
+        ...userInfo,
+        userDiet: diet,
+        userGender: gender,
+        userIntro: intro,
+        userSportHard: sport,
+        carbo: carbo,
+        protein: protein,
+        province: fat,
+        userHeight: height,
+        userWeight: weight,
+        userId: userId
+      });
+      axios.put('/member/mypage',{      
+        ...userInfo, 
+        userDiet: diet,
+        userGender: gender,
+        userIntro: intro,
+        userSportHard: sport,
+        carbo: carbo,
+        protein: protein,
+        province: fat,
+        userHeight: parseInt(height),
+        userWeight: parseInt(weight),
+        userId: parseInt(sessionStorage.userId) 
+      },{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => {
+        console.log(response.data);
+        setUserInfo(response.data.memberDto);
+        setGender(response.data.memberDto.userGender);
+        setHeight(response.data.memberDto.userHeight);
+        setWeight(response.data.memberDto.userWeight);
+        setSport(response.data.memberDto.userSportHard);
+        setIntro(response.data.memberDto.userIntro);
+        setUserId(response.data.memberDto.userId);
+
+        // setDiet(response.data.memberDto.userDiet);
+        setDiet(response.data.memberDto.userDiet);
+        if(response.data.memberDto.userDiet===SETTING_USER_INFOS.DIET.CUSTOM.KEYS){
+          setCarbo(response.data.memberDto.userCarbo);
+          setProtein(response.data.memberDto.userProtein);
+          setFat(response.data.memberDto.userFat);
+        }
+        navigate(LINKS.VIEW_INFO);
+      })
+    } catch (error) {
+      console.error('There was an error!', error);
+    }
+  };
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -89,7 +175,8 @@ const UserEditInfo = () => {
 
 
   useEffect(() => {
-    console.log(userInfo);
+    console.log(diet);
+    console.log('user',userInfo);
   },[userInfo])
   
 
@@ -97,16 +184,22 @@ const UserEditInfo = () => {
     <>
       <NameProfileComponent 
       profileButton 
-      name={'이름?'}
-      nickname={'닉네임?'}
+      name={userInfo?.userName}
+      nickname={userInfo?.userNick} 
       />
       <StyledTypography variant="h5">소개</StyledTypography>
       <StyledTextField
-        variant={'outlined'} multiline rows={4}
-        label="자기소개" placeholder="자기 소개를 입력해주세요"
-        value={userInfo.userIntro}
-        onChange={e => setUserInfo({...userInfo,userIntro:e.target.value})}
-      />
+          variant={'outlined'}
+          multiline
+          rows={4}
+          label="자기소개"
+          placeholder="자기 소개를 입력해주세요"
+          value={userInfo?.userIntro}
+          onChange={e => setUserInfo(prevState => ({
+            ...prevState,
+            userIntro: e.target.value
+          }))}
+        />
       <StyledTypography variant="h5">추가정보</StyledTypography>
       <InfoContainer height="auto">
         <InfoInnerContainer>
@@ -115,7 +208,7 @@ const UserEditInfo = () => {
             label={SETTING_USER_INFOS.EMAIL.LABEL}
             value={userInfo.userEmail}
             onChange={e => {
-              console.log(e.target.value);
+              // console.log(e.target.value);
               setUserInfo({...userInfo,userEmail:e.target.value}
             )}}
             />
@@ -130,7 +223,6 @@ const UserEditInfo = () => {
             values={SETTING_USER_INFOS.DIET.VALUES}
             setDiet={setDiet}
             id={SETTING_USER_INFOS.DIET.ID}
-            value={userInfo.userDiet}
             onChange={e => setUserInfo({...userInfo,userDiet:e.target.value})}
           />
           <DietRatioInfo />
@@ -143,9 +235,7 @@ const UserEditInfo = () => {
         <FlexGrowDiv />
         <Button
           variant="contained"
-          onClick={() => {
-            navigate(LINKS.VIEW_INFO);
-          }}
+          onClick={handleUpdate}
         >수정 완료</Button>
       </StyledDiv>
     </>
