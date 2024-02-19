@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MainPageImg from '@src/asset/image/MainPageImg.jpg';
 import styled from 'styled-components';
 import { Button } from '@mui/material';
@@ -17,8 +17,6 @@ import { jwtDecode } from 'jwt-decode';
 import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom';
 
-
-  
 
 const MainImg = styled.img`
     width: 100%;
@@ -72,7 +70,7 @@ const LastTitle = styled.div`
 `;
 
 const MainPage = ({ imgSize }) => {
-  
+
 // const [token,setToken] = useState('');
 // const cookies = useCookies(['access']);
 // useEffect(() => {
@@ -84,11 +82,12 @@ const MainPage = ({ imgSize }) => {
 // });
 
 
-const [token, setToken] = useState('');
-const [cookies] = useCookies(['ACCESS']);
+  const [token, setToken] = useState('');
+  const [cookies] = useCookies(['ACCESS']);
 // 사용자 정보를 저장할 상태를 추가합니다.
-const [userInfo, setUserInfo] = useState(null);
-const [userId, setUserId] = useAtom(userIdAtom);
+  const [userInfo, setUserInfo] = useState(null);
+  const [userId, setUserId] = useAtom(userIdAtom);
+
   useEffect(() => {
     if (cookies.ACCESS) {
       //console.log('Token found:', cookies.ACCESS);
@@ -98,10 +97,10 @@ const [userId, setUserId] = useAtom(userIdAtom);
       const decodedToken = jwtDecode(cookies.ACCESS);
       setUserInfo(decodedToken);
       console.log('Decoded Token:', decodedToken);
-      console.log("userId:",decodedToken.userInfo.userId)
+      console.log('userId:', decodedToken.userInfo.userId);
       setUserId(decodedToken.userInfo.userId);
     }
-  }, [cookies]);
+  }, [cookies.ACCESS]);
 
   const navigate = useNavigate();
   const gotoSurvey = () => {
@@ -111,8 +110,8 @@ const [userId, setUserId] = useAtom(userIdAtom);
   // useEffect(() => {
   //   console.log("userId:",userId)
   // },[userId])
-  
-  
+
+
   return (
     <>
       <MainImg src={MainPageImg} size={imgSize} />
@@ -129,8 +128,8 @@ const [userId, setUserId] = useAtom(userIdAtom);
               당신만의 맞춤식 프로그램으로 건강한 식습관을 만나보세요
             </MainSecondTypo>
             <StyledButton
-              variant='contained'
-              size='large'
+              variant="contained"
+              size="large"
               onClick={gotoSurvey}>식습관 검사하기</StyledButton>
           </MainPageImgContent>
         </RelativeWrapper>
@@ -142,7 +141,7 @@ const [userId, setUserId] = useAtom(userIdAtom);
           <LastTitle>지금 내가 먹고있는 식단이 궁금하다면? </LastTitle>
           <LastButtonContainer>
             <StyledButton
-              variant='contained'
+              variant="contained"
               onClick={gotoSurvey}>내 식단 분석하기</StyledButton>
           </LastButtonContainer>
         </LastTitleContainer>
@@ -154,7 +153,6 @@ const [userId, setUserId] = useAtom(userIdAtom);
 MainPage.defaultProps = {
   imgSize: '100vh',
 };
-
 
 
 export default MainPage;

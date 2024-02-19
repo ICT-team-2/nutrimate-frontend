@@ -9,6 +9,8 @@ import ChallengeModal from '@src/component/chat/ChallengeModal.jsx';
 import { Button } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import axios from 'axios';
+import { useAtom } from 'jotai';
+import { userIdAtom } from '@src/pages/login/atom.js';
 
 const ChallengeChatContainer = styled(Paper)`
     width: 60%;
@@ -37,7 +39,7 @@ const ChallengeChatPage = () => {
   const [chatData, setChatData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showChallengeModal, setChallengeModal] = useState(false);
-  const [userId, setUserId] = useState(3);
+  const [userId, setUserId] = useAtom(userIdAtom);
   const [nickname, setNickname] = useState('');
   const [roomType, setRoomType] = useState('');
   const [chatroom, setChatroom] = useState(1);
@@ -91,6 +93,9 @@ const ChallengeChatPage = () => {
 
 
   useEffect(() => {
+    if (userId == null) {
+      return;
+    }
     if (chatroomId === '1') {
       setRoomType('FIRST_ROOM');
       setChatroom(1);
@@ -98,21 +103,22 @@ const ChallengeChatPage = () => {
       setRoomType('SECOND_ROOM');
       setChatroom(3);
     }
-    ChatLoading();
 
-    stompClient.connect({}, () => {
-      axios.post(`http://localhost:9999/challenge/chat/member?chatroomId=${chatroom}&userId=${userId}`)//@RequestBody로 받는다
+    stompClient.connect({}, async () => {
+      await axios.post(`http://localhost:9999/challenge/chat/member?chatroomId=${chatroom}&userId=${userId}`)//@RequestBody로 받는다
         .then(data => {
-          console.log(data.data);
+          console.log('connect ', data.data);
           if (data.data.memberOk === 1) {
-            setUserId(data.data.userId);
-            setNickname(data.data.challengeNick);
-            ChatLoading();
+            let newNickname = data.data.challengeNick;
+            setNickname(newNickname);
+            setShowModal(false);
           } else if (data.data.memberOk === 0) {
             setShowModal(true);
           }
         })
         .catch(err => console.log(err));
+
+
       console.log('Connected to WebSocket');
       stompClient.subscribe('/sub/channel/' + (chatroomId === '1' ? 'FIRST_ROOM' : 'SECOND_ROOM'), (message) => {
         const chatData = JSON.parse(message.body);
@@ -122,6 +128,7 @@ const ChallengeChatPage = () => {
     }, (error) => {
       console.error('Error during connection:', error);
     });
+
     const handleUnload = (ev) => {
       ev.preventDefault();
       stompClient.send('/pub/chat/' + roomType, {}, JSON.stringify({
@@ -139,15 +146,12 @@ const ChallengeChatPage = () => {
       window.removeEventListener('beforeunload', handleUnload);
     };
 
-  }, [chatroomId]);
+  }, [chatroomId, userId]);
 
   useEffect(() => {
-    console.log('chatData:', chatData);
-  }, [chatData]);
-
-  useEffect(() => {
-    console.log('roomType:', roomType);
-  }, [roomType]);
+    if (nickname === '') return;
+    ChatLoading();
+  }, [nickname]);
 
 
   const handleSend = (message) => {
@@ -161,9 +165,9 @@ const ChallengeChatPage = () => {
   };
 
 
-  const handleSendModal = (inputValue) => {
+  const handleSendModal = async (inputValue) => {
     console.log(inputValue);
-    axios.post(`http://localhost:9999/challenge/account`,
+    await axios.post(`http://localhost:9999/challenge/account`,
       {
         'chatroomId': chatroom,
         'challengeNick': inputValue,
@@ -171,14 +175,14 @@ const ChallengeChatPage = () => {
       })//@RequestBody로 받는다
       .then(data => {
         if (data.data.memberOk === 1) {
-          setUserId(data.data.userId);
-          setNickname(data.data.challengeNick);
-          ChatLoading();
+          let newNickname = data.data.challengeNick;
+          setNickname(newNickname);
           setShowModal(false);
         } else if (data.data.memberDupl != null) {
           alert(data.data.memberDupl);
         }
       });
+
   };
 
 
