@@ -24,20 +24,23 @@ const SearchFoodDBContainer = styled.div`
     display: flex;
     flex-direction: column;
 `;
-const SearchFoodDB = () => {
+
+const SearchSportDB = () => {
+
+
   return (
     <SearchFoodDBContainer>
       <InputContainer>
-        <TextField label={'음식 검색'} size="small" />
+        <TextField label={'운동 검색'} size="small" />
         <StyledButton
           variant="contained"
           onClick={() => {
           }}
         >검색</StyledButton>
       </InputContainer>
-      <NoData>음식을 검색해주세요.</NoData>
+      <NoData>운동을 검색해주세요.</NoData>
     </SearchFoodDBContainer>
   );
 };
 
-export default SearchFoodDB;
+export default SearchSportDB;
