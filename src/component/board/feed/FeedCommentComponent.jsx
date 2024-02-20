@@ -29,37 +29,49 @@ const ApliyButton = styled(Button)`
 `;
 
 const FeedCommentComponent = (props) => {
-  const { userNick, content, cmtDepth, inputRef } = props;
+  const {
+    cmtDepth, inputRef, isContent,
+    boardId, boardContent, checkedLike,
+    likeCount, userNick: writer, cmtContent,
+  } = props;
+
+
   return (
     <CommentContainer depth={cmtDepth}>
       <NicknameContainer>
-        <UserAvatar userNick={'ex2'} />
-        <NicknameTypo variant="subtitle2">{'닉네임'}</NicknameTypo>
+        <UserAvatar userNick={writer} />
+        <NicknameTypo variant="subtitle2">{writer}</NicknameTypo>
       </NicknameContainer>
       <BodyTypo
         variant="body2"
-        dangerouslySetInnerHTML={{ __html: content }}
+        dangerouslySetInnerHTML={{ __html: isContent ? boardContent : cmtContent }}
       />
-      <div>
+      {!isContent && (<div>
         <ApliyButton
           onClick={() => {
             inputRef.current.focus();
           }}
         >답글달기</ApliyButton>
-      </div>
+      </div>)}
     </CommentContainer>
   );
 };
 
 FeedCommentComponent.defaultProps = {
-  userNick: '',
-  content: '더 많은 인테리어 콘텐츠가 궁금하다면?<br />' +
+  userNick: '닉네임',
+  boardContent: '더 많은 인테리어 콘텐츠가 궁금하다면?<br />' +
     '        오늘의집에서 관심있는 주제를 선택하고<br />' +
     '        맞춤형 콘텐츠를 추천 받으세요<br />' +
     '        <br />' +
     '        오늘의집 유저분이 직접 제보해주신 소중한 콘텐츠인 만큼,<br />' +
     '        여러분의 따뜻한 댓글 부탁드릴게요<br />',
-  cmtDepth: 1,
+  cmtContent: '더 많은 인테리어 콘텐츠가 궁금하다면?<br />' +
+    '        오늘의집에서 관심있는 주제를 선택하고<br />' +
+    '        맞춤형 콘텐츠를 추천 받으세요<br />' +
+    '        <br />' +
+    '        오늘의집 유저분이 직접 제보해주신 소중한 콘텐츠인 만큼,<br />' +
+    '        여러분의 따뜻한 댓글 부탁드릴게요<br />',
+  cmtDepth: 0,
 };
 
 export default FeedCommentComponent;

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FlexGrowDiv, UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
@@ -10,6 +10,8 @@ import CommentIcon from '@mui/icons-material/Comment.js';
 import LikeButton from '@src/component/board/LikeButton.jsx';
 import BookmarkIcon from '@mui/icons-material/Bookmark.js';
 import { Button, TextField } from '@mui/material';
+import useClickLikeButton from '@src/component/board/feed/hooks/useClickLikeButton.jsx';
+import useFetchCommentsList from '@src/component/board/feed/hooks/useFetchCommentsList.jsx';
 
 const CONTAINER_MAX_HEIGHT = 'calc(100vh - 100px)';
 const COMMENT_LIST_MAX_HEIGHT = 'calc(200% - 120px)';
@@ -76,22 +78,52 @@ const LikeTypography = styled(Typography)`
     font-weight: bold;
 `;
 
-const FeedCommentList = () => {
-
+const FeedCommentList = (props) => {
+  const { feedData } = props;
+  const {
+    boardId, boardContent, boardThumbnail,
+    checkedLike, likeCount, userNick: writer,
+  } = feedData;
   const commentInputRef = useRef(null);
+  const clickLikeButton = useClickLikeButton(boardId);
+  const { data: cmtData, isLoading, isError } = useFetchCommentsList(boardId);
+  const onClickLike = () => {
+    clickLikeButton.mutate();
+  };
+  useEffect(() => {
+    console.log(cmtData);
+  }, [cmtData]);
+
 
   return (
     <FeedCommentOuterContainer>
       <FeedCommentInnerContainer>
         <FeedCommentHeader>
-          <UserAvatar userNick={'닉네임'} />
-          <NicknameTypo variant="subtitle2">{'닉네임'}</NicknameTypo>
+          <UserAvatar userNick={writer} />
+          <NicknameTypo variant="subtitle2">{writer}</NicknameTypo>
         </FeedCommentHeader>
         <Divider />
         <FeedCommentBody>
-          <FeedCommentComponent inputRef={commentInputRef} />
-          <FeedCommentComponent inputRef={commentInputRef} />
-          <FeedCommentComponent inputRef={commentInputRef} />
+          {/*처음은 본문 표시*/}
+          <FeedCommentComponent
+            cmtDepth={0}
+            inputRef={commentInputRef}
+            isContent={true}
+            {...feedData}
+          />
+          {cmtData && cmtData.length > 0 && cmtData.map((cmt) => {
+            return (
+              <FeedCommentComponent
+                key={cmt.cmtId}
+                inputRef={commentInputRef}
+                {...cmt} />
+            );
+          })}
+          <FeedCommentComponent
+            cmtDepth={1}
+            inputRef={commentInputRef} />
+          <FeedCommentComponent
+            inputRef={commentInputRef} />
           {/*<FeedCommentComponent />*/}
         </FeedCommentBody>
         <Divider />
@@ -108,7 +140,10 @@ const FeedCommentList = () => {
           <FlexGrowDiv />
           <Tooltip title={'좋아요'}>
             <LikeButtonContainer>
-              <LikeButton size={7} />
+              <LikeButton
+                onClick={onClickLike}
+                clicked={checkedLike === 1}
+                size={7} />
             </LikeButtonContainer>
           </Tooltip>
           <Tooltip title="북마크">
@@ -118,7 +153,7 @@ const FeedCommentList = () => {
           </Tooltip>
         </ButtonsContainer>
         <LikeViewContainer>
-          <LikeTypography variant="body2">좋아요 5개</LikeTypography>
+          <LikeTypography variant="body2">좋아요 {likeCount}개</LikeTypography>
         </LikeViewContainer>
         <CommentInputContainer>
           <CommentTextField
@@ -130,7 +165,8 @@ const FeedCommentList = () => {
       </FeedCommentInnerContainer>
     </FeedCommentOuterContainer>
 
-  );
+  )
+    ;
 };
 
 export default FeedCommentList;

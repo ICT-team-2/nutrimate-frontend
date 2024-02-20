@@ -23,6 +23,8 @@ import { Button } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import LikeButton from '@src/component/board/LikeButton.jsx';
 import FeedDetailContent from '@src/component/board/feed/FeedDetailContent.jsx';
+import useClickLikeButton from '@src/component/board/feed/hooks/useClickLikeButton.jsx';
+import { NO_IMAGE_PATH } from '@src/component/const.js';
 
 const ViewContentContainer = styled.div`
     margin: 30px 0;
@@ -55,9 +57,18 @@ const LikeButtonContainer = styled.div`
  *
  * @return {JSX.Element} 피드 뷰의 콘텐츠
  */
-function FeedViewContent() {
+function FeedViewContent(props) {
   const [clickMoreView, setClickMoreView] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const {
+    boardContent, boardId, boardThumbnail,
+    checkedLike, likeCount, userNick: writer,
+  } = props;
+  const clickLikeButton = useClickLikeButton(boardId);
+
+  const onClickLike = () => {
+    clickLikeButton.mutate();
+  };
 
   return (
     <>
@@ -65,17 +76,22 @@ function FeedViewContent() {
         <StyledCard>
           <CardHeader
             avatar={
-              <UserAvatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                R
+              <UserAvatar
+                userNick={writer}
+                sx={{ bgcolor: red[500] }} aria-label="recipe">
+                {writer}
               </UserAvatar>
             }
-            title={'닉네임'}
+            title={writer}
           />
           <CardMedia
             component="img"
             height="500"
-            image="/src/asset/image/loading.png"
-            alt="Paella dish"
+            image={import.meta.env.REACT_APP_BACKEND_URL + boardThumbnail}
+            alt="feed image"
+            onError={(e) => {
+              e.target.src = NO_IMAGE_PATH;
+            }}
           />
           <CardActions disableSpacing>
             <Tooltip title="댓글">
@@ -88,7 +104,10 @@ function FeedViewContent() {
             <FlexGrowDiv />
             <Tooltip title={'좋아요'}>
               <LikeButtonContainer>
-                <LikeButton size={7} />
+                <LikeButton
+                  onClick={onClickLike}
+                  size={7}
+                  clicked={checkedLike === 1} />
               </LikeButtonContainer>
             </Tooltip>
             <Tooltip title="북마크">
@@ -101,11 +120,8 @@ function FeedViewContent() {
             <ContentTypo
               variant="body2" color="text.secondary"
               clickmoreview={clickMoreView + ''}>
-              This impressive paella is a perfect party dish and a fun meal to cook
-              together with your guests. Add 1 cup of frozen peas along with the mussels,
-              if you like.
+              {boardContent}
             </ContentTypo>
-
             {!clickMoreView &&
               <MoreViewButton
                 onClick={() => setClickMoreView(true)}
@@ -116,7 +132,9 @@ function FeedViewContent() {
         </StyledCard>
       </ViewContentContainer>
       <FeedDetailContent
-        open={modalOpen} setOpen={setModalOpen} />
+        open={modalOpen} setOpen={setModalOpen}
+        data={props}
+      />
     </>
   );
 }

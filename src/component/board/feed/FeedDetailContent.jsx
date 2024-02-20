@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import styled from 'styled-components';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import FeedCommentList from '@src/component/board/feed/FeedCommentList.jsx';
+import { NO_IMAGE_PATH } from '@src/component/const.js';
 
 const StyledBox = styled(Box)`
     position: absolute;
@@ -25,6 +26,7 @@ const ImgContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    max-width: 400px;
 `;
 const StyledImg = styled.img`
     max-width: 100%;
@@ -43,6 +45,10 @@ const OuterContainer = styled.div`
 const FeedDetailContent = ({ data, open, setOpen }) => {
 
   const handleClose = () => setOpen(false);
+  const {
+    boardContent, boardId, boardThumbnail,
+    checkedLike, likeCount, userNick: writer,
+  } = data;
 
   return (
     <Modal
@@ -53,11 +59,16 @@ const FeedDetailContent = ({ data, open, setOpen }) => {
         <StyledBox>
           <FlexGrowDiv>
             <ImgContainer>
-              <StyledImg src={data.img} alt="feed" />
+              <StyledImg
+                src={import.meta.env.REACT_APP_BACKEND_URL + boardThumbnail}
+                alt="feed image"
+                onError={(e) => {
+                  e.target.src = NO_IMAGE_PATH;
+                }} />
             </ImgContainer>
           </FlexGrowDiv>
           <FlexGrowDiv>
-            <FeedCommentList />
+            <FeedCommentList feedData={data} />
           </FlexGrowDiv>
         </StyledBox>
       </OuterContainer>
