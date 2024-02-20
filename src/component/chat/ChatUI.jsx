@@ -64,69 +64,71 @@ const AvatarWrapper = styled.div`
 
 
 const ChatUI = (props) => {
-  const { title, overflow, height, data, onSend, nickname, loading, micicon } = props;
+  const { title, overflow, height, data, onSend, nickname, loading, micicon,voice } = props;
   const [voiceReading, setVoiceReading] = useState(false);
-
+  console.log('sdfsdfsdfs',voiceReading);
   const scrollRef = useRef();
   useEffect(() => {
-    // useEffect 훅 내부에서 스크롤 이동을 처리합니다. 
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
+  // useEffect 훅 내부에서 스크롤 이동을 처리합니다.
+  if (scrollRef.current) {
+  scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }
   }, [data]);
-
+  
   const Voice = () => {
-    setVoiceReading(true);
+  setVoiceReading(true);
   };
-
-
+  
+  useEffect(() => {
+  setVoiceReading(voice);
+  }, [voiceReading]);
+  
   return (
-    <ChatContainer>
-      <ChatHeader>
-        <Typography variant="h6">{title}{micicon && <FontAwesomeIcon onClick={Voice} icon={faMicrophone} style={{
-          fontSize: '24px',
-          color: 'red',
-          float: 'right',
-        }} />} </Typography>
-      </ChatHeader>
-      <Divider />
-      <ChatBody ref={scrollRef} overflow={overflow + ''} height={height}>
-
-
-        {
-          Array.isArray(data)
-            ? data.map((d, i) =>
-              d.messageType == 'CHAT' ?
-                d.challengeNick == nickname ?
-                  <MyTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
-                  : <OtherTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
-                : d.messageType == 'CHALLENGE' ?
-                  <ChallengeSuccess key={i}> -- {d.chatMessage} --</ChallengeSuccess>
-                  : <ChatOutAndEnter key={i}>{d.chatMessage}</ChatOutAndEnter>,
-            )
-            : d.messageType == 'CHAT' ?
+  <ChatContainer>
+  <ChatHeader>
+  <Typography variant="h6">{title}{micicon && <FontAwesomeIcon onClick={Voice} icon={faMicrophone} style={{
+  fontSize: '24px',
+  color: 'red',
+  float: 'right',
+  }} />} </Typography>
+  </ChatHeader>
+  <Divider />
+  <ChatBody ref={scrollRef} overflow={overflow + ''} height={height}>
+  
+      {
+        Array.isArray(data)
+          ? data.map((d, i) =>
+            d.messageType == 'CHAT' ?
               d.challengeNick == nickname ?
-                <MyTalkComponent
-                  content={d.chatMessage}
-                  nick={d.challengeNick} />
-                : <OtherTalkComponent
-                  content={d.chatMessage} nick={d.challengeNick} />
+                <MyTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
+                : <OtherTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
               : d.messageType == 'CHALLENGE' ?
-                <ChallengeSuccess> {d.chatMessage}</ChallengeSuccess>
-                : <ChatOutAndEnter>{d.chatMessage}</ChatOutAndEnter>
-
-        }
-        {loading && <ChatLoading></ChatLoading>}
-        {voiceReading && <ChatBotComponent voiceReading={voiceReading} />}
-
-      </ChatBody>
-      <ChatInput onSend={onSend} />
-    </ChatContainer>
+                <ChallengeSuccess key={i}> -- {d.chatMessage} --</ChallengeSuccess>
+                : <ChatOutAndEnter key={i}>{d.chatMessage}</ChatOutAndEnter>,
+          )
+          : d.messageType == 'CHAT' ?
+            d.challengeNick == nickname ?
+              <MyTalkComponent
+                content={d.chatMessage}
+                nick={d.challengeNick} />
+              : <OtherTalkComponent
+                content={d.chatMessage} nick={d.challengeNick} />
+            : d.messageType == 'CHALLENGE' ?
+              <ChallengeSuccess> {d.chatMessage}</ChallengeSuccess>
+              : <ChatOutAndEnter>{d.chatMessage}</ChatOutAndEnter>
+  
+      }
+      {loading && <ChatLoading></ChatLoading>}
+      {voiceReading && <ChatBotComponent voiceReading={voiceReading} />}
+  
+    </ChatBody>
+    <ChatInput onSend={onSend} />
+  </ChatContainer>
   );
-};
-
-ChatUI.defaultProps = {
+  };
+  
+  ChatUI.defaultProps = {
   title: '챌린지 주제',
   data: [],  // data의 기본값을 빈 배열로 설정
-};
-export default ChatUI;
+  };
+  export default ChatUI;
