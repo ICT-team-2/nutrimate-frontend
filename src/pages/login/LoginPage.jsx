@@ -213,27 +213,13 @@ const LoginPage = () => {
         </LoginBody>
         <Divider>간편 로그인</Divider>
         <OAuthContainer>
-          {/* <OAuthButton onClick={handleGoogleLogin}>
-          <img src='/src/asset/image/oauth/GoogleLogin.png' alt='구글 로그인' />
+        <OAuthButton onClick={
+          () => {
+            handleSocialLogin('google');
+            setSignupStatus('google');
+          }}>
+          <img src="/src/asset/image/oauth/GoogleLogin.png" alt="구글 로그인" />
         </OAuthButton>
-        <OAuthButton onClick={handleFacebookLogin}>
-          <img src='/src/asset/image/oauth/FacebookLogin.png'
-              alt='페이스북 로그인' />
-        </OAuthButton>
-        <OAuthButton onClick={handleNaverLogin}>
-          <img src='/src/asset/image/oauth/NaverLogin.png' alt='네이버 로그인' />
-        </OAuthButton>
-        <OAuthButton onClick={handleKakaoLogin}>
-          <img src='/src/asset/image/oauth/KakaoLogin.png' alt='카카오 로그인' />
-        </OAuthButton> */}
-
-          <OAuthButton onClick={
-            () => {
-              handleSocialLogin('google');
-              setSignupStatus('google');
-            }}>
-            <img src="/src/asset/image/oauth/GoogleLogin.png" alt="구글 로그인" />
-          </OAuthButton>
           <OAuthButton onClick={() => {
             handleSocialLogin('facebook');
             setSignupStatus('facebook');

@@ -20,9 +20,7 @@ import LoginRoutes from '@src/routes/LoginRoutes.jsx';
 import SurveyRoutes from '@src/routes/SurveyRoutes.jsx';
 import AdminRoutes from '@src/routes/AdminRoutes.jsx';
 import RecordRoutes from '@src/routes/RecordRoutes.jsx';
-
-
-
+//import RegisterRoutes from './routes/RegisterRoutes';
 
 
 function App() {
@@ -70,6 +68,7 @@ function App() {
       path: '/' + ROUTER_LINKS.RECORD + '/*',
       element: <RecordRoutes />,
     },
+
   ]);
   return (
     <MuiThemeProvider theme={muiTheme}>

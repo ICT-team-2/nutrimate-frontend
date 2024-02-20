@@ -131,7 +131,7 @@ const [userId, setUserId] = useAtom(userIdAtom);
             <StyledButton
               variant='contained'
               size='large'
-              onClick={gotoSurvey}>식습관 검사하기</StyledButton>
+              onClick={gotoSurvey}>시작하기</StyledButton>
           </MainPageImgContent>
         </RelativeWrapper>
       </StyledContainer>
