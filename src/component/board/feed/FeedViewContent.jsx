@@ -31,11 +31,11 @@ const StyledCard = muiStyled(Card)`
 
 `;
 const ContentTypo = styled(Typography)`
-    overflow: ${({ clickmoreview }) => clickmoreview ? 'auto' : 'hidden'};
-    text-overflow: ${({ clickmoreview }) => clickmoreview
+    overflow: ${({ clickmoreview }) => clickmoreview === 'true' ? 'auto' : 'hidden'};
+    text-overflow: ${({ clickmoreview }) => clickmoreview === 'true'
             ? 'clip'
             : 'ellipsis'};
-    white-space: ${({ clickmoreview }) => clickmoreview ? 'normal' : 'nowrap'};
+    white-space: ${({ clickmoreview }) => clickmoreview === 'true' ? 'normal' : 'nowrap'};
 `;
 
 const MoreViewButton = styled(Typography)`
@@ -46,7 +46,8 @@ const MoreViewButton = styled(Typography)`
 `;
 const LikeButtonContainer = styled.div`
     position: relative;
-    left: 5px;
+    left: 13px;
+
 `;
 
 /**
@@ -77,11 +78,6 @@ function FeedViewContent() {
             alt="Paella dish"
           />
           <CardActions disableSpacing>
-            <Tooltip title={'좋아요'}>
-              <LikeButtonContainer>
-                <LikeButton size={8} />
-              </LikeButtonContainer>
-            </Tooltip>
             <Tooltip title="댓글">
               <IconButton
                 onClick={() => setModalOpen(true)}
@@ -89,12 +85,12 @@ function FeedViewContent() {
                 <CommentIcon />
               </IconButton>
             </Tooltip>
-            {/*<Tooltip title="공유">*/}
-            {/*  <IconButton aria-label="share">*/}
-            {/*    <ShareIcon />*/}
-            {/*  </IconButton>*/}
-            {/*</Tooltip>*/}
             <FlexGrowDiv />
+            <Tooltip title={'좋아요'}>
+              <LikeButtonContainer>
+                <LikeButton size={7} />
+              </LikeButtonContainer>
+            </Tooltip>
             <Tooltip title="북마크">
               <IconButton aria-label="bookmark">
                 <BookmarkIcon />
@@ -104,7 +100,7 @@ function FeedViewContent() {
           <CardContent>
             <ContentTypo
               variant="body2" color="text.secondary"
-              clickmoreview={clickMoreView}>
+              clickmoreview={clickMoreView + ''}>
               This impressive paella is a perfect party dish and a fun meal to cook
               together with your guests. Add 1 cup of frozen peas along with the mussels,
               if you like.

@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import styled, { createGlobalStyle } from 'styled-components';
+import { nanoid } from 'nanoid';
 
 const GlobalStyle = createGlobalStyle({
   margin: 0,
@@ -59,7 +60,8 @@ const LikeContainer = styled(Label)`
     padding: 0.3rem;
     border-radius: 6px;
     width: fit-content;
-    min-width: ${({ viewcount }) => viewcount ? '1rem' : '3rem'};
+    min-width: ${({ $viewcount }) => $viewcount === 'true'
+            ? '1rem' : '3rem'};
 `;
 /**
  * 좋아요 버튼을 표시하고 상호 작용하기 위한 LikeButton 컴포넌트입니다.
@@ -92,6 +94,7 @@ const LikeButton = (props) => {
   const span = useRef();
   const disabledColor = '#eee';
   const [disabled, setDisabled] = useState(false);
+  const checkboxId = nanoid();
 
   const animateHeart = () => {
     heart.current.animate(
@@ -178,20 +181,23 @@ const LikeButton = (props) => {
     onClick();
   };
 
+  useEffect(() => {
+
+  }, []);
+
   return (
     <>
       <GlobalStyle />
       <LikeContainer
-        htmlFor="checkbox"
+        htmlFor={checkboxId}
         className={`like-container ${className}`}
-        viewcount={viewCount + ''}
+        $viewcount={viewCount + ''}
       >
         <input
           type="checkbox"
-          id="checkbox"
+          id={checkboxId}
           hidden
           onClick={clickLikeCount}
-
           disabled={disabled}
         />
         <Svg
@@ -200,13 +206,13 @@ const LikeButton = (props) => {
           className="icon "
           viewBox="0 0 1024 1024"
           xmlns="http://www.w3.org/2000/svg"
-          p-id="2271"
+          $p-id="2271"
           size={size}
         >
           <Heart
             d="M742.4 101.12A249.6 249.6 0 0 0 512 256a249.6 249.6 0 0 0-230.72-154.88C143.68 101.12 32 238.4 32 376.32c0 301.44 416 546.56 480 546.56s480-245.12 480-546.56c0-137.92-111.68-275.2-249.6-275.2z"
             fill={click ? heartColor : disabledColor}
-            p-id="2272"
+            $p-id="2272"
             id="heart"
             ref={heart}
             color={heartColor}
