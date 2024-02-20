@@ -5,13 +5,16 @@ import {
   FlexDiv,
   FlexGrowDiv,
 } from '@src/component/common/GlobalComponents.jsx';
-import { Button } from '@mui/material';
+import { Button, Paper } from '@mui/material';
 import SelectMealTime from '@src/component/record/diet/SelectMealTime.jsx';
 import RecordImgUploader
   from '@src/component/record/diet/RecordImgUploader.jsx';
 import { FOOD_RECORD_BUTTONS } from '@src/component/record/const.js';
 import SearchFoodDB from '@src/component/record/diet/SearchFoodDB.jsx';
 import ManualRecordDiet from '@src/component/record/diet/ManualRecordDiet.jsx';
+import RecordResults from '@src/component/record/RecordResults.jsx';
+import { useAtom } from 'jotai';
+import { selectedRecordTabsAtom } from '@src/component/record/atom.js';
 
 const RecordContainer = styled.div`
     //margin: 0 auto;
@@ -39,6 +42,8 @@ const SelectContainer = styled.div`
 const DietRecord = () => {
 
   const [btnValue, setBtnValue] = useState(FOOD_RECORD_BUTTONS.IMAGE.VALUE);
+  const [selectedRecordTab, setSelectedRecordTab] = useAtom(selectedRecordTabsAtom);
+
 
   const handleBtnClick = (value) => {
     setBtnValue(value);
@@ -60,7 +65,6 @@ const DietRecord = () => {
               {button.LABEL}
             </StyledButton>
           ))}
-
         </div>
       </SelectContainer>
       <RecordContainer>
@@ -68,7 +72,7 @@ const DietRecord = () => {
         {btnValue === FOOD_RECORD_BUTTONS.SEARCH_DB.VALUE && <SearchFoodDB />}
         {btnValue === FOOD_RECORD_BUTTONS.MANUAL.VALUE && <ManualRecordDiet />}
       </RecordContainer>
-      <div>대충 분석 결과</div>
+      <RecordResults selectedRecordTab={selectedRecordTab} />
     </OuterContainer>
 
   );

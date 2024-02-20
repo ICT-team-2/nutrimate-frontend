@@ -1,4 +1,3 @@
-
 import styled from 'styled-components';
 import { Button, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
@@ -37,6 +36,13 @@ const ChatInput = ({ onSend }) => {
     }
   };
 
+  const handleKeyUp = (event) => {
+    if (event.key === 'Enter') {
+      setMessage('');
+      event.preventDefault();
+    }
+  };
+
   return (
     <ChatInputContainer>
       <StyledTextField
@@ -46,6 +52,7 @@ const ChatInput = ({ onSend }) => {
         value={message}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
       />
       <StyledButton variant="contained" onClick={handleSendClick}>
         <SendIcon />
