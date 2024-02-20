@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NameProfileComponent
   from '@src/component/setting/userinfo/NameProfileComponent.jsx';
 import Typography from '@mui/material/Typography';
@@ -17,7 +17,17 @@ import HeightWeightInfo
 import GenderInfo from '@src/component/setting/userinfo/GenderInfo.jsx';
 import SportSelectBox from '@src/component/setting/userinfo/SportSelectBox.jsx';
 import { useAtom } from 'jotai/react';
-import { carboAtom, dietStateAtom, fatAtom, genderAtom, heightStateAtom, introAtom, proteinAtom, sportStateAtom, weightStateAtom } from '@src/component/setting/atom.js';
+import {
+  carboAtom,
+  dietStateAtom,
+  fatAtom,
+  genderAtom,
+  heightStateAtom,
+  introAtom,
+  proteinAtom,
+  sportStateAtom,
+  weightStateAtom,
+} from '@src/component/setting/atom.js';
 import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
 import DietSelectBox from '@src/component/setting/userinfo/DietSelectBox.jsx';
 import axios from 'axios';
@@ -65,7 +75,7 @@ const UserEditInfo = () => {
     userWeight: 0,
     userGender: '',
     userSportHard: '',
-    userIntro: ''
+    userIntro: '',
   });
 
   const [diet, setDiet] = useAtom(dietStateAtom);
@@ -114,8 +124,9 @@ const UserEditInfo = () => {
   const navigate = useNavigate();
   const handleUpdate = async () => {
     try {
-      console.log('axios put',{      
+      axios.put('/member/mypage', {
         ...userInfo,
+        roleList: null, //이거 추가해야함(
         userDiet: diet,
         userGender: gender,
         userIntro: intro,
@@ -125,44 +136,16 @@ const UserEditInfo = () => {
         province: fat,
         userHeight: height,
         userWeight: weight,
-        userId: userId
-      });
-      axios.put('/member/mypage',{      
-        ...userInfo, 
-        userDiet: diet,
-        userGender: gender,
-        userIntro: intro,
-        userSportHard: sport,
-        carbo: carbo,
-        protein: protein,
-        province: fat,
-        userHeight: parseInt(height),
-        userWeight: parseInt(weight),
-        userId: parseInt(sessionStorage.userId) 
-      },{
+        userId: parseInt(sessionStorage.userId),
+        userRole: 'ROLE_USER',
+      }, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      .then(response => {
-        console.log(response.data);
-        setUserInfo(response.data.memberDto);
-        setGender(response.data.memberDto.userGender);
-        setHeight(response.data.memberDto.userHeight);
-        setWeight(response.data.memberDto.userWeight);
-        setSport(response.data.memberDto.userSportHard);
-        setIntro(response.data.memberDto.userIntro);
-        setUserId(response.data.memberDto.userId);
-
-        // setDiet(response.data.memberDto.userDiet);
-        setDiet(response.data.memberDto.userDiet);
-        if(response.data.memberDto.userDiet===SETTING_USER_INFOS.DIET.CUSTOM.KEYS){
-          setCarbo(response.data.memberDto.userCarbo);
-          setProtein(response.data.memberDto.userProtein);
-          setFat(response.data.memberDto.userFat);
-        }
-        navigate(LINKS.VIEW_INFO);
-      })
+        .then(response => {
+          navigate(LINKS.VIEW_INFO);
+        });
     } catch (error) {
       console.error('There was an error!', error);
     }
@@ -176,54 +159,54 @@ const UserEditInfo = () => {
 
   useEffect(() => {
     console.log(diet);
-    console.log('user',userInfo);
-  },[userInfo])
-  
+    console.log('user', userInfo);
+  }, [userInfo]);
+
 
   return (
     <>
-      <NameProfileComponent 
-      profileButton 
-      name={userInfo?.userName}
-      nickname={userInfo?.userNick} 
+      <NameProfileComponent
+        profileButton
+        name={userInfo?.userName}
+        nickname={userInfo?.userNick}
       />
       <StyledTypography variant="h5">소개</StyledTypography>
       <StyledTextField
-          variant={'outlined'}
-          multiline
-          rows={4}
-          label="자기소개"
-          placeholder="자기 소개를 입력해주세요"
-          value={userInfo?.userIntro}
-          onChange={e => setUserInfo(prevState => ({
-            ...prevState,
-            userIntro: e.target.value
-          }))}
-        />
+        variant={'outlined'}
+        multiline
+        rows={4}
+        label="자기소개"
+        placeholder="자기 소개를 입력해주세요"
+        value={userInfo?.userIntro}
+        onChange={e => setUserInfo(prevState => ({
+          ...prevState,
+          userIntro: e.target.value,
+        }))}
+      />
       <StyledTypography variant="h5">추가정보</StyledTypography>
       <InfoContainer height="auto">
         <InfoInnerContainer>
           <AdditionalInfos
             title={SETTING_USER_INFOS.EMAIL.TITLE}
             label={SETTING_USER_INFOS.EMAIL.LABEL}
-            value={userInfo.userEmail}
+            value={userInfo?.userEmail}
             onChange={e => {
-              // console.log(e.target.value);
-              setUserInfo({...userInfo,userEmail:e.target.value}
-            )}}
-            />
+              setUserInfo({ ...userInfo, userEmail: e.target.value },
+              );
+            }}
+          />
           <AdditionalInfos
             title={SETTING_USER_INFOS.CALORY.TITLE}
             label={SETTING_USER_INFOS.CALORY.LABEL}
-            value={userInfo.userCal}
-            onChange={e => setUserInfo({...userInfo,userCal:e.target.value})} />
+            value={userInfo?.userCal}
+            onChange={e => setUserInfo({ ...userInfo, userCal: e.target.value })} />
           <DietSelectBox
             title={SETTING_USER_INFOS.DIET.TITLE} label={SETTING_USER_INFOS.DIET.LABEL}
             keys={SETTING_USER_INFOS.DIET.KEYS}
             values={SETTING_USER_INFOS.DIET.VALUES}
             setDiet={setDiet}
             id={SETTING_USER_INFOS.DIET.ID}
-            onChange={e => setUserInfo({...userInfo,userDiet:e.target.value})}
+            onChange={e => setUserInfo({ ...userInfo, userDiet: e.target.value })}
           />
           <DietRatioInfo />
           <GenderInfo />

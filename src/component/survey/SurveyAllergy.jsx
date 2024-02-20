@@ -55,7 +55,7 @@ const SurveyAllergy = () => {
           columns={60}
         >
           {Object.keys(ALLERGY_LIST).map((key, index) => (
-            <Grid item xs={60} sm={30} md={20} lg={12} key={key}>
+            <Grid item xs={30} sm={20} md={15} lg={12} key={key}>
               <SurveyAllergyCard
                 key={key} index={index}
                 onClick={() => onClickAllergy(key)}
