@@ -1,7 +1,7 @@
-import React from 'react';
 import styled from 'styled-components';
 import { Button, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+import React, { useState } from 'react';
 
 const ChatInputContainer = styled.div`
     width: calc(100% - 40px);
@@ -18,15 +18,43 @@ const StyledButton = styled(Button)`
     margin-left: 10px;
 `;
 
-const ChatInput = () => {
+const ChatInput = ({ onSend }) => {
+  const [message, setMessage] = useState('');
+
+  const handleInputChange = (event) => {
+    setMessage(event.target.value);
+  };
+
+  const handleSendClick = () => {
+    onSend(message);
+    setMessage('');
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSendClick();
+    }
+  };
+
+  const handleKeyUp = (event) => {
+    if (event.key === 'Enter') {
+      setMessage('');
+      event.preventDefault();
+    }
+  };
+
   return (
     <ChatInputContainer>
       <StyledTextField
         size="small"
         label="메세지를 입력하세요"
         multiline
+        value={message}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
       />
-      <StyledButton variant="contained">
+      <StyledButton variant="contained" onClick={handleSendClick}>
         <SendIcon />
       </StyledButton>
     </ChatInputContainer>

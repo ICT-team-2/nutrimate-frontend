@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
-import { USERINFOS } from '@src/component/setting/const.js';
+import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
+import { useAtom } from 'jotai';
+import { genderAtom } from '../atom';
 
 const StyledFormControl = muiStyled(FormControl)`
     width: 50%;
@@ -30,7 +32,7 @@ const StyledFormLabel = muiStyled(FormLabel)`
 `;
 
 export default function GenderInfo({ disabled }) {
-  const [value, setValue] = useState('female');
+  const [value, setValue] = useAtom(genderAtom);
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -39,22 +41,22 @@ export default function GenderInfo({ disabled }) {
   return (
     <StyledFormControl
     >
-      <StyledFormLabel>{USERINFOS.GENDER.TITLE}</StyledFormLabel>
+      <StyledFormLabel>{SETTING_USER_INFOS.GENDER.TITLE}</StyledFormLabel>
       <StyledRadioGroup
         value={value}
         onChange={handleChange}
       >
         <StyledFormControlLabel
-          value={USERINFOS.GENDER.MALE.VALUES}
+          value={SETTING_USER_INFOS.GENDER.MALE.VALUES}
           control={<CustomRadio />}
-          label={USERINFOS.GENDER.MALE.LABEL}
+          label={SETTING_USER_INFOS.GENDER.MALE.LABEL}
           disabled={disabled}
           checked
         />
         <StyledFormControlLabel
-          value={USERINFOS.GENDER.FEMALE.VALUES}
+          value={SETTING_USER_INFOS.GENDER.FEMALE.VALUES}
           control={<CustomRadio />}
-          label={USERINFOS.GENDER.FEMALE.LABEL}
+          label={SETTING_USER_INFOS.GENDER.FEMALE.LABEL}
           disabled={disabled}
         />
       </StyledRadioGroup>

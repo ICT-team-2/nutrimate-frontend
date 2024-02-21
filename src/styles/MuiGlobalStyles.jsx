@@ -18,6 +18,13 @@ const MuiGlobalStyles = () => {
       lineHeight: themeColor['main-line-height'],
       letterSpacing: themeColor['main-letter-spacing'],
       margin: 0,
+      padding: 0,
+      boxSizing: 'border-box',
+    },
+    '*': {
+      margin: 0,
+      padding: 0,
+      boxSizing: 'border-box',
     },
     ':root': {
       '--main-background': themeColor['main-background'],
@@ -27,6 +34,7 @@ const MuiGlobalStyles = () => {
       '--main-font-weight': themeColor['main-font-weight'],
       '--main-line-height': themeColor['main-line-height'],
       '--main-letter-spacing': themeColor['main-letter-spacing'],
+
     },
   }} />);
 };

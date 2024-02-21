@@ -7,19 +7,8 @@ const ListItem = muiStyled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-
-const ViewHashtag = () => {
-  const [chipData, setChipData] = React.useState([
-    { key: 0, label: 'Angular' },
-    { key: 1, label: 'jQuery' },
-    { key: 2, label: 'Polymer' },
-    { key: 3, label: 'React' },
-    { key: 4, label: 'Vue.js' },
-  ]);
-
-
+const ViewHashtag = ({ hashtags }) => {
   return (
-
     <Box
       sx={{
         display: 'flex',
@@ -30,13 +19,11 @@ const ViewHashtag = () => {
         m: 0,
       }}
     >
-      {chipData.map((data) => {
-
-
+      {hashtags.map((data, index) => {
         return (
-          <ListItem key={data.key}>
+          <ListItem key={index}>
             <Chip
-              label={data.label}
+              label={data.tagName}
               color="primary"
               variant="outlined"
             />
@@ -44,8 +31,6 @@ const ViewHashtag = () => {
         );
       })}
     </Box>
-
-
   );
 };
 

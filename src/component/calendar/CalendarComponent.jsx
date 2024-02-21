@@ -109,7 +109,6 @@ const CalendarComponent = (props) => {
         selectable
         //날짜 칸 클릭 이벤트
         onSelectSlot={(slotInfo) => {
-          
           alert(`selected slot: \n\nstart ${slotInfo.start.toLocaleString()} ` +
             `\nend: ${slotInfo.end.toLocaleString()}` +
             `\naction: ${slotInfo.action}`);

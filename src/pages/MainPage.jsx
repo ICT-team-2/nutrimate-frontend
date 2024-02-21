@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MainPageImg from '@src/asset/image/MainPageImg.jpg';
 import styled from 'styled-components';
 import { Button } from '@mui/material';
-import { FlexDiv, RelativeWrapper, StyledContainer } from '@src/component/common/GlobalComponents.jsx';
+import {
+  FlexDiv,
+  RelativeWrapper,
+  StyledContainer,
+} from '@src/component/common/GlobalComponents.jsx';
 import MainPageIntroduce from '@src/component/mainpage/MainPageIntroduce.jsx';
-import MainPageDietContent from '@src/component/mainpage/MainPageDietContent.jsx';
+import MainPageDietContent
+  from '@src/component/mainpage/MainPageDietContent.jsx';
+import { useNavigate } from 'react-router-dom';
+import { LINKS } from '@src/utils/const.js';
+import { useCookies } from 'react-cookie';
+import { jwtDecode } from 'jwt-decode';
+import { useAtom } from 'jotai';
+import { userIdAtom } from '@src/pages/login/atom';
+
 
 const MainImg = styled.img`
     width: 100%;
@@ -17,7 +29,6 @@ const MainPageImgContent = styled.div`
     transform: translateY(-400px); // transform 속성을 사용하여 위치 이동
     color: white;
     z-index: 10;
-
 `;
 
 const MainFirstTypo = styled.div`
@@ -58,8 +69,49 @@ const LastTitle = styled.div`
     font-size: 64px;
 `;
 
-
 const MainPage = ({ imgSize }) => {
+
+// const [token,setToken] = useState('');
+// const cookies = useCookies(['access']);
+// useEffect(() => {
+//   if (cookies.access) {
+//     console.log('aa');
+//     setToken(cookies.access);
+//     sessionStorage.setItem(token);
+//   }
+// });
+
+
+  const [token, setToken] = useState('');
+  const [cookies] = useCookies(['ACCESS']);
+// 사용자 정보를 저장할 상태를 추가합니다.
+  const [userInfo, setUserInfo] = useState(null);
+  const [userId, setUserId] = useAtom(userIdAtom);
+
+  useEffect(() => {
+    if (cookies.ACCESS) {
+      //console.log('Token found:', cookies.ACCESS);
+      setToken(cookies.ACCESS);
+      //sessionStorage.setItem('token', cookies.ACCESS);
+      // 토큰을 디코딩하여 사용자 정보를 추출하고 상태에 저장합니다.
+      const decodedToken = jwtDecode(cookies.ACCESS);
+      setUserInfo(decodedToken);
+      console.log('Decoded Token:', decodedToken);
+      console.log('userId:', decodedToken.userInfo.userId);
+      setUserId(decodedToken.userInfo.userId);
+    }
+  }, [cookies.ACCESS]);
+
+  const navigate = useNavigate();
+  const gotoSurvey = () => {
+    navigate(LINKS.SURVEY);
+  };
+
+  // useEffect(() => {
+  //   console.log("userId:",userId)
+  // },[userId])
+
+
   return (
     <>
       <MainImg src={MainPageImg} size={imgSize} />
@@ -77,7 +129,8 @@ const MainPage = ({ imgSize }) => {
             </MainSecondTypo>
             <StyledButton
               variant="contained"
-              size="large">식습관 검사하기</StyledButton>
+              size="large"
+              onClick={gotoSurvey}>식습관 검사하기</StyledButton>
           </MainPageImgContent>
         </RelativeWrapper>
       </StyledContainer>
@@ -87,7 +140,9 @@ const MainPage = ({ imgSize }) => {
         <LastTitleContainer>
           <LastTitle>지금 내가 먹고있는 식단이 궁금하다면? </LastTitle>
           <LastButtonContainer>
-            <StyledButton variant="contained">내 식단 분석하기</StyledButton>
+            <StyledButton
+              variant="contained"
+              onClick={gotoSurvey}>내 식단 분석하기</StyledButton>
           </LastButtonContainer>
         </LastTitleContainer>
       </FlexDiv>
@@ -98,5 +153,6 @@ const MainPage = ({ imgSize }) => {
 MainPage.defaultProps = {
   imgSize: '100vh',
 };
+
 
 export default MainPage;

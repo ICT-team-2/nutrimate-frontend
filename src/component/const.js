@@ -1,0 +1,1 @@
+export const NO_IMAGE_PATH = '/src/asset/image/NoImage.png';

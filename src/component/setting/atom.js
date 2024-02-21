@@ -1,11 +1,27 @@
 import { atom } from 'jotai';
-import { SETTING_DRAWER_HEIGHT, USERINFOS } from '@src/component/setting/const.js';
+import { SETTING_DRAWER_HEIGHT, SETTING_USER_INFOS } from '@src/component/setting/const.js';
 
 /** 설정 페이지의 왼쪽 메뉴 상태 */
 export const settingDrawerStateAtom = atom(false);
+settingDrawerStateAtom.debugLabel = 'settingDrawerStateAtom';
 export const settingDrawerHeightAtom = atom(SETTING_DRAWER_HEIGHT.VIEW_INFO);
-export const dietStateAtom = atom(USERINFOS.DIET.NORMAL.KEYS);
+settingDrawerHeightAtom.debugLabel = 'settingDrawerHeightAtom';
+export const dietStateAtom = atom(SETTING_USER_INFOS.DIET.NORMAL.KEYS);
+dietStateAtom.debugLabel = 'settingDietStateAtom';
 
-export const carboAtom = atom(USERINFOS.DIET.NORMAL.CARBO);
-export const proteinAtom = atom(USERINFOS.DIET.NORMAL.PROTEIN);
-export const fatAtom = atom(USERINFOS.DIET.NORMAL.FAT);
+export const carboAtom = atom(SETTING_USER_INFOS.DIET.NORMAL.CARBO);
+carboAtom.debugLabel = 'settingCarboAtom';
+export const proteinAtom = atom(SETTING_USER_INFOS.DIET.NORMAL.PROTEIN);
+proteinAtom.debugLabel = 'settingProteinAtom';
+export const fatAtom = atom(SETTING_USER_INFOS.DIET.NORMAL.FAT);
+fatAtom.debugLabel = 'settingFatAtom';
+
+export const genderAtom = atom('');
+genderAtom.debugLabel = 'settingGenderAtom';
+export const heightStateAtom = atom(0);
+heightStateAtom.debugLabel = 'settingHeightStateAtom';
+export const weightStateAtom = atom(0);
+weightStateAtom.debugLabel = 'settingWeightStateAtom';
+
+export const sportStateAtom = atom(SETTING_USER_INFOS.SPORT.KEYS[0]);
+sportStateAtom.debugLabel = 'settingSportStateAtom';

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import NameProfileComponent
   from '@src/component/setting/userinfo/NameProfileComponent.jsx';
 import Typography from '@mui/material/Typography';
@@ -18,8 +18,9 @@ import GenderInfo from '@src/component/setting/userinfo/GenderInfo.jsx';
 import SportSelectBox from '@src/component/setting/userinfo/SportSelectBox.jsx';
 import { useAtom } from 'jotai/react';
 import { dietStateAtom } from '@src/component/setting/atom.js';
-import { USERINFOS } from '@src/component/setting/const.js';
+import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
 import DietSelectBox from '@src/component/setting/userinfo/DietSelectBox.jsx';
+import axios from 'axios';
 
 const FIELD_WIDTH = 'calc(100% + 60px)';
 
@@ -54,34 +55,83 @@ const StyledDiv = styled.div`
 `;
 
 const UserEditInfo = () => {
+  const handleUpdate = async () => {
+    try {
+      const response = await axios.put('/member/mypage', userInfo); // '/api/user'는 실제 API 엔드포인트로 변경해야 합니다.
+      if (response.status === 200) {
+        alert('정보가 성공적으로 수정되었습니다.');
+        navigate(LINKS.VIEW_INFO);
+      } else {
+        alert('정보 수정에 실패하였습니다. 다시 시도해 주세요.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('정보 수정에 실패하였습니다. 다시 시도해 주세요.');
+    }
+  };
+  const [userInfo, setUserInfo] = useState({
+    userEmail: '',
+    userCal: 0,
+    userDiet: '',
+    userHeight: 0,
+    userWeight: 0,
+    userGender: '',
+    userSport: '',
+    userIntro:''
+  });
+
   const [diet, setDiet] = useAtom(dietStateAtom);
   const navigate = useNavigate();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+
+  useEffect(() => {
+    console.log(userInfo);
+  },[userInfo])
+  
+
   return (
     <>
-      <NameProfileComponent profileButton />
-      <StyledTypography variant='h5'>소개</StyledTypography>
+      <NameProfileComponent 
+      profileButton 
+      name={'이름?'}
+      nickname={'닉네임?'}
+      />
+      <StyledTypography variant="h5">소개</StyledTypography>
       <StyledTextField
         variant={'outlined'} multiline rows={4}
-        label='자기소개' placeholder='자기 소개를 입력해주세요'
+        label="자기소개" placeholder="자기 소개를 입력해주세요"
+        value={userInfo.userIntro}
+        onChange={e => setUserInfo({...userInfo,userIntro:e.target.value})}
       />
-      <StyledTypography variant='h5'>추가정보</StyledTypography>
-      <InfoContainer height='auto'>
+      <StyledTypography variant="h5">추가정보</StyledTypography>
+      <InfoContainer height="auto">
         <InfoInnerContainer>
           <AdditionalInfos
-            title={USERINFOS.EMAIL.TITLE}
-            label={USERINFOS.EMAIL.LABEL} />
+            title={SETTING_USER_INFOS.EMAIL.TITLE}
+            label={SETTING_USER_INFOS.EMAIL.LABEL}
+            value={userInfo.userEmail}
+            onChange={e => {
+              console.log(e.target.value);
+              setUserInfo({...userInfo,userEmail:e.target.value}
+            )}}
+            />
           <AdditionalInfos
-            title={USERINFOS.CALORY.TITLE}
-            label={USERINFOS.CALORY.LABEL} />
+            title={SETTING_USER_INFOS.CALORY.TITLE}
+            label={SETTING_USER_INFOS.CALORY.LABEL}
+            value={userInfo.userCal}
+            onChange={e => setUserInfo({...userInfo,userCal:e.target.value})} />
           <DietSelectBox
-            title={USERINFOS.DIET.TITLE} label={USERINFOS.DIET.LABEL}
-            keys={USERINFOS.DIET.KEYS}
-            values={USERINFOS.DIET.VALUES}
+            title={SETTING_USER_INFOS.DIET.TITLE} label={SETTING_USER_INFOS.DIET.LABEL}
+            keys={SETTING_USER_INFOS.DIET.KEYS}
+            values={SETTING_USER_INFOS.DIET.VALUES}
             setDiet={setDiet}
-            id={USERINFOS.DIET.ID}
+            id={SETTING_USER_INFOS.DIET.ID}
+            value={userInfo.userDiet}
+            onChange={e => setUserInfo({...userInfo,userDiet:e.target.value})}
           />
           <DietRatioInfo />
           <GenderInfo />
@@ -92,16 +142,15 @@ const UserEditInfo = () => {
       <StyledDiv>
         <FlexGrowDiv />
         <Button
-          variant='contained'
+          variant="contained"
           onClick={() => {
             navigate(LINKS.VIEW_INFO);
           }}
         >수정 완료</Button>
       </StyledDiv>
     </>
-  
-  )
-    ;
+
+  );
 };
 
 export default UserEditInfo;

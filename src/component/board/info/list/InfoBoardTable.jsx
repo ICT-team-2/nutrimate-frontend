@@ -81,6 +81,6 @@ const TitleTableCell = (props) => {
   const navigate = useNavigate();
   const { children: title } = props;
   return <StyledTableCell onClick={() => {
-    navigate(LINKS.INFO_BOARD_VIEW + '/1');
+    navigate(LINKS.INFO_BOARD_VIEW + '/506');
   }}>{title}</StyledTableCell>;
 };

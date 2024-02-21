@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import MenuItem from '@mui/material/MenuItem';
 import { FormControl, InputLabel, Select } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
-import { USERINFOS } from '@src/component/setting/const.js';
+import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
 import { useAtom } from 'jotai/react';
-import { dietStateAtom } from '@src/component/setting/atom.js';
+import { dietStateAtom, sportStateAtom } from '@src/component/setting/atom.js';
 
 const StyledLabel = styled.label`
     margin-left: 30px;
@@ -31,8 +31,9 @@ const StyledSelect = muiStyled(Select)`
 const SportSelectBox = (props) => {
   const { title, label, keys, values, id, disabled } = props;
   const [isFocused, setIsFocused] = useState(undefined);
-  const [exercise, setExercise] = useState(keys[0]);
+  const [exercise, setExercise] = useAtom(sportStateAtom);
   const [diet, setDiet] = useAtom(dietStateAtom);
+  
 
   const handleChange = (event) => {
 
@@ -72,10 +73,10 @@ const SportSelectBox = (props) => {
   );
 };
 SportSelectBox.defaultProps = {
-  title: USERINFOS.SPORT.TITLE,
-  label: USERINFOS.SPORT.LABEL,
-  values: USERINFOS.SPORT.VALUES,
-  keys: USERINFOS.SPORT.KEYS,
+  title: SETTING_USER_INFOS.SPORT.TITLE,
+  label: SETTING_USER_INFOS.SPORT.LABEL,
+  values: SETTING_USER_INFOS.SPORT.VALUES,
+  keys: SETTING_USER_INFOS.SPORT.KEYS,
 };
 
 export default SportSelectBox;

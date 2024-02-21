@@ -4,8 +4,8 @@ import Layout from '@src/layout/Layout.jsx';
 import BoardLayout from '@src/layout/BoardLayout.jsx';
 import NotFound404Page from '@src/pages/NotFound404Page.jsx';
 import ChallengePage from '@src/pages/challenge/ChallengePage.jsx';
-import ChallengeChatPage from '@src/pages/challenge/ChallengeChatPage.jsx';
 import { ROUTER_LINKS } from '@src/utils/const.js';
+import ChallengeChatPage from '@src/pages/challenge/ChallengeChatPage.jsx';
 
 const ChallengeRoutes = () => {
   return (

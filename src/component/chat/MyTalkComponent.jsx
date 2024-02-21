@@ -8,11 +8,14 @@ const AlignLeftContainer = styled.div`
     display: flex;
     justify-content: flex-end;
     width: 100%;
+
 `;
 
 const MyTalkContainer = styled.div`
     display: flex;
     padding: 30px;
+    width: 100%;
+
 
 `;
 const TalkContentContainer = styled.div`
