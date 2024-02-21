@@ -32,10 +32,7 @@ const RecordContainer = styled.div`
     //margin: 0 auto;
     //width: 80%;
     //height: 80%;
-    display: flex;
-    flex-direction: row;
     margin-bottom: 30px;
-    justify-content: space-between;
     min-height: 400px;
 `;
 
