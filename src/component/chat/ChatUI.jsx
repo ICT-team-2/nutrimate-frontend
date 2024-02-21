@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import Typography from '@mui/material/Typography';
+
 import Divider from '@mui/material/Divider';
 import MyTalkComponent from '@src/component/chat/MyTalkComponent.jsx';
 import ChatInput from '@src/component/chat/ChatInput.jsx';
@@ -8,8 +8,10 @@ import OtherTalkComponent from '@src/component/chat/OtherTalkComponent.jsx';
 import { useRef, useEffect } from 'react';
 import ChatLoading from '@src/component/chat/chatbot/ChatLoading.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone,faVolumeXmark,faVolumeHigh} from '@fortawesome/free-solid-svg-icons';
 import ChatBotComponent from '@src/component/chat/chatbot/ChatBotComponent';
+import ChatLoadingText from '@src/component/chat/chatbot/ChatLoadingText';
+import { Tooltip, Typography, Stack, IconButton } from '@mui/material';
 
 const ChatContainer = styled.div`
     width: 100%;
@@ -17,6 +19,8 @@ const ChatContainer = styled.div`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    zIndex: 1000;
+    
 `;
 
 const ChatHeader = styled.div`
@@ -63,34 +67,129 @@ const AvatarWrapper = styled.div`
 `;
 
 
+
+
 const ChatUI = (props) => {
-  const { title, overflow, height, data, onSend, nickname, loading, micicon,voice } = props;
+  const { title, overflow, height, data, onSend, nickname, loading, micicon,voice,loadingtext,voiceText } = props;
   const [voiceReading, setVoiceReading] = useState(false);
-  console.log('sdfsdfsdfs',voiceReading);
+  //tts
+  const [textReading, setTextReading] = useState(true);
+  const [synthesisSupported, setSynthesisSupported] = useState(false);
+  const [voices, setVoices] = useState([]);
+  const [selectedVoice, setSelectedVoice] = useState(null);
+  const [utterance, setUtterance] = useState(new SpeechSynthesisUtterance());
+  //tts
+
+
   const scrollRef = useRef();
   useEffect(() => {
-  // useEffect 훅 내부에서 스크롤 이동을 처리합니다.
-  if (scrollRef.current) {
-  scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    stopSynthesis();
+    // useEffect 훅 내부에서 스크롤 이동을 처리합니다.
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+  if(!textReading){
+    if(data[data.length-1].challengeNick === '챗봇'){
+          startSynthesis(data[data.length-1].chatMessage);
+    }
+          
   }
-  }, [data]);
+
+  }, [data,loadingtext]);
   
   const Voice = () => {
-  setVoiceReading(true);
+     setVoiceReading(true);
+  };
+
+  //tts
+  useEffect(() => {
+      // useEffect 훅 내부에서 스크롤 이동을 처리합니다.
+    if ('speechSynthesis' in window ) {
+      setSynthesisSupported(true);
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    } else {
+      setSynthesisSupported(false);
+    }
+  }, []);
+
+
+  const loadVoices = () => {
+    const loadedVoices = window.speechSynthesis.getVoices();
+    const koreanVoices = loadedVoices.filter(voice => voice.lang.startsWith('ko'));
+    setVoices(koreanVoices);
+  };
+
+  const startSynthesis = (message) => {
+    utterance.text = message;
+    utterance.voice = voices[0];
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const stopSynthesis = () => {
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+    }
+  };
+
+
+  //tts
+
+
+
+
+
+  const Reading= () => {
+    if(textReading==true){
+      stopSynthesis();
+      setTextReading(false);
+    }else{
+      setTextReading(true);
+    }
   };
   
   useEffect(() => {
-  setVoiceReading(voice);
+    setVoiceReading(voice);
   }, [voiceReading]);
+ 
   
+  const microphoneTooltipContent = '음성 인식';
+  const readAloudTooltipContent = textReading ? '챗봇의 답변을 읽어줍니다.' : '챗봇의 답변을 읽어주는 것을 끕니다.';
+
+
+
+
   return (
-  <ChatContainer>
+  <ChatContainer >
   <ChatHeader>
-  <Typography variant="h6">{title}{micicon && <FontAwesomeIcon onClick={Voice} icon={faMicrophone} style={{
-  fontSize: '24px',
-  color: 'red',
-  float: 'right',
-  }} />} </Typography>
+    
+  <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between"> {/* 왼쪽/오른쪽 정렬 */}
+        <Typography variant="h6">{title}</Typography> {/* Title 왼쪽에 위치 */}
+        <Stack direction="row" spacing={2}>
+        {micicon && (
+            <Tooltip title={readAloudTooltipContent}
+            PopperProps={{
+              style: { zIndex: 20000 } // 툴팁의 z-index 값을 조정하여 ChatContainer 위에 나타나도록 함
+            }}   
+            >
+              <IconButton onClick={Reading}>
+                <FontAwesomeIcon icon={textReading ? faVolumeHigh : faVolumeXmark} style={{ fontSize: '24px' }} />
+              </IconButton>
+            </Tooltip>
+          )}
+          {micicon && (
+            <Tooltip title={microphoneTooltipContent}
+            PopperProps={{
+              style: { zIndex: 20000 } // 툴팁의 z-index 값을 조정하여 ChatContainer 위에 나타나도록 함
+            }}>
+              <IconButton onClick={Voice}>
+                <FontAwesomeIcon icon={faMicrophone} style={{ fontSize: '24px', color: 'red' }} />
+              </IconButton>
+            </Tooltip>
+          )}
+        </Stack>
+      </Stack>
   </ChatHeader>
   <Divider />
   <ChatBody ref={scrollRef} overflow={overflow + ''} height={height}>
@@ -119,6 +218,7 @@ const ChatUI = (props) => {
   
       }
       {loading && <ChatLoading></ChatLoading>}
+      {loadingtext && <ChatLoadingText content={voiceText}></ChatLoadingText>}
       {voiceReading && <ChatBotComponent voiceReading={voiceReading} />}
   
     </ChatBody>
