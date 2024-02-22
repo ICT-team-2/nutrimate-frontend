@@ -1,19 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FlexGrowDiv, UserAvatar } from '@src/component/common/GlobalComponents.jsx';
+import {
+  FlexGrowDiv,
+  UserAvatar,
+} from '@src/component/common/GlobalComponents.jsx';
 import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { useAtom } from 'jotai';
-import { commentEditDataAtom, replyChipDataAtom } from '@src/component/board/atom.js';
+import {
+  commentEditDataAtom,
+  replyChipDataAtom,
+} from '@src/component/board/atom.js';
 import { COMMENT_TYPE } from '@src/component/board/const.js';
-import useDeleteComment from '@src/component/board/feed/hooks/useDeleteComment.jsx';
+import useDeleteComment
+  from '@src/component/board/feed/hooks/useDeleteComment.jsx';
 
 const CommentContainer = styled.div`
     display: flex;
     width: 100%;
     flex-direction: column;
-    padding-left: ${({ depth }) => depth * 20}px;
+    padding-left: ${({ $depth }) => $depth * 20}px;
 `;
 const NicknameTypo = styled(Typography)`
     margin: 9px 0 0 10px;
@@ -44,22 +51,28 @@ const FeedCommentComponent = (props) => {
   const [replyChipData, setReplyChipData] = useAtom(replyChipDataAtom);
   const [commentEditData, setCommentEditData] = useAtom(commentEditDataAtom);
   const deleteComment = useDeleteComment(cmtId);
-
+  
   const isWriter = parseInt(sessionStorage.getItem('userId')) === writerId;
-
+  
   return (
-    <CommentContainer depth={cmtDepth}>
+    <CommentContainer $depth={cmtDepth}>
       <NicknameContainer>
         <UserAvatar userNick={writer} />
-        <NicknameTypo variant="subtitle2">{writer}</NicknameTypo>
+        <NicknameTypo variant='subtitle2'>{writer}</NicknameTypo>
         <FlexGrowDiv />
       </NicknameContainer>
       <BodyTypo
-        variant="body2"
-        dangerouslySetInnerHTML={{ __html: isContent ? boardContent : cmtContent }}
+        variant='body2'
+        dangerouslySetInnerHTML={{
+          __html: isContent
+            ? boardContent
+            : cmtContent,
+        }}
         iswriter={isWriter + ''}
         onClick={() => {
-          if (!isWriter) return;
+          if (!isWriter) {
+            return;
+          }
           setCommentEditData({
             cmtId: cmtId,
             cmtContent: cmtContent,
@@ -70,18 +83,19 @@ const FeedCommentComponent = (props) => {
       {!isContent && (<div>
         <ApliyButton
           onClick={() => {
-            setReplyChipData([{
-              type: COMMENT_TYPE.REPLY,
-              cmtContent: '',
-              replyNick: writer,
-              cmtRef: cmtId,
-              boardId: boardId,
-            }]);
+            setReplyChipData([
+              {
+                type: COMMENT_TYPE.REPLY,
+                cmtContent: '',
+                replyNick: writer,
+                cmtRef: cmtId,
+                boardId: boardId,
+              }]);
             inputRef.current.focus();
           }}
         >답글달기</ApliyButton>
         {isWriter && <Button
-          color="error"
+          color='error'
           onClick={() => {
             deleteComment.mutate();
           }}
