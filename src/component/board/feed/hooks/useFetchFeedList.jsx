@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 
 
 const useFetchFeedList = () => {
@@ -21,7 +22,7 @@ const useFetchFeedList = () => {
   };
 
   return useInfiniteQuery({
-    queryKey: ['board', 'feed'],
+    queryKey: [REACT_QUERY_KEYS.BOARD, REACT_QUERY_KEYS.FEED],
     queryFn: fetchFeedList,
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage.nowPage >= lastPage.totalPages) return undefined;//다음 페이지가 없을 경우

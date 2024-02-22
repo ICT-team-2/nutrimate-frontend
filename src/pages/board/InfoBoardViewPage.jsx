@@ -11,7 +11,7 @@ import ViewHashtag from '@src/component/board/info/view/ViewHashtag.jsx';
 import InfoComments from '@src/component/board/info/view/InfoComments.jsx';
 import KakaoMap from '@src/component/board/KakaoMap';
 import axios from 'axios';
-import useInitMapData from '@src/component/board/hooks/useInitMapData.jsx';
+import useInitMapData from '@src/component/board/info/hooks/useInitMapData.jsx';
 import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom.js';
 

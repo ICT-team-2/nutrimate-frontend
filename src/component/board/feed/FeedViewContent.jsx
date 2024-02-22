@@ -6,25 +6,21 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CommentIcon from '@mui/icons-material/Comment';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import {
   FlexGrowDiv,
   UserAvatar,
 } from '@src/component/common/GlobalComponents.jsx';
-import { Button } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import LikeButton from '@src/component/board/LikeButton.jsx';
 import FeedDetailContent from '@src/component/board/feed/FeedDetailContent.jsx';
 import useClickLikeButton from '@src/component/board/feed/hooks/useClickLikeButton.jsx';
-import { NO_IMAGE_PATH } from '@src/component/const.js';
+import { NO_IMAGE_PATH } from '@src/utils/const.js';
+
 
 const ViewContentContainer = styled.div`
     margin: 30px 0;

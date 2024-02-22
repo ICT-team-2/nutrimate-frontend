@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
+import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 
 const useClickLikeButton = (boardId) => {
   //axios
@@ -16,7 +17,9 @@ const useClickLikeButton = (boardId) => {
   };
   //react-query
   return useMutation({
-    mutationKey: ['like', 'click'],
+    mutationKey: [REACT_QUERY_KEYS.LIKE,
+      REACT_QUERY_KEYS.INSERT,
+      REACT_QUERY_KEYS.DELETE],
     mutationFn: () => clickLikeButton(boardId),
   });
 };
