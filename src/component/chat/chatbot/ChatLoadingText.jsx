@@ -47,16 +47,17 @@ const BoxOverlay = styled.div`
 const Title = styled.div`
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: 10px;
     width: 100%;
     z-index: 1;
-    line-height: 100px;
     text-align: center;
     color: gray;
     text-transform: uppercase;
     font-size: 15px;
     text-indent: .3em;
 `;
+
+// line-height: 100px;
 
 
 const StyledImg = styled.img`

@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState,useRef,useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import Divider from '@mui/material/Divider';
 import MyTalkComponent from '@src/component/chat/MyTalkComponent.jsx';
 import ChatInput from '@src/component/chat/ChatInput.jsx';
 import OtherTalkComponent from '@src/component/chat/OtherTalkComponent.jsx';
-import { useRef, useEffect } from 'react';
 import ChatLoading from '@src/component/chat/chatbot/ChatLoading.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone,faVolumeXmark,faVolumeHigh} from '@fortawesome/free-solid-svg-icons';
 import ChatBotComponent from '@src/component/chat/chatbot/ChatBotComponent';
 import ChatLoadingText from '@src/component/chat/chatbot/ChatLoadingText';
 import { Tooltip, Typography, Stack, IconButton } from '@mui/material';
+import axios from 'axios';
 
 const ChatContainer = styled.div`
     width: 100%;
@@ -68,42 +68,178 @@ const AvatarWrapper = styled.div`
 
 
 
-
+let recognition;
 const ChatUI = (props) => {
-  const { title, overflow, height, data, onSend, nickname, loading, micicon,voice,loadingtext,voiceText } = props;
+  const { title, overflow, height, data, onSend, nickname, loading, micicon } = props;
+  
+  //stt
   const [voiceReading, setVoiceReading] = useState(false);
+  const [voicedata,setVoicedata]=useState([]);
+  const [isRecognizing, setIsRecognizing] = useState(false);
+  const [transcript, setTranscript] = useState('');
+  const [loadingtext, setLoadingtext]= useState('');
+  const [loadingVoice, setLoadingVoice]= useState('');
+  //stt
   //tts
   const [textReading, setTextReading] = useState(true);
   const [synthesisSupported, setSynthesisSupported] = useState(false);
   const [voices, setVoices] = useState([]);
-  const [selectedVoice, setSelectedVoice] = useState(null);
   const [utterance, setUtterance] = useState(new SpeechSynthesisUtterance());
   //tts
-
-
+  let prevStateLength = useRef(voicedata.length);
   const scrollRef = useRef();
   useEffect(() => {
+    //setVoicedata(data)
+    if(micicon){
+        setVoicedata(prevVoicedata => [...prevVoicedata, data[data.length-1]]);
+        prevStateLength.current = voicedata.length;
+    }else{
+      setVoicedata(data)
+    }
+  }, [data]);
+
+
+
+  useEffect(() => {
     stopSynthesis();
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+
+    // voicedata의 길이가 변할 때마다 실행됩니다.
+    if (!textReading && voicedata.length > prevStateLength.current) {
+      // voicedata의 길이가 증가하고, 마지막 메시지의 발송자가 '챗봇'인 경우에만 startSynthesis를 호출합니다.
+      if (voicedata[voicedata.length - 1].challengeNick === '챗봇') {
+        startSynthesis(voicedata[voicedata.length - 1].chatMessage);
+        prevStateLength.current = voicedata.length;
+      }
+    }
+
+  
+
+  }, [voicedata]);
+  useEffect(() => {
     // useEffect 훅 내부에서 스크롤 이동을 처리합니다.
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
       }
-  if(!textReading){
-    if(data[data.length-1].challengeNick === '챗봇'){
-          startSynthesis(data[data.length-1].chatMessage);
-    }
-          
-  }
+  }, [loadingtext]);
+  
 
-  }, [data,loadingtext]);
+  
+
   
   const Voice = () => {
      setVoiceReading(true);
+     
   };
+  //stt
+
+  const handleSend = (message) => {
+    setVoicedata(prevVoicedata => [...prevVoicedata, { 'chatMessage': message, 'challengeNick': '유저', 'messageType': 'CHAT' }]);
+    console.log(voicedata.length)
+    setLoadingVoice(true)
+    axios.post('http://localhost:2222/chatbot', { 'content': message })
+      .then(response => {
+        console.log(response.data);
+        const botChatData = { 'chatMessage': response.data.messages, 'challengeNick': '챗봇', 'messageType': 'CHAT' };
+        setVoicedata(prevVoicedata => [...prevVoicedata, botChatData]);
+        setLoadingVoice(false)
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        setLoadingVoice(false)
+      });
+  };
+  
+
+
+  useEffect(() => {
+    console.log(voiceReading);
+
+    if(voiceReading){
+      if(!('webkitSpeechRecognition' in window)){
+        setTranscript('당신의 브라우저는 STT를 지원하지 않습니다.');
+        setVoiceReading(false);
+       } else{//음성인식 지원하는 브라우저
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+            recognition.lang = 'ko-KR'; 
+            recognition.interimResults = true;            
+            
+            recognition.onspeechstart=()=>{//음성 인식 서비스에서 음성으로 인식하는 소리가 감지되면 실헹되는 이벤트
+                console.log('Recognition Start!')
+                
+            };  
+            
+
+            recognition.onspeechend = ()=> { //음성 인식 서비스에서 인식한 음성이 더 이상 감지되지 않으면 실행되는 이벤트
+                console.log('Recognition Stop!')
+                recognition.stop();
+                
+                setIsRecognizing(false);
+                setLoadingtext(false)
+                setVoiceReading(false);
+            };
+
+            recognition.onresult = function(event) { //음성 인식 서비스가 결과를 반환할 때 실행되는 이벤트
+              console.log('event.results:', event.results);
+              // 최종 결과를 저장할 변수를 초기화합니다.
+              let finalTranscript='';
+              
+
+              setTranscript(Array.from(event.results).map(results => results[0].transcript).join(""))
+              console.log(transcript);
+              // 결과를 반복하면서 최종 결과를 추출합니다.
+              for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                  finalTranscript = Array.from(event.results).map(results => results[0].transcript).join("");
+                  console.log('최종 텍스트:',finalTranscript);
+                }
+              }
+            
+              // 최종 결과를 서버로 전송합니다.
+              if (finalTranscript.trim() !== '') {
+                //console.log(chatDataTest)
+                console.log(finalTranscript)
+                handleSend(finalTranscript);
+                
+              }
+            }
+            
+            recognition.onerror = () => {
+              alert('음성인식에 실패했습니다. 다시 한 번 시도 해주세요.');
+              setVoiceReading(false);
+              setIsRecognizing(false)
+              setLoadingtext(false);
+            };
+          
+                if(isRecognizing){                      
+                  recognition.stop();
+                  setIsRecognizing(false)
+                  
+                  } 
+                  else {
+                      recognition.start();
+                      setTranscript('');
+                      setLoadingtext(true)
+                      setIsRecognizing(true)
+                  }
+
+            }
+          }
+
+  }, [voiceReading]);
+
+
+
+  //stt
+
+
 
   //tts
   useEffect(() => {
       // useEffect 훅 내부에서 스크롤 이동을 처리합니다.
+      console.log(voicedata.length)
     if ('speechSynthesis' in window ) {
       setSynthesisSupported(true);
       loadVoices();
@@ -149,9 +285,7 @@ const ChatUI = (props) => {
     }
   };
   
-  useEffect(() => {
-    setVoiceReading(voice);
-  }, [voiceReading]);
+
  
   
   const microphoneTooltipContent = '음성 인식';
@@ -164,13 +298,13 @@ const ChatUI = (props) => {
   <ChatContainer >
   <ChatHeader>
     
-  <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between"> {/* 왼쪽/오른쪽 정렬 */}
-        <Typography variant="h6">{title}</Typography> {/* Title 왼쪽에 위치 */}
+  <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
+        <Typography variant="h6">{title}</Typography> 
         <Stack direction="row" spacing={2}>
         {micicon && (
             <Tooltip title={readAloudTooltipContent}
             PopperProps={{
-              style: { zIndex: 20000 } // 툴팁의 z-index 값을 조정하여 ChatContainer 위에 나타나도록 함
+              style: { zIndex: 20000 } 
             }}   
             >
               <IconButton onClick={Reading}>
@@ -181,7 +315,7 @@ const ChatUI = (props) => {
           {micicon && (
             <Tooltip title={microphoneTooltipContent}
             PopperProps={{
-              style: { zIndex: 20000 } // 툴팁의 z-index 값을 조정하여 ChatContainer 위에 나타나도록 함
+              style: { zIndex: 20000 } 
             }}>
               <IconButton onClick={Voice}>
                 <FontAwesomeIcon icon={faMicrophone} style={{ fontSize: '24px', color: 'red' }} />
@@ -193,33 +327,33 @@ const ChatUI = (props) => {
   </ChatHeader>
   <Divider />
   <ChatBody ref={scrollRef} overflow={overflow + ''} height={height}>
-  
-      {
-        Array.isArray(data)
-          ? data.map((d, i) =>
-            d.messageType == 'CHAT' ?
+      
+        {voicedata.length > 0 ? 
+        Array.isArray(voicedata)
+          ? voicedata.map((d, i) =>
+            d && d.messageType == 'CHAT' ?
               d.challengeNick == nickname ?
                 <MyTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
                 : <OtherTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
-              : d.messageType == 'CHALLENGE' ?
+              :d && d.messageType == 'CHALLENGE' ?
                 <ChallengeSuccess key={i}> -- {d.chatMessage} --</ChallengeSuccess>
-                : <ChatOutAndEnter key={i}>{d.chatMessage}</ChatOutAndEnter>,
+                : d ? <ChatOutAndEnter key={i}>{d.chatMessage}</ChatOutAndEnter>
+                :(null) // 수정된 부분
           )
-          : d.messageType == 'CHAT' ?
-            d.challengeNick == nickname ?
+          : voicedata.messageType == 'CHAT' ?
+            voicedata.challengeNick == nickname ?
               <MyTalkComponent
-                content={d.chatMessage}
-                nick={d.challengeNick} />
+                content={voicedata.chatMessage}
+                nick={voicedata.challengeNick} />
               : <OtherTalkComponent
-                content={d.chatMessage} nick={d.challengeNick} />
-            : d.messageType == 'CHALLENGE' ?
-              <ChallengeSuccess> {d.chatMessage}</ChallengeSuccess>
-              : <ChatOutAndEnter>{d.chatMessage}</ChatOutAndEnter>
-  
-      }
-      {loading && <ChatLoading></ChatLoading>}
-      {loadingtext && <ChatLoadingText content={voiceText}></ChatLoadingText>}
-      {voiceReading && <ChatBotComponent voiceReading={voiceReading} />}
+                content={voicedata.chatMessage} nick={voicedata.challengeNick} />
+            : voicedata.messageType == 'CHALLENGE' ?
+              <ChallengeSuccess> {voicedata.chatMessage}</ChallengeSuccess>
+              : <ChatOutAndEnter>{voicedata.chatMessage}</ChatOutAndEnter>
+      :(null) // 수정된 부분
+}
+      {(loading || loadingVoice) && <ChatLoading></ChatLoading>}
+      {loadingtext && <ChatLoadingText content={transcript}></ChatLoadingText>}
   
     </ChatBody>
     <ChatInput onSend={onSend} />
