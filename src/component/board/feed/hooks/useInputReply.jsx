@@ -2,7 +2,7 @@ import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-const useInputReply = () => {
+const useInputReply = (boardId) => {
   const queryClient = useQueryClient();
 
   //axios
@@ -22,7 +22,7 @@ const useInputReply = () => {
     mutationFn: inputReply,
     onSuccess: () => {
       console.log('답글 입력 성공');
-      queryClient.invalidateQueries([REACT_QUERY_KEYS.COMMENTS]);
+      queryClient.invalidateQueries([REACT_QUERY_KEYS.COMMENTS, boardId]);
     },
     onError: (error) => {
 

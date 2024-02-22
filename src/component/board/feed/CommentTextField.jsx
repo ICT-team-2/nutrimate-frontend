@@ -32,8 +32,8 @@ const CommentTextField = (props) => {
   const [inputValue, setInputValue] = useState('');
   const { boardId } = props;
   const inputComment = useInputComment(boardId);
-  const editComment = useEditComment();
-  const inputReply = useInputReply();
+  const editComment = useEditComment(boardId);
+  const inputReply = useInputReply(boardId);
 
   const handleDelete = () => () => {
     setChipData([]);

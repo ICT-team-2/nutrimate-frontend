@@ -69,7 +69,8 @@ const FeedDetailContent = ({ data, open, setOpen }) => {
             </ImgContainer>
           </FlexGrowDiv>
           <FlexGrowDiv>
-            <FeedCommentList feedData={data} />
+            <FeedCommentList
+              feedData={data} />
           </FlexGrowDiv>
         </StyledBox>
       </OuterContainer>

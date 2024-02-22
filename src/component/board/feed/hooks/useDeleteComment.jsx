@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 import axios from 'axios';
 
-const useDeleteComment = (cmtId) => {
+const useDeleteComment = (cmtId, boardId) => {
   const queryClient = useQueryClient();
   //axios
   const deleteComment = async () => {
@@ -20,7 +20,7 @@ const useDeleteComment = (cmtId) => {
     mutationFn: deleteComment,
     onSuccess: () => {
       // console.log('댓글 삭제 성공');
-      queryClient.invalidateQueries([REACT_QUERY_KEYS.COMMENTS]);
+      queryClient.invalidateQueries([REACT_QUERY_KEYS.COMMENTS, boardId]);
     },
     onError: (error) => {
       console.error(error);

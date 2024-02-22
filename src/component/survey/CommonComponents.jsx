@@ -9,9 +9,8 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 export const SurveyContainer = styled.div`
     margin: auto;
     display: inline-block;
-
-
 `;
+
 export const SurveyFlexDiv = styled.div`
     display: flex;
     flex-direction: column;

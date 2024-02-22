@@ -50,19 +50,19 @@ const FeedCommentComponent = (props) => {
   } = props;
   const [replyChipData, setReplyChipData] = useAtom(replyChipDataAtom);
   const [commentEditData, setCommentEditData] = useAtom(commentEditDataAtom);
-  const deleteComment = useDeleteComment(cmtId);
-  
+  const deleteComment = useDeleteComment(cmtId, boardId);
+
   const isWriter = parseInt(sessionStorage.getItem('userId')) === writerId;
-  
+
   return (
     <CommentContainer $depth={cmtDepth}>
       <NicknameContainer>
         <UserAvatar userNick={writer} />
-        <NicknameTypo variant='subtitle2'>{writer}</NicknameTypo>
+        <NicknameTypo variant="subtitle2">{writer}</NicknameTypo>
         <FlexGrowDiv />
       </NicknameContainer>
       <BodyTypo
-        variant='body2'
+        variant="body2"
         dangerouslySetInnerHTML={{
           __html: isContent
             ? boardContent
@@ -95,7 +95,7 @@ const FeedCommentComponent = (props) => {
           }}
         >답글달기</ApliyButton>
         {isWriter && <Button
-          color='error'
+          color="error"
           onClick={() => {
             deleteComment.mutate();
           }}

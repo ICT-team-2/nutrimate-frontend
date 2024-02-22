@@ -3,7 +3,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 
 const useFetchFeedList = () => {
-  
+
   //axios
   const fetchFeedList = async ({ pageParam = 1 }) => {
     try {
@@ -20,9 +20,9 @@ const useFetchFeedList = () => {
       console.error(error);
     }
   };
-  
+
   return useInfiniteQuery({
-    queryKey: [REACT_QUERY_KEYS.BOARD, REACT_QUERY_KEYS.FEED],
+    queryKey: [REACT_QUERY_KEYS.BOARD, REACT_QUERY_KEYS.FEED, REACT_QUERY_KEYS.LIST],
     queryFn: fetchFeedList,
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage.nowPage >= lastPage.totalPages) {
@@ -31,7 +31,7 @@ const useFetchFeedList = () => {
       return lastPage.nowPage + 1;
     },
     initialPageParam: 1,
-    
+
   });
 };
 

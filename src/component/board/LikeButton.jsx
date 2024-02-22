@@ -3,6 +3,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { nanoid } from 'nanoid';
 
+
+const disabledColor = '#00000042';
+
 const GlobalStyle = createGlobalStyle({
   margin: 0,
   padding: 0,
@@ -12,10 +15,12 @@ const Label = styled.label`
 `;
 
 const Span = styled.span`
+    opacity: 0.8;
+    background-color: ${({ color }) => color};
+
     display: block;
     width: ${(prop) => prop.size / 20}rem;
     height: ${(prop) => prop.size / 20}rem;
-    background-color: transparent;
     border-radius: 50%;
     position: relative;
     right: ${(prop) => (prop.size * 65) / 600}rem;
@@ -47,11 +52,12 @@ const Svg = styled.svg`
 `;
 
 const Heart = styled.path`
-    stroke: ${(prop) => prop.color};
+    stroke: ${({ click, color }) => click === 'true' ? color : disabledColor};
     stroke-width: 40px;
     stroke-dasharray: 3000;
     stroke-dashoffset: 3000;
     stroke-linecap: round;
+    fill: ${({ click, color }) => click === 'true' ? color : disabledColor};
 `;
 
 const LikeContainer = styled(Label)`
@@ -80,22 +86,25 @@ const LikeContainer = styled(Label)`
  */
 
 const LikeButton = (props) => {
-  
+
   const {
     className, clicked, like, size,
     heartColor, onClick, viewCount,
   } = props;
-  
+
   const [click, setClick] = useState(clicked);
   const [likeCount, setLikeCount] = useState(like);
-  
+
   const heart = useRef();
   const svg = useRef();
   const span = useRef();
-  const disabledColor = '#00000042';
   const [disabled, setDisabled] = useState(false);
   const checkboxId = nanoid();
-  
+
+  useEffect(() => {
+    setClick(clicked);
+  }, [clicked]);
+
   const animateHeart = () => {
     heart.current.animate(
       [
@@ -113,7 +122,7 @@ const LikeButton = (props) => {
       },
     );
   };
-  
+
   const animateBeats = () => {
     svg.current.animate(
       [
@@ -129,7 +138,7 @@ const LikeButton = (props) => {
       },
     );
   };
-  
+
   const animateBlinks = () => {
     span.current.animate(
       [
@@ -149,42 +158,32 @@ const LikeButton = (props) => {
       },
     );
   };
-  
+
   const clickLikeCount = () => {
     if (!click) {
       setClick(true);
       setLikeCount(likeCount + 1);
-      
-      span.current.style.transform = 'translate(-50%, -50%) scale(0)';
-      span.current.style.opacity = '0.8';
-      span.current.style.backgroundColor = heartColor;
-      heart.current.style.fill = heartColor;
-      heart.current.style.stroke = heartColor;
-      
       setDisabled(true);
       // 1.1초 후에 버튼을 다시 활성화합니다.
       setTimeout(function() {
         setDisabled(false);
-        
+
       }, 1100); // 1.1초 후
-      
+
       animateHeart();
       animateBeats();
       animateBlinks();
     } else {
       setClick(false);
       setLikeCount(likeCount - 1);
-      heart.current.style.fill = disabledColor;
-      heart.current.style.strokeDashoffset = '3000';
-      heart.current.style.stroke = disabledColor;
     }
     onClick();
   };
-  
+
   useEffect(() => {
-  
-  }, []);
-  
+
+  }, [click]);
+
   return (
     <>
       <GlobalStyle />
@@ -194,7 +193,7 @@ const LikeButton = (props) => {
         $viewcount={viewCount + ''}
       >
         <input
-          type='checkbox'
+          type="checkbox"
           id={checkboxId}
           hidden
           onClick={clickLikeCount}
@@ -202,20 +201,23 @@ const LikeButton = (props) => {
         />
         <Svg
           ref={svg}
-          $t='1689815540548'
-          className='icon '
-          viewBox='0 0 1024 1024'
-          xmlns='http://www.w3.org/2000/svg'
-          $p-id='2271'
+          $t="1689815540548"
+          className="icon "
+          viewBox="0 0 1024 1024"
+          xmlns="http://www.w3.org/2000/svg"
+          $p-id="2271"
           size={size}
+          click={click + ''}
+          color={heartColor}
         >
           <Heart
-            d='M742.4 101.12A249.6 249.6 0 0 0 512 256a249.6 249.6 0 0 0-230.72-154.88C143.68 101.12 32 238.4 32 376.32c0 301.44 416 546.56 480 546.56s480-245.12 480-546.56c0-137.92-111.68-275.2-249.6-275.2z'
-            fill={click ? heartColor : disabledColor}
-            $p-id='2272'
-            id='heart'
+            d="M742.4 101.12A249.6 249.6 0 0 0 512 256a249.6 249.6 0 0 0-230.72-154.88C143.68 101.12 32 238.4 32 376.32c0 301.44 416 546.56 480 546.56s480-245.12 480-546.56c0-137.92-111.68-275.2-249.6-275.2z"
+            fill={click + '' ? heartColor : disabledColor}
+            $p-id="2272"
+            id="heart"
             ref={heart}
             color={heartColor}
+            click={click + ''}
           ></Heart>
         </Svg>
         <Span ref={span} size={size} color={heartColor}></Span>

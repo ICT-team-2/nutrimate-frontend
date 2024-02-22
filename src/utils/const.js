@@ -216,4 +216,6 @@ export const REACT_QUERY_KEYS = {
   LIKE: 'like',
   FEED: 'feed',
   LIST: 'list',
+  DETAIL: 'detail',
+  BOOKMARK: 'bookmark',
 };

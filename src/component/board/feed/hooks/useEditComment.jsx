@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 
-const useEditComment = () => {
+const useEditComment = (boardId) => {
 
   const queryClient = useQueryClient();
 
@@ -19,7 +19,7 @@ const useEditComment = () => {
     mutationKey: [REACT_QUERY_KEYS.COMMENTS, REACT_QUERY_KEYS.UPDATE],
     mutationFn: editComment,
     onSuccess: () => {
-      queryClient.invalidateQueries([REACT_QUERY_KEYS.COMMENTS]);
+      queryClient.invalidateQueries([REACT_QUERY_KEYS.COMMENTS, boardId]);
     },
     onError: (error) => {
       console.error(error);

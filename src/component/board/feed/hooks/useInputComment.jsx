@@ -32,7 +32,7 @@ const useInputComment = (boardId) => {
     mutationFn: inputComment,
     mutationKey: [REACT_QUERY_KEYS.COMMENTS, REACT_QUERY_KEYS.INSERT],
     onSuccess: () => {
-      queryClient.invalidateQueries([REACT_QUERY_KEYS.COMMENTS])
+      queryClient.invalidateQueries([REACT_QUERY_KEYS.COMMENTS, boardId])
         .then(() => {
           //스크롤 이동 - 댓글 입력 후 맨 아래로 이동
           cmtListRef.scrollTo(0, cmtListRef.scrollHeight);

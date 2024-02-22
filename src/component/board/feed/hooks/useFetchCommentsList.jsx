@@ -16,7 +16,8 @@ const useFetchCommentsList = (boardId) => {
   return useQuery({
     queryKey: [REACT_QUERY_KEYS.BOARD,
       REACT_QUERY_KEYS.COMMENTS,
-      REACT_QUERY_KEYS.LIST],
+      REACT_QUERY_KEYS.LIST,
+      boardId],
     queryFn: fetchCommentsList,
   });
 };

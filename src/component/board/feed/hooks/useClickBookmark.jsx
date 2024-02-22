@@ -1,13 +1,15 @@
-import axios from 'axios';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
-const useClickLikeButton = (boardId) => {
+const useClickBookmark = (boardId) => {
+
   const queryClient = useQueryClient();
+
   //axios
-  const clickLikeButton = async (boardId) => {
+  const clickBookmark = async () => {
     try {
-      const response = await axios.post('/board/feed/like/push', {
+      const response = await axios.post('/board/feed/bookmark/push', {
         boardId: boardId,
         userId: sessionStorage.getItem('userId'),
       });
@@ -18,12 +20,12 @@ const useClickLikeButton = (boardId) => {
   };
   //react-query
   return useMutation({
-    mutationKey: [REACT_QUERY_KEYS.LIKE,
+    mutationKey: [REACT_QUERY_KEYS.BOOKMARK,
       REACT_QUERY_KEYS.INSERT,
       REACT_QUERY_KEYS.DELETE],
-    mutationFn: () => clickLikeButton(boardId),
+    mutationFn: clickBookmark,
     onSuccess: () => {
-      console.log('좋아요 성공');
+      console.log('북마크 성공');
       queryClient.invalidateQueries([REACT_QUERY_KEYS.BOARD, boardId]);
     },
     onError: (error) => {
@@ -32,4 +34,4 @@ const useClickLikeButton = (boardId) => {
   });
 };
 
-export default useClickLikeButton;
+export default useClickBookmark;
