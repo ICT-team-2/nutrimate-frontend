@@ -14,9 +14,9 @@ import CommentIcon from '@mui/icons-material/Comment';
 import LikeButton from '@src/component/board/LikeButton.jsx';
 import { Button, TextField } from '@mui/material';
 import useClickLikeButton
-  from '@src/component/board/feed/hooks/useClickLikeButton.jsx';
+  from '@src/component/board/hooks/useClickLikeButton.jsx';
 import useFetchCommentsList
-  from '@src/component/board/feed/hooks/useFetchCommentsList.jsx';
+  from '@src/component/board/hooks/useFetchCommentsList.jsx';
 import CommentTextField from '@src/component/board/feed/CommentTextField.jsx';
 import { atom, useAtom } from 'jotai';
 import {
@@ -28,7 +28,7 @@ import { useSetAtom } from 'jotai/react';
 import { INIT_EDIT_COMMENT_STATE } from '@src/component/board/const.js';
 import BookmarkButton from '@src/component/board/BookmarkButton.jsx';
 import useFetchFeedDetail from '@src/component/board/feed/hooks/useFetchFeedDetail.jsx';
-import useClickBookmark from '@src/component/board/feed/hooks/useClickBookmark.jsx';
+import useClickBookmark from '@src/component/board/hooks/useClickBookmark.jsx';
 
 const CONTAINER_MAX_HEIGHT = 'calc(100vh - 100px)';
 const COMMENT_LIST_MAX_HEIGHT = 'calc(200% - 120px)';

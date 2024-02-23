@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import FeedViewContent from '@src/component/board/feed/FeedViewContent.jsx';
 import styled from 'styled-components';
 import { CustomSearchInput, FlexDiv, FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
-import useFetchFeedList from '@src/component/board/feed/hooks/useFetchFeedList.jsx';
+import useFetchFeedList from '@src/component/board/feed/hooks/useFetchFeedList';
 import useIntersectionObserver from '@src/hooks/useIntersectionObserver.jsx';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
 
@@ -32,8 +32,8 @@ const ObserveDiv = styled.div`
  * @return {JSX.Element} 피드 뷰 컴포넌트
  */
 const FeedView = () => {
-  const [searchValue, setSearchValue] = React.useState('');
-  const { data, fetchNextPage, hasNextPage, isLoading } = useFetchFeedList();
+  const [searchValue, setSearchValue] = useState('');
+  const { data, fetchNextPage, hasNextPage, isLoading } = useFetchFeedList(searchValue);
   const [observe, unobserve] = useIntersectionObserver(
     () => fetchNextPage(),
     1);
@@ -57,12 +57,6 @@ const FeedView = () => {
     };
   }, [isLoading]);
 
-  // useEffect(() => {
-  //   console.log(data);
-  //   console.log('hasNextPage', hasNextPage);
-  // }, [data]);
-
-  if (isLoading) return <LoadingComponent />;
 
   return (
     <ViewContainer>
@@ -81,13 +75,16 @@ const FeedView = () => {
             onClick={gotoWrite}
           >글 작성</StyledButton>
         </FlexDiv>
-        {data && data.pages.map((feedPages, index) => {
-          if (feedPages.feedList != null && feedPages.feedList.length > 0)
-            return (
-              feedPages.feedList.map((feed, index) => (
-                <FeedViewContent key={feed.boardId} {...feed} />
-              )));
-        })}
+
+
+        {isLoading ? <LoadingComponent /> :
+          data && data.pages.map((feedPages, index) => {
+            if (feedPages.feedList != null && feedPages.feedList.length > 0)
+              return (
+                feedPages.feedList.map((feed, index) => (
+                  <FeedViewContent key={feed.boardId} {...feed} />
+                )));
+          })}
       </StyledWidthDiv>
       {hasNextPage && <ObserveDiv ref={observerRef} />}
     </ViewContainer>

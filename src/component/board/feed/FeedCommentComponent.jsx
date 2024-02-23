@@ -14,7 +14,7 @@ import {
 } from '@src/component/board/atom.js';
 import { COMMENT_TYPE } from '@src/component/board/const.js';
 import useDeleteComment
-  from '@src/component/board/feed/hooks/useDeleteComment.jsx';
+  from '@src/component/board/hooks/useDeleteComment.jsx';
 
 const CommentContainer = styled.div`
     display: flex;

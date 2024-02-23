@@ -18,10 +18,12 @@ import Tooltip from '@mui/material/Tooltip';
 import LikeButton from '@src/component/board/LikeButton.jsx';
 import FeedDetailContent from '@src/component/board/feed/FeedDetailContent.jsx';
 import useClickLikeButton
-  from '@src/component/board/feed/hooks/useClickLikeButton.jsx';
+  from '@src/component/board/hooks/useClickLikeButton.jsx';
 import { NO_IMAGE_PATH } from '@src/utils/const.js';
 import BookmarkButton from '@src/component/board/BookmarkButton.jsx';
-import useClickBookmark from '@src/component/board/feed/hooks/useClickBookmark.jsx';
+import useClickBookmark from '@src/component/board/hooks/useClickBookmark.jsx';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import FeedContentDropMenu from '@src/component/board/feed/FeedContentDropMenu.jsx';
 
 const ViewContentContainer = styled.div`
     margin: 30px 0;
@@ -64,10 +66,12 @@ function FeedViewContent(props) {
   const {
     boardContent, boardId, boardThumbnail,
     checkedLike, likeCount, userNick: writer, checkedBookmark,
+    userId: writerId,
   } = props;
   const [likeClicked, setLikeClicked] = useState(checkedLike === 1);
   const clickLikeButton = useClickLikeButton(boardId);
   const clickBookmark = useClickBookmark(boardId);
+  const userId = parseInt(sessionStorage.getItem('userId'));
 
   const onClickLike = () => {
     clickLikeButton.mutate();
@@ -93,6 +97,9 @@ function FeedViewContent(props) {
                 sx={{ bgcolor: red[500] }} aria-label="recipe">
                 {writer}
               </UserAvatar>
+            }
+            action={
+              (writerId === userId) && <FeedContentDropMenu boardId={boardId} />
             }
             title={writer}
           />
