@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -7,8 +7,11 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import { Container } from '@mui/material';
 import CalendarToolbar from '@src/component/calendar/CalendarToolbar.jsx';
+import ListTable from '@src/component/calendar/ListTable.jsx';
 import DayHeader from '@src/component/calendar/DayHeader.jsx';
-
+import { Button } from '@mui/material';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'; 
+import ListAltIcon from '@mui/icons-material/ListAlt'; 
 const CALENDAR_BOARDER_RADIUS = '10px';
 
 moment.locale('ko');
@@ -22,11 +25,12 @@ const GlobalStyle = createGlobalStyle`
 
 const StyledCalendar = styled(Calendar)`
     &.rbc-calendar {
+        width: 100%;
+        height: 80%;
         background-color: white;
         padding: 20px;
         border-radius: ${CALENDAR_BOARDER_RADIUS};
         border-color: ${(theme) => theme.theme['border-color-light']};
-
     }
 
     & .rbc-header {
@@ -91,10 +95,116 @@ const events = [
 ];
 
 const CalendarComponent = (props) => {
+
+  const [isClickCalendar, setIsClickCalendar] = useState(true);
+  const [isClickList, setIsClickList] = useState(false);
+
+  const data = [
+    {
+      'date': 'January 3, 2033',
+      'week': 'Tuesday',
+      'time': '11:00am',
+      'work': 'Meeting'
+    },
+    {
+      'date': 'January 3, 2033',
+      'week': 'Tuesday',
+      'time': '11:00am',
+      'work': 'Study'
+    },
+    {
+      'date': 'January 3, 2033',
+      'week': 'Tuesday',
+      'time': '11:00am',
+      'work': 'Work'
+    },
+    {
+      'date': 'January 12, 2033',
+      'week': 'Monday',
+      'time': '11:00am',
+      'work': 'Study'
+    },
+    {
+      'date': 'January 8, 2033',
+      'week': 'Sunday',
+      'time': '11:00am',
+      'work': 'work'
+    },
+    {
+      'date': 'January 8, 2033',
+      'week': 'Sunday',
+      'time': '11:00am',
+      'work': 'work'
+    },
+    {
+      'date': 'January 8, 2033',
+      'week': 'Sunday',
+      'time': '11:00am',
+      'work': 'work'
+    },
+    {
+      'date': 'January 8, 2033',
+      'week': 'Sunday',
+      'time': '11:00am',
+      'work': 'work'
+    },
+    {
+      'date': 'January 8, 2033',
+      'week': 'Sunday',
+      'time': '11:00am',
+      'work': 'work'
+    },
+    {
+      'date': 'January 8, 2033',
+      'week': 'Sunday',
+      'time': '11:00am',
+      'work': 'work'
+    },
+    {
+      'date': 'January 8, 2033',
+      'week': 'Sunday',
+      'time': '11:00am',
+      'work': 'work'
+    },
+    {
+      'date': 'January 8, 2033',
+      'week': 'Sunday',
+      'time': '11:00am',
+      'work': 'work'
+    },
+    {
+      'date': 'January 8, 2033',
+      'week': 'Sunday',
+      'time': '11:00am',
+      'work': 'work'
+    }
+    
+  ];
+
+  const callendar = () => {
+    setIsClickCalendar(true)
+    setIsClickList(false)
+  };
+
+  const list = () => {
+    setIsClickCalendar(false)
+    setIsClickList(true)
+  };
+  
+  
   
   return (
     <CalendarContainer>
       <GlobalStyle />
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <Button style={{ padding: '8px',boxShadow: isClickCalendar ? '0px 4px 8px rgba(0, 0, 0, 0.2)' : 'none',backgroundColor: isClickCalendar ? '#007500' : ''}} onClick={callendar}>
+          <CalendarMonthIcon style={{ fontSize: '32px', color: isClickCalendar ? 'white' : ''} }  />
+      </Button>
+      <Button onClick={list} style={{ padding: '8px',boxShadow: isClickList ? '0px 4px 8px rgba(0, 0, 0, 0.2)' : 'none',backgroundColor: isClickList ? '#007500' : '' }}  >
+        <ListAltIcon style={{ fontSize: '32px', color: isClickList  ? 'white' : '' }} />
+      </Button>
+      </div>
+      {isClickCalendar &&
       <StyledCalendar
         localizer={localizer}
         events={events}
@@ -124,7 +234,14 @@ const CalendarComponent = (props) => {
           alert(`Drilled down on ${date.toLocaleString()}`);
         }}
       />
+      }
+
+       {isClickList && 
+          <ListTable data = {data}></ListTable>}
+
+
     </CalendarContainer>
+    
   );
 };
 
