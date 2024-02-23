@@ -48,7 +48,7 @@ const StyledTitleTypography = styled(Typography)`
     margin-bottom: 20px;
 `;
 const StyledSubTitleTypography = styled(Typography)`
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color: ${({ theme }) => theme['extra-light-text']};
 `;
 
@@ -64,13 +64,13 @@ const SurveyEndLogin = () => {
               variant='h4'>식습관 검사 완료!</StyledTitleTypography>
             <StyledSubTitleTypography
               variant='h6'>로그인을 하시면 맞춤화 된 정보로 나의 식단을 분석 할 수 있습니다. <br/> NutriMate와 함께 새로워진 일상을 만나보세요.<br/><br/></StyledSubTitleTypography>
-            <Button
+            {/* <Button
               variant='contained' color='inherit' size='Large'
               onClick={() => {
                 navigate(LINKS.LOGIN);
               }}>
               <Typography variant='h8'>로그인하러가기</Typography>
-            </Button>
+            </Button> */}
             <Button
               variant='contained' color='primary' size='Large'
               onClick={() => {

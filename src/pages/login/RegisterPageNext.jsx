@@ -17,6 +17,8 @@ import NameProfileComponent
   from '@src/component/setting/userinfo/NameProfileComponent.jsx';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const';
+import axios from 'axios'; 
+
 
 const LoginContainer = styled(Container)`
     display: flex;
@@ -36,7 +38,7 @@ const LoginBody = styled.div`
 `;
 const LoginPaper = styled(Paper)`
     width: 40%;
-    height: 70vh; // add this line
+    height: 80vh; // add this line
     overflow-y: auto; // add this line
     // background-color: ${({ theme }) => theme['main-background']};
     // margin: auto;
@@ -108,15 +110,60 @@ const FileInput = styled.input`
 const RegisterPageNext = () => {
   
   const [nickname, setNickname] = useState('');
-  const [profilePicture, setProfilePicture] = useState('');
   const navigate = useNavigate();
-  const history = useNavigate();
-  
-  // 프로필 이미지 업로드 핸들러
-  const handleProfilePictureUpload = (e) => {
-    const file = e.target.files[0];
-    setProfilePicture(file);
+
+  const handleRegister = async () => {
+    if (nickname === '') {
+      alert('닉네임을 입력해주세요');
+      return;
+    }
+
+    // 닉네임 중복 확인 요청 보내기
+  try {
+    const response = await axios.post('/member/checkNick',{userNick: nickname});
+    
+    // 중복된 닉네임이 있는 경우
+    if (response.data.exists) {
+      alert('이미 사용 중인 닉네임입니다.');
+      return;
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('닉네임 중복 확인에 실패하였습니다.');
+    return;
+  }
+
+    // sessionStorage에서 userData, surveyData 가져오기
+    const userData = JSON.parse(sessionStorage.getItem('userData'));
+    const surveyData = JSON.parse(sessionStorage.getItem('surveyData'));
+
+    // 서버에 보낼 데이터 객체 생성
+    const postData = {
+      userNick: nickname,
+      ...userData,
+      ...surveyData
+    };
+    console.log('postData:', postData);
+
+    try {
+      // 서버에 POST 요청 보내기
+      const response = await axios.post('http://localhost:9999/member/join', postData);
+
+      console.log('response:', response);
+
+      if (response.status === 200) {
+        navigate(LINKS.LOGIN);
+        alert("회원가입되었습니다.");
+      } else {
+        alert('회원가입에 실패하였습니다.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('회원가입에 실패하였습니다.');
+    }
   };
+  
+
   
   return (
     <LoginContainer>
@@ -132,14 +179,7 @@ const RegisterPageNext = () => {
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
           />
-          <StyledButton variant='contained' onClick={() => {
-            if (nickname === '') {
-              alert('닉네임을 입력해주세요');
-              return;
-            }
-              navigate(LINKS.LOGIN);
-              alert("회원가입되었습니다.");
-            }}>완료</StyledButton>
+          <StyledButton variant='contained' onClick={handleRegister}>완료</StyledButton>
         </LoginBody>
       </LoginPaper>
     </LoginContainer>

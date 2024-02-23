@@ -104,28 +104,7 @@ const LoginPage = () => {
         window.location.href = '/';
       });
   };
-  //axios.defaults.headers.common['ACCESS'] = `${accessToken}`;
 
-
-  //   console.log(response.data); // 서버로부터의 응답을 확인
-
-//       if (response.data.sub) {
-//         // alert('로그인 성공');
-//         //window.localStorage.setItem('accessToken', JSON.stringify(accessToken));
-//         //userIdAtom.set(sub);
-//         //setData(response.data.sub);
-//         window.sessionStorage.setItem('userId', JSON.stringify(response.data.sub));
-//         setUserId(response.data.sub);
-//         console.log('찍히니');
-//         window.location.href = '/';
-//       } else {
-//         alert('로그인 실패');
-//       }
-//     })
-//     .catch(error => {
-//       console.error('Error:', error);
-  // });
-//  };
 
   const handleSocialLogin = (provider) => {
     window.location.href = `http://localhost:9999/oauth2/authorization/${provider}`;
@@ -136,47 +115,24 @@ const LoginPage = () => {
     window.sessionStorage.setItem('signup_status', status);
   };
 
-  // window.onload = function() {
-  //   const params = new URLSearchParams(window.location.search);
-  //   const userId = params.get('userId');
-
-  //   if (userId) {
-  //     window.sessionStorage.setItem('userId', userId);
-  //   }
-  // };
-
-  // // 구글 로그인 처리 함수
-  // const handleGoogleLogin = () => {
-  //   window.location.href = "http://localhost:9999/oauth2/authorization/google";
-  //   console.log(response.data);
-  // };
-
-  // // 페이스북 로그인 처리 함수
-  // const handleFacebookLogin = () => {
-  //   window.location.href = "http://localhost:9999/oauth2/authorization/facebook";
-  // };
-
-  // // 네이버 로그인 처리 함수
-  // const handleNaverLogin = () => {
-  //   window.location.href = "http://localhost:9999/oauth2/authorization/naver";
-  // };
-
-  // // 카카오 로그인 처리 함수
-  // const handleKakaoLogin = () => {
-  //   window.location.href = "http://localhost:9999/oauth2/authorization/kakao";
-  // };
-
   // 아이디 저장 체크박스의 상태가 변경되었을 때 실행되는 useEffect
   useEffect(() => {
     // 아이디 저장 체크박스가 체크된 상태라면 아이디를 로컬 스토리지에 저장합니다.
-    if (checked) {
+    if (checked && savedId) {
+      setId(savedId);
+    }
+  }, [checked]);
+
+  const handleCheckboxChange = (event) => {
+    if (event.target.checked) {
+      // 체크박스가 체크될 때 로컬 스토리지에 아이디를 저장합니다.
       localStorage.setItem('savedId', id);
+    } else {
+      // 체크박스가 체크 해제될 때는 이벤트를 무시하고 체크 상태를 유지합니다.
+      event.preventDefault();
+      setChecked(true);
     }
-    // 아이디 저장 체크박스가 체크 해제된 상태라면 로컬 스토리지의 아이디를 삭제합니다.
-    else {
-      localStorage.removeItem('savedId');
-    }
-  }, [checked, id]);
+  };
 
 
   //todo 로깅용 - 나중에 지울것
@@ -204,7 +160,7 @@ const LoginPage = () => {
             <FormControlLabel control={
               <Checkbox
                 value={checked}
-                onChange={() => setChecked(!checked)} />} label="아이디 저장" />
+                onChange={handleCheckboxChange} />} label="아이디 저장" />
             <FlexGrowDiv />
           </AdditionalContainer>
           <LoginButton
@@ -240,7 +196,7 @@ const LoginPage = () => {
           </OAuthButton>
         </OAuthContainer>
         <RegisterLinkContainer>
-          Don`t have an account? <RegisterLink href={LINKS.REGISTER}>Sign up</RegisterLink>
+          Don`t have an account? <Link to={LINKS.SURVEY}>Sign up</Link>
         </RegisterLinkContainer>
       </LoginPaper>
     </LoginContainer>
