@@ -11,9 +11,9 @@ export const RECOMMAND_MENU = {
 };
 
 export const NEWS_CATEGORY = {
-  FOOD: 'food',
-  SPORT: 'sport',
-  NUTRIENTS: 'nutrients',
+  FOOD: '식습관',
+  SPORT: '운동습관',
+  ALLERGY: '알레르기',
 };
 
 export const NUTRIENTS_GENDER_CATEGORY = {

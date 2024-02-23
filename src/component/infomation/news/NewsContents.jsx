@@ -13,7 +13,6 @@ import { searchKeywordAtom, selectedNewsCategoryAtom } from '@src/component/info
 import { NEWS_CATEGORY } from '@src/component/infomation/const.js';
 import useFetchNews from '@src/component/infomation/hooks/useFetchNews.jsx';
 
-
 const StyledButton = styled(Button)`
     margin-right: 10px;
 `;
@@ -21,7 +20,7 @@ const StyledButton = styled(Button)`
 const pageItemNumber = 16;
 
 const NewsContents = () => {
-  const [category, setCategory] = useAtom(selectedNewsCategoryAtom);
+  const [category, setCategory] = useState(NEWS_CATEGORY.FOOD);
   const { data } = useFetchNews();// news 데이터 가져오기
   const [page, setPage] = useState(1);
   const [searchKeyword, setSearchKeyword] = useAtom(searchKeywordAtom);
@@ -30,14 +29,16 @@ const NewsContents = () => {
 
   useEffect(() => {
     if (data === undefined) return;
-    if (searchKeyword.trim() === '') {
-      setDataSearched(data);
-    } else {
-      setDataSearched(data.filter((item) =>
-        item.title.toLowerCase().includes(searchKeyword.toLowerCase())
-        || item.content.toLowerCase().includes(searchKeyword.toLowerCase())));
-    }
-  }, [searchKeyword, data]);
+    setDataSearched(
+      data.filter((d) => {
+        if (category === NEWS_CATEGORY.ALL) return true;
+        return d.keyword === category;
+      }).filter((d) => {
+        if (searchKeyword.trim() === '') return true;
+        return (d.title.toLowerCase().includes(searchKeyword.toLowerCase()) || d.content?.toLowerCase().includes(searchKeyword.toLowerCase()));
+      }));
+  }, [data, category, searchKeyword]);
+
 
   useEffect(() => {
     setTotalPage(Math.ceil((dataSearched?.length ?? pageItemNumber) / pageItemNumber));
@@ -53,24 +54,22 @@ const NewsContents = () => {
     <>
       <InfoContentContainer>
         <CategoryButtonContainer>
-          <StyledButton
-            variant={category === NEWS_CATEGORY.FOOD ? 'contained' : 'outlined'}
-            onClick={() => {
-              setCategory(NEWS_CATEGORY.FOOD);
-            }}
-          >식단</StyledButton>
-          {/*<StyledButton*/}
-          {/*  variant={category === NEWS_CATEGORY.SPORT ? 'contained' : 'outlined'}*/}
-          {/*  onClick={() => {*/}
-          {/*    setCategory(NEWS_CATEGORY.SPORT);*/}
-          {/*  }}*/}
-          {/*>운동</StyledButton>*/}
-          {/*<StyledButton*/}
-          {/*  variant={category === NEWS_CATEGORY.NUTRIENTS ? 'contained' : 'outlined'}*/}
-          {/*  onClick={() => {*/}
-          {/*    setCategory(NEWS_CATEGORY.NUTRIENTS);*/}
-          {/*  }}*/}
-          {/*>영양제</StyledButton>*/}
+        {Object.values(NEWS_CATEGORY).map((value) => {
+    // 원하는 값으로 수정
+        const modifiedValue = value === NEWS_CATEGORY.FOOD ? '식단' : value === NEWS_CATEGORY.SPORT ? '운동' : '알레르기';
+
+          return (
+            <StyledButton
+              variant={value === category ? 'contained' : 'outlined'}
+              onClick={() => {
+                setCategory(value);
+              }}
+              key={value}
+            >
+              {modifiedValue}
+            </StyledButton>
+          );
+        })}
         </CategoryButtonContainer>
         <Grid container spacing={3}>
           {
@@ -81,7 +80,7 @@ const NewsContents = () => {
                     <NewsCard
                       title={d.title}
                       content={d.content}
-                      img={d.imglink}
+                      img={d.imglink ===null ? "/src/asset/image/NoImage.png" :d.imglink}
                       url={d.newslink}
                     />
                   </Grid>
