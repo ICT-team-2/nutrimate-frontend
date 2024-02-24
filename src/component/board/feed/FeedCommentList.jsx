@@ -1,17 +1,34 @@
-import React, { useEffect, useRef } from 'react';
-import { FlexGrowDiv, UserAvatar } from '@src/component/common/GlobalComponents.jsx';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  FlexGrowDiv,
+  UserAvatar,
+} from '@src/component/common/GlobalComponents.jsx';
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import FeedCommentComponent from '@src/component/board/feed/FeedCommentComponent.jsx';
+import FeedCommentComponent
+  from '@src/component/board/feed/FeedCommentComponent.jsx';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
-import CommentIcon from '@mui/icons-material/Comment.js';
+import CommentIcon from '@mui/icons-material/Comment';
 import LikeButton from '@src/component/board/LikeButton.jsx';
-import BookmarkIcon from '@mui/icons-material/Bookmark.js';
 import { Button, TextField } from '@mui/material';
-import useClickLikeButton from '@src/component/board/feed/hooks/useClickLikeButton.jsx';
-import useFetchCommentsList from '@src/component/board/feed/hooks/useFetchCommentsList.jsx';
+import useClickLikeButton
+  from '@src/component/board/hooks/useClickLikeButton.jsx';
+import useFetchCommentsList
+  from '@src/component/board/hooks/useFetchCommentsList.jsx';
+import CommentTextField from '@src/component/board/feed/CommentTextField.jsx';
+import { atom, useAtom } from 'jotai';
+import {
+  commentEditDataAtom,
+  commentListRefAtom,
+  replyChipDataAtom,
+} from '@src/component/board/atom.js';
+import { useSetAtom } from 'jotai/react';
+import { INIT_EDIT_COMMENT_STATE } from '@src/component/board/const.js';
+import BookmarkButton from '@src/component/board/BookmarkButton.jsx';
+import useFetchFeedDetail from '@src/component/board/feed/hooks/useFetchFeedDetail.jsx';
+import useClickBookmark from '@src/component/board/hooks/useClickBookmark.jsx';
 
 const CONTAINER_MAX_HEIGHT = 'calc(100vh - 100px)';
 const COMMENT_LIST_MAX_HEIGHT = 'calc(200% - 120px)';
@@ -28,7 +45,7 @@ const FeedCommentInnerContainer = styled.div`
 
 `;
 const FeedCommentOuterContainer = styled.div`
-    width: 100%;
+    width: 500px;
 
 `;
 
@@ -51,7 +68,6 @@ const FeedCommentBody = styled.div`
     transform: translate3d(0, 0, 0);
 `;
 
-
 const LikeButtonContainer = styled.div`
     position: relative;
     left: 13px;
@@ -71,12 +87,11 @@ const LikeViewContainer = styled.div`
     position: relative;
     bottom: 5px;
 `;
-const CommentTextField = styled(TextField)`
-    width: calc(100% - 100px);
-`;
+
 const LikeTypography = styled(Typography)`
     font-weight: bold;
 `;
+
 
 const FeedCommentList = (props) => {
   const { feedData } = props;
@@ -85,15 +100,28 @@ const FeedCommentList = (props) => {
     checkedLike, likeCount, userNick: writer,
   } = feedData;
   const commentInputRef = useRef(null);
+  const commentListRef = useRef(null);
+
+  const [cmtListRef, setCmtListRef] = useAtom(commentListRefAtom);
+  const setEditCommentData = useSetAtom(commentEditDataAtom);
+  const setReplyChipData = useSetAtom(replyChipDataAtom);
+
   const clickLikeButton = useClickLikeButton(boardId);
-  const { data: cmtData, isLoading, isError } = useFetchCommentsList(boardId);
+  const clickBookmark = useClickBookmark(boardId);
+  const { data: detailData, isLoading: detailLoading } = useFetchFeedDetail(boardId);
+  const { data: cmtData } = useFetchCommentsList(boardId);
+
   const onClickLike = () => {
     clickLikeButton.mutate();
   };
-  useEffect(() => {
-    console.log(cmtData);
-  }, [cmtData]);
 
+  const onClickBookmark = () => {
+    clickBookmark.mutate();
+  };
+
+  useEffect(() => {
+    setCmtListRef(commentListRef.current);
+  }, [commentListRef.current]);
 
   return (
     <FeedCommentOuterContainer>
@@ -103,7 +131,7 @@ const FeedCommentList = (props) => {
           <NicknameTypo variant="subtitle2">{writer}</NicknameTypo>
         </FeedCommentHeader>
         <Divider />
-        <FeedCommentBody>
+        <FeedCommentBody ref={commentListRef}>
           {/*처음은 본문 표시*/}
           <FeedCommentComponent
             cmtDepth={0}
@@ -111,19 +139,7 @@ const FeedCommentList = (props) => {
             isContent={true}
             {...feedData}
           />
-          {cmtData && cmtData.length > 0 && cmtData.map((cmt) => {
-            return (
-              <FeedCommentComponent
-                key={cmt.cmtId}
-                inputRef={commentInputRef}
-                {...cmt} />
-            );
-          })}
-          <FeedCommentComponent
-            cmtDepth={1}
-            inputRef={commentInputRef} />
-          <FeedCommentComponent
-            inputRef={commentInputRef} />
+          <FeedComments cmtData={cmtData} inputRef={commentInputRef} />
           {/*<FeedCommentComponent />*/}
         </FeedCommentBody>
         <Divider />
@@ -131,6 +147,8 @@ const FeedCommentList = (props) => {
           <Tooltip title="댓글">
             <IconButton
               onClick={() => {
+                setEditCommentData(INIT_EDIT_COMMENT_STATE);
+                setReplyChipData([]);
                 commentInputRef.current.focus();
               }}
               aria-label="comment">
@@ -142,31 +160,54 @@ const FeedCommentList = (props) => {
             <LikeButtonContainer>
               <LikeButton
                 onClick={onClickLike}
-                clicked={checkedLike === 1}
+                clicked={detailData?.checkedLike === 1}
                 size={7} />
             </LikeButtonContainer>
           </Tooltip>
           <Tooltip title="북마크">
-            <IconButton aria-label="bookmark">
-              <BookmarkIcon />
-            </IconButton>
+            <BookmarkButton
+              clicked={(detailData?.checkedBookmark === 1) + ''}
+              onClick={onClickBookmark}
+            />
+
           </Tooltip>
         </ButtonsContainer>
         <LikeViewContainer>
           <LikeTypography variant="body2">좋아요 {likeCount}개</LikeTypography>
         </LikeViewContainer>
-        <CommentInputContainer>
-          <CommentTextField
-            inputRef={commentInputRef}
-            size="small" />
-          <FlexGrowDiv />
-          <StyledButton variant="contained">댓글달기</StyledButton>
-        </CommentInputContainer>
+        <CommentTextField
+          inputRef={commentInputRef}
+          size="small"
+          boardId={boardId}
+        />
       </FeedCommentInnerContainer>
     </FeedCommentOuterContainer>
 
-  )
-    ;
+  );
+};
+
+const FeedComments = ({ cmtData, inputRef }) => {
+
+  return (
+    <>
+      {cmtData && cmtData.length > 0 && cmtData.map((cmt, index) => {
+        return (
+          <React.Fragment
+            key={`comment-${index}`}>
+            <FeedCommentComponent
+              inputRef={inputRef}
+              {...cmt}
+            />
+            {cmt.replies.length !== 0 && <FeedComments
+              cmtData={cmt.replies}
+              inputRef={inputRef}
+            />}
+          </React.Fragment>
+        );
+      })}
+    </>
+  );
 };
 
 export default FeedCommentList;
+

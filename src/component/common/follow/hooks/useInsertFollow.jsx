@@ -14,7 +14,7 @@ const useInsertFollow = () => {
   };
   //react-query
   const result = useMutation({
-    mutationKey: ['insertFollow'],
+    mutationKey: ['follow', 'insert'],
     mutationFn: insertFollow,
 
   });

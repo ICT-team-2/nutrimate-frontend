@@ -13,8 +13,8 @@ export const ResetStyleInput = styled.input`
 `;
 
 const StyledUploadImgDiv = styled.div`
-    width: ${({ width }) => width || '200px'};
-    height: ${({ height }) => height || '100px'};
+    width: ${({ width, afterupload }) => afterupload === 'true' ? 'auto' : width || '200px'};
+    height: ${({ height, afterupload }) => afterupload === 'true' ? 'auto' : height || '100px'};
     min-width: ${({ minwidth, afterupload }) => afterupload === 'true'
             ? 'auto'
             : minwidth || 'auto'};
@@ -58,15 +58,15 @@ export const ImgUploader = (props) => {
   const {
     width, height, children: title,
     selectedImage, setSelectedImage, minheight, maxwidth,
-    maxheight, minwidth,
+    maxheight, minwidth, src, isEdit,
   } = props;
   const fileInputRef = useRef();
-  const [afterUpload, setAfterUpload] = useState(false);
-  
+  const [afterUpload, setAfterUpload] = useState(isEdit);
+
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
-  
+
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -76,7 +76,7 @@ export const ImgUploader = (props) => {
     reader.readAsDataURL(file);
     setAfterUpload(true);
   };
-  
+
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
@@ -89,17 +89,17 @@ export const ImgUploader = (props) => {
     }
     setAfterUpload(true);
   };
-  
+
   const handleDragOver = (event) => {
     event.preventDefault();
   };
-  
+
   return (
     <ImgUploaderContainer
     >
       <ResetStyleInput
-        type='file'
-        accept='image/*'
+        type="file"
+        accept="image/*"
         ref={fileInputRef}
         onChange={handleImageUpload}
       />
@@ -115,13 +115,13 @@ export const ImgUploader = (props) => {
         minwidth={minwidth}
         afterupload={afterUpload + ''}
       >
-        {selectedImage ? (
-          <StyledUploadImg src={selectedImage} />
+        {selectedImage || src ? (
+          <StyledUploadImg src={selectedImage || src} />
         ) : (
           <StyledUploadImgDivInner>
             <FontAwesomeIcon icon={faArrowUpFromBracket} />
-            <StyledButton variant='contained' size='small'
-                          color='primary'>{title}</StyledButton>
+            <StyledButton variant="contained" size="small"
+                          color="primary">{title}</StyledButton>
           </StyledUploadImgDivInner>
         )}
       </StyledUploadImgDiv>

@@ -1,7 +1,9 @@
 import axios from 'axios';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 
 const useClickLikeButton = (boardId) => {
+  const queryClient = useQueryClient();
   //axios
   const clickLikeButton = async (boardId) => {
     try {
@@ -16,8 +18,17 @@ const useClickLikeButton = (boardId) => {
   };
   //react-query
   return useMutation({
-    mutationKey: ['like', 'click'],
+    mutationKey: [REACT_QUERY_KEYS.LIKE,
+      REACT_QUERY_KEYS.INSERT,
+      REACT_QUERY_KEYS.DELETE],
     mutationFn: () => clickLikeButton(boardId),
+    onSuccess: () => {
+      console.log('좋아요 성공');
+      queryClient.invalidateQueries([REACT_QUERY_KEYS.BOARD, boardId]);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
   });
 };
 

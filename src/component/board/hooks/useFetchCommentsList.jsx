@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 
 const useFetchCommentsList = (boardId) => {
   //axios
@@ -13,7 +14,10 @@ const useFetchCommentsList = (boardId) => {
   };
   //react-query
   return useQuery({
-    queryKey: ['board', 'comments', 'get'],
+    queryKey: [REACT_QUERY_KEYS.BOARD,
+      REACT_QUERY_KEYS.COMMENTS,
+      REACT_QUERY_KEYS.LIST,
+      boardId],
     queryFn: fetchCommentsList,
   });
 };
