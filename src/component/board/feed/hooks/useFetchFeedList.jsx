@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { debounce } from '@src/utils/functions.js';
 
 
-const useFetchFeedList = (search) => {
+const useFetchFeedList = (search = '', receivePage = 5) => {
 
   const [searchWord, setSearchWord] = useState(''); //검색어
   const debouncedSetSearchWord = debounce((value) => setSearchWord(value), 500);
@@ -24,7 +24,7 @@ const useFetchFeedList = (search) => {
         const response = await axios.get('/board/feed/list', {
           params: {
             nowPage: pageParam,
-            receivePage: 5,
+            receivePage: receivePage,
             userId: sessionStorage.getItem('userId'),
             ...(searchWord && searchWord.trim() !== '' && { searchWord: searchWord }),
           },

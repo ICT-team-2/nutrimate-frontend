@@ -50,7 +50,6 @@ const FeedView = () => {
   useEffect(() => {
     const observeDiv = observerRef.current;
     if (observeDiv === null) return;
-    console.log('observe');
     observe(observeDiv);
     return () => {
       unobserve(observeDiv);

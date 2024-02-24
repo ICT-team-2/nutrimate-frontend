@@ -37,11 +37,6 @@ const OuterContainer = styled.div`
     max-width: 100%;
 `;
 
-/*
-  나는 FeedDetailContent의 모달 창 좌우 크기를 줄였을 경우에 모달창의 width와 height가 비율적으로 줄어드는 것을 바라고 있어.
-  그런데 image쪽은 좌우크기를 줄이면 비율적으로 줄어드는데 FeedDetailContent쪽은 비율적으로 줄어들지 않고
-  좌우의 크기가 줄어들지 않고 있어.
-*/
 
 const FeedDetailContent = ({ data, open, setOpen }) => {
 
