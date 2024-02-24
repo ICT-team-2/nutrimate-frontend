@@ -87,7 +87,7 @@ const UserViewInfo = () => {
   const [height, setHeight] = useAtom(heightStateAtom);
   const [weight, setWeight] = useAtom(weightStateAtom);
   const [sport, setSport] = useAtom(sportStateAtom);
-  const [intro, setIntro] = useAtom(introAtom);
+  // const [intro, setIntro] = useAtom(introAtom); 
 
   useEffect(() => {
     console.log('UserViewInfo useEffect - userId: ', userId);
@@ -105,7 +105,7 @@ const UserViewInfo = () => {
         setHeight(response.data.memberDto.userHeight);
         setWeight(response.data.memberDto.userWeight);
         setSport(response.data.memberDto.userSportHard);
-        setIntro(response.data.memberDto.userIntro);
+        // setIntro(response.data.memberDto.userIntro);
 
         setDiet(response.data.memberDto.userDiet);
         if (response.data.memberDto.userDiet === SETTING_USER_INFOS.DIET.CUSTOM.KEYS) {

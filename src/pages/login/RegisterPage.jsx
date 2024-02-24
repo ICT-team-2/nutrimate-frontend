@@ -286,17 +286,16 @@ const RegisterPage = () => {
         setIsDialogVisible(false);
         return;
       }
-      
     
       const response = await axios.post('/email/send', { userEmail: email });
     
       if (response.status !== 200) {
         throw new Error('Failed to send the message');
       }
+      alert('인증번호가 발송되었습니다.');
      
       if(setIsDialogVisible == true){
       console.log('Message sent successfully');
-      alert('인증번호가 발송되었습니다.');
     
       // resetTimer();
       // startTimer();
@@ -328,6 +327,10 @@ const RegisterPage = () => {
 
         // const data = await handleCertification();
         // await registerUser(data, isValidCertifiedPN);
+      } else {
+        // 인증번호가 잘못된 경우 alert를 표시
+        alert('인증번호가 잘못되었습니다.');
+        setIsValidCertifiedEM(false);
       }
     } catch (error) {
       alert(error);
@@ -410,7 +413,9 @@ const RegisterPage = () => {
           <Grid container spacing={1} alignItems="flex-end">
             <Grid item xs={8}>
               <StyledTextField
-                label='이메일' type='email' value={email}
+                label='이메일' 
+                type='email' 
+                value={email}
                 onChange={handleEmailChange}
               />
             </Grid>
@@ -464,15 +469,19 @@ const RegisterPage = () => {
         }
           <AdditionalContainer>
           <Checkbox
-          checked={agreed}
-          onChange={(e) => {
-            if (!isValidCertifiedPN || !isValidCertifiedEM) {
-              alert('인증을 완료해주세요');
-              return;
-            }
-            setAgreed(e.target.checked);
-          }}
-        />
+            checked={agreed}
+            onChange={(e) => {
+              if (verification === 'email' && !isValidCertifiedEM) {
+                alert('이메일 인증을 완료해주세요');
+                return;
+              }
+              if (verification === 'phone' && !isValidCertifiedPN) {
+                alert('휴대폰 인증을 완료해주세요');
+                return;
+              }
+              setAgreed(e.target.checked);
+            }}
+          />
           <div style={{marginTop: '12px'}}>
           <h5>
             NutriMate 이용약관 및 개인정보 처리방침에 동의합니다.

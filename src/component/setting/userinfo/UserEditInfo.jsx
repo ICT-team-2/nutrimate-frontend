@@ -105,7 +105,7 @@ const UserEditInfo = () => {
         setHeight(response.data.memberDto.userHeight);
         setWeight(response.data.memberDto.userWeight);
         setSport(response.data.memberDto.userSportHard);
-        setIntro(response.data.memberDto.userIntro);
+        // setIntro(response.data.memberDto.userIntro);
 
         setDiet(response.data.memberDto.userDiet);
         if (response.data.memberDto.userDiet === SETTING_USER_INFOS.DIET.CUSTOM.KEYS) {
@@ -123,13 +123,28 @@ const UserEditInfo = () => {
 
   const navigate = useNavigate();
   const handleUpdate = async () => {
+
+    console.log({
+      ...userInfo,
+      roleList: null, //이거 추가해야함(
+      userDiet: diet,
+      userGender: gender,
+      userSportHard: sport,
+      carbo: carbo,
+      protein: protein,
+      province: fat,
+      userHeight: height,
+      userWeight: weight,
+      userId: parseInt(sessionStorage.userId),
+      userRole: 'ROLE_USER',
+    },);
     try {
       axios.put('/member/mypage', {
         ...userInfo,
         roleList: null, //이거 추가해야함(
         userDiet: diet,
         userGender: gender,
-        userIntro: intro,
+        // userIntro: intro,
         userSportHard: sport,
         carbo: carbo,
         protein: protein,
