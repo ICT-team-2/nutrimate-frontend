@@ -2,7 +2,7 @@ import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-const useClickBookmark = (boardId) => {
+const useClickBookmark = (boardId, profile) => {
 
   const queryClient = useQueryClient();
 
@@ -26,7 +26,9 @@ const useClickBookmark = (boardId) => {
     mutationFn: clickBookmark,
     onSuccess: () => {
       console.log('북마크 성공');
-      queryClient.invalidateQueries([REACT_QUERY_KEYS.BOARD, boardId]);
+      if (!profile) {
+        queryClient.invalidateQueries([REACT_QUERY_KEYS.BOARD, boardId]);
+      }
     },
     onError: (error) => {
       console.error(error);

@@ -1,8 +1,9 @@
 import { atom } from 'jotai';
-import { MY_PAGE_TAB } from '@src/component/mypage/const.js';
+import { BOOKMARK_MENU, MY_PAGE_TAB } from '@src/component/mypage/const.js';
 
 
 export const myPageTabAtom = atom(MY_PAGE_TAB.INFO);
+myPageTabAtom.debugLabel = 'myPageTabAtom';
 
 export const profileModalAtom = atom(false);
 profileModalAtom.debugLabel = 'myPageProfileModalAtom';
@@ -18,3 +19,6 @@ followerListModalAtom.debugLabel = 'myPageFollowerListModalAtom';
 
 export const followingListModalAtom = atom(false);
 followingListModalAtom.debugLabel = 'myPageFollowingListModalAtom';
+
+export const bookmarkMenuAtom = atom(BOOKMARK_MENU.INFO);
+bookmarkMenuAtom.debugLabel = 'myPageBookmarkMenuModalAtom';

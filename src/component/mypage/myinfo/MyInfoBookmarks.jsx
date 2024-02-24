@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import PagnationComponent from '@src/component/common/PagnationComponent.jsx';
 import useFetchProfileInfoBoardList from '@src/hooks/mypage/useFetchProfileInfoBoardList.jsx';
 import { useParams } from 'react-router-dom';
+import useFetchBookmarkInfoBoardList from '@src/hooks/mypage/useFetchBookmarkInfoBoardList.jsx';
 
 const MyInfoPostsContainer = styled.div`
     margin-bottom: 40px;
@@ -12,12 +13,16 @@ const MyInfoPostsContainer = styled.div`
 const MyInfoPosts = () => {
   const [pageState, setPageState] = useState(1);
   const { profileUserId } = useParams();
-  const { data, isLoading, isError } = useFetchProfileInfoBoardList(profileUserId, pageState);
+  const { data, isLoading, isError } = useFetchBookmarkInfoBoardList(profileUserId, pageState);
 
   const handlePageChange = (event, value) => {
     setPageState(value);
   };
-  
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <MyInfoPostsContainer>
       <InfoBoardTable data={data?.infoBoardList} />

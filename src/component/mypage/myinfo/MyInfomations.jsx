@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import { Button } from '@mui/material';
@@ -16,6 +16,8 @@ import FollowerListModal from '@src/component/mypage/followlist/FollowerListModa
 import FollowingListModal from '@src/component/mypage/followlist/FollowingListModal.jsx';
 import { FOLLOW_MODAL } from '@src/component/mypage/const.js';
 import ChangeProfileComponent from '@src/component/common/ChangeProfileComponent.jsx';
+import useFetchProfileData from '@src/hooks/mypage/useFetchProfileData.jsx';
+import { useParams } from 'react-router-dom';
 
 
 const MyInfomationContainer = styled.div`
@@ -62,17 +64,24 @@ const MyInfomations = () => {
   const setTabNumber = useSetAtom(myPageTabAtom);
   const setFollowerModal = useSetAtom(followerListModalAtom);
   const setFollowingModal = useSetAtom(followingListModalAtom);
+  const { profileUserId } = useParams();
+
+  const { data: memberData, isLoading } = useFetchProfileData(profileUserId);
+
 
   return (
     <MyInfomationContainer>
       {/* 프로필 사진 */}
       {uploadImg ?
         <UserAvatar size={130} variant="rounded" src={uploadImg} /> :
-        <UserAvatar size={130} variant="rounded" />
+        <UserAvatar
+          userNick={memberData?.userNick}
+          size={130} variant="rounded"
+          src={import.meta.env.REACT_APP_BACKEND_URL + memberData?.userProfile} />
       }
       <StyledContainerDiv>
         <NicknNameH3>
-          <NickNameSpan>닉네임</NickNameSpan>
+          <NickNameSpan>{memberData?.userNick}</NickNameSpan>
           <ChangeProfileComponent />
         </NicknNameH3>
         <SecondaryInfoSpan>
@@ -80,22 +89,22 @@ const MyInfomations = () => {
             <StyledButton
               color="inherit"
               onClick={() => setTabNumber(0)}
-            >게시물 10</StyledButton>
+            >게시물 {memberData?.postCount}</StyledButton>
           </SecInfoTypo>
           <SecInfoTypo variant="subtitle1">
             <StyledButton
               color="inherit"
               onClick={() => setFollowerModal(true)}
-            >{FOLLOW_MODAL.FOLLOWER.TITLE} 20</StyledButton>
+            >{FOLLOW_MODAL.FOLLOWER.TITLE} {memberData?.followerCount}</StyledButton>
           </SecInfoTypo>
           <SecInfoTypo variant="subtitle1">
             <StyledButton
               color="inherit"
               onClick={() => setFollowingModal(true)}
-            >{FOLLOW_MODAL.FOLLOWING.TITLE} 30</StyledButton>
+            >{FOLLOW_MODAL.FOLLOWING.TITLE} {memberData?.followingCount}</StyledButton>
           </SecInfoTypo>
         </SecondaryInfoSpan>
-        <SelfIntroductionSpan>자기소개</SelfIntroductionSpan>
+        <SelfIntroductionSpan>{memberData?.userIntro}</SelfIntroductionSpan>
       </StyledContainerDiv>
       <FollowerListModal />
       <FollowingListModal />

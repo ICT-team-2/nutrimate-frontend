@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Menu, MenuItem, Tab, Tabs } from '@mui/material';
-import { useAtom } from 'jotai/react';
+import { useAtom, useSetAtom } from 'jotai/react';
 import { infoTabStateAtom, recommandMenuStateAtom } from '@src/component/infomation/atom.js';
 import { RECOMMAND_MENU } from '@src/component/infomation/const.js';
 
 export default function InfomationTabs() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedTab, setSelectedTab] = useAtom(infoTabStateAtom);
-  const [selectedMenu, setSelectedMenu] = useAtom(recommandMenuStateAtom);
+  const setSelectedMenu = useSetAtom(recommandMenuStateAtom);
 
-  const handleClick = (event) => {
+  const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -30,7 +30,7 @@ export default function InfomationTabs() {
     <div>
       <Tabs value={selectedTab} onChange={handleTabClick}>
         <Tab label="뉴스" />
-        <Tab label="추천" onClick={handleClick} />
+        <Tab label="추천" onClick={handleMenuClick} />
         <Tab label="알레르기" />
         {/* 이하 동일하게 추가... */}
       </Tabs>

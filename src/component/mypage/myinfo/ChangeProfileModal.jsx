@@ -13,6 +13,7 @@ import { ResetStyleInput } from '@src/component/common/ImgUploader.jsx';
 import { styled as muiStyled } from '@mui/material/styles';
 import ProfileAIPromptModal from '@src/component/mypage/myinfo/ProfileAIPromptModal.jsx';
 import styled from 'styled-components';
+import useChangeProfileImage from '@src/hooks/mypage/useChangeProfileImage.jsx';
 
 const style = {
   position: 'absolute',
@@ -35,10 +36,12 @@ const TitleH3 = styled.h3`
 `;
 
 export default function ChangeProfileModal() {
+
   const [open, setOpen] = useAtom(profileModalAtom);
   const fileInputRef = useRef();
   const setSelectedImage = useSetAtom(uploadedImageAtom);
   const [promptModalState, setPromptModalState] = useAtom(profilePromptModalAtom);
+  const changeProfile = useChangeProfileImage();
 
   const handleClose = () => setOpen(false);
   const uploadImg = (event) => {
@@ -51,6 +54,7 @@ export default function ChangeProfileModal() {
       setSelectedImage(reader.result);
     };
     reader.readAsDataURL(file);
+    changeProfile.mutate(file);
     handleClose();
   };
   return (
@@ -72,8 +76,7 @@ export default function ChangeProfileModal() {
             <List>
               <ListItem disablePadding>
                 <ListItemButton
-                  onClick={() => setPromptModalState(true)}
-                >
+                  onClick={() => setPromptModalState(true)}>
                   <StyldListItemText
                     primary="AI로 생성"
                   />
@@ -81,8 +84,7 @@ export default function ChangeProfileModal() {
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton
-                  onClick={uploadImg}
-                >
+                  onClick={uploadImg}>
                   <StyldListItemText
                     primary="사진 업로드"
                   />

@@ -53,7 +53,10 @@ const FeedWrite = ({ editData, isEdit }) => {
   const [boardContent, setBoardContent] = useState('');
 
   useEffect(() => {
-    setChipData(editData?.hashtag ?? []);
+    setChipData(editData?.hashtag.map((item, index) => ({
+      key: index,
+      label: item,
+    })) ?? []);
     setBoardContent(editData?.boardContent ?? '');
   }, [editData]);
 
