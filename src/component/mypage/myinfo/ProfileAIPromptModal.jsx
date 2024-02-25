@@ -5,8 +5,8 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { profilePromptModalAtom } from '@src/component/mypage/atom.js';
-import { useAtom } from 'jotai/react';
+import { profileModalAtom, profilePromptModalAtom } from '@src/component/mypage/atom.js';
+import { useAtom, useSetAtom } from 'jotai/react';
 import { styled as muiStyled } from '@mui/material/styles';
 import styled from 'styled-components';
 import useCreateImageAI from '@src/hooks/mypage/useCreateImageAI.jsx';
@@ -77,6 +77,7 @@ const InnerContainer = styled.div`
 
 export default function ProfileAIPromptModal() {
   const [open, setOpen] = useAtom(profilePromptModalAtom);
+  const setOpenFirstModal = useSetAtom(profileModalAtom);
   const [prompt, setPrompt] = useState('');
   const [image, setImage] = useState(null);
 
@@ -100,13 +101,11 @@ export default function ProfileAIPromptModal() {
     });
   };
 
-  useEffect(() => {
-    console.log('image:', image);
-  }, [image]);
 
   const onClickSaveImage = () => {
     changeProfileImage.mutate(base64toFile(image, 'profile.png'));
     setOpen(false);
+    setOpenFirstModal(false);
   };
 
 
