@@ -16,6 +16,13 @@ export const convertUrlParamToDate = (urlParam) => {
   return new Date(urlParam.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3'));
 };
 
+/**
+ * @description convert base64 to File
+ * @param base_data {string} base64 data
+ * @param filename {string} file name
+ * @returns {module:buffer.File | File}
+ */
+
 export const base64toFile = (base_data, filename) => {
   let arr = base_data.split(','),
     mime = arr[0].match(/:(.*?);/)[1],

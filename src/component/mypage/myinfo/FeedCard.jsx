@@ -11,16 +11,32 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CardActions from '@mui/material/CardActions';
 import ShareIcon from '@mui/icons-material/Share';
+import { FlexGrowDiv, UserAvatar } from '@src/component/common/GlobalComponents.jsx';
+import styled from 'styled-components';
+import Tooltip from '@mui/material/Tooltip';
+import LikeButton from '@src/component/board/LikeButton.jsx';
+import BookmarkButton from '@src/component/board/BookmarkButton.jsx';
+import useClickLikeButton from '@src/component/board/hooks/useClickLikeButton.jsx';
+import useClickBookmark from '@src/component/board/hooks/useClickBookmark.jsx';
+import { useEffect, useState } from 'react';
+import FeedDetailContent from '@src/component/board/feed/FeedDetailContent.jsx';
+import { NO_IMAGE_PATH } from '@src/utils/const.js';
+import FeedContentDropMenu from '@src/component/board/feed/FeedContentDropMenu.jsx';
 
-const CustomCard = muiStyled(Card)`
-  width: 240px;
-  margin: 10px;
-  height: 300px;
+const CustomCard = styled(Card)`
+    width: 240px;
+    margin: 10px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
 `;
-
-const CustomCardMedia = muiStyled(CardMedia)`
-  height: 150px;
-  object-fit: cover;
+const LikeButtonContainer = styled.div`
+    position: relative;
+    left: 20px;
+`;
+const CustomCardMedia = styled.img`
+    flex-grow: 1;
+    object-fit: cover;
 `;
 const defaultData = {
   title: 'Title',
@@ -33,41 +49,83 @@ const defaultData = {
 
 export default function FeedCard(props) {
 
-  const { title, content, img, date, author } = props;
+  const { data, isBookmark } = props;
+  const {
+    boardContent, boardId, boardThumbnail,
+    checkedLike, likeCount, userNick: writer, checkedBookmark,
+    userId: writerId,
+  } = data;
+  const [likeClicked, setLikeClicked] = useState(checkedLike === 1);
+  const clickLikeButton = useClickLikeButton(boardId);
+  const clickBookmark = useClickBookmark(boardId, true);
+  const userId = parseInt(sessionStorage.getItem('userId'));
+  const [modalOpen, setModalOpen] = useState(false);
 
+  const onClickLike = (e) => {
+    clickLikeButton.mutate();
+    e.stopPropagation();
+  };
+
+  const onClickBookmark = (e) => {
+    clickBookmark.mutate();
+    e.stopPropagation();
+  };
+
+  const clickCard = () => {
+    console.log('clickCard');
+  };
+
+  useEffect(() => {
+    setLikeClicked(checkedLike === 1);
+  }, [checkedLike]);
   return (
-    <CustomCard>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={title}
-        subheader={author}
-      />
-      <CustomCardMedia
-        image={img}
-        component="img"
-        alt={title}
-      />
-      <CardContent>
-        <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton>
-        </CardActions>
-      </CardContent>
-
-    </CustomCard>
+    <>
+      <CustomCard>
+        <CardHeader
+          avatar={
+            <UserAvatar
+              userNick={writer}
+              sx={{ bgcolor: red[500] }} aria-label="recipe">
+              {writer}
+            </UserAvatar>
+          }
+          action={
+            (writerId === userId) && <FeedContentDropMenu boardId={boardId} />
+          }
+          title={writer}
+        />
+        <CustomCardMedia
+          src={import.meta.env.REACT_APP_BACKEND_URL + `${boardThumbnail}`}
+          alt={'feed'}
+          onError={(e) => {
+            e.target.src = NO_IMAGE_PATH;
+          }}
+        />
+        {isBookmark && (<CardActions>
+          <FlexGrowDiv />
+          <Tooltip title={'좋아요'}>
+            <LikeButtonContainer>
+              <LikeButton
+                onClick={onClickLike}
+                size={7}
+                clicked={likeClicked}
+              />
+            </LikeButtonContainer>
+          </Tooltip>
+          <Tooltip title="북마크">
+            <BookmarkButton
+              clicked={(checkedBookmark === 1) + ''}
+              onClick={onClickBookmark}
+              profile
+            />
+          </Tooltip>
+        </CardActions>)}
+      </CustomCard>
+      <FeedDetailContent
+        data={data}
+        open={modalOpen}
+        setOpen={setModalOpen} />
+    </>
   );
 }
 

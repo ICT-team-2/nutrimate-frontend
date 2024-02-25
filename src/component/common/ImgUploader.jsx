@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import { Button } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { fa } from 'faker/lib/locales.js';
 
 export const ResetStyleInput = styled.input`
     text-indent: 100%;
@@ -61,7 +62,7 @@ export const ImgUploader = (props) => {
     maxheight, minwidth, src, isEdit,
   } = props;
   const fileInputRef = useRef();
-  const [afterUpload, setAfterUpload] = useState(isEdit);
+  const [afterUpload, setAfterUpload] = useState(false);
 
   const handleUploadClick = () => {
     fileInputRef.current.click();
@@ -115,7 +116,7 @@ export const ImgUploader = (props) => {
         minwidth={minwidth}
         afterupload={afterUpload + ''}
       >
-        {selectedImage || src ? (
+        {(selectedImage || src) ? (
           <StyledUploadImg src={selectedImage || src} />
         ) : (
           <StyledUploadImgDivInner>

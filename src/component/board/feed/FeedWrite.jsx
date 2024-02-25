@@ -23,22 +23,6 @@ const StyledTextField = muiStyled(TextField)`
     width: 100%
 `;
 
-const ImgContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 400px;
-`;
-
-
-const EditDataImg = ({ editData }) => {
-  return (
-    <ImgContainer>
-      <img src={import.meta.env.REACT_APP_BACKEND_URL + editData.boardThumbnail} alt="thumbnail" />
-    </ImgContainer>
-  );
-};
 
 /**
  * 피드 글을 작성하는 화면.
@@ -53,7 +37,10 @@ const FeedWrite = ({ editData, isEdit }) => {
   const [boardContent, setBoardContent] = useState('');
 
   useEffect(() => {
-    setChipData(editData?.hashtag ?? []);
+    setChipData(editData?.hashtag.map((item, index) => ({
+      key: index,
+      label: item,
+    })) ?? []);
     setBoardContent(editData?.boardContent ?? '');
   }, [editData]);
 
@@ -71,7 +58,6 @@ const FeedWrite = ({ editData, isEdit }) => {
       });
       return;
     }
-
     inputFeed.mutate({
       files: base64toFile(selectedImage, 'feedImage.jpg'),
       hashtag: chipData.map((item) => item.label),
@@ -90,7 +76,9 @@ const FeedWrite = ({ editData, isEdit }) => {
       </TitleContainer>
       <ImgUploader
         isEdit={isEdit}
-        src={import.meta.env.REACT_APP_BACKEND_URL + editData?.boardThumbnail}
+        src={isEdit ?
+          import.meta.env.REACT_APP_BACKEND_URL + editData?.boardThumbnail : null
+        }
         width="100%" height="400px"
         selectedImage={selectedImage} setSelectedImage={setSelectedImage}
       >이미지 업로드</ImgUploader>
