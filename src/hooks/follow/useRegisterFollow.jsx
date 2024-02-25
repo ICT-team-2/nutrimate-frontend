@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 
 const useRegisterFollow = (followeeId) => {
   const userId = parseInt(sessionStorage.getItem('userId'));
-
+  const queryClient = useQueryClient();
   const registerFollow = async () => {
     await axios.post('/follow/follow', {
       followeeId: followeeId,

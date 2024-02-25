@@ -13,8 +13,13 @@ import { styled as muiStyled } from '@mui/material/styles';
 import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import styled from 'styled-components';
 import { useAtomValue } from 'jotai/react';
-import { uploadedImageAtom } from '@src/component/mypage/atom.js';
+import { profileImageAtom } from '@src/component/mypage/atom.js';
 import Paper from '@mui/material/Paper';
+import useFetchProfileData from '@src/hooks/mypage/useFetchProfileData.jsx';
+import { userIdAtom } from '@src/pages/login/atom.js';
+import { useEffect } from 'react';
+import FollowButton from '@src/component/common/FollowButton.jsx';
+import useRecommandFollowList from '@src/hooks/follow/useRecommandFollowList.jsx';
 
 const exampleDatas = [
   {
@@ -61,10 +66,9 @@ const AvatarContainer = styled.div`
 const UserNameContainer = styled.div`
     margin: 8.5px auto auto 10px;
     height: 100%;
-    color: ${({ theme }) => theme['light-text']};
 `;
 
-const StyledPaper = styled(Paper)`
+const StyledPaper = styled.div`
     width: 100%;
     max-width: 300px;
     margin-left: 30px;
@@ -72,35 +76,48 @@ const StyledPaper = styled(Paper)`
 
 `;
 
+const StyledListSubheader = styled(ListSubheader)`
+    background-color: inherit;
+`;
+
 const RecommendFriendList = ({ datas = exampleDatas }) => {
-  const uploadImg = useAtomValue(uploadedImageAtom);
+  const { data: userData } = useFetchProfileData();
+  const { data: recommendFollowData } = useRecommandFollowList();
+
+  useEffect(() => {
+    console.log('recommendFollowData', recommendFollowData);
+  }, [recommendFollowData]);
 
   return (
     <FriendListContainer>
       <AvatarContainer>
-        <UserAvatar src={uploadImg} />
-        <UserNameContainer>username</UserNameContainer>
+        <UserAvatar src={import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
+        <UserNameContainer>{userData?.userNick}</UserNameContainer>
       </AvatarContainer>
       <StyledPaper>
         <List
           subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
+            <StyledListSubheader component="div" id="nested-list-subheader">
               회원님을 위한 추천
-            </ListSubheader>
+            </StyledListSubheader>
           }
         >
-          {datas.map((data, index) => (
+          {recommendFollowData && recommendFollowData.map((data, index) => (
             <StyledListItem key={data.userNick + index}>
               <ListItemAvatar>
-                <Avatar>{data.profile}</Avatar>
+                <UserAvatar
+                  userNick={data.userNick}
+                  src={import.meta.env.REACT_APP_BACKEND_URL + data.userProfile} />
               </ListItemAvatar>
               <ListItemText primary={data.userNick} />
-              <Button color="info">팔로우</Button>
+              <FollowButton
+                followId={data.userId}
+                following={data.followerCount === 1}
+              >팔로우</FollowButton>
             </StyledListItem>
           ))}
         </List>
       </StyledPaper>
-
     </FriendListContainer>
   );
 };

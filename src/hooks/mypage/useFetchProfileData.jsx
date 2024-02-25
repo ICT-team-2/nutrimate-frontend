@@ -9,6 +9,8 @@ import { REACT_QUERY_KEYS } from '@src/utils/const.js';
  */
 const useFetchProfileData = (profileUserId = undefined) => {
 
+  profileUserId = profileUserId || sessionStorage.getItem('userId');
+
   //axios
   // 유저 기본 데이터를 가져옵니다.
   const fetchMyData = async () => {

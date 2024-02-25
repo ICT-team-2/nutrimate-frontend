@@ -1,5 +1,5 @@
 import React from 'react';
-import FollowList from '@src/component/mypage/followlist/FollowList.jsx';
+import FollowList from '@src/component/mypage/follow/FollowList.jsx';
 import Modal from '@mui/material/Modal';
 import { useAtom } from 'jotai/react';
 import {
@@ -34,12 +34,12 @@ const StyleBox = muiStyled(Box)`
   border-radius: 10px;
 `;
 
-const FollowListStyle = ({ data, category, title }) => {
+const FollowListStyle = ({ data, setData, category, title }) => {
   const [followerModalState, setFollowerModalState] = useAtom(
     followerListModalAtom);
   const [followingModalState, setFollowingModalState] = useAtom(
     followingListModalAtom);
-  
+
   const handleClose = () => {
     if (category === FOLLOW_MODAL.FOLLOWER.KEY) {
       setFollowerModalState(false);
@@ -47,7 +47,7 @@ const FollowListStyle = ({ data, category, title }) => {
       setFollowingModalState(false);
     }
   };
-  
+
   return (
     <Modal
       open={category === FOLLOW_MODAL.FOLLOWER.KEY
@@ -65,7 +65,7 @@ const FollowListStyle = ({ data, category, title }) => {
           </IconButton>
         </TitleContainer>
         <Divider />
-        <FollowList />
+        <FollowList data={data} setData={setData} />
       </StyleBox>
     </Modal>
   );

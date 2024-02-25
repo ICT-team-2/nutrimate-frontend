@@ -8,10 +8,6 @@ function MyFeedPosts({ profileUserId }) {
 
   const { data, isLoading, isError, error } = useFetchProfileFeedList(profileUserId);
 
-  useEffect(() => {
-    console.log('data', data?.pages[0].feedList);
-  }, [data]);
-
   return (
     <Grid container spacing={3}>
       {

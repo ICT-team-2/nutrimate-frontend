@@ -8,7 +8,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { useAtom, useSetAtom } from 'jotai/react';
-import { profileModalAtom, profilePromptModalAtom, uploadedImageAtom } from '@src/component/mypage/atom.js';
+import { profileModalAtom, profilePromptModalAtom, profileImageAtom } from '@src/component/mypage/atom.js';
 import { ResetStyleInput } from '@src/component/common/ImgUploader.jsx';
 import { styled as muiStyled } from '@mui/material/styles';
 import ProfileAIPromptModal from '@src/component/mypage/myinfo/ProfileAIPromptModal.jsx';
@@ -39,7 +39,7 @@ export default function ChangeProfileModal() {
 
   const [open, setOpen] = useAtom(profileModalAtom);
   const fileInputRef = useRef();
-  const setSelectedImage = useSetAtom(uploadedImageAtom);
+  const setSelectedImage = useSetAtom(profileImageAtom);
   const [promptModalState, setPromptModalState] = useAtom(profilePromptModalAtom);
   const changeProfile = useChangeProfileImage();
 

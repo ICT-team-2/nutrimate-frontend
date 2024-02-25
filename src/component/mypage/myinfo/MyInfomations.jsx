@@ -4,16 +4,16 @@ import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import { Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { styled as muiStyled } from '@mui/material/styles';
-import { useAtomValue, useSetAtom } from 'jotai/react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai/react';
 import {
   followerListModalAtom,
   followingListModalAtom,
   myPageTabAtom,
   profileModalAtom,
-  uploadedImageAtom,
+  profileImageAtom, followerCountAtom, followingCountAtom,
 } from '@src/component/mypage/atom.js';
-import FollowerListModal from '@src/component/mypage/followlist/FollowerListModal.jsx';
-import FollowingListModal from '@src/component/mypage/followlist/FollowingListModal.jsx';
+import FollowerListModal from '@src/component/mypage/follow/FollowerListModal.jsx';
+import FolloweeListModal from '@src/component/mypage/follow/FolloweeListModal.jsx';
 import { FOLLOW_MODAL } from '@src/component/mypage/const.js';
 import ChangeProfileComponent from '@src/component/common/ChangeProfileComponent.jsx';
 import useFetchProfileData from '@src/hooks/mypage/useFetchProfileData.jsx';
@@ -60,13 +60,19 @@ const StyledButton = muiStyled(Button)`
 const MyInfomations = () => {
 
   const setOpenModal = useSetAtom(profileModalAtom);
-  const uploadImg = useAtomValue(uploadedImageAtom);
+  const uploadImg = useAtomValue(profileImageAtom);
   const setTabNumber = useSetAtom(myPageTabAtom);
   const setFollowerModal = useSetAtom(followerListModalAtom);
   const setFollowingModal = useSetAtom(followingListModalAtom);
   const { profileUserId } = useParams();
+  const { data: userData, isLoading } = useFetchProfileData(profileUserId);
 
-  const { data: memberData, isLoading } = useFetchProfileData(profileUserId);
+  const [followerCount, setFollowerCount] = useAtom(followerCountAtom);
+  const [followingCount, setFollowingCount] = useAtom(followingCountAtom);
+
+  useEffect(() => {
+    setFollowingCount(userData?.followingCount);
+  }, [userData]);
 
 
   return (
@@ -75,13 +81,13 @@ const MyInfomations = () => {
       {uploadImg ?
         <UserAvatar size={130} variant="rounded" src={uploadImg} /> :
         <UserAvatar
-          userNick={memberData?.userNick}
+          userNick={userData?.userNick}
           size={130} variant="rounded"
-          src={import.meta.env.REACT_APP_BACKEND_URL + memberData?.userProfile} />
+          src={import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
       }
       <StyledContainerDiv>
         <NicknNameH3>
-          <NickNameSpan>{memberData?.userNick}</NickNameSpan>
+          <NickNameSpan>{userData?.userNick}</NickNameSpan>
           <ChangeProfileComponent />
         </NicknNameH3>
         <SecondaryInfoSpan>
@@ -89,25 +95,25 @@ const MyInfomations = () => {
             <StyledButton
               color="inherit"
               onClick={() => setTabNumber(0)}
-            >게시물 {memberData?.postCount}</StyledButton>
+            >게시물 {userData?.postCount}</StyledButton>
           </SecInfoTypo>
           <SecInfoTypo variant="subtitle1">
             <StyledButton
               color="inherit"
               onClick={() => setFollowerModal(true)}
-            >{FOLLOW_MODAL.FOLLOWER.TITLE} {memberData?.followerCount}</StyledButton>
+            >{FOLLOW_MODAL.FOLLOWER.TITLE} {userData?.followerCount}</StyledButton>
           </SecInfoTypo>
           <SecInfoTypo variant="subtitle1">
             <StyledButton
               color="inherit"
               onClick={() => setFollowingModal(true)}
-            >{FOLLOW_MODAL.FOLLOWING.TITLE} {memberData?.followingCount}</StyledButton>
+            >{FOLLOW_MODAL.FOLLOWING.TITLE} {followingCount}</StyledButton>
           </SecInfoTypo>
         </SecondaryInfoSpan>
-        <SelfIntroductionSpan>{memberData?.userIntro}</SelfIntroductionSpan>
+        <SelfIntroductionSpan>{userData?.userIntro}</SelfIntroductionSpan>
       </StyledContainerDiv>
       <FollowerListModal />
-      <FollowingListModal />
+      <FolloweeListModal />
     </MyInfomationContainer>
   );
 };

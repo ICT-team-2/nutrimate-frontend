@@ -10,12 +10,16 @@ import { BOOKMARK_MENU, MY_PAGE_TAB } from '@src/component/mypage/const.js';
 import MyFeedPosts from '@src/component/mypage/myinfo/MyFeedPosts.jsx';
 import MyFeedBookMarks from '@src/component/mypage/myinfo/MyFeedBookMarks.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import { LINKS } from '@src/utils/const.js';
+import { LINKS, REACT_QUERY_KEYS } from '@src/utils/const.js';
 import MyInfoBookmarks from '@src/component/mypage/myinfo/MyInfoBookmarks.jsx';
 
+const OuterContainer = styled.div`
+    padding: 0 70px;
+    width: 100%;
+`;
 
 const MyInfoPageContainer = styled(Container)`
-    margin-top: 20px;
+    margin: 20px auto 0;
     max-width: 960px;
 `;
 const ContentContainer = styled.div`
@@ -36,14 +40,16 @@ const MyInfoPage = () => {
 
 
   return (
-    <MyInfoPageContainer>
-      <MyInfomations />
-      <hr />
-      <CenteredTabs />
-      <ContentContainer>
-        <MyPagePost />
-      </ContentContainer>
-    </MyInfoPageContainer>
+    <OuterContainer>
+      <MyInfoPageContainer>
+        <MyInfomations />
+        <hr />
+        <CenteredTabs />
+        <ContentContainer>
+          <MyPagePost />
+        </ContentContainer>
+      </MyInfoPageContainer>
+    </OuterContainer>
   );
 };
 
