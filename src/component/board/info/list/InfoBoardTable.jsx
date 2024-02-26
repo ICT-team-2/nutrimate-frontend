@@ -53,11 +53,11 @@ export default function InfoBoardTable() {
       <Table sx={{ minWidth: 400 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+            <StyledTableCell>번호</StyledTableCell>
+            <StyledTableCell align="right">제목</StyledTableCell>
+            <StyledTableCell align="right">작성자</StyledTableCell>
+            <StyledTableCell align="right">등록일</StyledTableCell>
+            <StyledTableCell align="right">조회수</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

@@ -104,80 +104,45 @@ export const ALLERGY_IMG = {
 };
 
 export const ALLERGY_LIST = {
-  EGG: {
-    KEYS: 'EGG',
-    VALUES: '알류',
+  celery: {
+    KEYS: 'celery-free',
+    VALUES: '샐러리',
   },
-  MILK: {
-    KEYS: 'MILK',
+  crustacean: {
+    KEYS: 'crustacean-free',
+    VALUES: '갑각류',
+  },
+  dairy: {
+    KEYS: 'dairy-free',
     VALUES: '우유',
   },
-  BUCKWHEAT: {
-    KEYS: 'BUCKWHEAT',
-    VALUES: '메밀',
+  egg: {
+    KEYS: 'egg-free',
+    VALUES: '계란',
   },
-  PEANUT: {
-    KEYS: 'PEANUT',
+  fish: {
+    KEYS: 'fish-free',
+    VALUES: '생선',
+  },
+  peanut: {
+    KEYS: 'peanut-free',
     VALUES: '땅콩',
   },
-  BIG_HEAD: {
-    KEYS: 'BIG_HEAD',
-    VALUES: '대두',
+  sesame: {
+    KEYS: 'sesame-free',
+    VALUES: '깨',
   },
-  WHEAT: {
-    KEYS: 'WHEAT',
-    VALUES: '밀',
-  },
-  PINE_NUT: {
-    KEYS: 'PINE_NUT',
-    VALUES: '파인',
-  },
-  WALNUT: {
-    KEYS: 'WALNUT',
-    VALUES: '호두',
-  },
-  CRAB: {
-    KEYS: 'CRAB',
-    VALUES: '게',
-  },
-  SHRIMP: {
-    KEYS: 'SHRIMP',
-    VALUES: '새우',
-  },
-  SQUID: {
-    KEYS: 'SQUID',
-    VALUES: '오징어',
-  },
-  MACKEREL: {
-    KEYS: 'MACKEREL',
-    VALUES: '고등어',
-  },
-  SHELLFISH: {
-    KEYS: 'SHELLFISH',
+  shellfish: {
+    KEYS: 'shellfish-free',
     VALUES: '조개류',
   },
-  PEACH: {
-    KEYS: 'PEACH',
-    VALUES: '복숭아',
+  soy: {
+    KEYS: 'soy-free',
+    VALUES: '콩',
   },
-  TOMATO: {
-    KEYS: 'TOMATO',
-    VALUES: '토마토',
+  wheat: {
+    KEYS: 'wheat-free',
+    VALUES: '밀',
   },
-  CHICKEN: {
-    KEYS: 'CHICKEN',
-    VALUES: '닭고기',
-  },
-  PORK: {
-    KEYS: 'PORK',
-    VALUES: '돼지고기',
-  },
-  BEEF: {
-    KEYS: 'BEEF',
-    VALUES: '쇠고기',
-  },
-  SULFUROUS_ACIDS: {
-    KEYS: 'SULFUROUS_ACIDS',
-    VALUES: '아황산류',
-  },
+  
 };
