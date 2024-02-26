@@ -41,7 +41,7 @@ const ApliyButton = styled(Button)`
     margin-left: 40px;
 `;
 
-const cursorPointer = (isWriter, isContent) => {
+const commentCursorPointer = (isWriter, isContent) => {
   if (isContent) {
     return 'default';
   }
@@ -79,7 +79,7 @@ const FeedCommentComponent = (props) => {
             ? boardContent
             : cmtContent,
         }}
-        cursor={cursorPointer(isWriter, isContent)}
+        cursor={commentCursorPointer(isWriter, isContent)}
         onClick={async () => {
           if (!isWriter || isContent) {
             return;

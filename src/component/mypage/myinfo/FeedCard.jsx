@@ -88,7 +88,7 @@ export default function FeedCard(props) {
             <UserAvatar
               userNick={writer}
               src={import.meta.env.REACT_APP_BACKEND_URL + `${writerProfile}`}
-              sx={{ bgcolor: red[500] }} aria-label="recipe">
+              aria-label="recipe">
               {writer}
             </UserAvatar>
           }
@@ -119,7 +119,6 @@ export default function FeedCard(props) {
             <BookmarkButton
               clicked={(checkedBookmark === 1) + ''}
               onClick={onClickBookmark}
-              profile
             />
           </Tooltip>
         </CardActions>)}

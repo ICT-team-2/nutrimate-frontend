@@ -12,7 +12,6 @@ const useFetchFeedDetail = (boardId) => {
         userId: sessionStorage.getItem('userId'),
       },
     });
-    console.log('fetchFeedDetail', response.data);
     return response.data;
   };
   //react-query

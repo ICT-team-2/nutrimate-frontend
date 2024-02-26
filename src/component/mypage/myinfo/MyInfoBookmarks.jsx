@@ -19,10 +19,6 @@ const MyInfoPosts = () => {
     setPageState(value);
   };
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
     <MyInfoPostsContainer>
       <InfoBoardTable data={data?.infoBoardList} />
