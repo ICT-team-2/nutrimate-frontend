@@ -112,7 +112,7 @@ const RecommendFriendList = ({ datas = exampleDatas }) => {
               <ListItemText primary={data.userNick} />
               <FollowButton
                 followId={data.userId}
-                following={data.followerCount === 1}
+                following={data.isFollowing === 1}
               >팔로우</FollowButton>
             </StyledListItem>
           ))}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import {
   FlexGrowDiv,
@@ -9,12 +9,13 @@ import { Button } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { useAtom } from 'jotai';
 import {
-  commentEditDataAtom,
+  commentEditDataAtom, isCommentEditAtom,
   replyChipDataAtom,
 } from '@src/component/board/atom.js';
 import { COMMENT_TYPE } from '@src/component/board/const.js';
 import useDeleteComment
   from '@src/component/board/hooks/useDeleteComment.jsx';
+import { useSetAtom } from 'jotai/react';
 
 const CommentContainer = styled.div`
     display: flex;
@@ -34,23 +35,33 @@ const NicknameContainer = styled.div`
 const BodyTypo = styled(Typography)`
     margin-left: 50px;
     margin-bottom: 10px;
-    cursor: ${({ iswriter }) => iswriter === 'true' ? 'pointer' : 'default'};
+    cursor: ${({ cursor }) => cursor};
 `;
 const ApliyButton = styled(Button)`
     margin-left: 40px;
-
 `;
+
+const cursorPointer = (isWriter, isContent) => {
+  if (isContent) {
+    return 'default';
+  }
+  if (isWriter) {
+    return 'pointer';
+  }
+  return 'default';
+};
 
 const FeedCommentComponent = (props) => {
   const {
-    cmtDepth, inputRef, isContent,
+    cmtDepth, inputRef, editRef, isContent,
     boardId, boardContent, checkedLike,
     likeCount, userNick: writer, cmtContent,
     cmtId, userId: writerId,
   } = props;
-  const [replyChipData, setReplyChipData] = useAtom(replyChipDataAtom);
-  const [commentEditData, setCommentEditData] = useAtom(commentEditDataAtom);
+  const setReplyChipData = useSetAtom(replyChipDataAtom);
+  const setCommentEditData = useSetAtom(commentEditDataAtom);
   const deleteComment = useDeleteComment(cmtId, boardId);
+  const setIsCommentEdit = useSetAtom(isCommentEditAtom);
 
   const isWriter = parseInt(sessionStorage.getItem('userId')) === writerId;
 
@@ -68,21 +79,22 @@ const FeedCommentComponent = (props) => {
             ? boardContent
             : cmtContent,
         }}
-        iswriter={isWriter + ''}
-        onClick={() => {
-          if (!isWriter) {
+        cursor={cursorPointer(isWriter, isContent)}
+        onClick={async () => {
+          if (!isWriter || isContent) {
             return;
           }
           setCommentEditData({
             cmtId: cmtId,
             cmtContent: cmtContent,
           });
-          inputRef.current.focus();
+          await setIsCommentEdit(true);
+          editRef.current.focus();
         }}
       />
       {!isContent && (<div>
         <ApliyButton
-          onClick={() => {
+          onClick={async () => {
             setReplyChipData([
               {
                 type: COMMENT_TYPE.REPLY,
@@ -91,6 +103,7 @@ const FeedCommentComponent = (props) => {
                 cmtRef: cmtId,
                 boardId: boardId,
               }]);
+            await setIsCommentEdit(false);
             inputRef.current.focus();
           }}
         >답글달기</ApliyButton>

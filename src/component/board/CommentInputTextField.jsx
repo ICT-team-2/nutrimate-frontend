@@ -9,6 +9,7 @@ import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import { INIT_EDIT_COMMENT_STATE } from '@src/component/board/const.js';
 import useEditComment from '@src/component/board/hooks/useEditComment.jsx';
 import useInputReply from '@src/component/board/hooks/useInputReply.jsx';
+import { useSetAtom } from 'jotai/react';
 
 const CommentInputContainer = styled.div`
     display: flex;
@@ -26,14 +27,14 @@ const StyledButton = styled(Button)`
     margin-left: 5px;
 `;
 
-const CommentTextField = (props) => {
+const CommentInputTextField = (props) => {
   const [chipData, setChipData] = useAtom(replyChipDataAtom);
-  const [commentEditData, setCommentEditData] = useAtom(commentEditDataAtom);
   const [inputValue, setInputValue] = useState('');
   const { boardId } = props;
   const inputComment = useInputComment(boardId);
-  const editComment = useEditComment(boardId);
   const inputReply = useInputReply(boardId);
+  const setIsCommentEdit = useSetAtom(commentEditDataAtom);
+
 
   const handleDelete = () => () => {
     setChipData([]);
@@ -42,7 +43,6 @@ const CommentTextField = (props) => {
   const handleKeyDown = (event) => {
     if (event.key === 'Backspace' && inputValue === '') {
       setChipData([]);
-      setCommentEditData(INIT_EDIT_COMMENT_STATE);
     }
   };
 
@@ -56,10 +56,9 @@ const CommentTextField = (props) => {
       uploadComment();
     }
   };
-  const clickCommentButton = () => {
-    if (inputValue.trim() !== '') {
-      uploadComment();
-    }
+  const clickCommentButton = (e) => {
+    e.stopPropagation();
+    uploadComment();
   };
 
   const uploadComment = () => {
@@ -76,17 +75,9 @@ const CommentTextField = (props) => {
     });
     setInputValue('');
     setChipData([]);
+    setIsCommentEdit(false);
   };
 
-  const clickEditCommentButton = () => {
-    //댓글 수정
-    editComment.mutate({
-      cmtId: commentEditData.cmtId,
-      cmtContent: inputValue,
-    });
-    setInputValue('');
-    setCommentEditData(INIT_EDIT_COMMENT_STATE);
-  };
 
   useEffect(() => {
     if (chipData.length === 0) {
@@ -96,18 +87,12 @@ const CommentTextField = (props) => {
 
   useEffect(() => {
     setChipData([]);
-    setCommentEditData(INIT_EDIT_COMMENT_STATE);
   }, []);
 
   useEffect(() => {
     if (chipData.length === 0) return;
     setInputValue(chipData[0]?.cmtContent);
   }, [chipData[0]?.cmtContent]);
-
-  useEffect(() => {
-    if (commentEditData.cmtContent === '') return;
-    setInputValue(commentEditData.cmtContent);
-  }, [commentEditData?.cmtContent]);
 
 
   return (
@@ -131,23 +116,14 @@ const CommentTextField = (props) => {
         inputRef={props.inputRef}
       />
       <FlexGrowDiv />
-      {commentEditData.cmtContent === '' ?
-        <StyledButton
-          variant="contained"
-          onClick={() => {
-            clickCommentButton();
-          }}
-        >{chipData.length === 0 ? '댓글달기' : '답글달기'}</StyledButton>
-        :
-        <StyledButton
-          variant="contained"
-          onClick={() => {
-            clickEditCommentButton();
-          }}
-        >댓글수정</StyledButton>
-      }
+      <StyledButton
+        variant="contained"
+        onClick={(e) => {
+          clickCommentButton(e);
+        }}
+      >{chipData.length === 0 ? '댓글달기' : '답글달기'}</StyledButton>
     </CommentInputContainer>
   );
 };
 
-export default CommentTextField;
+export default CommentInputTextField;
