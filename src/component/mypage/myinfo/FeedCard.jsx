@@ -29,6 +29,7 @@ const CustomCard = styled(Card)`
     height: 300px;
     display: flex;
     flex-direction: column;
+    cursor: pointer;
 `;
 const LikeButtonContainer = styled.div`
     position: relative;
@@ -53,7 +54,7 @@ export default function FeedCard(props) {
   const {
     boardContent, boardId, boardThumbnail,
     checkedLike, likeCount, userNick: writer, checkedBookmark,
-    userId: writerId,
+    userId: writerId, userProfile: writerProfile,
   } = data;
   const [likeClicked, setLikeClicked] = useState(checkedLike === 1);
   const clickLikeButton = useClickLikeButton(boardId);
@@ -72,7 +73,7 @@ export default function FeedCard(props) {
   };
 
   const clickCard = () => {
-    console.log('clickCard');
+    setModalOpen(true);
   };
 
   useEffect(() => {
@@ -80,12 +81,14 @@ export default function FeedCard(props) {
   }, [checkedLike]);
   return (
     <>
-      <CustomCard>
+      <CustomCard
+        onClick={clickCard}>
         <CardHeader
           avatar={
             <UserAvatar
               userNick={writer}
-              sx={{ bgcolor: red[500] }} aria-label="recipe">
+              src={import.meta.env.REACT_APP_BACKEND_URL + `${writerProfile}`}
+              aria-label="recipe">
               {writer}
             </UserAvatar>
           }
@@ -116,7 +119,6 @@ export default function FeedCard(props) {
             <BookmarkButton
               clicked={(checkedBookmark === 1) + ''}
               onClick={onClickBookmark}
-              profile
             />
           </Tooltip>
         </CardActions>)}

@@ -17,11 +17,11 @@ import useClickLikeButton
   from '@src/component/board/hooks/useClickLikeButton.jsx';
 import useFetchCommentsList
   from '@src/component/board/hooks/useFetchCommentsList.jsx';
-import CommentTextField from '@src/component/board/feed/CommentTextField.jsx';
+import CommentInputTextField from '@src/component/board/CommentInputTextField.jsx';
 import { atom, useAtom } from 'jotai';
 import {
   commentEditDataAtom,
-  commentListRefAtom,
+  commentListRefAtom, isCommentEditAtom,
   replyChipDataAtom,
 } from '@src/component/board/atom.js';
 import { useSetAtom } from 'jotai/react';
@@ -29,6 +29,7 @@ import { INIT_EDIT_COMMENT_STATE } from '@src/component/board/const.js';
 import BookmarkButton from '@src/component/board/BookmarkButton.jsx';
 import useFetchFeedDetail from '@src/component/board/feed/hooks/useFetchFeedDetail.jsx';
 import useClickBookmark from '@src/component/board/hooks/useClickBookmark.jsx';
+import CommentEditTextField from '@src/component/board/CommentEditTextField.jsx';
 
 const CONTAINER_MAX_HEIGHT = 'calc(100vh - 100px)';
 const COMMENT_LIST_MAX_HEIGHT = 'calc(200% - 120px)';
@@ -100,9 +101,10 @@ const FeedCommentList = (props) => {
     checkedLike, likeCount, userNick: writer,
   } = feedData;
   const commentInputRef = useRef(null);
+  const commentEditRef = useRef(null);
   const commentListRef = useRef(null);
 
-  const [cmtListRef, setCmtListRef] = useAtom(commentListRefAtom);
+  const [cmtListRef, setCmtListRef] = useAtom(commentListRefAtom);//스크롤 내리는 용도
   const setEditCommentData = useSetAtom(commentEditDataAtom);
   const setReplyChipData = useSetAtom(replyChipDataAtom);
 
@@ -110,6 +112,12 @@ const FeedCommentList = (props) => {
   const clickBookmark = useClickBookmark(boardId);
   const { data: detailData, isLoading: detailLoading } = useFetchFeedDetail(boardId);
   const { data: cmtData } = useFetchCommentsList(boardId);
+
+  const [isEdit, setIsEdit] = useAtom(isCommentEditAtom);//댓글 수정 모드인지
+
+  useEffect(() => {
+    setIsEdit(false);
+  }, []);
 
   const onClickLike = () => {
     clickLikeButton.mutate();
@@ -136,19 +144,25 @@ const FeedCommentList = (props) => {
           <FeedCommentComponent
             cmtDepth={0}
             inputRef={commentInputRef}
+            editRef={commentEditRef}
             isContent={true}
             {...feedData}
           />
-          <FeedComments cmtData={cmtData} inputRef={commentInputRef} />
+          <FeedComments
+            cmtData={cmtData}
+            inputRef={commentInputRef}
+            editRef={commentEditRef}
+          />
           {/*<FeedCommentComponent />*/}
         </FeedCommentBody>
         <Divider />
         <ButtonsContainer>
           <Tooltip title="댓글">
             <IconButton
-              onClick={() => {
+              onClick={async () => {
                 setEditCommentData(INIT_EDIT_COMMENT_STATE);
                 setReplyChipData([]);
+                await setIsEdit(false);
                 commentInputRef.current.focus();
               }}
               aria-label="comment">
@@ -169,24 +183,28 @@ const FeedCommentList = (props) => {
               clicked={(detailData?.checkedBookmark === 1) + ''}
               onClick={onClickBookmark}
             />
-
           </Tooltip>
         </ButtonsContainer>
         <LikeViewContainer>
           <LikeTypography variant="body2">좋아요 {likeCount}개</LikeTypography>
         </LikeViewContainer>
-        <CommentTextField
-          inputRef={commentInputRef}
-          size="small"
-          boardId={boardId}
-        />
+        {!isEdit ? <CommentInputTextField
+            inputRef={commentInputRef}
+            size="small"
+            boardId={boardId}
+          /> :
+          <CommentEditTextField
+            inputRef={commentEditRef}
+            size="small"
+            boardId={boardId}
+          />}
       </FeedCommentInnerContainer>
     </FeedCommentOuterContainer>
 
   );
 };
 
-const FeedComments = ({ cmtData, inputRef }) => {
+const FeedComments = ({ cmtData, inputRef, editRef }) => {
 
   return (
     <>
@@ -196,11 +214,13 @@ const FeedComments = ({ cmtData, inputRef }) => {
             key={`comment-${index}`}>
             <FeedCommentComponent
               inputRef={inputRef}
+              editRef={editRef}
               {...cmt}
             />
             {cmt.replies.length !== 0 && <FeedComments
               cmtData={cmt.replies}
               inputRef={inputRef}
+              editRef={editRef}
             />}
           </React.Fragment>
         );

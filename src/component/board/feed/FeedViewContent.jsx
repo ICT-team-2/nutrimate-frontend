@@ -94,7 +94,7 @@ function FeedViewContent(props) {
             avatar={
               <UserAvatar
                 userNick={writer}
-                sx={{ bgcolor: red[500] }} aria-label="recipe">
+                aria-label="recipe">
                 {writer}
               </UserAvatar>
             }
