@@ -30,6 +30,7 @@ import BookmarkButton from '@src/component/board/BookmarkButton.jsx';
 import useFetchFeedDetail from '@src/component/board/feed/hooks/useFetchFeedDetail.jsx';
 import useClickBookmark from '@src/component/board/hooks/useClickBookmark.jsx';
 import CommentEditTextField from '@src/component/board/CommentEditTextField.jsx';
+import FeedContentDropMenu from '@src/component/board/feed/FeedContentDropMenu.jsx';
 
 const CONTAINER_MAX_HEIGHT = 'calc(100vh - 100px)';
 const COMMENT_LIST_MAX_HEIGHT = 'calc(200% - 120px)';
@@ -137,6 +138,8 @@ const FeedCommentList = (props) => {
         <FeedCommentHeader>
           <UserAvatar userNick={writer} />
           <NicknameTypo variant="subtitle2">{writer}</NicknameTypo>
+          <FlexGrowDiv />
+          <FeedContentDropMenu />
         </FeedCommentHeader>
         <Divider />
         <FeedCommentBody ref={commentListRef}>

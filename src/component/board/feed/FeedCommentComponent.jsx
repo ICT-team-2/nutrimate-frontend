@@ -56,7 +56,7 @@ const FeedCommentComponent = (props) => {
     cmtDepth, inputRef, editRef, isContent,
     boardId, boardContent, checkedLike,
     likeCount, userNick: writer, cmtContent,
-    cmtId, userId: writerId,
+    cmtId, userId: writerId, userProfile: writerProfile,
   } = props;
   const setReplyChipData = useSetAtom(replyChipDataAtom);
   const setCommentEditData = useSetAtom(commentEditDataAtom);
@@ -68,7 +68,9 @@ const FeedCommentComponent = (props) => {
   return (
     <CommentContainer $depth={cmtDepth}>
       <NicknameContainer>
-        <UserAvatar userNick={writer} />
+        <UserAvatar
+          src={import.meta.env.REACT_APP_BACKEND_URL + writerProfile}
+          userNick={writer} />
         <NicknameTypo variant="subtitle2">{writer}</NicknameTypo>
         <FlexGrowDiv />
       </NicknameContainer>

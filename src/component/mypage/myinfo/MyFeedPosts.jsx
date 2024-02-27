@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import FeedCard from '@src/component/mypage/myinfo/FeedCard.jsx';
+import MyFeedCard from '@src/component/mypage/myinfo/MyFeedCard.jsx';
 import useFetchProfileFeedList from '@src/hooks/mypage/useFetchProfileFeedList.jsx';
 import { useEffect } from 'react';
 
@@ -15,7 +15,7 @@ function MyFeedPosts({ profileUserId }) {
           return feedPage?.feedList.map((feed, index) => {
             return (
               <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
-                <FeedCard data={feed} />
+                <MyFeedCard data={feed} />
               </Grid>
             );
           });

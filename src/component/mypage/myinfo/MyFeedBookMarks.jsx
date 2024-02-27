@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid } from '@mui/material';
-import FeedCard from '@src/component/mypage/myinfo/FeedCard.jsx';
+import MyFeedCard from '@src/component/mypage/myinfo/MyFeedCard.jsx';
 import useFetchBookmarkFeedList from '@src/hooks/mypage/useFetchBookmarkFeedList.jsx';
 import { useParams } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ const MyFeedBookMarks = () => {
           return feedPage?.feedList.map((feed, index) => {
             return (
               <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
-                <FeedCard data={feed} isBookmark />
+                <MyFeedCard data={feed} isBookmark />
               </Grid>
             );
           });
