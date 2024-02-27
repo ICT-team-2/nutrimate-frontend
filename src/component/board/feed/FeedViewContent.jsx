@@ -66,7 +66,7 @@ function FeedViewContent(props) {
   const {
     boardContent, boardId, boardThumbnail,
     checkedLike, likeCount, userNick: writer, checkedBookmark,
-    userId: writerId,
+    userId: writerId, userProfile: writerProfile,
   } = props;
   const [likeClicked, setLikeClicked] = useState(checkedLike === 1);
   const clickLikeButton = useClickLikeButton(boardId);
@@ -93,6 +93,7 @@ function FeedViewContent(props) {
           <CardHeader
             avatar={
               <UserAvatar
+                src={import.meta.env.REACT_APP_BACKEND_URL + writerProfile}
                 userNick={writer}
                 aria-label="recipe">
                 {writer}

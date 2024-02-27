@@ -26,7 +26,7 @@ import FeedContentDropMenu from '@src/component/board/feed/FeedContentDropMenu.j
 const CustomCard = styled(Card)`
     width: 240px;
     margin: 10px;
-    height: 300px;
+    height: ${({ isbookmark }) => isbookmark ? '300px' : '240px'};
     display: flex;
     flex-direction: column;
     cursor: pointer;
@@ -48,7 +48,7 @@ const defaultData = {
   date: '2022.01.12',
 };
 
-export default function FeedCard(props) {
+export default function MyFeedCard(props) {
 
   const { data, isBookmark } = props;
   const {
@@ -82,21 +82,8 @@ export default function FeedCard(props) {
   return (
     <>
       <CustomCard
+        isbookmark={isBookmark}
         onClick={clickCard}>
-        <CardHeader
-          avatar={
-            <UserAvatar
-              userNick={writer}
-              src={import.meta.env.REACT_APP_BACKEND_URL + `${writerProfile}`}
-              aria-label="recipe">
-              {writer}
-            </UserAvatar>
-          }
-          action={
-            (writerId === userId) && <FeedContentDropMenu boardId={boardId} />
-          }
-          title={writer}
-        />
         <CustomCardMedia
           src={import.meta.env.REACT_APP_BACKEND_URL + `${boardThumbnail}`}
           alt={'feed'}
@@ -131,7 +118,7 @@ export default function FeedCard(props) {
   );
 }
 
-FeedCard.defaultProps = {
+MyFeedCard.defaultProps = {
   title: defaultData.title,
   content: defaultData.content,
   img: defaultData.url,

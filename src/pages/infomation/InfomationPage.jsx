@@ -9,6 +9,7 @@ import { infoTabStateAtom, recommandMenuStateAtom, searchKeywordAtom } from '@sr
 
 import { INFO_TABS, RECOMMAND_MENU } from '@src/component/infomation/const.js';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
+import PlaceRecommandContent from '@src/component/infomation/place/PlaceRecommandContent.jsx';
 
 //lazy loading
 const NewsContents = lazy(() =>
@@ -66,7 +67,7 @@ const Contents = () => {
       return <SportContents />;
     }
     if (selectedMenu === RECOMMAND_MENU.PLACE) {
-      return <div>장소 추천</div>;
+      return <PlaceRecommandContent />;
     }
     if (selectedMenu === RECOMMAND_MENU.FOOD) {
       return <RecipeContents />;

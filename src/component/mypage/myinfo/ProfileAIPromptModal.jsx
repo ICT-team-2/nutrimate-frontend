@@ -10,7 +10,7 @@ import { useAtom, useSetAtom } from 'jotai/react';
 import { styled as muiStyled } from '@mui/material/styles';
 import styled from 'styled-components';
 import useCreateImageAI from '@src/hooks/mypage/useCreateImageAI.jsx';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import useChangeProfileImage from '@src/hooks/mypage/useChangeProfileImage.jsx';
 import { base64toFile } from '@src/utils/functions.js';

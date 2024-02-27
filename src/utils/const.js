@@ -237,4 +237,6 @@ export const REACT_QUERY_KEYS = {
   FOOD: 'food',
   SURVEY: 'survey',
   ADMIN: 'admin',
+  RESTAURANT: 'restaurant',
+  GYM: 'gym',
 };
