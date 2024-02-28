@@ -10,6 +10,9 @@ import { LINKS, PATH_PARAMS, TITLE } from '@src/utils/const.js';
 import InfoBoardCategory from '@src/component/board/info/list/InfoBoardCategoryMenu.jsx';
 import PagnationComponent from '@src/component/common/PagnationComponent.jsx';
 import SelectInfoSearchTitle from '@src/component/board/info/list/SelectInfoSearchTitle.jsx';
+import useFetchInfoBoardList from '@src/hooks/board/info/useFetchInfoBoardList.jsx';
+import { BOARD, SELECT_COLUMNS } from '@src/component/board/const.js';
+import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
 
 const ContentsCotainerBox = muiStyled(Box)`
     margin: 0
@@ -33,66 +36,94 @@ const FlexGrowDiv = styled.div`
     flex-grow: 1;
 `;
 
-const InfoBoardListContent = ({ data, title, category }) => {
+const InfoBoardListContent = ({ title, category }) => {
 
-  const { page } = useParams(); // 현재 페이지
-  const [pageState, setPageState] = useState(parseInt(page));
-  const [searchValue, setSearchValue] = useState('');
+    const { page } = useParams(); // 현재 페이지
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isNaN(pageState)) {
-      setPageState(1);
-    }
-  }, [pageState]);
+    const [pageState, setPageState] = useState(parseInt(page));
+    const [searchValue, setSearchValue] = useState('');
+    const [selectColumn, setSelectColumn] = useState(SELECT_COLUMNS.TITLE.value);
+    const [dataState, setDataState] = useState(undefined);
 
-  const navigate = useNavigate();
-  const handlePageChange = (event, value) => {
-    setPageState(value);
-    navigate(LINKS.INFO_BOARD + `/${category}/${value}`);
-  };
+    const { data, isLoading } = useFetchInfoBoardList({
+      nowPage: pageState,
+      receivePage: 10,
+      searchColumn: selectColumn,// 검색 컬럼
+      searchKeyword: searchValue,
+      boardCategory: category.CATEGORY,
+    });
 
-  const gotoWritePage = () => {
-    navigate(LINKS.INFO_BOARD_WRITE,
-      {
-        state: {
-          title: category === PATH_PARAMS.SPORT
-            ? TITLE.SPORT_BOARD
-            : TITLE.FOOD_BOARD
-          ,
-        },
-      });
-  };
+    useEffect(() => {
+      if (data == null || data.length === 0) return;
+      setDataState(data);
+    }, [data]);
 
-  return (
-    <ContentsCotainerBox>
-      {/* title */}
-      <InfoBoardCategory title={title} />
-      <br />
-      <TextFieldContainerDiv>
-        {/* 글 찾기 인풋 */}
-        <SelectInfoSearchTitle />
-        <CustomSearchInput
-          searchValue={searchValue} setSearchValue={setSearchValue}
-        />
-        <FlexGrowDiv></FlexGrowDiv>
-        {/* 글 작성 버튼*/}
-        <Button variant="contained" onClick={gotoWritePage}>
-          글 작성
-        </Button>
-      </TextFieldContainerDiv>
-      {/* 글 목록 테이블 */}
-      <InfoBoardTable />
-      {/* 페이지네이션 */}
-      <PagnationComponent pageState={pageState}
-                          handlePageChange={handlePageChange} />
-    </ContentsCotainerBox>
-  );
-};
+    useEffect(() => {
+      console.log('dataState', dataState);
+    }, [dataState]);
+
+    useEffect(() => {
+      if (isNaN(pageState)) {
+        setPageState(1);
+      }
+    }, [pageState]);
+
+    const handlePageChange = (event, value) => {
+      setPageState(value);
+      navigate(LINKS.INFO_BOARD + `/${category.PATH_PARAMS}/${value}`);
+    };
+
+    const gotoWritePage = () => {
+      navigate(LINKS.INFO_BOARD_WRITE,
+        {
+          state: {
+            title: category.PATH_PARAMS === PATH_PARAMS.SPORT
+              ? TITLE.SPORT_BOARD
+              : TITLE.FOOD_BOARD
+            ,
+          },
+        });
+    };
+
+    return (
+      <ContentsCotainerBox>
+        {/* title */}
+        <InfoBoardCategory title={title} />
+        <br />
+        <TextFieldContainerDiv>
+          {/* 글 찾기 인풋 */}
+          <SelectInfoSearchTitle
+            selectColumn={selectColumn}
+            setSelectColumn={setSelectColumn}
+          />
+          <CustomSearchInput
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+          />
+          <FlexGrowDiv />
+          {/* 글 작성 버튼*/}
+          <Button variant="contained" onClick={gotoWritePage}>
+            글 작성
+          </Button>
+        </TextFieldContainerDiv>
+        {/* 글 목록 테이블 */}
+        {isLoading
+          ? <LoadingComponent />
+          : <InfoBoardTable data={data?.boardList} />}
+        {/* 페이지네이션 */}
+        <PagnationComponent
+          pageState={pageState}
+          totalPage={data?.totalPage >= 1 ? data?.totalPage : 1}
+          handlePageChange={handlePageChange} />
+      </ContentsCotainerBox>
+    );
+  }
+;
 
 InfoBoardListContent.defaultProps = {
-  data: [],
   title: TITLE.ALL_INFO_BOARD,
-  category: PATH_PARAMS.ALL,
+  category: BOARD.INFO.ALL,
 };
 
 export default InfoBoardListContent;

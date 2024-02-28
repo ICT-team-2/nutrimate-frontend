@@ -7,9 +7,9 @@ import { styled as muiStyled } from '@mui/material/styles';
 import InputHashtag from '@src/component/board/InputHashtag.jsx';
 import { useAtom } from 'jotai/react';
 import { inputHashTagAtom } from '@src/component/board/atom.js';
-import useInputFeed from '@src/component/board/feed/hooks/useInputFeed.jsx';
+import useInputFeed from '@src/hooks/board/feed/useInputFeed.jsx';
 import { base64toFile } from '@src/utils/functions.js';
-import useEditFeed from '@src/component/board/feed/hooks/useEditFeed.jsx';
+import useEditFeed from '@src/hooks/board/feed/useEditFeed.jsx';
 import { useNavigate } from 'react-router-dom';
 
 const TitleContainer = styled.div`
@@ -42,6 +42,7 @@ const FeedWrite = ({ editData, isEdit }) => {
       label: item,
     })) ?? []);
     setBoardContent(editData?.boardContent ?? '');
+    console.log(editData);
   }, [editData]);
 
   useEffect(() => {

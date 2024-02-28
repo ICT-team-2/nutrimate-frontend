@@ -19,7 +19,12 @@ const useEditComment = (boardId) => {
     mutationKey: [REACT_QUERY_KEYS.COMMENTS, REACT_QUERY_KEYS.UPDATE],
     mutationFn: editComment,
     onSuccess: () => {
-      queryClient.invalidateQueries([REACT_QUERY_KEYS.COMMENTS, boardId]);
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          return query.queryKey.includes(REACT_QUERY_KEYS.COMMENTS)
+            && query.queryKey.includes(boardId);
+        },
+      });
     },
     onError: (error) => {
       console.error(error);

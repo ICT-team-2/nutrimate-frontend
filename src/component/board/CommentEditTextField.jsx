@@ -4,11 +4,11 @@ import { Button, TextField } from '@mui/material';
 import { useAtom } from 'jotai';
 import { commentEditDataAtom, isCommentEditAtom, replyChipDataAtom } from '@src/component/board/atom.js';
 import Chip from '@mui/material/Chip';
-import useInputComment from '@src/component/board/hooks/useInputComment.jsx';
+import useInputComment from '@src/hooks/board/common/comment/useInputComment.jsx';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import { INIT_EDIT_COMMENT_STATE } from '@src/component/board/const.js';
-import useEditComment from '@src/component/board/hooks/useEditComment.jsx';
-import useInputReply from '@src/component/board/hooks/useInputReply.jsx';
+import useEditComment from '@src/hooks/board/common/comment/useEditComment.jsx';
+import useInputReply from '@src/hooks/board/common/comment/useInputReply.jsx';
 import { useSetAtom } from 'jotai/react';
 
 const CommentInputContainer = styled.div`

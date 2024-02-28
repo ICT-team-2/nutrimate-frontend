@@ -95,6 +95,12 @@ export const ImgUploader = (props) => {
     event.preventDefault();
   };
 
+  useEffect(() => {
+    if (src != null || src !== undefined) {
+      setAfterUpload(true);
+    }
+  }, [src]);
+
   return (
     <ImgUploaderContainer
     >

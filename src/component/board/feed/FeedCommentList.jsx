@@ -14,9 +14,9 @@ import CommentIcon from '@mui/icons-material/Comment';
 import LikeButton from '@src/component/board/LikeButton.jsx';
 import { Button, TextField } from '@mui/material';
 import useClickLikeButton
-  from '@src/component/board/hooks/useClickLikeButton.jsx';
+  from '@src/hooks/board/common/like/useClickLikeButton.jsx';
 import useFetchCommentsList
-  from '@src/component/board/hooks/useFetchCommentsList.jsx';
+  from '@src/hooks/board/common/comment/useFetchCommentsList.jsx';
 import CommentInputTextField from '@src/component/board/CommentInputTextField.jsx';
 import { atom, useAtom } from 'jotai';
 import {
@@ -27,10 +27,12 @@ import {
 import { useSetAtom } from 'jotai/react';
 import { INIT_EDIT_COMMENT_STATE } from '@src/component/board/const.js';
 import BookmarkButton from '@src/component/board/BookmarkButton.jsx';
-import useFetchFeedDetail from '@src/component/board/feed/hooks/useFetchFeedDetail.jsx';
-import useClickBookmark from '@src/component/board/hooks/useClickBookmark.jsx';
+import useFetchFeedDetail from '@src/hooks/board/feed/useFetchFeedDetail.jsx';
+import useClickBookmark from '@src/hooks/board/common/bookmark/useClickBookmark.jsx';
 import CommentEditTextField from '@src/component/board/CommentEditTextField.jsx';
-import FeedContentDropMenu from '@src/component/board/feed/FeedContentDropMenu.jsx';
+import FeedDropMenu from '@src/component/board/feed/FeedDropMenu.jsx';
+import BoardLikeButton from '@src/component/board/BoardLikeButton.jsx';
+import BoardBookmarkButton from '@src/component/board/BoardBookmarkButton.jsx';
 
 const CONTAINER_MAX_HEIGHT = 'calc(100vh - 100px)';
 const COMMENT_LIST_MAX_HEIGHT = 'calc(200% - 120px)';
@@ -109,8 +111,6 @@ const FeedCommentList = (props) => {
   const setEditCommentData = useSetAtom(commentEditDataAtom);
   const setReplyChipData = useSetAtom(replyChipDataAtom);
 
-  const clickLikeButton = useClickLikeButton(boardId);
-  const clickBookmark = useClickBookmark(boardId);
   const { data: detailData, isLoading: detailLoading } = useFetchFeedDetail(boardId);
   const { data: cmtData } = useFetchCommentsList(boardId);
 
@@ -120,13 +120,6 @@ const FeedCommentList = (props) => {
     setIsEdit(false);
   }, []);
 
-  const onClickLike = () => {
-    clickLikeButton.mutate();
-  };
-
-  const onClickBookmark = () => {
-    clickBookmark.mutate();
-  };
 
   useEffect(() => {
     setCmtListRef(commentListRef.current);
@@ -139,7 +132,7 @@ const FeedCommentList = (props) => {
           <UserAvatar userNick={writer} />
           <NicknameTypo variant="subtitle2">{writer}</NicknameTypo>
           <FlexGrowDiv />
-          <FeedContentDropMenu />
+          <FeedDropMenu boardId={boardId} />
         </FeedCommentHeader>
         <Divider />
         <FeedCommentBody ref={commentListRef}>
@@ -175,16 +168,16 @@ const FeedCommentList = (props) => {
           <FlexGrowDiv />
           <Tooltip title={'좋아요'}>
             <LikeButtonContainer>
-              <LikeButton
-                onClick={onClickLike}
+              <BoardLikeButton
+                boardId={boardId}
                 clicked={detailData?.checkedLike === 1}
                 size={7} />
             </LikeButtonContainer>
           </Tooltip>
           <Tooltip title="북마크">
-            <BookmarkButton
+            <BoardBookmarkButton
+              boardid={boardId}
               clicked={(detailData?.checkedBookmark === 1) + ''}
-              onClick={onClickBookmark}
             />
           </Tooltip>
         </ButtonsContainer>

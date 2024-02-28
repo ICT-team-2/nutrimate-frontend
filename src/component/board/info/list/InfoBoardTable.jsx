@@ -20,35 +20,18 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const StyledTitleTableCell = styled(TableCell)`
-    cursor: pointer;
-`;
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
   // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
+  cursor: 'pointer',
 }));
 
-function createData(name, calories, fat, carbs) {
-  return { name, calories, fat, carbs };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24),
-  createData('Ice cream sandwich', 237, 9.0, 37),
-  createData('Eclair', 262, 16.0, 24),
-  createData('Cupcake', 305, 3.7, 67),
-  createData('Gingerbread', 356, 16.0, 49),
-  createData('Gingerbread2', 356, 16.0, 49),
-  createData('Gingerbread3', 356, 16.0, 49),
-  createData('Gingerbread4', 356, 16.0, 49),
-  createData('Gingerbread5', 356, 16.0, 49),
-  createData('Gingerbread6', 356, 16.0, 49),
-  createData('Gingerbread7', 356, 16.0, 49),
-];
 
 //정보 공유 게시판 글 목록 테이블
 export default function InfoBoardTable({ data }) {
@@ -63,20 +46,31 @@ export default function InfoBoardTable({ data }) {
         <TableHead>
           <TableRow>
             <StyledTableCell>제목</StyledTableCell>
-            <StyledTableCell align="right">작성자</StyledTableCell>
-            <StyledTableCell align="right">등록일</StyledTableCell>
-            <StyledTableCell align="right">조회수</StyledTableCell>
+            <StyledTableCell align="center">작성자</StyledTableCell>
+            <StyledTableCell align="center">등록일</StyledTableCell>
+            <StyledTableCell align="center">조회수</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.map((d, index) => (
+          {data && data.map((d, index) => (
             <StyledTableRow key={d.boardTitle + index}>
-              <TitleTableCell component="th" scope="row">
+              <DataTableCell
+                data={d}
+                component="th" scope="row">
                 {d.boardTitle}
-              </TitleTableCell>
-              <StyledTableCell align="right">{d.userNick}</StyledTableCell>
-              <StyledTableCell align="right">{d.createdDate}</StyledTableCell>
-              <StyledTableCell align="right">{d.viewCount}</StyledTableCell>
+              </DataTableCell>
+              <DataTableCell
+                data={d} align="center">
+                {d.userNick}
+              </DataTableCell>
+              <DataTableCell
+                data={d} align="center">
+                {d.createdDate}
+              </DataTableCell>
+              <DataTableCell
+                data={d} align="center">
+                {d.viewCount}
+              </DataTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
@@ -85,10 +79,19 @@ export default function InfoBoardTable({ data }) {
   );
 }
 
-const TitleTableCell = (props) => {
+const DataTableCell = (props) => {
   const navigate = useNavigate();
-  const { children: title } = props;
-  return <StyledTitleTableCell onClick={() => {
-    navigate(LINKS.INFO_BOARD_VIEW + '/506');
-  }}>{title}</StyledTitleTableCell>;
+  const { children: title, data } = props;
+  return <StyledTableCell
+    {...props}
+    onClick={() => {
+      if (data == null) return;
+      navigate(LINKS.INFO_BOARD_VIEW + `/${data.boardId}`, {
+        state: {
+          category: data.boardCategory.toUpperCase(),
+        },
+      });
+    }}>
+    {title}
+  </StyledTableCell>;
 };

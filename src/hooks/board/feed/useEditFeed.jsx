@@ -28,7 +28,12 @@ const useEditFeed = () => {
     mutationFn: updateFeed,
     onSuccess: () => {
       console.log('게시글 수정 성공');
-      queryClient.invalidateQueries([REACT_QUERY_KEYS.FEED, REACT_QUERY_KEYS.LIST]).then(() => {
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          return query.queryKey.includes(REACT_QUERY_KEYS.FEED)
+            && query.queryKey.includes(REACT_QUERY_KEYS.LIST);
+        },
+      }).then(() => {
         navigate(LINKS.FEEDBOARD_VIEW);
       });
     },

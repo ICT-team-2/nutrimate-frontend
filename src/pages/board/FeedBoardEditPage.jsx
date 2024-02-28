@@ -2,7 +2,7 @@ import React from 'react';
 import FeedWrite from '@src/component/board/feed/FeedWrite.jsx';
 import { styled as muiStyled } from '@mui/material/styles';
 import { Container } from '@mui/material';
-import useFetchFeedDetail from '@src/component/board/feed/hooks/useFetchFeedDetail.jsx';
+import useFetchFeedDetail from '@src/hooks/board/feed/useFetchFeedDetail.jsx';
 import { useParams } from 'react-router-dom';
 
 

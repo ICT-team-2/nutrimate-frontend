@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import Avatar from '@mui/material/Avatar';
 import React from 'react';
+import { debounce } from '@src/utils/functions.js';
 
 export const StyledContainer = muiStyled(Container)`
     margin: 0 6vw;
@@ -43,7 +44,7 @@ export const StyledSearchInput = muiStyled(TextField)({
 export const CustomSearchInput = (props) => {
   // eslint-disable-next-line react/prop-types
   const { label, id, size, callback, searchValue, setSearchValue } = props;
-  
+
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {

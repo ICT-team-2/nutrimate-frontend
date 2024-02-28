@@ -27,7 +27,13 @@ const useClickBookmark = (boardId, profile) => {
     onSuccess: () => {
       console.log('북마크 성공');
       if (!profile) {
-        queryClient.invalidateQueries([REACT_QUERY_KEYS.BOARD, boardId]);
+        queryClient.invalidateQueries({
+          predicate: (query) => {
+            return query.queryKey.includes(REACT_QUERY_KEYS.BOARD)
+              && (query.queryKey.includes(boardId) ||
+                query.queryKey.includes(REACT_QUERY_KEYS.LIST));
+          },
+        });
       }
     },
     onError: (error) => {

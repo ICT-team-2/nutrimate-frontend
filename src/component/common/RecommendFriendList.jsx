@@ -19,7 +19,7 @@ import useFetchProfileData from '@src/hooks/mypage/useFetchProfileData.jsx';
 import { userIdAtom } from '@src/pages/login/atom.js';
 import { useEffect } from 'react';
 import FollowButton from '@src/component/common/FollowButton.jsx';
-import useRecommandFollowList from '@src/hooks/follow/useRecommandFollowList.jsx';
+import useFetchRecommandFollowList from '@src/hooks/follow/useFetchRecommandFollowList.jsx';
 
 const exampleDatas = [
   {
@@ -60,7 +60,7 @@ const AvatarContainer = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
-    padding-left: 20px;
+    padding-left: 30px;
 `;
 
 const UserNameContainer = styled.div`
@@ -82,16 +82,14 @@ const StyledListSubheader = styled(ListSubheader)`
 
 const RecommendFriendList = ({ datas = exampleDatas }) => {
   const { data: userData } = useFetchProfileData();
-  const { data: recommendFollowData } = useRecommandFollowList();
-
-  useEffect(() => {
-    console.log('recommendFollowData', recommendFollowData);
-  }, [recommendFollowData]);
+  const { data: recommendFollowData } = useFetchRecommandFollowList();
 
   return (
     <FriendListContainer>
       <AvatarContainer>
-        <UserAvatar src={import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
+        <UserAvatar
+          userNick={userData?.userNick}
+          src={import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
         <UserNameContainer>{userData?.userNick}</UserNameContainer>
       </AvatarContainer>
       <StyledPaper>

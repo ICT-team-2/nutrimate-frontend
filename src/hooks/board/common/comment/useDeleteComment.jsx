@@ -20,7 +20,12 @@ const useDeleteComment = (cmtId, boardId) => {
     mutationFn: deleteComment,
     onSuccess: () => {
       // console.log('댓글 삭제 성공');
-      queryClient.invalidateQueries([REACT_QUERY_KEYS.COMMENTS, boardId]);
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          return query.queryKey.includes(REACT_QUERY_KEYS.COMMENTS)
+            && query.queryKey.includes(boardId);
+        },
+      });
     },
     onError: (error) => {
       console.error(error);

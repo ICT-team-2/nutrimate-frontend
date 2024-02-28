@@ -27,7 +27,7 @@ const useFetchProfileData = (profileUserId = undefined) => {
     queryKey: [REACT_QUERY_KEYS.MEMBER,
       REACT_QUERY_KEYS.PROFILE,
       REACT_QUERY_KEYS.MEMBER_DATA,
-      profileUserId],
+      parseInt(profileUserId)],
     queryFn: fetchMyData,
   });
 };

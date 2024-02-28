@@ -7,9 +7,9 @@ import Fade from '@mui/material/Fade';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
 import AskDeleteDialog from '@src/component/board/AskDeleteDialog.jsx';
-import useDeleteBoard from '@src/component/board/feed/hooks/useDeleteBoard.jsx';
+import useDeleteBoard from '@src/hooks/board/common/useDeleteBoard.jsx';
 
-const FeedContentDropMenu = ({ boardId }) => {
+const FeedDropMenu = ({ boardId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -58,4 +58,4 @@ const FeedContentDropMenu = ({ boardId }) => {
   );
 };
 
-export default FeedContentDropMenu;
+export default FeedDropMenu;

@@ -5,7 +5,7 @@ import { CustomSearchInput, FlexDiv, FlexGrowDiv } from '@src/component/common/G
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
-import useFetchFeedList from '@src/component/board/feed/hooks/useFetchFeedList';
+import useFetchFeedList from '@src/hooks/board/feed/useFetchFeedList.jsx';
 import useIntersectionObserver from '@src/hooks/useIntersectionObserver.jsx';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
 
