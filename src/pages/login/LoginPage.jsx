@@ -15,6 +15,10 @@ import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom';
 import { Link } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
+import  firebaseConfigFile from '@src/pages/login/fireConfig.js';
+import { initializeApp } from "firebase/app";
+import { getMessaging, onMessage, getToken } from "firebase/messaging";
+
 
 
 const LoginContainer = styled(Container)`
@@ -74,6 +78,7 @@ const LoginPage = () => {
   const [checked, setChecked] = useState(false);
   const [id, setId] = useState(localStorage.getItem('savedId') || '');
   const [password, setPassword] = useState('');
+
   // const [userId, setUserId] = useAtom(userIdAtom);
 
 
@@ -95,14 +100,23 @@ const LoginPage = () => {
     console.log('ddd');
 
 
-    axios.post('/login', {
-      userUid: id,
-      userPwd: password,
-    })
-      .then(response => {
-        const { accessToken } = response.data;
-        window.location.href = '/';
-      });
+          axios.post('/login', {
+            userUid: id,
+            userPwd: password,
+        })
+        .then(response => {
+            // fcm 함수 호출 후, 완료될 때까지 기다림
+            console.log('ttttttt',response.data);
+            fcm();
+            const { accessToken } = response.data;
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 500)
+        })
+        .catch(error => {
+            // 오류 처리
+            console.error("에러 발생:", error);
+        });
   };
   //axios.defaults.headers.common['ACCESS'] = `${accessToken}`;
 
@@ -126,6 +140,26 @@ const LoginPage = () => {
 //       console.error('Error:', error);
   // });
 //  };
+
+   const firebase = initializeApp(firebaseConfigFile);
+  const fcm = ()=> {
+    const YOUR_PUBLIC_VAPID_KEY='BAhS2AiADnmnXSErAkh182-w5CYAZmvhUPOIVVmcBNDAjWycubfIPzXPdFI3h4dTX_grGnOr2gZuoWiE4nbPyUo';
+    const messaging = getMessaging();
+    getToken(messaging,{vapidKey: YOUR_PUBLIC_VAPID_KEY}).then((token) => {
+      console.log("fcmToken:", token);
+      axios.post('http://localhost:2222/fcm', {
+        'token': token
+        })
+        .then(response => {
+            // 응답 데이터 처리
+            console.log('sdff',response);
+        })
+        .catch(error => {
+            console.error('Error fetching chat data:', error);
+        });
+      });
+     
+  }
 
   const handleSocialLogin = (provider) => {
     window.location.href = `http://localhost:9999/oauth2/authorization/${provider}`;

@@ -11,9 +11,18 @@ import { Button } from '@mui/material';
 import { Container } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
 import Add from '@mui/icons-material/Add'; 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
+import AlarmModal from '@src/component/calendar/AlarmModal.jsx';
+import WeekPicker from '@src/component/calendar/WeekPicker.jsx';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import 'dayjs/locale/ko';
+import dayjs from 'dayjs';
+import { color } from '@mui/system';
+
+
+
+dayjs.locale('ko');
+
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:hover': {
@@ -30,16 +39,11 @@ const CircleButton = styled(Button)`
         position: absolute;
         bottom: 20px;
         right: 20px;
+        
     }
 `;
 
-const rows = [
-  createData(1, 159, 6.0, 24, 4.0),
-  createData(2, 237, 9.0, 37, 4.3),
-  createData(3, 262, 16.0, 24, 6.0),
-  createData(4, 305, 3.7, 67, 4.3),
-  createData(5, 356, 16.0, 49, 3.9),
-];
+
 
 const StyledTableHead = styled(TableHead)`
     background-color: ${({ theme }) => theme['main-background']};
@@ -48,9 +52,36 @@ const StyledTableHead = styled(TableHead)`
 
 
 const ListTable = ({ data }) => {
-  console.log(data);
+  const currentDate = dayjs();
+  
+
   const [groupedData, setGroupedData] = useState({});
   const tableContainerRef = useRef(null);
+  const [value, setValue] = React.useState(dayjs(new Date()));
+  const startOfWeekFirst = value.startOf('week');
+  const endOfWeekSecond = value.endOf('week');
+  const [startWeek, setStartWeek] = useState(startOfWeekFirst);
+  const [endWeek, setEndWeek] = useState(endOfWeekSecond);
+
+  const handleChangeWeek = (startOfWeek, endOfWeek) => {
+    setStartWeek(startOfWeek)
+    setEndWeek(endOfWeek)
+  };
+
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 모달 열기 함수
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+
+  useEffect(() => {
+      console.log(startWeek)
+      console.log(endWeek)
+     
+  }, [startWeek,endWeek])
 
   useEffect(() => {
     const updatedGroupedData = {};
@@ -94,6 +125,9 @@ const ListTable = ({ data }) => {
   }, []);
   return (
     <TableContainer ref={tableContainerRef} component={Paper} style={{ width: '100%', height: '80%', position: 'relative', overflow: 'auto'}}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <WeekPicker onChangeWeek={handleChangeWeek}></WeekPicker>
+        </LocalizationProvider>
     {Object.keys(groupedData).map((date, index) => (
       <Table key={index} sx={{ minWidth: 650 }} aria-label="simple table">
         <StyledTableHead>
@@ -114,9 +148,9 @@ const ListTable = ({ data }) => {
     ))}
       <CircleButton
         variant='contained'
-        onClick={() => {
-        }}
+        onClick={openModal}
       ><Add/></CircleButton>
+      {isModalOpen && <AlarmModal showChallengeModal={isModalOpen} setChallengeModal={setIsModalOpen} ></AlarmModal>}
   </TableContainer>
   );
 };
