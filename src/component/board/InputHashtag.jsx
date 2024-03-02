@@ -53,7 +53,7 @@ const InputHashtag = () => {
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       const newChip = { key: chipData.length, label: inputValue };
-      setChipData([...chipData, newChip]);
+      setChipData([...new Set([...chipData, newChip])]);
       setInputValue('');
     }
   };

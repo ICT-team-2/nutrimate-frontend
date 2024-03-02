@@ -15,6 +15,10 @@ import BoardLikeButton from '@src/component/board/BoardLikeButton.jsx';
 import useFetchDietBoardDetail from '@src/hooks/board/info/diet/useFetchDietBoardDetail.jsx';
 import useFetchSportBoardDetail from '@src/hooks/board/info/sport/useFetchSportBoardDetail.jsx';
 import { NO_IMAGE_PATH } from '@src/utils/const.js';
+import FoodAnaylsisTable from '@src/component/board/info/write/FoodAnaylsisTable.jsx';
+import DOMPurify from 'dompurify';
+import { useSetAtom } from 'jotai/react';
+import { foodIdAtom } from '@src/component/board/info/atom.js';
 
 const InfoBoardViewContainer = muiStyled(Container)`
   margin-top: 20px;
@@ -31,7 +35,7 @@ const Categorydiv = styled.div`
     margin-left: 5px;
 `;
 
-const BodyTypo = styled(Typography)`
+const BodyDiv = styled.div`
     margin: 40px 0;
     min-height: 200px;
 `;
@@ -50,11 +54,17 @@ const FoodImageContainer = styled.div`
     max-width: 100%;
 `;
 
+const StyledTableContainer = styled.div`
+    width: 100%;
+
+`;
+
 const InfoBoardViewPage = (props) => {
   const { boardId } = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
   const { category } = state;
+  const setFoodId = useSetAtom(foodIdAtom);
   const {
     isLoading: dietLoading,
     refetch: dietRefetch,
@@ -72,6 +82,7 @@ const InfoBoardViewPage = (props) => {
 
   useEffect(() => {
     initMapData();
+    setFoodId([]);
     if (isNaN(parseInt(boardId))) {
       navigate('/404NotFound');
     }
@@ -79,18 +90,18 @@ const InfoBoardViewPage = (props) => {
       dietRefetch()
         .then((res) => {
           setData(res.data);
+          setFoodId(res.data?.foodList.map((f) => f.foodId));
         });
     } else {
       sportRefetch()
         .then((res) => {
           setData(res.data);
+          initMapData(JSON.parse(res.data?.mapPaths ?? '[]'),
+            JSON.parse(res.data?.mapDistances ?? '[]'),
+            { lat: res.data?.mapCenterLat, lng: res.data?.mapCenterLng });
         });
     }
   }, []);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
 
   return (
@@ -120,17 +131,21 @@ const InfoBoardViewPage = (props) => {
             onError={(event) => {
               event.target.src = NO_IMAGE_PATH;
             }} />
+          <FoodAnaylsisTable
+            foodId={data?.foodList.map((f) => f.foodId) ?? []} />
         </FoodImageContainer>}
       {category === BOARD.INFO.SPORT.CATEGORY &&
         <KakaoMap
           nogps
-          mapZoomlevel={3}
+          mapZoomlevel={data?.mapZoomlevel}
           readonly
         />}
-      <BodyTypo variant="body2">
-        {data?.boardContent}
-      </BodyTypo>
-      <InfoComments />
+      <BodyDiv
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(data?.boardContent),
+        }}>
+      </BodyDiv>
+      <InfoComments boardId={parseInt(boardId)} />
     </InfoBoardViewContainer>
   );
 };

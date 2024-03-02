@@ -157,7 +157,6 @@ const InfoBoardWritePage = (props) => {
       alert('해시태그에 중복이 있습니다.');
       return false;
     }
-
     return true;
   };
   const navigate = useNavigate();

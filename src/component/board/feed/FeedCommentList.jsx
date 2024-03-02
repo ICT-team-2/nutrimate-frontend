@@ -196,7 +196,6 @@ const FeedCommentList = (props) => {
           />}
       </FeedCommentInnerContainer>
     </FeedCommentOuterContainer>
-
   );
 };
 
@@ -213,11 +212,12 @@ const FeedComments = ({ cmtData, inputRef, editRef }) => {
               editRef={editRef}
               {...cmt}
             />
-            {cmt.replies.length !== 0 && <FeedComments
-              cmtData={cmt.replies}
-              inputRef={inputRef}
-              editRef={editRef}
-            />}
+            {cmt.replies.length !== 0 &&
+              <FeedComments
+                cmtData={cmt.replies}
+                inputRef={inputRef}
+                editRef={editRef}
+              />}
           </React.Fragment>
         );
       })}

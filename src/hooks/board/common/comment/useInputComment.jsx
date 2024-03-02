@@ -39,6 +39,7 @@ const useInputComment = (boardId) => {
         },
       }).then(() => {
         //스크롤 이동 - 댓글 입력 후 맨 아래로 이동
+        if (cmtListRef === null) return;
         setTimeout(() => {
           cmtListRef.scrollTo(0, cmtListRef.scrollHeight);
         }, 100);

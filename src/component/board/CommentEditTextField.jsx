@@ -32,10 +32,10 @@ const CommentEditTextField = (props) => {
   const editComment = useEditComment(boardId);
   const setIsCommentEdit = useSetAtom(isCommentEditAtom);
 
-
   const handleKeyDown = (event) => {
     if (event.key === 'Backspace' && inputValue === '') {
       setCommentEditData(INIT_EDIT_COMMENT_STATE);
+      setIsCommentEdit(false);
     }
   };
 
@@ -61,10 +61,6 @@ const CommentEditTextField = (props) => {
     setCommentEditData(INIT_EDIT_COMMENT_STATE);
   };
 
-
-  useEffect(() => {
-    setCommentEditData(INIT_EDIT_COMMENT_STATE);
-  }, []);
 
   useEffect(() => {
     if (commentEditData.cmtContent === '') return;

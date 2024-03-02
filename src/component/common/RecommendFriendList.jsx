@@ -78,6 +78,7 @@ const StyledPaper = styled.div`
 
 const StyledListSubheader = styled(ListSubheader)`
     background-color: inherit;
+    position: static;
 `;
 
 const RecommendFriendList = ({ datas = exampleDatas }) => {
@@ -95,7 +96,7 @@ const RecommendFriendList = ({ datas = exampleDatas }) => {
       <StyledPaper>
         <List
           subheader={
-            <StyledListSubheader component="div" id="nested-list-subheader">
+            <StyledListSubheader>
               회원님을 위한 추천
             </StyledListSubheader>
           }

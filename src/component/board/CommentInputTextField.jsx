@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button, TextField } from '@mui/material';
 import { useAtom } from 'jotai';
-import { commentEditDataAtom, replyChipDataAtom } from '@src/component/board/atom.js';
+import { commentEditDataAtom, isCommentEditAtom, replyChipDataAtom } from '@src/component/board/atom.js';
 import Chip from '@mui/material/Chip';
 import useInputComment from '@src/hooks/board/common/comment/useInputComment.jsx';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
-import { INIT_EDIT_COMMENT_STATE } from '@src/component/board/const.js';
-import useEditComment from '@src/hooks/board/common/comment/useEditComment.jsx';
 import useInputReply from '@src/hooks/board/common/comment/useInputReply.jsx';
 import { useSetAtom } from 'jotai/react';
+import { INIT_EDIT_COMMENT_STATE } from '@src/component/board/const.js';
 
 const CommentInputContainer = styled.div`
     display: flex;
@@ -33,8 +32,8 @@ const CommentInputTextField = (props) => {
   const { boardId } = props;
   const inputComment = useInputComment(boardId);
   const inputReply = useInputReply(boardId);
-  const setIsCommentEdit = useSetAtom(commentEditDataAtom);
-
+  const setIsCommentEdit = useSetAtom(isCommentEditAtom);
+  const setCommentEditData = useSetAtom(commentEditDataAtom);
 
   const handleDelete = () => () => {
     setChipData([]);
@@ -93,7 +92,9 @@ const CommentInputTextField = (props) => {
     if (chipData.length === 0) return;
     setInputValue(chipData[0]?.cmtContent);
   }, [chipData[0]?.cmtContent]);
-
+  useEffect(() => {
+    setCommentEditData(INIT_EDIT_COMMENT_STATE);
+  }, []);
 
   return (
     <CommentInputContainer>

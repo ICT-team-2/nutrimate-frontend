@@ -7,82 +7,151 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { styled as muiStyled } from '@mui/material/styles';
+import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
+import useFetchCommentsList from '@src/hooks/board/common/comment/useFetchCommentsList.jsx';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { nanoid } from 'nanoid';
+import styled from 'styled-components';
+import { useSetAtom } from 'jotai/react';
+import { commentEditDataAtom, isCommentEditAtom, replyChipDataAtom } from '@src/component/board/atom.js';
+import useDeleteComment from '@src/hooks/board/common/comment/useDeleteComment.jsx';
+import { COMMENT_TYPE } from '@src/component/board/const.js';
+import { Button } from '@mui/material';
 
 const StyledList = muiStyled(List)({
   width: '100%',
   bgcolor: 'background.paper',
 });
 
-function InfoCommentList() {
+const InfoCommentList = (props) => {
+  const { boardId } = useParams();
+  const { data, isLoading } = useFetchCommentsList(parseInt(boardId));
+  const setIsCommentEdit = useSetAtom(isCommentEditAtom);
+
+
+  useEffect(() => {
+    setIsCommentEdit(false);
+  }, []);
   return (
     <StyledList>
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Brunch this weekend?"
-          secondary={
-            <>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                Ali Connors
-              </Typography>
-              {' — I\'ll be in your neighborhood doing errands this…'}
-            </>
-          }
-        />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Summer BBQ"
-          secondary={
-            <>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                to Scott, Alex, Jennifer
-              </Typography>
-              {' — Wish I could come, but I\'m out of town this…'}
-            </>
-          }
-        />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Oui Oui"
-          secondary={
-            <>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                Sandra Adams
-              </Typography>
-              {' — Do you have Paris recommendations? Have you ever…'}
-            </>
-          }
-        />
-      </ListItem>
+      {data && <InfoComments {...props} data={data} />}
     </StyledList>
   );
-}
+};
+
+const InfoComments = (props) => {
+  const { data } = props;
+
+  return (<>
+      {data && data.map((d, index) => {
+        const id = nanoid();
+        return (
+          <React.Fragment key={id}>
+            <InfoCommentComponent
+              {...props}
+              data={d}
+              index={index}
+            />
+            <InfoComments
+              {...props}
+              isReply={true}
+              data={d.replies} />
+          </React.Fragment>
+        );
+      })}
+    </>
+  );
+};
+
+const StyledListItemText = styled(ListItemText)`
+    cursor: ${({ cursor }) => cursor};
+`;
+const ApliyButton = styled(Button)`
+    margin-left: 40px;
+`;
+const CommentContainer = styled.div`
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding-left: ${({ $depth }) => $depth * 20}px;
+`;
+const InfoCommentComponent = (props) => {
+  const { index, isReply, data, inputRef, editRef } = props;
+  const {
+    cmtId, cmtContent, userId: writerId,
+    userNick: writer, userProfile: writerProfile,
+    cmtDepth,
+  } = data;
+  const { boardId } = useParams();
+
+  const setReplyChipData = useSetAtom(replyChipDataAtom);
+  const setCommentEditData = useSetAtom(commentEditDataAtom);
+  const deleteComment = useDeleteComment(cmtId, parseInt(boardId));
+  const setIsCommentEdit = useSetAtom(isCommentEditAtom);
+
+  const isWriter = parseInt(sessionStorage.getItem('userId')) === writerId;
+
+  return (<CommentContainer
+      $depth={cmtDepth}
+    >
+      {(index !== 0 || isReply) &&
+        <Divider variant="inset" component="li" />}
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <UserAvatar
+            userNick={data.userNick}
+            alt={data.userNick}
+            src={import.meta.env.REACT_APP_BACKEND_URL + data.userProfile} />
+        </ListItemAvatar>
+        <StyledListItemText
+          cursor={isWriter ? 'pointer' : 'default'}
+          primary={data.userNick}
+          onClick={async () => {
+            if (!isWriter) {
+              return;
+            }
+            setCommentEditData({
+              cmtId: cmtId,
+              cmtContent: cmtContent,
+            });
+            await setIsCommentEdit(true);
+            editRef.current.focus();
+          }}
+          secondary={
+            <Typography
+              sx={{ display: 'inline' }}
+              component="span"
+              variant="body2"
+              color="text.primary"
+            >
+              {data.cmtContent}
+            </Typography>
+          }
+        />
+        <ApliyButton
+          onClick={async () => {
+            setReplyChipData([
+              {
+                type: COMMENT_TYPE.REPLY,
+                cmtContent: '',
+                replyNick: writer,
+                cmtRef: cmtId,
+                boardId: boardId,
+              }]);
+            await setIsCommentEdit(false);
+            inputRef.current.focus();
+          }}
+        >답글달기</ApliyButton>
+        {isWriter && <Button
+          color="error"
+          onClick={() => {
+            deleteComment.mutate();
+          }}
+        >삭제</Button>}
+      </ListItem>
+    </CommentContainer>
+  );
+};
 
 export default InfoCommentList;

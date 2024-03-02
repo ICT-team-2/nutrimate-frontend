@@ -207,6 +207,7 @@ export const USER_INFOS = {
 export const NO_IMAGE_PATH = '/src/asset/image/NoImage.png';
 
 export const REACT_QUERY_KEYS = {
+  RECORD: 'record',
   BOARD: 'board',
   COMMENTS: 'comments',
   REPLY: 'reply',
