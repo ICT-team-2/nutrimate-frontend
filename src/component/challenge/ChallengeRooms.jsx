@@ -35,7 +35,7 @@ const ChallengeRooms = () => {
           }}>
             <StyledImg src="/src/asset/image/ChatImage.png" alt="채팅룸" />
             <StyledTypography variant="body1">
-              하루에 한 번 물마시기
+              물마시기 챌린지
             </StyledTypography>
           </StyledPaper>
         </Grid>

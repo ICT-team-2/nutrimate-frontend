@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState,useAtom, useEffect } from 'react';
 import { Button, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
+import axios from 'axios';
 
 const MIN_HEIGHT = 40;
 
@@ -20,13 +21,91 @@ const CommentInputTextField = muiStyled(TextField)`
   width: 95%;
 `;
 
-const ChallengeCommentInput = () => {
+
+
+
+
+
+const ChallengeCommentInput = (props) => {
+  const {userId,onhandleComment,commentMessage,cmtId,onhandleEdit} = props;
+  const [comment,setComment] = useState('');
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+  };
+  
+  const handleKeyUp = (event) => {
+    if (event.key === 'Enter') {
+      setComment('');
+      event.preventDefault();
+    }
+  };
+
+  const sendMessage =() =>{
+    
+    if(typeof commentMessage==='string'){
+      
+      onhandleEdit(comment);
+      axios.put(`http://localhost:9999/challenge/comment/list/edit`,{
+        'cmtContent': comment,
+        'cmtId': cmtId,
+
+    }).then(data => {
+      console.log(data)
+      if(data.data.SUCCESSNOT){
+        alert('수정에 실패했습니다.')
+      }
+      setComment('');
+    })
+    .catch(error => {
+      alert('수정에 실패했습니다.')
+    });
+
+
+    }else{
+      onhandleComment(comment);
+      axios.post(`http://localhost:9999/challenge/comment/record`,{
+          'cmtContent': comment,
+          'userId': userId,
+  
+      }).then(data => {
+        console.log(data.data.SUCCESS)
+        if(data.data.SUCCESSNOT){
+             alert('입력에 실패했습니다.')
+        }
+        setComment('');
+      })
+      .catch(error => {
+        alert('입력에 실패했습니다.')
+      });
+    }
+  }
+
+  useEffect(() => {
+    setComment(commentMessage);
+
+  }, [commentMessage]);
+
+
+    const handleInputChange =(event) =>{
+      setComment(event.target.value); 
+     }
   return (
     <CommentInputContainer>
-      <CommentInputTextField multiline size='small' label='댓글' />
-      <StyledSendButton variant='contained'>
-        <SendIcon />
-      </StyledSendButton>
+      <CommentInputTextField
+              size="small"
+              label={typeof commentMessage==='string'? "":"메세지를 입력하세요"}
+              multiline
+              value={comment}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              onKeyUp={handleKeyUp}/>
+
+        <StyledSendButton variant='contained' onClick={sendMessage}>
+         {typeof commentMessage==='string'? '수정' :<SendIcon />}
+        </StyledSendButton>
     </CommentInputContainer>
   );
 };
