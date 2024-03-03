@@ -1,4 +1,4 @@
-import { atom } from 'jotai';
+import { atom } from 'jotai'
 import {
   RECORD_STATISTICS_RESULT_TYPE,
   RECORD_TABS,
@@ -18,3 +18,7 @@ selectedStatisticsPeriodBtnAtom.debugLabel = 'recordSelectedStatisticsBtnAtom';
 export const selectedRecordResultAtom = atom(RECORD_STATISTICS_RESULT_TYPE.FOOD_RECORD?.VALUE);
 selectedRecordResultAtom.debugLabel = 'recordSelectedRecordResultAtom';
 
+export const selectedPriceCategoryAtom = atom('5,000원 미만'); // 초기 상태 값으로 '5000원 미만'을 설정
+selectedPriceCategoryAtom.debugLabel = 'selectedPriceCategoryAtom';
+
+export const AllergyAtom = atom([]);

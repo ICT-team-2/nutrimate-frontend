@@ -1,7 +1,7 @@
 export const RECORD_TABS = {
   FOOD_RECORD: 0,
   SPORT_RECORD: 1,
-  ALARM: 2,
+  RECOMMEND: 2,
   STATISTICS: 3,
 };
 
@@ -69,3 +69,9 @@ export const RECORD_STATISTICS_RESULT_TYPE = Object.keys(RECORD_TABS)
     };
     return acc;
   }, {});
+
+export const RECOMMEND_CATEGORY = {
+  PRICE: '가격별 음식',
+  ALLERGY: '알레르기별 음식',
+  DIET: '나만의 식단 추천받기',
+};

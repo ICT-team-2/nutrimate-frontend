@@ -15,6 +15,7 @@ import { RECORD_TABS } from '@src/component/record/const.js';
 import ManualRecordSport from '@src/component/record/sport/ManualRecordSport.jsx';
 import SportRecord from '@src/component/record/sport/SportRecord.jsx';
 import RecordStatistics from '@src/component/record/statistics/RecordStatistics.jsx';
+import Recommend from '@src/component/record/recommend/Recommend';
 
 const TabsContainer = styled.div`
     margin: 20px 0 40px;
@@ -55,14 +56,14 @@ const RecordPage = () => {
           <Tabs value={value} onChange={handleChange}>
             <Tab label="식단기록" />
             <Tab label="운동기록" />
-            <Tab label="알람" />
+            <Tab label="추천" />
             <Tab label="통계" />
           </Tabs>
         </TabsContainer>
 
         {value === RECORD_TABS.FOOD_RECORD && <DietRecord />}
         {value === RECORD_TABS.SPORT_RECORD && <SportRecord />}
-        {value === RECORD_TABS.ALARM && <DietRecord />}
+        {value === RECORD_TABS.RECOMMEND && <Recommend />}
         {value === RECORD_TABS.STATISTICS && <RecordStatistics />}
       </InnerContainer>
 
