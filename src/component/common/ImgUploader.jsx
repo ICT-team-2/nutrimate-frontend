@@ -81,6 +81,7 @@ export const ImgUploader = (props) => {
   const fileInputRef = useRef();
   const [afterUpload, setAfterUpload] = useState(false);
 
+
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
@@ -113,7 +114,7 @@ export const ImgUploader = (props) => {
   };
 
   useEffect(() => {
-    if (src != null || src !== undefined) {
+    if (src != null) {
       setAfterUpload(true);
     }
   }, [src]);
@@ -141,15 +142,13 @@ export const ImgUploader = (props) => {
         minwidth={minwidth}
         afterupload={afterUpload + ''}
       >
-        {(selectedImage || src) ? (
-          <StyledUploadImg src={selectedImage || src} />
-        ) : (
-          <StyledUploadImgDivInner>
+        {(selectedImage || src)
+          ? <StyledUploadImg src={selectedImage || src} />
+          : (<StyledUploadImgDivInner>
             <FontAwesomeIcon icon={faArrowUpFromBracket} />
             <StyledButton variant="contained" size="small"
                           color="primary">{title}</StyledButton>
-          </StyledUploadImgDivInner>
-        )}
+          </StyledUploadImgDivInner>)}
       </StyledUploadImgDiv>
     </ImgUploaderContainer>
   );

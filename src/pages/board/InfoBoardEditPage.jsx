@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { EDITOR_HEIGHT, TITLE } from '@src/utils/const.js';
-import { useLocation } from 'react-router-dom';
-import { styled as muiStyled } from '@mui/material/styles';
+import { useLocation, useParams } from 'react-router-dom';
 import BoardEditor from '@src/component/board/info/write/BoardEditor.jsx';
 import styled from 'styled-components';
 import FoodImgAnaylsis
@@ -13,8 +12,6 @@ import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import { BOARD, INIT_MAP_STATE } from '@src/component/board/const.js';
 import loadable from '@loadable/component';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
-import WriteCategoryButtons
-  from '@src/component/board/info/write/WriteCategoryButtons.jsx';
 import TextField from '@mui/material/TextField';
 import { useAtom, useSetAtom } from 'jotai/react';
 import {
@@ -27,46 +24,16 @@ import {
 } from '@src/component/board/atom.js';
 import useInitMapData from '@src/component/board/info/hooks/useInitMapData.jsx';
 import DOMPurify from 'dompurify';
-import axios from 'axios';
 
-import { LINKS } from '@src/utils/const.js';
 import { useNavigate } from 'react-router-dom';
 import { userIdAtom } from '@src/pages/login/atom.js';
-import useInputDietBoard from '@src/hooks/board/info/diet/useInputDietBoard.jsx';
-import useInputSportBoard from '@src/hooks/board/info/sport/useInputSportBoard.jsx';
 import { foodIdAtom } from '@src/component/board/info/atom.js';
 import { base64toFile } from '@src/utils/functions.js';
-import OcrModal from '@src/component/board/OcrModal.jsx';
+import useFetchDietBoardDetail from '@src/hooks/board/info/diet/useFetchDietBoardDetail.jsx';
+import useFetchSportBoardDetail from '@src/hooks/board/info/sport/useFetchSportBoardDetail.jsx';
+import useEditDietBoard from '@src/hooks/board/info/diet/useEditDietBoard.jsx';
+import useEditSportBoard from '@src/hooks/board/info/sport/useEditSportBoard.jsx';
 
-//테스트용 더미 데이터 - 추후 삭제 예정
-const dummyPaths = [
-  {
-    'lat': 37.40046141857395,
-    'lng': 126.97577439745241,
-  },
-  {
-    'lat': 37.400939258037475,
-    'lng': 126.97727635344604,
-  },
-  {
-    'lat': 37.399731909002526,
-    'lng': 126.97737836289424,
-  },
-  {
-    'lat': 37.40022780065983,
-    'lng': 126.9791739522065,
-  },
-];
-const dummyDistances = [
-  0,
-  143,
-  277,
-  446,
-];
-const dummyCenter = {
-  lat: 37.4,
-  lng: 126.9780,
-};
 
 const LoadableMap = loadable(
   () => import('@src/component/board/KakaoMap.jsx'),
@@ -102,10 +69,28 @@ const InputHashtagContainer = styled.div`
 const StyledTextField = styled(TextField)`
     margin-bottom: 20px;
 `;
+const StyledButton = styled(Button)`
+    min-width: 40px;
+    padding: 0;
+`;
 
 //정보 공유 게시판 글 작성 내용
-const InfoBoardWritePage = (props) => {
-  const [category, setCategory] = useState(useLocation()?.state.title);
+const InfoBoardEditPage = (props) => {
+  const { boardId } = useParams();
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const { category } = state;
+
+  const {
+    isLoading: dietLoading,
+    refetch: dietRefetch,
+  } = useFetchDietBoardDetail(parseInt(boardId), category);
+  const {
+    isLoading: sportLoading,
+    refetch: sportRefetch,
+  } = useFetchSportBoardDetail(parseInt(boardId), category);
+  const [data, setData] = useState(null);
+
   const [title, setTitle] = useState('');
 
   //식단 이미지
@@ -123,29 +108,60 @@ const InfoBoardWritePage = (props) => {
   const [quillRefState, setQuillRefState] = useAtom(quillRefAtom);
   const [inputHashTag, setInputHashTag] = useAtom(inputHashTagAtom);
 
-  const inputDietBoard = useInputDietBoard();
-  const inputSportBoard = useInputSportBoard();
+  const editDietBoard = useEditDietBoard(parseInt(boardId));
+  const editSportBoard = useEditSportBoard(parseInt(boardId));
 
   // 지도 정보를 초기화
   const initMapData = useInitMapData();
   useEffect(() => {
     initMapData();
     setInputHashTag([]);
-    setFoodId([1, 2, 3, 4, 5]);
+    if (isNaN(parseInt(boardId))) {
+      navigate('/404NotFound');
+    }
+    if (category === BOARD.INFO.FOOD.CATEGORY) {
+      dietRefetch()
+        .then((res) => {
+          setData(res.data);
+          setFoodId(res.data?.foodList.map((f) => f.foodId));
+        });
+    } else {
+      sportRefetch()
+        .then((res) => {
+          setData(res.data);
+          initMapData(JSON.parse(res.data?.mapPaths ?? '[]'),
+            JSON.parse(res.data?.mapDistances ?? '[]'),
+            { lat: res.data?.mapCenterLat, lng: res.data?.mapCenterLng });
+        });
+    }
   }, []);
 
+  useEffect(() => {
+    console.log(data);
+    if (data === null) return;
+    setTitle(data.boardTitle);
+    setInputHashTag(data.tagNameList ? data.tagNameList.map((item, index) => {
+      return {
+        label: item,
+        key: index,
+      };
+    }) : []);
+  }, [data]);
 
-  const handleInputBoard = () => {
-    if (category === BOARD.INFO.FOOD.TITLE) {
-      inputDietBoard.mutate({
+
+  const handleEditBoard = () => {
+    if (category === BOARD.INFO.FOOD.CATEGORY) {
+      editDietBoard.mutate({
+        boardId: parseInt(boardId),
         boardTitle: title,
         boardContent: DOMPurify.sanitize(quillRefState.value),
         tagNameList: inputHashTag.map((item) => item.label),
-        files: base64toFile(selectedImage, 'foodImage.png'),
+        files: selectedImage ? base64toFile(selectedImage, 'foodImage.png') : null,
         foodId: foodId,
       });
     } else {
-      inputSportBoard.mutate({
+      editSportBoard.mutate({
+        boardId: parseInt(boardId),
         boardTitle: title,
         boardContent: DOMPurify.sanitize(quillRefState.value),
         hashtag: inputHashTag.map((item) => item.label),
@@ -165,11 +181,14 @@ const InfoBoardWritePage = (props) => {
         {/* 제목 */}
         <InlineTypography variant="h5">{TITLE.BOARD_WRITE}</InlineTypography>
         {/*카테고리 */}
-        <WriteCategoryButtons title={category} setTitle={setCategory} />
+        <StyledButton
+          size="small" variant="contained">
+          {category === BOARD.INFO.FOOD.CATEGORY ? BOARD.INFO.FOOD.TITLE : BOARD.INFO.SPORT.TITLE}
+        </StyledButton>
         {/* <WriteCategoryMenu setTitle={setTitle} title={title} /> */}
         <FlexGrowDiv />
         <Button
-          onClick={handleInputBoard}
+          onClick={handleEditBoard}
           variant="contained">등록</Button>
       </TitleContainer>
       <StyledTextField
@@ -177,28 +196,31 @@ const InfoBoardWritePage = (props) => {
         onChange={(e) => setTitle(e.target.value)} />
       {/* 식단 or 운동코스 등록(지도) */}
       {/* nogps는 gps사용하지 않겠다는 옵션 - 쓰기에는 불필요하니 추후 삭제하면 됨 */}
-      {category !== BOARD.INFO.FOOD.TITLE
-        ? <LoadableMap
+      {category !== BOARD.INFO.FOOD.CATEGORY ?
+        <LoadableMap
           nogps zoomlevel={3}
         />
         : <FoodImgAnaylsis
           selectedImage={selectedImage}
           setSelectedImage={setSelectedImage}
           foodId={foodId}
+          src={import.meta.env.REACT_APP_BACKEND_URL + data?.fbImg}
           editMode />
       }
       {/* 해시태그 입력 */}
       <InputHashtagContainer>
         <InputHashtag />
       </InputHashtagContainer>
-      <OcrModal />
       {/* 에디터 */}
       <EditorContainer>
-        <BoardEditor />
+        <BoardEditor
+          content={data?.boardContent}
+        />
       </EditorContainer>
-      <BottomContainer />
+      <BottomContainer>
+      </BottomContainer>
     </InfoBoardContainer>
   );
 };
 
-export default InfoBoardWritePage;
+export default InfoBoardEditPage;

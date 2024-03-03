@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { EDITOR_HEIGHT } from '@src/utils/const.js';
 import ViewHashtag from '@src/component/board/info/view/ViewHashtag.jsx';
 import InfoComments from '@src/component/board/info/view/InfoComments.jsx';
-import KakaoMap from '@src/component/board/KakaoMap';
+import KakaoMap from '@src/component/board/KakaoMap.jsx';
 import axios from 'axios';
 import useInitMapData from '@src/component/board/info/hooks/useInitMapData.jsx';
 import { useAtom } from 'jotai';

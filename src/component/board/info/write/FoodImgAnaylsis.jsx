@@ -22,13 +22,14 @@ const UploadInnerContiner = styled.div`
     display: flex;
 `;
 
-const FoodImgAnaylsis = ({ foodId, editMode, selectedImage, setSelectedImage }) => {
+const FoodImgAnaylsis = ({ foodId, editMode, selectedImage, setSelectedImage, src }) => {
   return (
     <>
       <BoardSubtitleTypo text="음식 이미지 분석"></BoardSubtitleTypo>
       <ImgUploaderContainer>
         <UploadInnerContiner>
           <ImgUploader
+            src={editMode ? src : null}
             width="100%" height="300px"
             selectedImage={selectedImage}
             setSelectedImage={setSelectedImage}

@@ -19,6 +19,7 @@ import FoodAnaylsisTable from '@src/component/board/info/write/FoodAnaylsisTable
 import DOMPurify from 'dompurify';
 import { useSetAtom } from 'jotai/react';
 import { foodIdAtom } from '@src/component/board/info/atom.js';
+import InfoBoardDropMenu from '@src/component/board/info/InfoBoardDropMenu.jsx';
 
 const InfoBoardViewContainer = muiStyled(Container)`
   margin-top: 20px;
@@ -54,10 +55,6 @@ const FoodImageContainer = styled.div`
     max-width: 100%;
 `;
 
-const StyledTableContainer = styled.div`
-    width: 100%;
-
-`;
 
 const InfoBoardViewPage = (props) => {
   const { boardId } = useParams();
@@ -75,9 +72,6 @@ const InfoBoardViewPage = (props) => {
   } = useFetchSportBoardDetail(parseInt(boardId), category);
   const [data, setData] = useState(null);
 
-  // useInitMapData(JSON.parse(board?.mapPaths ?? '[]'),
-  // board?.mapDistances,
-  // { lat: board?.mapCenterLat, lng: board?.mapCenterLng });
   const initMapData = useInitMapData();
 
   useEffect(() => {
@@ -103,6 +97,9 @@ const InfoBoardViewPage = (props) => {
     }
   }, []);
 
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   return (
     <InfoBoardViewContainer>
@@ -120,9 +117,14 @@ const InfoBoardViewPage = (props) => {
         <BoardBookmarkButton
           clicked={data?.checkedBookmark === 1}
           boardid={parseInt(boardId)} />
+        <InfoBoardDropMenu
+          category={category}
+          boardId={parseInt(boardId)} />
       </WriterTypo>
       <HashtagContainer>
-        <ViewHashtag />
+        {data && data?.tagNameList && <ViewHashtag hashtags={data?.tagNameList.map((data) => {
+          return { tagName: data };
+        })} />}
       </HashtagContainer>
       {category === BOARD.INFO.FOOD.CATEGORY &&
         <FoodImageContainer>

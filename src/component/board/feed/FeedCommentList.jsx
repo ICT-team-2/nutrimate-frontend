@@ -33,6 +33,9 @@ import CommentEditTextField from '@src/component/board/CommentEditTextField.jsx'
 import FeedDropMenu from '@src/component/board/feed/FeedDropMenu.jsx';
 import BoardLikeButton from '@src/component/board/BoardLikeButton.jsx';
 import BoardBookmarkButton from '@src/component/board/BoardBookmarkButton.jsx';
+import FollowButton from '@src/component/common/FollowButton.jsx';
+import { useQueryClient } from '@tanstack/react-query';
+import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 
 const CONTAINER_MAX_HEIGHT = 'calc(100vh - 100px)';
 const COMMENT_LIST_MAX_HEIGHT = 'calc(200% - 120px)';
@@ -102,7 +105,9 @@ const FeedCommentList = (props) => {
   const {
     boardId, boardContent, boardThumbnail,
     checkedLike, likeCount, userNick: writer,
+    userId: writerId,
   } = feedData;
+
   const commentInputRef = useRef(null);
   const commentEditRef = useRef(null);
   const commentListRef = useRef(null);
@@ -110,11 +115,25 @@ const FeedCommentList = (props) => {
   const [cmtListRef, setCmtListRef] = useAtom(commentListRefAtom);//스크롤 내리는 용도
   const setEditCommentData = useSetAtom(commentEditDataAtom);
   const setReplyChipData = useSetAtom(replyChipDataAtom);
+  const [isEdit, setIsEdit] = useAtom(isCommentEditAtom);//댓글 수정 모드인지
 
   const { data: detailData, isLoading: detailLoading } = useFetchFeedDetail(boardId);
   const { data: cmtData } = useFetchCommentsList(boardId);
 
-  const [isEdit, setIsEdit] = useAtom(isCommentEditAtom);//댓글 수정 모드인지
+  const [isFollow, setIsFollow] = useState(false);
+
+  const isWriter = writerId === parseInt(sessionStorage.getItem('userId'));
+
+  const queryClient = useQueryClient();
+
+  const onChangeFollow = () => {
+    console.log('팔로우 변경');
+    queryClient.invalidateQueries({
+      predicate: query => {
+        return query.queryKey.includes(REACT_QUERY_KEYS.FEED);
+      },
+    });
+  };
 
   useEffect(() => {
     setIsEdit(false);
@@ -132,6 +151,13 @@ const FeedCommentList = (props) => {
           <UserAvatar userNick={writer} />
           <NicknameTypo variant="subtitle2">{writer}</NicknameTypo>
           <FlexGrowDiv />
+          {!isWriter &&
+            <FollowButton
+              following={detailData?.checkedFollowed === 1}
+              followId={writerId}
+              onClickFollow={onChangeFollow}
+              onClickUnfollow={onChangeFollow}
+            />}
           <FeedDropMenu boardId={boardId} />
         </FeedCommentHeader>
         <Divider />

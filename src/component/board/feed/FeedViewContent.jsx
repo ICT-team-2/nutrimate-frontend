@@ -15,10 +15,11 @@ import {
 } from '@src/component/common/GlobalComponents.jsx';
 import Tooltip from '@mui/material/Tooltip';
 import FeedDetailContent from '@src/component/board/feed/FeedDetailContent.jsx';
-import { NO_IMAGE_PATH } from '@src/utils/const.js';
+import { LINKS, NO_IMAGE_PATH } from '@src/utils/const.js';
 import FeedDropMenu from '@src/component/board/feed/FeedDropMenu.jsx';
 import BoardBookmarkButton from '@src/component/board/BoardBookmarkButton.jsx';
 import BoardLikeButton from '@src/component/board/BoardLikeButton.jsx';
+import useUpdateViewCount from '@src/hooks/board/common/useUpdateViewCount.jsx';
 
 const ViewContentContainer = styled.div`
     margin: 30px 0;
@@ -63,6 +64,8 @@ function FeedViewContent(props) {
   const [likeClicked, setLikeClicked] = useState(checkedLike === 1);
   const userId = parseInt(sessionStorage.getItem('userId'));
 
+  const updateViewCount = useUpdateViewCount();
+
 
   useEffect(() => {
     setLikeClicked(checkedLike === 1);
@@ -99,7 +102,13 @@ function FeedViewContent(props) {
           <CardActions disableSpacing>
             <Tooltip title="댓글">
               <IconButton
-                onClick={() => setModalOpen(true)}
+                onClick={() => {
+                  updateViewCount.mutate(boardId, {
+                    onSuccess: () => {
+                      setModalOpen(true);
+                    },
+                  });
+                }}
                 aria-label="comment">
                 <CommentIcon />
               </IconButton>

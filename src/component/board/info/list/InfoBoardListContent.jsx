@@ -55,13 +55,10 @@ const InfoBoardListContent = ({ title, category }) => {
     });
 
     useEffect(() => {
-      if (data == null || data.length === 0) return;
+      if (data == null || data === {}) return;
       setDataState(data);
     }, [data]);
-
-    useEffect(() => {
-      console.log('dataState', dataState);
-    }, [dataState]);
+    
 
     useEffect(() => {
       if (isNaN(pageState)) {
@@ -110,11 +107,11 @@ const InfoBoardListContent = ({ title, category }) => {
         {/* 글 목록 테이블 */}
         {isLoading
           ? <LoadingComponent />
-          : <InfoBoardTable data={data?.boardList} />}
+          : <InfoBoardTable data={dataState?.boardList} />}
         {/* 페이지네이션 */}
         <PagnationComponent
           pageState={pageState}
-          totalPage={data?.totalPage >= 1 ? data?.totalPage : 1}
+          totalPage={dataState?.totalPage >= 1 ? dataState?.totalPage : 1}
           handlePageChange={handlePageChange} />
       </ContentsCotainerBox>
     );

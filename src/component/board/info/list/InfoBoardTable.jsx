@@ -9,6 +9,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { LINKS } from '@src/utils/const.js';
 import { useNavigate } from 'react-router-dom';
+import useUpdateViewCount from '@src/hooks/board/common/useUpdateViewCount.jsx';
+import { useEffect } from 'react';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -35,6 +37,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 //정보 공유 게시판 글 목록 테이블
 export default function InfoBoardTable({ data }) {
+
+  useEffect(() => {
+    console.log('data', data);
+  }, [data]);
 
   if (data?.length === 0) {
     return <div>등록된 글이 없습니다.</div>;
@@ -69,7 +75,7 @@ export default function InfoBoardTable({ data }) {
               </DataTableCell>
               <DataTableCell
                 data={d} align="center">
-                {d.viewCount}
+                {d.boardViewCount}
               </DataTableCell>
             </StyledTableRow>
           ))}
@@ -81,14 +87,20 @@ export default function InfoBoardTable({ data }) {
 
 const DataTableCell = (props) => {
   const navigate = useNavigate();
+  const updateViewCount = useUpdateViewCount();
+
   const { children: title, data } = props;
   return <StyledTableCell
     {...props}
     onClick={() => {
       if (data == null) return;
-      navigate(LINKS.INFO_BOARD_VIEW + `/${data.boardId}`, {
-        state: {
-          category: data.boardCategory.toUpperCase(),
+      updateViewCount.mutate(data.boardId, {
+        onSuccess: () => {
+          navigate(LINKS.INFO_BOARD_VIEW + `/${data.boardId}`, {
+            state: {
+              category: data.boardCategory.toUpperCase(),
+            },
+          });
         },
       });
     }}>

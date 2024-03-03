@@ -2,23 +2,27 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 import { useEffect, useState } from 'react';
+import { debounce } from '@src/utils/functions.js';
 
 const useFetchInfoBoardList = (param) => {
   const { nowPage, receivePage, searchColumn, searchKeyword, boardCategory } = param;
   const [columnState, setColumnState] = useState(searchColumn);
-  const [lastFetched, setLastFetched] = useState(null);
+  const [searchKeywordState, setSearchKeywordState] = useState(searchKeyword);
+
+  //debounce
+  const debounceSetSearchKeyword = debounce(setSearchKeywordState, 500);
 
   useEffect(() => {
     if (searchKeyword.trim() === '') return;
     setColumnState(searchColumn);
   }, [searchColumn]);
 
+  useEffect(() => {
+    debounceSetSearchKeyword(searchKeyword);
+  }, [searchKeyword]);
+
   const fetchInfoBoardList = async () => {
-    const now = Date.now();
-    if (lastFetched && now - lastFetched < 500) {
-      // 마지막 요청으로부터 1초가 지나지 않았으면 요청을 중단
-      return Promise.resolve();
-    }
+
 
     const response = await axios.get(`/board/info/list`, {
       params: {
@@ -26,11 +30,10 @@ const useFetchInfoBoardList = (param) => {
         userId: sessionStorage.getItem('userId'),
       },
     });
-
-    // 요청한 시간을 저장
-    setLastFetched(now);
     return response.data;
   };
+
+  const debounceFetch = debounce(fetchInfoBoardList, 500);
 
   return useQuery({
     queryKey: [REACT_QUERY_KEYS.BOARD,
@@ -39,7 +42,7 @@ const useFetchInfoBoardList = (param) => {
       nowPage,
       receivePage,
       columnState,
-      searchKeyword,
+      searchKeywordState.trim(),
       boardCategory,
     ],
     queryFn: fetchInfoBoardList,
