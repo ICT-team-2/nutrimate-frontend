@@ -26,7 +26,7 @@ import {
 import styled from 'styled-components';
 import { SETTING_LIST } from '@src/component/setting/const.js';
 import { MENU_LIST } from '@src/utils/const.js';
-import useNavigateToRecord from '@src/hooks/useNavigateToRecord.jsx';
+import useNavigateToRecord from '@src/hooks/record/useNavigateToRecord.jsx';
 
 const innerDrawerWidth = '220px';
 const fullOpenDrawerWidth = 380;
@@ -51,7 +51,7 @@ const closedMixin = (theme) => ({
   overflowX: 'hidden',
   border: 'none',
   backgroundColor: theme['main-background'],
-  
+
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
@@ -77,7 +77,7 @@ const Drawer = muiStyled(MuiDrawer, {
     ...closedMixin(theme),
     '& .MuiDrawer-paper': closedMixin(theme),
   }),
-  
+
 }));
 
 const StyledDrawer = muiStyled(Drawer)`
@@ -115,15 +115,15 @@ const itemMargin = [0, 3];
 
 //메뉴 아이콘들
 const menuIcon = [
-  <FontAwesomeIcon key='icon1' icon={faClipboardList}
+  <FontAwesomeIcon key="icon1" icon={faClipboardList}
                    style={{ paddingLeft: '4px' }} />,
-  <FontAwesomeIcon key='icon2' icon={faCircleXmark}
+  <FontAwesomeIcon key="icon2" icon={faCircleXmark}
                    style={{ paddingLeft: '1px' }} />,
 
 ];
 
 const SettingSideMenu = () => {
-  
+
   const [drawerOpen, setDrawerOpen] = useAtom(settingDrawerStateAtom);
   const navigate = useNavigate();
   const drawerRef = useRef();
@@ -134,7 +134,7 @@ const SettingSideMenu = () => {
   // const [sideDivState, setSideDivState] = useState(false);
   const [firstDrawerState, setFirstDrawerState] = useAtom(drawerStateAtom);
   const gotoRecord = useNavigateToRecord();
-  
+
   // drawer 밖을 클릭하면 drawer가 닫히도록
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -151,14 +151,14 @@ const SettingSideMenu = () => {
       documentRef.current.removeEventListener('mousedown', handleClickOutside);
     };
   }, [iconButtonRef]);
-  
+
   useEffect(() => {
     console.log(firstDrawerRef);
-    
+
     drawerRef.current.addEventListener('mouseover', (event) => {
       setDrawerOpen(true);
     });
-    
+
     drawerRef.current.addEventListener('mouseleave', (event) => {
       setDrawerOpen(false);
     });
@@ -166,16 +166,16 @@ const SettingSideMenu = () => {
       firstDrawerRef.addEventListener('mouseover', (event) => {
         setDrawerOpen(true);
       });
-      
+
       firstDrawerRef.addEventListener('mouseleave', (event) => {
         setDrawerOpen(false);
       });
     }
   }, [firstDrawerRef]);
-  
+
   return (
     <StyledDrawer
-      variant='permanent'
+      variant="permanent"
       open={drawerOpen}
       onClose={() => setDrawerOpen(false)}
       ref={drawerRef}

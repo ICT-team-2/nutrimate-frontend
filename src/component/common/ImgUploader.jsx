@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import { Button } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { fa } from 'faker/lib/locales.js';
 
 export const ResetStyleInput = styled.input`
     text-indent: 100%;
@@ -13,8 +14,8 @@ export const ResetStyleInput = styled.input`
 `;
 
 const StyledUploadImgDiv = styled.div`
-    width: ${({ width }) => width || '200px'};
-    height: ${({ height }) => height || '100px'};
+    width: ${({ width, afterupload }) => afterupload === 'true' ? 'auto' : width || '200px'};
+    height: ${({ height, afterupload }) => afterupload === 'true' ? 'auto' : height || '100px'};
     min-width: ${({ minwidth, afterupload }) => afterupload === 'true'
             ? 'auto'
             : minwidth || 'auto'};
@@ -58,40 +59,48 @@ export const ImgUploader = (props) => {
   const {
     width, height, children: title,
     selectedImage, setSelectedImage, minheight, maxwidth,
-    maxheight, minwidth,
+    maxheight, minwidth, src, isEdit,
   } = props;
   const fileInputRef = useRef();
   const [afterUpload, setAfterUpload] = useState(false);
-  
+
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
-  
-  // ImgUploader.jsx
-const handleImageUpload = (event) => {
-  const file = event.target.files[0];
-  setSelectedImage(file);  // 변경된 부분
-  setAfterUpload(true);
-};
 
-const handleDrop = (event) => {
-  event.preventDefault();
-  const file = event.dataTransfer.files[0];
-  setSelectedImage(file);  // 변경된 부분
-  setAfterUpload(true);
-};
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setSelectedImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+    setAfterUpload(true);
+  };
 
-  
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setSelectedImage(reader.result);
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+    setAfterUpload(true);
+  };
+
   const handleDragOver = (event) => {
     event.preventDefault();
   };
-  
+
   return (
     <ImgUploaderContainer
     >
       <ResetStyleInput
-        type='file'
-        accept='image/*'
+        type="file"
+        accept="image/*"
         ref={fileInputRef}
         onChange={handleImageUpload}
       />
@@ -107,13 +116,13 @@ const handleDrop = (event) => {
         minwidth={minwidth}
         afterupload={afterUpload + ''}
       >
-        {selectedImage ? (
-          <StyledUploadImg src={selectedImage} />
+        {(selectedImage || src) ? (
+          <StyledUploadImg src={selectedImage || src} />
         ) : (
           <StyledUploadImgDivInner>
             <FontAwesomeIcon icon={faArrowUpFromBracket} />
-            <StyledButton variant='contained' size='small'
-                          color='primary'>{title}</StyledButton>
+            <StyledButton variant="contained" size="small"
+                          color="primary">{title}</StyledButton>
           </StyledUploadImgDivInner>
         )}
       </StyledUploadImgDiv>

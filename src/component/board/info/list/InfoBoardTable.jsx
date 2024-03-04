@@ -20,6 +20,10 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
+const StyledTitleTableCell = styled(TableCell)`
+    cursor: pointer;
+`;
+
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
   // hide last border
@@ -28,47 +32,51 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(name, calories, fat, carbs) {
+  return { name, calories, fat, carbs };
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread2', 356, 16.0, 49, 3.9),
-  createData('Gingerbread3', 356, 16.0, 49, 3.9),
-  createData('Gingerbread4', 356, 16.0, 49, 3.9),
-  createData('Gingerbread5', 356, 16.0, 49, 3.9),
-  createData('Gingerbread6', 356, 16.0, 49, 3.9),
-  createData('Gingerbread7', 356, 16.0, 49, 3.9),
+  createData('Frozen yoghurt', 159, 6.0, 24),
+  createData('Ice cream sandwich', 237, 9.0, 37),
+  createData('Eclair', 262, 16.0, 24),
+  createData('Cupcake', 305, 3.7, 67),
+  createData('Gingerbread', 356, 16.0, 49),
+  createData('Gingerbread2', 356, 16.0, 49),
+  createData('Gingerbread3', 356, 16.0, 49),
+  createData('Gingerbread4', 356, 16.0, 49),
+  createData('Gingerbread5', 356, 16.0, 49),
+  createData('Gingerbread6', 356, 16.0, 49),
+  createData('Gingerbread7', 356, 16.0, 49),
 ];
 
 //정보 공유 게시판 글 목록 테이블
-export default function InfoBoardTable() {
+export default function InfoBoardTable({ data }) {
+
+  if (data?.length === 0) {
+    return <div>등록된 글이 없습니다.</div>;
+  }
+
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 400 }} aria-label="customized table">
+      <Table sx={{ minWidth: 200 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+            <StyledTableCell>제목</StyledTableCell>
+            <StyledTableCell align="right">작성자</StyledTableCell>
+            <StyledTableCell align="right">등록일</StyledTableCell>
+            <StyledTableCell align="right">조회수</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
-            <StyledTableRow key={row.name + index}>
+          {data?.map((d, index) => (
+            <StyledTableRow key={d.boardTitle + index}>
               <TitleTableCell component="th" scope="row">
-                {row.name}</TitleTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
+                {d.boardTitle}
+              </TitleTableCell>
+              <StyledTableCell align="right">{d.userNick}</StyledTableCell>
+              <StyledTableCell align="right">{d.createdDate}</StyledTableCell>
+              <StyledTableCell align="right">{d.viewCount}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
@@ -80,7 +88,7 @@ export default function InfoBoardTable() {
 const TitleTableCell = (props) => {
   const navigate = useNavigate();
   const { children: title } = props;
-  return <StyledTableCell onClick={() => {
+  return <StyledTitleTableCell onClick={() => {
     navigate(LINKS.INFO_BOARD_VIEW + '/506');
-  }}>{title}</StyledTableCell>;
+  }}>{title}</StyledTitleTableCell>;
 };

@@ -43,6 +43,7 @@ export const StyledSearchInput = muiStyled(TextField)({
 export const CustomSearchInput = (props) => {
   // eslint-disable-next-line react/prop-types
   const { label, id, size, callback, searchValue, setSearchValue } = props;
+  
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {

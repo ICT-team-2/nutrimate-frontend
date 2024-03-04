@@ -38,3 +38,21 @@ export const INIT_MAP_STATE = {
   PATHS: [],
   DISTANCES: [],
 };
+
+export const COMMENT_TYPE = {
+  COMMENT: 'comment',
+  REPLY: 'reply',
+};
+
+export const INIT_COMMENT_STATE = {
+  boardId: undefined,
+  cmtContent: '',
+  cmtRef: undefined,
+  replyNick: undefined,
+  type: COMMENT_TYPE.COMMENT, // comment, reply
+};
+
+export const INIT_EDIT_COMMENT_STATE = {
+  cmtContent: '',
+  cmtId: undefined,
+};
