@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { useAtomValue } from 'jotai/react';
 import { profileImageAtom } from '@src/component/mypage/atom.js';
 import Paper from '@mui/material/Paper';
-import useFetchProfileData from '@src/hooks/mypage/useFetchProfileData.jsx';
+import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 import { userIdAtom } from '@src/pages/login/atom.js';
 import { useEffect } from 'react';
 import FollowButton from '@src/component/common/FollowButton.jsx';

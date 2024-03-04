@@ -13,7 +13,7 @@ import { userIdAtom } from '@src/pages/login/atom';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import useFetchProfileData from '@src/hooks/mypage/useFetchProfileData.jsx';
+import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
