@@ -4,7 +4,7 @@ import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 
 /**
  * 회원 데이터를 가져오는 훅
- * @param userId {number||string||undefined} 사용자 아이디 (기본값: sessionStorage.getItem('userId'))
+ * @param profileUserId {number||string||undefined} 사용자 아이디 (기본값: sessionStorage.getItem('userId'))
  * @returns {*} react-query의 useQuery 결과
  */
 const useFetchProfileData = (profileUserId = undefined) => {
@@ -14,6 +14,9 @@ const useFetchProfileData = (profileUserId = undefined) => {
   //axios
   // 유저 기본 데이터를 가져옵니다.
   const fetchMyData = async () => {
+    //쿠키의 ACCESS 토큰을 가져옵니다.
+    console.log(document.cookie);
+
     const response = await axios.get('/profile', {
       params: {
         userId: profileUserId,
@@ -29,6 +32,7 @@ const useFetchProfileData = (profileUserId = undefined) => {
       REACT_QUERY_KEYS.MEMBER_DATA,
       parseInt(profileUserId)],
     queryFn: fetchMyData,
+
   });
 };
 

@@ -16,7 +16,7 @@ import FollowerListModal from '@src/component/mypage/follow/FollowerListModal.js
 import FolloweeListModal from '@src/component/mypage/follow/FolloweeListModal.jsx';
 import { FOLLOW_MODAL } from '@src/component/mypage/const.js';
 import ChangeProfileComponent from '@src/component/common/ChangeProfileComponent.jsx';
-import useFetchProfileData from '@src/hooks/mypage/useFetchProfileData.jsx';
+import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 import { useParams } from 'react-router-dom';
 
 
