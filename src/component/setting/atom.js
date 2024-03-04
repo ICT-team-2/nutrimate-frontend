@@ -23,6 +23,9 @@ heightStateAtom.debugLabel = 'settingHeightStateAtom';
 export const weightStateAtom = atom(0);
 weightStateAtom.debugLabel = 'settingWeightStateAtom';
 
+export const calAtom = atom(0);
+calAtom.debugLabel = 'settingCalAtom';
+
 export const introAtom = atom('');
 introAtom.debugLabel = 'settingIntroAtom';
 

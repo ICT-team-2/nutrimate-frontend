@@ -67,28 +67,20 @@ export const ImgUploader = (props) => {
     fileInputRef.current.click();
   };
   
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setSelectedImage(reader.result);
-    };
-    reader.readAsDataURL(file);
-    setAfterUpload(true);
-  };
-  
-  const handleDrop = (event) => {
-    event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setSelectedImage(reader.result);
-    };
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-    setAfterUpload(true);
-  };
+  // ImgUploader.jsx
+const handleImageUpload = (event) => {
+  const file = event.target.files[0];
+  setSelectedImage(file);  // 변경된 부분
+  setAfterUpload(true);
+};
+
+const handleDrop = (event) => {
+  event.preventDefault();
+  const file = event.dataTransfer.files[0];
+  setSelectedImage(file);  // 변경된 부분
+  setAfterUpload(true);
+};
+
   
   const handleDragOver = (event) => {
     event.preventDefault();
