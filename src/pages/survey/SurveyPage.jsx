@@ -6,6 +6,7 @@ import { surveyProgressAtom } from '@src/component/survey/atom.js';
 import { SURVEY_PROGRESS } from '@src/component/survey/const.js';
 import SurveyContents from '@src/component/survey/SurveyContents.jsx';
 import RegisterPage from '@src/pages/login/RegisterPage.jsx';
+import SurveyEndLogin from '@src/component/survey/SurveyEndLogin';
 
 const SurveyPage = () => {
   const [progress, setProgress] = useAtom(surveyProgressAtom);
@@ -29,7 +30,7 @@ const SurveyPageContent = () => {
     case SURVEY_PROGRESS.START:
       return <SurveyStart />;
     case SURVEY_PROGRESS.FINISH:
-      return <RegisterPage />;
+      return <SurveyEndLogin />;
     default:
       return <SurveyContents />;
   }
