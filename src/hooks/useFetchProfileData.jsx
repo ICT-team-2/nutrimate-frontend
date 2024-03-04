@@ -14,9 +14,6 @@ const useFetchProfileData = (profileUserId = undefined) => {
   //axios
   // 유저 기본 데이터를 가져옵니다.
   const fetchMyData = async () => {
-    //쿠키의 ACCESS 토큰을 가져옵니다.
-    console.log(document.cookie);
-
     const response = await axios.get('/profile', {
       params: {
         userId: profileUserId,

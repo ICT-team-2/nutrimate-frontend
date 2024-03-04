@@ -93,14 +93,13 @@ const DataTableCell = (props) => {
   return <StyledTableCell
     {...props}
     onClick={() => {
+      console.log(data.boardId);
       if (data == null) return;
-      updateViewCount.mutate(data.boardId, {
-        onSuccess: () => {
-          navigate(LINKS.INFO_BOARD_VIEW + `/${data.boardId}`, {
-            state: {
-              category: data.boardCategory.toUpperCase(),
-            },
-          });
+      updateViewCount.mutate(data.boardId);
+
+      navigate(LINKS.INFO_BOARD_VIEW + `/${data.boardId}`, {
+        state: {
+          category: data.boardCategory.toUpperCase(),
         },
       });
     }}>

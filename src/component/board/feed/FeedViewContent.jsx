@@ -103,11 +103,13 @@ function FeedViewContent(props) {
             <Tooltip title="댓글">
               <IconButton
                 onClick={() => {
-                  updateViewCount.mutate(boardId, {
-                    onSuccess: () => {
-                      setModalOpen(true);
-                    },
-                  });
+                  updateViewCount.mutate(boardId);
+                  //   {
+                  //   onSuccess: () => {
+                  //     setModalOpen(true);
+                  //   },
+                  // });
+                  setModalOpen(true);
                 }}
                 aria-label="comment">
                 <CommentIcon />

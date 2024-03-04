@@ -10,6 +10,7 @@ const useUpdateViewCount = () => {
     const response = await axios.put('/board/view/count', {
       boardId: boardId,
     });
+    console.log('updateViewCount', response.data);
     return response.data;
   };
   //react-query
