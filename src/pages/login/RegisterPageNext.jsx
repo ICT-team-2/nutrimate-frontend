@@ -9,7 +9,7 @@ import {
   RadioGroup,
   Radio,
   FormControl,
-  FormLabel
+  FormLabel,
 } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
@@ -17,7 +17,7 @@ import NameProfileComponent
   from '@src/component/setting/userinfo/NameProfileComponent.jsx';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const';
-import axios from 'axios'; 
+import axios from 'axios';
 
 
 const LoginContainer = styled(Container)`
@@ -40,7 +40,7 @@ const LoginPaper = styled(Paper)`
     width: 40%;
     height: 80vh; // add this line
     overflow-y: auto; // add this line
-    // background-color: ${({ theme }) => theme['main-background']};
+        // background-color: ${({ theme }) => theme['main-background']};
     // margin: auto;
     margin-bottom: 0px;
 `;
@@ -67,28 +67,28 @@ const AdditionalContainer = styled.div`
 `;
 
 const StyledFormControl = styled(FormControl)`
-  margin-top:30px;
-  margin-bottom: 10px;
+    margin-top: 30px;
+    margin-bottom: 10px;
 `;
 
 const StyledRadioGroup = styled(RadioGroup)`
-  flex-direction: row;
+    flex-direction: row;
 `;
 
 const StyledFormControlLabel = styled(FormControlLabel)`
-  margin-right: 40px;
+    margin-right: 40px;
 `;
 
 const StyledButton = styled(Button)`
-  margin-top: 300px;
-  width: 100%;
+    margin-top: 300px;
+    width: 100%;
 `;
 
 const StyledButtonSmall = styled(Button)`
-  height: 40px;
-  width: 60px;
-  margin-bottom: 18px;
-  margin-left: 45px;
+    height: 40px;
+    width: 60px;
+    margin-bottom: 18px;
+    margin-left: 45px;
 `;
 
 
@@ -104,11 +104,11 @@ const OAuthButton = styled.div`
 
 // FileInput 컴포넌트 추가
 const FileInput = styled.input`
-  display: none;
+    display: none;
 `;
 
 const RegisterPageNext = () => {
-  
+
   const [nickname, setNickname] = useState('');
   const navigate = useNavigate();
 
@@ -119,19 +119,19 @@ const RegisterPageNext = () => {
     }
 
     // 닉네임 중복 확인 요청 보내기
-  try {
-    const response = await axios.post('/member/checkNick',{userNick: nickname});
-    
-    // 중복된 닉네임이 있는 경우
-    if (response.data.exists) {
-      alert('이미 사용 중인 닉네임입니다.');
+    try {
+      const response = await axios.post('/member/checkNick', { userNick: nickname });
+
+      // 중복된 닉네임이 있는 경우
+      if (response.data.exists) {
+        alert('이미 사용 중인 닉네임입니다.');
+        return;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('닉네임 중복 확인에 실패하였습니다.');
       return;
     }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('닉네임 중복 확인에 실패하였습니다.');
-    return;
-  }
 
     // sessionStorage에서 userData, surveyData 가져오기
     const userData = JSON.parse(sessionStorage.getItem('userData'));
@@ -141,7 +141,9 @@ const RegisterPageNext = () => {
     const postData = {
       userNick: nickname,
       ...userData,
-      ...surveyData
+      ...surveyData,
+      userAllergy: surveyData.userAllergy.join(','),
+      userHealthReason: surveyData.userHealthReason.join(','),
     };
     console.log('postData:', postData);
 
@@ -153,7 +155,7 @@ const RegisterPageNext = () => {
 
       if (response.status === 200) {
         navigate(LINKS.LOGIN);
-        alert("회원가입되었습니다.");
+        alert('회원가입되었습니다.');
       } else {
         alert('회원가입에 실패하였습니다.');
       }
@@ -162,9 +164,8 @@ const RegisterPageNext = () => {
       alert('회원가입에 실패하였습니다.');
     }
   };
-  
 
-  
+
   return (
     <LoginContainer>
       <LoginPaper>
@@ -175,11 +176,11 @@ const RegisterPageNext = () => {
         <Divider />
         <LoginBody>
           <StyledTextField
-            label='닉네임'
+            label="닉네임"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
           />
-          <StyledButton variant='contained' onClick={handleRegister}>완료</StyledButton>
+          <StyledButton variant="contained" onClick={handleRegister}>완료</StyledButton>
         </LoginBody>
       </LoginPaper>
     </LoginContainer>
