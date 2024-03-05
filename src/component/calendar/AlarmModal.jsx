@@ -18,8 +18,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 import { WEEK_CATEGORY} from '@src/component/calendar/const.js';
-import { userIdAtom } from '@src/pages/login/atom.js';
-import { useAtom } from 'jotai';
+import { useCookies } from 'react-cookie';
 
 const LoadEffectAnimation = keyframes`
     0% {
@@ -193,7 +192,7 @@ export function enableScroll() {
 
 
 const ChallengeModal = (props) => {
-  const { showChallengeModal, setChallengeModal } = props;
+  const { showChallengeModal, setChallengeModal,userId,endWeek,startWeek,handleChangeWeek } = props;
   const [inputValue, setInputValue] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [startDate, setStartDate] = useState('');
@@ -204,10 +203,9 @@ const ChallengeModal = (props) => {
   const [content, setcontent] = useState('');
   const [checked, setChecked] = useState(false);
   const [category, setCategory] = useState([]);
-  const [userId, setUserId] = useAtom(userIdAtom);
-
+  const [cookies] = useCookies(['ACCESS']);
   
- 
+  
 
 
   
@@ -278,7 +276,6 @@ const ChallengeModal = (props) => {
       const selectTime = dayjs(time).format('HH:mm:ss');
       let count = 0;
 
-
       if (startDate.length === 0) {
           count++;
           window.alert('처음날짜를 선택해주세요.');
@@ -304,7 +301,7 @@ const ChallengeModal = (props) => {
 
             if(!checked){
                 datesBetween.forEach(date => {
-                  const dateTimeForDB =  date + 'T' + selectTime;
+                  const dateTimeForDB =  date + 'T' + selectTime.slice(0, -3);
                   Alarm(dateTimeForDB,title,content)
                   updatedAlarmWeek.push(date+'T'+selectTime);
                 });
@@ -326,6 +323,8 @@ const ChallengeModal = (props) => {
                   
                   AlarmSaveData(updatedAlarmWeek);
              }
+
+             
              
               
           }
@@ -361,14 +360,25 @@ const ChallengeModal = (props) => {
 
 const AlarmSaveData = (updatedAlarmWeek) =>{
   console.log('sdf',updatedAlarmWeek)
+  console.log(userId);
+  
+
+
   axios.post('http://localhost:9999/alarm/list', {
                   'updatedAlarmWeek': updatedAlarmWeek,
                   'alarmCategory': title,
                   'userId':userId
+                  
               })
               .then(response => {
-                  // 응답 데이터 처리
-                  console.log(response);
+
+                  if(response.data.alarmOk === 1){
+                    setChallengeModal(false);
+                    handleChangeWeek(startWeek,endWeek)
+                    
+                  }else{
+                    alert('알람 저장에 실패했습니다.')
+                  }
                   
               })
               .catch(error => {
@@ -379,11 +389,13 @@ const AlarmSaveData = (updatedAlarmWeek) =>{
 
 const Alarm = (dateTimeForDB,title,content) => {
    console.log(dateTimeForDB)
+   console.log('fcmToken!!:', cookies.token);
   axios.post('http://localhost:2222/serviceworker', {
                   'alarm_time': dateTimeForDB,
                   'title': title,
                   'body': content,
-                  'image_url': ''
+                  'image_url': '',
+                  'token':cookies.token
               })
               .then(response => {
                   // 응답 데이터 처리

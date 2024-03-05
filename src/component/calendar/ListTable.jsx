@@ -49,11 +49,11 @@ const CircleButton = styled(Button)`
   &&& {
     border-radius: 50%;
     aspect-ratio: 1/1;
-    padding: 20px;
+    padding: 20px;    
+    margin: 10px;
     min-width: 50px;
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    right:0px;
+    position: absolute; /* Change position to absolute */
     transition: bottom 0.3s ease-in-out; /* Add transition for smooth movement */
     &:hover {
       transform: rotate(50deg);
@@ -80,7 +80,7 @@ const StyledTableHead = styled(TableHead)`
 
 
 
-const ListTable = () => {
+const ListTable = ({userId}) => {
   const currentDate = dayjs();
   
 
@@ -92,14 +92,14 @@ const ListTable = () => {
   const [startWeek, setStartWeek] = useState(startOfWeekFirst);
   const [endWeek, setEndWeek] = useState(endOfWeekSecond);
   const [calendarData, setCalendarData] = useState([]);
-  const [buttonPosition, setButtonPosition] = useState('20px');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleChangeWeek = (startOfWeek, endOfWeek) => {
+    console.log(startOfWeek)
     setStartWeek(startOfWeek)
     setEndWeek(endOfWeek)
-    axios.get(`http://localhost:9999/alarm/list/week?startWeek=${startOfWeek.format('YYYY-MM-DD')}&endWeek=${endOfWeek.format('YYYY-MM-DD')}`)
+    axios.get(`http://localhost:9999/alarm/list/week?startWeek=${startOfWeek.format('YYYY-MM-DD')}&endWeek=${endOfWeek.format('YYYY-MM-DD')}&userId=${userId}`)
     .then(datas => {
-      console.log(datas.data)
       setCalendarData(datas.data)
     })
     .catch(error => {
@@ -107,8 +107,6 @@ const ListTable = () => {
     });
   };
 
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 모달 열기 함수
   const openModal = () => {
@@ -121,26 +119,19 @@ const ListTable = () => {
     return weekdaysList[dayOfWeek];
   };
   
-  const deleteAlarm = (alarmId) => {
+  const deleteAlarm = (alarmId,date) => {
+    
       if(confirm('알람을 삭제하시겠습니까?')){
         axios.delete(`http://localhost:9999/alarm/list/week/delete?alarmId=${alarmId}`)
         .then(datas => {
           if(datas.data.alarmOk===1){
             let updatedData = { ...calendarData };
-            let updatedData_ = [];
-        
-            // updatedData가 객체이므로, 이 객체의 프로퍼티들에 접근하여 처리해야 합니다.
-            for (const key in updatedData) {
-                if (Array.isArray(updatedData[key])) {
-                    console.log('111',updatedData[key])
-                    updatedData_[key] = updatedData[key].filter(item => item.alarmId !== alarmId );
-                }
-            }
-        
-            console.log('sfdfsdf', updatedData_);
+            console.log(updatedData);
+            updatedData = Object.values(updatedData).filter(item => item.alarmId !== alarmId);
+            console.log(updatedData);
         
             // 변경된 상태를 적용
-            setCalendarData(updatedData_);
+            setCalendarData(updatedData);
           }
           
         })
@@ -176,33 +167,14 @@ const ListTable = () => {
   }, [groupedData]);
 
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const tableContainer = tableContainerRef.current;
-      if (tableContainer) {
-        const isScrolledToBottom = tableContainer.scrollHeight - tableContainer.scrollTop === tableContainer.clientHeight;
-        const newPosition = isScrolledToBottom ? '-20px' : `calc(-20px + ${tableContainer.scrollHeight - tableContainer.scrollTop - tableContainer.clientHeight}px)`;
-        setButtonPosition(newPosition);
-      }
-    };
-
-    const tableContainer = tableContainerRef.current;
-    if (tableContainer) {
-      tableContainer.addEventListener('scroll', handleScroll);
-    }
-
-    return () => {
-      if (tableContainer) {
-        tableContainer.removeEventListener('scroll', handleScroll);
-      }
-    };
-  }, []);
 
 
   return (
+    
     <TableContainer ref={tableContainerRef} component={Paper} style={{ width: '100%', height: '80%', position: 'relative', overflow: 'auto'}}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <WeekPicker onChangeWeek={handleChangeWeek}></WeekPicker>
+          
         </LocalizationProvider>
     {Object.keys(groupedData).map((date, index) => (
       <Table key={index} sx={{ minWidth: 650}} aria-label="simple table">
@@ -223,14 +195,16 @@ const ListTable = () => {
           ))}
         </TableBody>
       </Table>
+      
     ))}
-      <CircleButton
-       style={{ bottom: buttonPosition }}
+      <CircleButton      
         variant='contained'
         onClick={openModal}
       ><Add/></CircleButton>
-      {isModalOpen && <AlarmModal showChallengeModal={isModalOpen} setChallengeModal={setIsModalOpen} ></AlarmModal>}
-  </TableContainer>
+      {isModalOpen && <AlarmModal userId={userId} showChallengeModal={isModalOpen} setChallengeModal={setIsModalOpen} handleChangeWeek={handleChangeWeek} startWeek={startWeek} endWeek={endWeek}  ></AlarmModal>}
+
+    </TableContainer>
+
   );
 };
 

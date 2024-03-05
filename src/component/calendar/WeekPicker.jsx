@@ -11,14 +11,11 @@ import style from 'styled-components';
 
 dayjs.extend(isBetweenPlugin);
 
-
 const AnimatedContainer = style.div`
-  max-height: ${({ isOpen }) => (isOpen ? '500px' : '0')};
+  max-height: ${({ isopen}) => (isopen=='true' ? '500px' : '0')};
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
 `;
-
-
 
 const CustomPickersDay = styled(PickersDay, {
   shouldForwardProp: (prop) => prop !== 'isSelected' && prop !== 'isHovered',
@@ -73,6 +70,7 @@ function Day(props) {
   );
 }
 
+// eslint-disable-next-line
 export default function WeekPicker({onChangeWeek}) {
 
     
@@ -98,7 +96,7 @@ export default function WeekPicker({onChangeWeek}) {
     <div onClick={toggleCalendar} style={{ borderBottom:'2px solid #e5e5e5' }}>
     <WeekToolbar startOfWeek={startOfWeek} endOfWeek={endOfWeek} isOpen={isOpen}/>
     </div>
-     <AnimatedContainer isOpen={isOpen}>
+     <AnimatedContainer isopen={isOpen.toString()}>
      <div style={{ backgroundColor: '#f8fbfa', border:'2px solid #e5e5e5' }}>
       <DateCalendar
         value={value}

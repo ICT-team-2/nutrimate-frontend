@@ -18,6 +18,9 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { useAtom } from 'jotai';
+import { userIdAtom } from '@src/pages/login/atom.js';
+
 
 moment.locale('ko');
 
@@ -101,12 +104,14 @@ const CalendarContainer = muiStyled(Container)`
 `;
 
 const CalendarComponent = (props) => {
-
+  console.log(props)
   const [isClickCalendar, setIsClickCalendar] = useState(true);
   const [isClickList, setIsClickList] = useState(false);
   const [monthData, setMonthData] = useState([]);
   const [date, setDate] = useState(new Date());
   const [anchorEl, setAnchorEl] = useState(null);
+  
+  const [userId, setUserId] = useAtom(userIdAtom);
 
   
   const handleCloseMenu = () => {
@@ -116,10 +121,11 @@ const CalendarComponent = (props) => {
 
 
   const callendar = () => {
+    setDate(new Date());
+    console.log('asdasd',date)
     setIsClickCalendar(true)
     setIsClickList(false)
   };
-
   const list = () => {
     setIsClickCalendar(false)
     setIsClickList(true)
@@ -128,32 +134,42 @@ const CalendarComponent = (props) => {
   const onhandleMonthSelect = (dates)=>{
     setDate(dates);
   }
+
+
+  /*
+  if(transformedData.length !==0){
+    console.log('sdfsdfdf');
+    setMonthData(transformedData);
+  }
+  */
+      useEffect(()=>{
+        const transformedData = [];
+        console.log(userId)
+        axios.get(`http://localhost:9999/alarm/list/month?month=${date}&userId=${userId}`)
+              .then(response => {
+                  console.log(response.data);
+              if(response.data.length !==0){
+                  for (const data in response.data) {
+                    const transformedItem = {};
+                    for (const key in response.data[data]) {
+                        const newKey = key === 'alarmCategory' ? 'title' : key === 'alarmTime' ? 'start' : key;
+                        transformedItem[newKey] = key === 'alarmCategory'? (<>{<CircleIcon style={{ color: '#0f4a15',fontSize:'8px',margin:'0 2px'}}/>} {response.data[data][key]} </>) :response.data[data][key];
+                        transformedItem['end']=''
+                      }
+                    transformedData.push(transformedItem);
+                }
+
+                setMonthData(transformedData);
+              }
   
-  useEffect(()=>{
-    const transformedData = [];
-     axios.get(`http://localhost:9999/alarm/list/month?month=${date}`)
-           .then(response => {
-               console.log(response.data);
-               for (const data in response.data) {
-                const transformedItem = {};
-                 for (const key in response.data[data]) {
-                     console.log(dayjs(response.data[data]['alarmTime']).format('YYYY.MM.DD'))
-                     const newKey = key === 'alarmCategory' ? 'title' : key === 'alarmTime' ? 'start' : key;
-                     transformedItem[newKey] = key === 'alarmCategory'? (<>{<CircleIcon style={{ color: '#0f4a15',fontSize:'8px',margin:'0 2px'}}/>} {response.data[data][key]} </>) :response.data[data][key];
-                     transformedItem['end']=''
-                   }
-                 transformedData.push(transformedItem);
-             }
-               console.log(transformedData);
-               setMonthData(transformedData);
-               
-           })
-           .catch(error => {
-               console.error('Error fetching chat data:', error);
-           });
+                  
+              })
+              .catch(error => {
+                  console.error('Error fetching chat data:', error);
+              });
+      },[date])
 
 
-},[date])
 
 
 
@@ -220,7 +236,7 @@ const CalendarComponent = (props) => {
       }
 
        {isClickList && 
-      <ListTable></ListTable>}
+      <ListTable userId={userId}></ListTable>}
       
       <Menu
           anchorEl={anchorEl}

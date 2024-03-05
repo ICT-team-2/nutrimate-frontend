@@ -81,7 +81,7 @@ const LoginPage = () => {
 
   // const [userId, setUserId] = useAtom(userIdAtom);
 
-
+  const firebase = initializeApp(firebaseConfigFile);
   const handleLogin = (provider) => {
     if (id === '' || password === '') {
       window.alert('아이디와 비밀번호를 입력해주세요.');
@@ -107,12 +107,19 @@ const LoginPage = () => {
         .then(response => {
             // fcm 함수 호출 후, 완료될 때까지 기다림
             console.log('ttttttt',response.data);
-            fcm();
+            const YOUR_PUBLIC_VAPID_KEY='BAhS2AiADnmnXSErAkh182-w5CYAZmvhUPOIVVmcBNDAjWycubfIPzXPdFI3h4dTX_grGnOr2gZuoWiE4nbPyUo';//.env에 지정이 안되서 일단 이렇게 처리
+              const messaging = getMessaging();
+              getToken(messaging,{vapidKey: YOUR_PUBLIC_VAPID_KEY}).then((token) => {
+                console.log("fcmToken!:", token);
+                document.cookie = `token=${token};`;
+                });
             const { accessToken } = response.data;
-            setTimeout(() => {
-              window.location.href = '/';
-            }, 500)
         })
+        .then(response => {
+          setTimeout(() => {
+            //window.location.href = '/';
+          }, 500)
+      })
         .catch(error => {
             // 오류 처리
             console.error("에러 발생:", error);
@@ -141,25 +148,7 @@ const LoginPage = () => {
   // });
 //  };
 
-   const firebase = initializeApp(firebaseConfigFile);
-  const fcm = ()=> {
-    const YOUR_PUBLIC_VAPID_KEY='BAhS2AiADnmnXSErAkh182-w5CYAZmvhUPOIVVmcBNDAjWycubfIPzXPdFI3h4dTX_grGnOr2gZuoWiE4nbPyUo';
-    const messaging = getMessaging();
-    getToken(messaging,{vapidKey: YOUR_PUBLIC_VAPID_KEY}).then((token) => {
-      console.log("fcmToken:", token);
-      axios.post('http://localhost:2222/fcm', {
-        'token': token
-        })
-        .then(response => {
-            // 응답 데이터 처리
-            console.log('sdff',response);
-        })
-        .catch(error => {
-            console.error('Error fetching chat data:', error);
-        });
-      });
-     
-  }
+
 
   const handleSocialLogin = (provider) => {
     window.location.href = `http://localhost:9999/oauth2/authorization/${provider}`;

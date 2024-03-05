@@ -98,6 +98,7 @@ const MainPage = ({ imgSize }) => {
       setUserInfo(decodedToken);
       console.log('Decoded Token:', decodedToken);
       console.log('userId:', decodedToken.userInfo.userId);
+      console.log('fcmToken:', cookies.token);
       setUserId(decodedToken.userInfo.userId);
     }
   }, [cookies.ACCESS]);

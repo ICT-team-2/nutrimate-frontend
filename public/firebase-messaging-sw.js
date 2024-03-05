@@ -28,7 +28,7 @@ const messaging = firebase.messaging();
 
 
 
-/*
+
 messaging.onBackgroundMessage((payload) => 
 {  
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
@@ -36,7 +36,7 @@ messaging.onBackgroundMessage((payload) =>
   const notificationOptions = {body: payload.notification.body,icon: payload.notification.icon };
   return self.registration.showNotification(notificationTitle,notificationOptions);
 });
-*/
+
 
 
 //알림창 클릭시
