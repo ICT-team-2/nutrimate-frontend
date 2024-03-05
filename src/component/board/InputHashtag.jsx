@@ -16,9 +16,10 @@ const ListItem = muiStyled('li')(({ theme }) => ({
 const StyledInput = styled.input`
     border: none;
     display: block;
-    width: 99.5%;
+    width: 100%;
     height: 30px;
     background-color: ${({ theme }) => theme['main-background']};
+    padding-left: 1rem;
 `;
 
 const StyledPaper = muiStyled(Paper)`
@@ -52,7 +53,7 @@ const InputHashtag = () => {
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       const newChip = { key: chipData.length, label: inputValue };
-      setChipData([...chipData, newChip]);
+      setChipData([...new Set([...chipData, newChip])]);
       setInputValue('');
     }
   };

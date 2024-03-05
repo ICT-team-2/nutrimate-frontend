@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 const useFetchFolloweeList = (userId) => {
 
-  userId = userId || sessionStorage.getItem('userId');
+  userId = userId || parseInt(sessionStorage.getItem('userId'));
 
   //axios
   const fetchFolloweeList = async () => {
@@ -23,7 +23,7 @@ const useFetchFolloweeList = (userId) => {
       REACT_QUERY_KEYS.FOLLOW,
       REACT_QUERY_KEYS.FOLLOWEE,
       REACT_QUERY_KEYS.LIST,
-      userId,
+      parseInt(userId),
     ],
     queryFn: fetchFolloweeList,
   });

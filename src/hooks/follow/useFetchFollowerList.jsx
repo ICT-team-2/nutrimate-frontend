@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const useFetchFollowerList = (profileUserId) => {
 
-  profileUserId = profileUserId || sessionStorage.getItem('userId');
+  profileUserId = profileUserId || parseInt(sessionStorage.getItem('userId'));
 
   //axios
   const fetchFollowerList = async () => {
@@ -22,7 +22,7 @@ const useFetchFollowerList = (profileUserId) => {
       REACT_QUERY_KEYS.FOLLOW,
       REACT_QUERY_KEYS.FOLLOWER,
       REACT_QUERY_KEYS.LIST,
-      profileUserId,
+      parseInt(profileUserId),
     ],
     queryFn: fetchFollowerList,
   });

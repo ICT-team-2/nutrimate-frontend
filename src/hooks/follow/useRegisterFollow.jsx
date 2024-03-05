@@ -13,7 +13,11 @@ const useRegisterFollow = (followeeId) => {
   };
 
   return useMutation({
-    mutationKey: [REACT_QUERY_KEYS.FOLLOW, REACT_QUERY_KEYS.INSERT, userId, followeeId],
+    mutationKey: [
+      REACT_QUERY_KEYS.FOLLOW, REACT_QUERY_KEYS.INSERT,
+      userId,
+      followeeId,
+    ],
     mutationFn: registerFollow,
     onSuccess: () => {
       console.log('팔로우 성공');

@@ -19,7 +19,7 @@ import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 import { userIdAtom } from '@src/pages/login/atom.js';
 import { useEffect } from 'react';
 import FollowButton from '@src/component/common/FollowButton.jsx';
-import useRecommandFollowList from '@src/hooks/follow/useRecommandFollowList.jsx';
+import useFetchRecommandFollowList from '@src/hooks/follow/useFetchRecommandFollowList.jsx';
 
 const exampleDatas = [
   {
@@ -60,12 +60,16 @@ const AvatarContainer = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
-    padding-left: 20px;
+    padding-left: 30px;
 `;
 
 const UserNameContainer = styled.div`
     margin: 8.5px auto auto 10px;
     height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
 `;
 
 const StyledPaper = styled.div`
@@ -78,26 +82,36 @@ const StyledPaper = styled.div`
 
 const StyledListSubheader = styled(ListSubheader)`
     background-color: inherit;
+    position: static;
+`;
+
+const FollowNickContainer = styled.div`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
+`;
+const StyledListItemText = styled(ListItemText)`
+    max-width: 130px;
+    min-width: 130px;
 `;
 
 const RecommendFriendList = ({ datas = exampleDatas }) => {
   const { data: userData } = useFetchProfileData();
-  const { data: recommendFollowData } = useRecommandFollowList();
-
-  useEffect(() => {
-    console.log('recommendFollowData', recommendFollowData);
-  }, [recommendFollowData]);
+  const { data: recommendFollowData } = useFetchRecommandFollowList();
 
   return (
     <FriendListContainer>
       <AvatarContainer>
-        <UserAvatar src={import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
+        <UserAvatar
+          userNick={userData?.userNick}
+          src={import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
         <UserNameContainer>{userData?.userNick}</UserNameContainer>
       </AvatarContainer>
       <StyledPaper>
         <List
           subheader={
-            <StyledListSubheader component="div" id="nested-list-subheader">
+            <StyledListSubheader>
               회원님을 위한 추천
             </StyledListSubheader>
           }
@@ -109,7 +123,7 @@ const RecommendFriendList = ({ datas = exampleDatas }) => {
                   userNick={data.userNick}
                   src={import.meta.env.REACT_APP_BACKEND_URL + data.userProfile} />
               </ListItemAvatar>
-              <ListItemText primary={data.userNick} />
+              <StyledListItemText primary={<FollowNickContainer>{data.userNick}</FollowNickContainer>} />
               <FollowButton
                 followId={data.userId}
                 following={data.isFollowing === 1}

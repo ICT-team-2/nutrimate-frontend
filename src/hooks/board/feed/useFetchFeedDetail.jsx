@@ -16,7 +16,8 @@ const useFetchFeedDetail = (boardId) => {
   };
   //react-query
   return useQuery({
-    queryKey: [REACT_QUERY_KEYS.BOARD, REACT_QUERY_KEYS.FEED, REACT_QUERY_KEYS.DETAIL, boardId],
+    queryKey: [REACT_QUERY_KEYS.BOARD, REACT_QUERY_KEYS.FEED, REACT_QUERY_KEYS.DETAIL,
+      boardId],
     queryFn: fetchFeedDetail,
   });
 

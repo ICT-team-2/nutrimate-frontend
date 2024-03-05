@@ -20,12 +20,16 @@ const useInputReply = (boardId) => {
   return useMutation({
     mutationKey: [REACT_QUERY_KEYS.COMMENTS, REACT_QUERY_KEYS.REPLY, REACT_QUERY_KEYS.INSERT],
     mutationFn: inputReply,
-    onSuccess: () => {
+    onSuccess: async () => {
       console.log('답글 입력 성공');
-      queryClient.invalidateQueries([REACT_QUERY_KEYS.COMMENTS, boardId]);
+      await queryClient.invalidateQueries({
+        predicate: (query) => {
+          return query.queryKey.includes(REACT_QUERY_KEYS.COMMENTS)
+            && query.queryKey.includes(boardId);
+        },
+      });
     },
     onError: (error) => {
-
       console.error(error);
     },
   });

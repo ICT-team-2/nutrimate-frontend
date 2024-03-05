@@ -25,7 +25,7 @@ const useFetchBookmarkFeedList = (profileUserId) => {
       REACT_QUERY_KEYS.FEED,
       REACT_QUERY_KEYS.BOOKMARK,
       REACT_QUERY_KEYS.LIST,
-      profileUserId],
+      parseInt(profileUserId)],
     queryFn: fetchBookmarkFeedList,
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage.nowPage >= lastPage.totalPages) {

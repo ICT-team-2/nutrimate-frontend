@@ -26,7 +26,7 @@ const useFetchProfileFeedList = (profileUserId) => {
       REACT_QUERY_KEYS.PROFILE,
       REACT_QUERY_KEYS.FEED,
       REACT_QUERY_KEYS.LIST,
-      profileUserId],
+      parseInt(profileUserId)],
     queryFn: fetchProfileFeedList,
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage.nowPage >= lastPage.totalPages) {

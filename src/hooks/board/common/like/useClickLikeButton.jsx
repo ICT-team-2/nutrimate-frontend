@@ -24,7 +24,13 @@ const useClickLikeButton = (boardId) => {
     mutationFn: () => clickLikeButton(boardId),
     onSuccess: () => {
       console.log('좋아요 성공');
-      queryClient.invalidateQueries([REACT_QUERY_KEYS.BOARD, boardId]);
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          return query.queryKey.includes(REACT_QUERY_KEYS.BOARD)
+            && (query.queryKey.includes(boardId) ||
+              query.queryKey.includes(REACT_QUERY_KEYS.LIST));
+        },
+      });
     },
     onError: (error) => {
       console.error(error);

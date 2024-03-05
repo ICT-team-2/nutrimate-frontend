@@ -38,7 +38,9 @@ const ProfileImgMenu = () => {
     <Box sx={{ flexGrow: 0 }}>
       {/* 프로필 아이콘 */}
       <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-        <UserAvatar src={import.meta.env.REACT_APP_BACKEND_URL + data?.userProfile} />
+        <UserAvatar
+          userNick={data?.userNick}
+          src={import.meta.env.REACT_APP_BACKEND_URL + data?.userProfile} />
       </IconButton>
 
 

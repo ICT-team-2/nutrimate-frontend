@@ -23,7 +23,7 @@ const useFetchBookmarkInfoBoardList = (profileUserId, page = 1) => {
       REACT_QUERY_KEYS.BOARD,
       REACT_QUERY_KEYS.BOOKMARK,
       REACT_QUERY_KEYS.LIST,
-      profileUserId,
+      parseInt(profileUserId),
       page],
     queryFn: fetchBookmarkInfoBoardList,
   });

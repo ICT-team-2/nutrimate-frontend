@@ -10,7 +10,7 @@ import { INIT_MAP_STATE } from '@src/component/board/const.js';
  * @param center{Object} - 지도 중심 좌표
  * @param center.lat{number} - 지도 중심 좌표의 위도
  * @param center.lng{number} - 지도 중심 좌표의 경도
- * @returns {void}
+ * @returns {function}
  */
 const useInitMapData = () => {
   const [mapPaths, setMapPaths] = useAtom(mapPathsAtom);
@@ -18,12 +18,12 @@ const useInitMapData = () => {
   const [mapCenter, setMapCenter] = useAtom(mapCenterAtom);
 
   return (paths = INIT_MAP_STATE.PATHS,
-    distances = INIT_MAP_STATE.DISTANCES,
-    center = INIT_MAP_STATE.CENTER) => {
+          distances = INIT_MAP_STATE.DISTANCES,
+          center = INIT_MAP_STATE.CENTER) => {
     setMapPaths(paths ?? INIT_MAP_STATE.PATHS);
     setMapDistances(distances ?? INIT_MAP_STATE.DISTANCES);
     setMapCenter(center ?? INIT_MAP_STATE.CENTER);
-  }
+  };
 };
 
 export default useInitMapData;

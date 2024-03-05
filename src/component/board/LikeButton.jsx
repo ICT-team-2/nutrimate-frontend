@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import styled, { createGlobalStyle } from 'styled-components';
 import { nanoid } from 'nanoid';
@@ -52,12 +52,12 @@ const Svg = styled.svg`
 `;
 
 const Heart = styled.path`
-    stroke: ${({ click, color }) => click === 'true' ? color : disabledColor};
+    stroke: ${({ $click, color }) => $click === 'true' ? color : disabledColor};
     stroke-width: 40px;
     stroke-dasharray: 3000;
     stroke-dashoffset: 3000;
     stroke-linecap: round;
-    fill: ${({ click, color }) => click === 'true' ? color : disabledColor};
+    fill: ${({ $click, color }) => $click === 'true' ? color : disabledColor};
 `;
 
 const LikeContainer = styled(Label)`
@@ -101,9 +101,13 @@ const LikeButton = (props) => {
   const [disabled, setDisabled] = useState(false);
   const checkboxId = nanoid();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setClick(clicked);
   }, [clicked]);
+
+  useLayoutEffect(() => {
+    setLikeCount(like);
+  }, [like]);
 
   const animateHeart = () => {
     heart.current.animate(
@@ -207,17 +211,16 @@ const LikeButton = (props) => {
           xmlns="http://www.w3.org/2000/svg"
           $p-id="2271"
           size={size}
-          click={click + ''}
           color={heartColor}
         >
           <Heart
             d="M742.4 101.12A249.6 249.6 0 0 0 512 256a249.6 249.6 0 0 0-230.72-154.88C143.68 101.12 32 238.4 32 376.32c0 301.44 416 546.56 480 546.56s480-245.12 480-546.56c0-137.92-111.68-275.2-249.6-275.2z"
-            fill={click + '' ? heartColor : disabledColor}
+            fill={click ? heartColor : disabledColor}
             $p-id="2272"
             id="heart"
             ref={heart}
             color={heartColor}
-            click={click + ''}
+            $click={click + ''}
           ></Heart>
         </Svg>
         <Span ref={span} size={size} color={heartColor}></Span>
