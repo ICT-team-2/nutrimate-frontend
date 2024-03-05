@@ -66,6 +66,10 @@ const AvatarContainer = styled.div`
 const UserNameContainer = styled.div`
     margin: 8.5px auto auto 10px;
     height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
 `;
 
 const StyledPaper = styled.div`
@@ -79,6 +83,17 @@ const StyledPaper = styled.div`
 const StyledListSubheader = styled(ListSubheader)`
     background-color: inherit;
     position: static;
+`;
+
+const FollowNickContainer = styled.div`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
+`;
+const StyledListItemText = styled(ListItemText)`
+    max-width: 130px;
+    min-width: 130px;
 `;
 
 const RecommendFriendList = ({ datas = exampleDatas }) => {
@@ -108,7 +123,7 @@ const RecommendFriendList = ({ datas = exampleDatas }) => {
                   userNick={data.userNick}
                   src={import.meta.env.REACT_APP_BACKEND_URL + data.userProfile} />
               </ListItemAvatar>
-              <ListItemText primary={data.userNick} />
+              <StyledListItemText primary={<FollowNickContainer>{data.userNick}</FollowNickContainer>} />
               <FollowButton
                 followId={data.userId}
                 following={data.isFollowing === 1}

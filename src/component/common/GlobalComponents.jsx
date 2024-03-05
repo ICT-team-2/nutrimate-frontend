@@ -80,10 +80,10 @@ CustomSearchInput.defaultProps = {
 };
 
 
-const StyledAvatar = muiStyled(Avatar)`
-  width: ${({ size }) => size || '40'}px;
-  height: ${({ size }) => size || '40'}px;
-  ${({ variant }) => variant === 'rounded' && `
+const StyledAvatar = styled(Avatar)`
+    width: ${({ size }) => size || '40'}px;
+    height: ${({ size }) => size || '40'}px;
+    ${({ variant }) => variant === 'rounded' && `
     border-radius: 22px;
   `}
 `;
