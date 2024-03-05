@@ -34,6 +34,7 @@ const SurveyAllergy = () => {
   };
 
   const onClickAllergy = (index) => {
+    console.log(index);
     setAllergyList((prevState) => ({
       ...prevState,
       [index]: !prevState[index],
@@ -67,12 +68,12 @@ const SurveyAllergy = () => {
           alignItems="center"
           columns={60}
         >
-          {Object.keys(ALLERGY_LIST).map((key, index) => (
-            <Grid item xs={60} sm={30} md={20} lg={15} key={key}>
+          {Object.values(ALLERGY_LIST).map((value, index) => (
+            <Grid item xs={60} sm={30} md={20} lg={15} key={value.KEYS}>
               <SurveyAllergyCard
-                key={key} index={index}
-                onClick={() => onClickAllergy(key)}
-                checked={allergyList[key]}
+                key={value.KEYS} index={index}
+                onClick={() => onClickAllergy(value.KEYS)}
+                checked={allergyList[value.KEYS]}
               />
             </Grid>
           ))}
