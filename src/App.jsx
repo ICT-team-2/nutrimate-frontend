@@ -70,6 +70,7 @@ function App() {
       path: '/' + ROUTER_LINKS.RECORD + '/*',
       element: <RecordRoutes />,
     },
+
   ]);
   return (
     <MuiThemeProvider theme={muiTheme}>

@@ -92,9 +92,9 @@ const MainPage = ({ imgSize }) => {
               당신만의 맞춤식 프로그램으로 건강한 식습관을 만나보세요
             </MainSecondTypo>
             <StyledButton
-              variant="contained"
-              size="large"
-              onClick={gotoSurvey}>식습관 검사하기</StyledButton>
+              variant='contained'
+              size='large'
+              onClick={gotoSurvey}>시작하기</StyledButton>
           </MainPageImgContent>
         </RelativeWrapper>
       </StyledContainer>

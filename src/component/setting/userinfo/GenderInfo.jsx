@@ -31,7 +31,7 @@ const StyledFormLabel = muiStyled(FormLabel)`
     color:black;
 `;
 
-export default function GenderInfo({ disabled }) {
+export default function GenderInfo({ disabled}) {
   const [value, setValue] = useAtom(genderAtom);
 
   const handleChange = (event) => {
@@ -39,8 +39,7 @@ export default function GenderInfo({ disabled }) {
   };
 
   return (
-    <StyledFormControl
-    >
+    <StyledFormControl>
       <StyledFormLabel>{SETTING_USER_INFOS.GENDER.TITLE}</StyledFormLabel>
       <StyledRadioGroup
         value={value}
@@ -51,7 +50,6 @@ export default function GenderInfo({ disabled }) {
           control={<CustomRadio />}
           label={SETTING_USER_INFOS.GENDER.MALE.LABEL}
           disabled={disabled}
-          checked
         />
         <StyledFormControlLabel
           value={SETTING_USER_INFOS.GENDER.FEMALE.VALUES}

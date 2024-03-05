@@ -12,8 +12,8 @@ export default function SelectMealTime () {
   const [mealTime, setMealTime] = useAtom(selectedMealTimeAtom);
   
   const handleChange = (event) => {
-    setMealTime(event.target.value);
-  };
+    console.log(event.target.value);
+    setMealTime(event.target.value);};
   
   return (
     <FormControl size='small'>

@@ -4,9 +4,8 @@ import { styled as muiStyled } from '@mui/material/styles';
 import { InputLabel, TextField } from '@mui/material';
 import { SETTING_USER_INFOS } from '@src/component/setting/const.js';
 import { UserInfoContainerDiv } from '@src/component/setting/userinfo/UserViewInfo.jsx';
-import { heIL } from '@mui/x-date-pickers';
-import { heightStateAtom, weightStateAtom } from '../atom';
 import { useAtom } from 'jotai';
+import { heightStateAtom, weightStateAtom } from '../atom';
 
 const StyledTextField = muiStyled(TextField)`
     width: 35%;
@@ -22,12 +21,13 @@ const StyledLabel = muiStyled(InputLabel)`
     color: ${({ theme, focus }) => focus ? theme['primary-color'] : 'black'};
 
 `;
-const HeightWeightInfo = ({ disabled }) => {
-  const [isHeightFocused, setIsHeightFocused] = useState(undefined);
-  const [isWeightFocused, setIsWeightFocused] = useState(undefined);
+const HeightWeightInfo = ({ disabled}) => {
+  const [isHeightFocused, setIsHeightFocused] = useState(false);
+  const [isWeightFocused, setIsWeightFocused] = useState(false);
 
   const [height, setHeight] = useAtom(heightStateAtom);
   const [weight, setWeight] = useAtom(weightStateAtom);
+
 
   return (
     <UserInfoContainerDiv>
@@ -40,13 +40,14 @@ const HeightWeightInfo = ({ disabled }) => {
       <StyledTextField
         label={SETTING_USER_INFOS.HEIGHT.LABEL}
         id={SETTING_USER_INFOS.HEIGHT.ID}
-        onFocus={() => setIsHeightFocused('true')}
-        onBlur={() => setIsHeightFocused(undefined)}
+        onFocus={() => setIsHeightFocused(true)}
+        onBlur={() => setIsHeightFocused(false)}
         disabled={disabled}
         value={height}
+        type="number"
+        InputProps={{ inputProps: { min: 0 } }} // 최소값을 0으로 설정
         onChange={(e) => setHeight(e.target.value)}
-      >
-      </StyledTextField>
+      />
 
       <StyledLabel
         htmlFor={SETTING_USER_INFOS.WEIGHT.ID}
@@ -55,15 +56,19 @@ const HeightWeightInfo = ({ disabled }) => {
         {SETTING_USER_INFOS.WEIGHT.TITLE}
       </StyledLabel>
       <StyledTextField
-        label={SETTING_USER_INFOS.WEIGHT.LABEL} id={SETTING_USER_INFOS.WEIGHT.ID}
-        onFocus={() => setIsWeightFocused('true')}
-        onBlur={() => setIsWeightFocused(undefined)}
+        label={SETTING_USER_INFOS.WEIGHT.LABEL}
+        id={SETTING_USER_INFOS.WEIGHT.ID}
+        onFocus={() => setIsWeightFocused(true)}
+        onBlur={() => setIsWeightFocused(false)}
         disabled={disabled}
         value={weight}
+        type="number"
+        InputProps={{ inputProps: { min: 0 } }} // 최소값을 0으로 설정
         onChange={(e) => setWeight(e.target.value)}
-      ></StyledTextField>
+      />
     </UserInfoContainerDiv>
   );
 };
 
 export default HeightWeightInfo;
+
