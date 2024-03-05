@@ -96,11 +96,11 @@ export const SURVEY_SELECT = {
 };
 
 export const ALLERGY_IMG = {
-  START: [8, 24],
-  IMG_SIZE: '180px',
-  NEXT_X: 21,
+  START: [7.4, 24],
+  IMG_SIZE: '195px',
+  NEXT_X: 21.4,
   NEXT_Y: 22.9,
-  PAPER_SIZE: '200px',
+  PAPER_SIZE: '215px',
 };
 
 export const ALLERGY_LIST = {
@@ -144,5 +144,5 @@ export const ALLERGY_LIST = {
     KEYS: 'wheat-free',
     VALUES: '밀',
   },
-  
+
 };
