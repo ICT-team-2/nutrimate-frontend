@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import TestComp from '@src/pages/test/TestComp.jsx';
 import SurveyAllergy from '@src/component/survey/SurveyAllergy.jsx';
+import OcrModal from '@src/component/board/OcrModal.jsx';
 
 
 const PageContainer = styled.div`
@@ -13,7 +14,7 @@ const PageContainer = styled.div`
 
 const TestPage = () => {
   return (
-    <SurveyAllergy />
+    <OcrModal />
   );
 };
 

@@ -19,6 +19,9 @@ const PagingContainer = styled.div`
  */
 const PagnationComponent = (props) => {
   const { pageState, handlePageChange, totalPage } = props;
+
+  if (totalPage === 0) return null;
+
   return (
     <PagingContainer>
       <FlexGrowDiv></FlexGrowDiv>
