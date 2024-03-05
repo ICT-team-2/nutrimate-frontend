@@ -87,6 +87,9 @@ export default function WeekPicker({onChangeWeek}) {
     setIsOpen(!isOpen);
     
   };
+  useEffect(() => {
+     onChangeWeek(value.startOf('week'), value.endOf('week'));
+   }, []);
 
 
 
@@ -101,7 +104,7 @@ export default function WeekPicker({onChangeWeek}) {
         value={value}
         onChange={(newValue) => {
             setValue(newValue);
-            onChangeWeek(startOfWeek, endOfWeek);
+            onChangeWeek(newValue.startOf('week'), newValue.endOf('week'));
         }}
         showDaysOutsideCurrentMonth
         displayWeekNumber

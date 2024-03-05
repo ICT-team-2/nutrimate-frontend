@@ -4,6 +4,7 @@ import { useAtom } from 'jotai/react';
 import { datePickerAtom } from '@src/component/calendar/atom.js';
 import dayjs from 'dayjs';
 import { Button } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 
 
 
@@ -38,6 +39,13 @@ function CalendarToolbar (props) {
     const date = moment(props.date);
     return <span>{date.format('YYYY년 MM월')}</span>;
   };
+
+  useEffect(()=>{
+    console.log(dayjs(selectedDate).format('YYYY-MM'))
+    props.customCallback(dayjs(selectedDate).format('YYYY-MM'))
+  },[selectedDate]);
+
+
 
   
   return (

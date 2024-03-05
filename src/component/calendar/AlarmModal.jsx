@@ -306,7 +306,10 @@ const ChallengeModal = (props) => {
                 datesBetween.forEach(date => {
                   const dateTimeForDB =  date + 'T' + selectTime;
                   Alarm(dateTimeForDB,title,content)
+                  updatedAlarmWeek.push(date+'T'+selectTime);
                 });
+
+                AlarmSaveData(updatedAlarmWeek);
              }else{
                   datesBetween.forEach(date => {
                     const dayOfWeek = (new Date(date)).getDay();
@@ -314,8 +317,8 @@ const ChallengeModal = (props) => {
                     category.forEach(week =>{          
                       if(weekdaysList[dayOfWeek] === week){
                         console.log(date);
-                        Alarm(date+'T'+selectTime,title,content)
-                        updatedAlarmWeek.push(date);
+                        //Alarm(date+'T'+selectTime,title,content)
+                        updatedAlarmWeek.push(date+'T'+selectTime);
                       }
 
                     })
@@ -357,7 +360,7 @@ const ChallengeModal = (props) => {
 }
 
 const AlarmSaveData = (updatedAlarmWeek) =>{
-  console.log(updatedAlarmWeek)
+  console.log('sdf',updatedAlarmWeek)
   axios.post('http://localhost:9999/alarm/list', {
                   'updatedAlarmWeek': updatedAlarmWeek,
                   'alarmCategory': title,

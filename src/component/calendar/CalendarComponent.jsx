@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import React,{ useState,useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -12,9 +12,15 @@ import DayHeader from '@src/component/calendar/DayHeader.jsx';
 import { Button } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'; 
 import ListAltIcon from '@mui/icons-material/ListAlt'; 
+import CircleIcon from '@mui/icons-material/Circle';
 const CALENDAR_BOARDER_RADIUS = '10px';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
 
 moment.locale('ko');
+
 const localizer = momentLocalizer(moment);
 
 const GlobalStyle = createGlobalStyle`
@@ -65,13 +71,20 @@ const StyledCalendar = styled(Calendar)`
     }
 
     & .rbc-today {
-        background-color: ${(theme) => theme.theme['menu-active-bg']};
-        border-top: 2px solid ${(theme) => theme.theme['menu-active']};
+      background-color: ${(theme) => theme.theme['menu-active-bg']};
+      border-top: 2px solid ${(theme) => theme.theme['menu-active']};
+    }
+
+    & .rbc-show-more{
+      color: #0f4a15;
     }
 
 
     & .rbc-event {
-        background-color: ${(theme) => theme.theme['primary-color']};
+      background-color: transparent;
+      font-size:10px;
+      color: #0f4a15;
+        
     }
 
 `;
@@ -87,99 +100,20 @@ const CalendarContainer = muiStyled(Container)`
     }
 `;
 
-const events = [
-  {
-    start: moment().toDate(),
-    title: 'My event',
-  },
-];
-
 const CalendarComponent = (props) => {
 
   const [isClickCalendar, setIsClickCalendar] = useState(true);
   const [isClickList, setIsClickList] = useState(false);
+  const [monthData, setMonthData] = useState([]);
+  const [date, setDate] = useState(new Date());
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const data = [
-    {
-      'date': 'January 3, 2033',
-      'week': 'Tuesday',
-      'time': '11:00am',
-      'work': 'Meeting'
-    },
-    {
-      'date': 'January 3, 2033',
-      'week': 'Tuesday',
-      'time': '11:00am',
-      'work': 'Study'
-    },
-    {
-      'date': 'January 3, 2033',
-      'week': 'Tuesday',
-      'time': '11:00am',
-      'work': 'Work'
-    },
-    {
-      'date': 'January 12, 2033',
-      'week': 'Monday',
-      'time': '11:00am',
-      'work': 'Study'
-    },
-    {
-      'date': 'January 8, 2033',
-      'week': 'Sunday',
-      'time': '11:00am',
-      'work': 'work'
-    },
-    {
-      'date': 'January 8, 2033',
-      'week': 'Sunday',
-      'time': '11:00am',
-      'work': 'work'
-    },
-    {
-      'date': 'January 8, 2033',
-      'week': 'Sunday',
-      'time': '11:00am',
-      'work': 'work'
-    },
-    {
-      'date': 'January 8, 2033',
-      'week': 'Sunday',
-      'time': '11:00am',
-      'work': 'work'
-    },
-    {
-      'date': 'January 8, 2033',
-      'week': 'Sunday',
-      'time': '11:00am',
-      'work': 'work'
-    },
-    {
-      'date': 'January 8, 2033',
-      'week': 'Sunday',
-      'time': '11:00am',
-      'work': 'work'
-    },
-    {
-      'date': 'January 8, 2033',
-      'week': 'Sunday',
-      'time': '11:00am',
-      'work': 'work'
-    },
-    {
-      'date': 'January 8, 2033',
-      'week': 'Sunday',
-      'time': '11:00am',
-      'work': 'work'
-    },
-    {
-      'date': 'January 8, 2033',
-      'week': 'Sunday',
-      'time': '11:00am',
-      'work': 'work'
-    }
-    
-  ];
+  
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+
 
   const callendar = () => {
     setIsClickCalendar(true)
@@ -191,9 +125,44 @@ const CalendarComponent = (props) => {
     setIsClickList(true)
   };
   
+  const onhandleMonthSelect = (dates)=>{
+    setDate(dates);
+  }
   
+  useEffect(()=>{
+    const transformedData = [];
+     axios.get(`http://localhost:9999/alarm/list/month?month=${date}`)
+           .then(response => {
+               console.log(response.data);
+               for (const data in response.data) {
+                const transformedItem = {};
+                 for (const key in response.data[data]) {
+                     console.log(dayjs(response.data[data]['alarmTime']).format('YYYY.MM.DD'))
+                     const newKey = key === 'alarmCategory' ? 'title' : key === 'alarmTime' ? 'start' : key;
+                     transformedItem[newKey] = key === 'alarmCategory'? (<>{<CircleIcon style={{ color: '#0f4a15',fontSize:'8px',margin:'0 2px'}}/>} {response.data[data][key]} </>) :response.data[data][key];
+                     transformedItem['end']=''
+                   }
+                 transformedData.push(transformedItem);
+             }
+               console.log(transformedData);
+               setMonthData(transformedData);
+               
+           })
+           .catch(error => {
+               console.error('Error fetching chat data:', error);
+           });
+
+
+},[date])
+
+
+
+   
+
+
   
   return (
+    <>
     <CalendarContainer>
       <GlobalStyle />
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -207,40 +176,69 @@ const CalendarComponent = (props) => {
       {isClickCalendar &&
       <StyledCalendar
         localizer={localizer}
-        events={events}
+        events={monthData}
         startAccessor='start'
         endAccessor='start'
         views={['month']}
-        //이벤트 클릭 이벤트
-        onSelectEvent={event => {
-          // console.log(event);
-          alert(`Event '${event.title}' was selected`);
-        }}
+        onhandleMonthSelect={onhandleMonthSelect}
         selectable
         //날짜 칸 클릭 이벤트
         onSelectSlot={(slotInfo) => {
-          alert(`selected slot: \n\nstart ${slotInfo.start.toLocaleString()} ` +
-            `\nend: ${slotInfo.end.toLocaleString()}` +
-            `\naction: ${slotInfo.action}`);
+          const filteredData=[]
+          console.log(slotInfo.start)
+          monthData.forEach(data =>{
+            if (dayjs(data.start).format('YYYY-MM-DD') == dayjs(slotInfo.start).format('YYYY-MM-DD')) {
+              filteredData.push(data)
+            }
+          } );
+
+
+          setAnchorEl({
+            top: slotInfo.box.y, // Y 좌표 설정
+            left: slotInfo.box.x, // X 좌표 설정
+            item: filteredData,
+            day:slotInfo.start
+          });
         }}
         components={{
           //툴바 오버라이딩
-          toolbar: CalendarToolbar,
+          toolbar: (toolbar) => {
+            return (
+              <CalendarToolbar
+                {...toolbar}
+                customCallback={(arg) => {
+                  onhandleMonthSelect(arg);
+                  
+                }}
+              />
+            );
+          },
           //요일을 한글로 변경하기 위한 오버라이딩
           header: DayHeader,
-        }}
-        onDrillDown={(date, view, e) => {
-          
-          alert(`Drilled down on ${date.toLocaleString()}`);
         }}
       />
       }
 
        {isClickList && 
-          <ListTable data = {data}></ListTable>}
+      <ListTable></ListTable>}
+      
+      <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleCloseMenu}
+          anchorReference="anchorPosition"
+          anchorPosition={{ top: anchorEl?.top || 0, left: anchorEl?.left || 0}}
+          style={{height:'300px'}}
 
+        >
+          <MenuItem style={{backgroundColor : '#0f4a15', color:'white'}}>{dayjs(anchorEl?.day).format('YYYY-MM-DD')}</MenuItem>
+          {anchorEl?.item.map((item, index) => (
+          <MenuItem style={{fontSize:'15px'}} key={index}>  <span style={{ marginRight: '10px',fontSize: '12px', fontWeight: 'bold' }}>{item.title}</span><span style={{ fontSize: '10px' }}>{dayjs(item.start).format('A hh시 mm분 ')}</span></MenuItem>
+        ))}
+     </Menu>
 
     </CalendarContainer>
+    </>
     
   );
 };

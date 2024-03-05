@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -28,8 +28,8 @@ export default function MonthPicker ({ children, date, onNavigate }) {
     date.setYear(d['$d'].getFullYear());
     date.setMonth(d['$d'].getMonth());
     onNavigate('current');
+    
   };
-  
   return (
     <>
       <Button
@@ -39,6 +39,7 @@ export default function MonthPicker ({ children, date, onNavigate }) {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
         color='inherit'
+
       >
         {children}
       </Button>
