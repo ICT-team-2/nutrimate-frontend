@@ -13,14 +13,14 @@ const MyDietRecommend = () => {
     'NORMAL': '일반',
     'EXERCISE': '고단백',
     'KITO': '키토',
-    'VEGAN': '비건'
+    'VEGAN': '비건',
   };
- 
+
   useEffect(() => {
     const getDietRecommendation = async () => {
       try {
         await new Promise(resolve => setTimeout(resolve, 3000));
-        const response = await axios.get(`http://localhost:2222/diet?user_id=${userId}`);
+        const response = await axios.get(`http://localhost:2222/diet?userId=${userId}`);
         setDiet(response.data);
       } catch (error) {
         console.error('식단 추천을 불러오는데 실패했습니다.', error);
@@ -33,7 +33,7 @@ const MyDietRecommend = () => {
   if (!diet) { // 로딩중
     return (
       <div style={{ marginTop: '30px' }}>
-          <style>{`
+        <style>{`
               .spinner{
                   position: relative;
                   width: 150px;
@@ -94,7 +94,7 @@ const MyDietRecommend = () => {
                     100%{opacity: 0;width: 0px;}
                 }
           `}</style>
-          <div className="spinner"></div>
+        <div className="spinner"></div>
       </div>
     );
   }
@@ -105,16 +105,21 @@ const MyDietRecommend = () => {
         <div style={{ marginRight: '40px' }}>
           <img src={diet.image} style={{ width: '700px', height: '600px' }} />
           <Card style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px', padding: '10px' }}>
-            <p><CircleIcon style={{color:'red',fontSize:'10px',marginRight:'3px'}}/>CARB {diet.food_carbo}g</p>
-            <p><CircleIcon style={{color:'green',fontSize:'10px',marginRight:'3px'}}/>PROTEIN {diet.food_protein}g</p>
-            <p><CircleIcon style={{color:'orange',fontSize:'10px',marginRight:'3px'}}/>FAT {diet.food_provi}g</p>
+            <p><CircleIcon style={{ color: 'red', fontSize: '10px', marginRight: '3px' }} />CARB {diet.food_carbo}g</p>
+            <p><CircleIcon
+              style={{ color: 'green', fontSize: '10px', marginRight: '3px' }} />PROTEIN {diet.food_protein}g</p>
+            <p><CircleIcon style={{ color: 'orange', fontSize: '10px', marginRight: '3px' }} />FAT {diet.food_provi}g
+            </p>
           </Card>
         </div>
         <div>
           <Card style={{ marginBottom: '40px', padding: '10px', height: '350px' }}>
-            <p style={{ marginBottom: '10px', fontWeight: 'bold', textAlign: 'center' }}>{dietTypes[diet.user_diet]} 식단이 당신에게 맞는군요!</p>
+            <p style={{ marginBottom: '10px', fontWeight: 'bold', textAlign: 'center' }}>{dietTypes[diet.user_diet]} 식단이
+              당신에게 맞는군요!</p>
             <p>{diet.summary}</p>
-            <p style={{ marginTop: '5px' }}>올바른 식습관과 생활습관을 지속하면 좋은 건강상태를 유지할 수 있다는 장점이 있습니다. 건강한 음식들을 제때 골고루 섭취하는 것은 우리 몸에 필요한 영양소들이 균형을 잘 이룰 수 있도록 돕는 역할을 합니다.  규칙적인 시간에, 한쪽에 치우치지 않고 자연적인 식품을 골고루, 식사하는 것이 올바른 식생활 입니다. 건강한 내일에의 어렵지 않은 해법! 올바른 식생활에서 찾을 수 있습니다.</p>
+            <p style={{ marginTop: '5px' }}>올바른 식습관과 생활습관을 지속하면 좋은 건강상태를 유지할 수 있다는 장점이 있습니다. 건강한 음식들을 제때 골고루 섭취하는 것은 우리
+              몸에 필요한 영양소들이 균형을 잘 이룰 수 있도록 돕는 역할을 합니다. 규칙적인 시간에, 한쪽에 치우치지 않고 자연적인 식품을 골고루, 식사하는 것이 올바른 식생활 입니다. 건강한 내일에의
+              어렵지 않은 해법! 올바른 식생활에서 찾을 수 있습니다.</p>
           </Card>
           <Card style={{ padding: '10px', height: '150px' }}>
             <p style={{ marginBottom: '10px', fontWeight: 'bold', textAlign: 'center' }}>오늘의 추천 식단</p>
