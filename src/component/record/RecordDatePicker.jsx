@@ -10,7 +10,7 @@ import 'dayjs/locale/ko';
 import { useAtom } from 'jotai/react';
 import { datePickerAtom } from '@src/component/calendar/atom.js';
 import dayjs from 'dayjs';
-import useNavigateToRecord from '@src/hooks/useNavigateToRecord.jsx';
+import useNavigateToRecord from '@src/hooks/record/useNavigateToRecord.jsx';
 
 export default function RecordDatePicker({ children, date }) {
   const [anchorEl, setAnchorEl] = useState(null);

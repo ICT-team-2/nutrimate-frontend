@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -6,34 +6,34 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CommentIcon from '@mui/icons-material/Comment';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
 import {
   FlexGrowDiv,
   UserAvatar,
 } from '@src/component/common/GlobalComponents.jsx';
-import { Button } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
+import FeedDetailContent from '@src/component/board/feed/FeedDetailContent.jsx';
+import { LINKS, NO_IMAGE_PATH } from '@src/utils/const.js';
+import FeedDropMenu from '@src/component/board/feed/FeedDropMenu.jsx';
+import BoardBookmarkButton from '@src/component/board/BoardBookmarkButton.jsx';
+import BoardLikeButton from '@src/component/board/BoardLikeButton.jsx';
+import useUpdateViewCount from '@src/hooks/board/common/useUpdateViewCount.jsx';
 
 const ViewContentContainer = styled.div`
-    margin: 20px 0;
+    margin: 30px 0;
 `;
 const StyledCard = muiStyled(Card)`
 
 `;
 const ContentTypo = styled(Typography)`
-    overflow: ${({ clickmoreview }) => clickmoreview ? 'auto' : 'hidden'};
-    text-overflow: ${({ clickmoreview }) => clickmoreview
-            ? 'clip'
-            : 'ellipsis'};
-    white-space: ${({ clickmoreview }) => clickmoreview ? 'normal' : 'nowrap'};
+    overflow: ${({ clickmoreview }) => clickmoreview === 'true'
+            ? 'auto' : 'hidden'};
+    text-overflow: ${({ clickmoreview }) => clickmoreview === 'true'
+            ? 'clip' : 'ellipsis'};
+    white-space: ${({ clickmoreview }) => clickmoreview === 'true'
+            ? 'normal' : 'nowrap'};
 `;
 
 const MoreViewButton = styled(Typography)`
@@ -42,79 +42,116 @@ const MoreViewButton = styled(Typography)`
     cursor: pointer;
 
 `;
+const LikeButtonContainer = styled.div`
+    position: relative;
+    left: 13px;
+
+`;
 
 /**
  * 상세보기의 카드형태의 피드 하나를 렌더링합니다.
  *
  * @return {JSX.Element} 피드 뷰의 콘텐츠
  */
-function FeedViewContent() {
+function FeedViewContent(props) {
   const [clickMoreView, setClickMoreView] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const {
+    boardContent, boardId, boardThumbnail,
+    checkedLike, userNick: writer, checkedBookmark,
+    userId: writerId, userProfile: writerProfile,
+  } = props;
+  const [likeClicked, setLikeClicked] = useState(checkedLike === 1);
+  const userId = parseInt(sessionStorage.getItem('userId'));
+
+  const updateViewCount = useUpdateViewCount();
+
+
+  useEffect(() => {
+    setLikeClicked(checkedLike === 1);
+  }, [checkedLike]);
+
 
   return (
-    <ViewContentContainer>
-      <StyledCard>
-        <CardHeader
-          avatar={
-            <UserAvatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-              R
-            </UserAvatar>
-          }
-          action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title={'닉네임'}
-          // subheader='September 14, 2016'
-        />
-        <CardMedia
-          component="img"
-          height="500"
-          image="/src/asset/image/loading.png"
-          alt="Paella dish"
-        />
-        <CardActions disableSpacing>
-          <Tooltip title={'좋아요'}>
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="댓글">
-            <IconButton aria-label="comment">
-              <CommentIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="공유">
-            <IconButton aria-label="share">
-              <ShareIcon />
-            </IconButton>
-          </Tooltip>
-          <FlexGrowDiv />
-          <Tooltip title="북마크">
-            <IconButton aria-label="bookmark">
-              <BookmarkIcon />
-            </IconButton>
-          </Tooltip>
-        </CardActions>
-        <CardContent>
-          <ContentTypo
-            variant="body2" color="text.secondary"
-            clickmoreview={clickMoreView}>
-            This impressive paella is a perfect party dish and a fun meal to cook
-            together with your guests. Add 1 cup of frozen peas along with the mussels,
-            if you like.
-          </ContentTypo>
-
-          {!clickMoreView &&
-            <MoreViewButton
-              onClick={() => setClickMoreView(true)}
-              variant="body2" color="text.secondary">
-              더보기
-            </MoreViewButton>}
-        </CardContent>
-      </StyledCard>
-    </ViewContentContainer>
+    <>
+      <ViewContentContainer>
+        <StyledCard>
+          <CardHeader
+            avatar={
+              <UserAvatar
+                src={import.meta.env.REACT_APP_BACKEND_URL + writerProfile}
+                userNick={writer}
+                aria-label="recipe">
+                {writer}
+              </UserAvatar>
+            }
+            action={
+              (writerId === userId) && <FeedDropMenu boardId={boardId} />
+            }
+            title={writer}
+          />
+          <CardMedia
+            component="img"
+            height="500"
+            image={import.meta.env.REACT_APP_BACKEND_URL + boardThumbnail}
+            alt="feed image"
+            onError={(e) => {
+              e.target.src = NO_IMAGE_PATH;
+            }}
+          />
+          <CardActions disableSpacing>
+            <Tooltip title="댓글">
+              <IconButton
+                onClick={() => {
+                  updateViewCount.mutate(boardId);
+                  //   {
+                  //   onSuccess: () => {
+                  //     setModalOpen(true);
+                  //   },
+                  // });
+                  setModalOpen(true);
+                }}
+                aria-label="comment">
+                <CommentIcon />
+              </IconButton>
+            </Tooltip>
+            <FlexGrowDiv />
+            <Tooltip title={'좋아요'}>
+              <LikeButtonContainer>
+                <BoardLikeButton
+                  boardId={boardId}
+                  size={7}
+                  clicked={likeClicked}
+                />
+              </LikeButtonContainer>
+            </Tooltip>
+            <Tooltip title="북마크">
+              <BoardBookmarkButton
+                boardid={boardId}
+                clicked={(checkedBookmark === 1) + ''}
+              />
+            </Tooltip>
+          </CardActions>
+          <CardContent>
+            <ContentTypo
+              variant="body2" color="text.secondary"
+              clickmoreview={clickMoreView + ''}>
+              {boardContent}
+            </ContentTypo>
+            {!clickMoreView &&
+              <MoreViewButton
+                onClick={() => setClickMoreView(true)}
+                variant="body2" color="text.secondary">
+                더보기
+              </MoreViewButton>}
+          </CardContent>
+        </StyledCard>
+      </ViewContentContainer>
+      <FeedDetailContent
+        open={modalOpen} setOpen={setModalOpen}
+        data={props}
+      />
+    </>
   );
 }
 

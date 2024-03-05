@@ -20,14 +20,14 @@ import LoginRoutes from '@src/routes/LoginRoutes.jsx';
 import SurveyRoutes from '@src/routes/SurveyRoutes.jsx';
 import AdminRoutes from '@src/routes/AdminRoutes.jsx';
 import RecordRoutes from '@src/routes/RecordRoutes.jsx';
-
-
-
+import { CssBaseline } from '@mui/material';
+import useCheckUserToken from '@src/hooks/useCheckUserToken.jsx';
 
 
 function App() {
   const darkMode = useAtomValue(isDarkModeAtom);
   const muiTheme = useMuiTheme();
+  useCheckUserToken();
   const routes = useRoutes([
     { path: '/*', element: <MainRoutes /> },
     {
@@ -70,6 +70,7 @@ function App() {
       path: '/' + ROUTER_LINKS.RECORD + '/*',
       element: <RecordRoutes />,
     },
+
   ]);
   return (
     <MuiThemeProvider theme={muiTheme}>
@@ -77,6 +78,7 @@ function App() {
         ...theme,
         ...(darkMode ? theme.darkMode : theme.lightMode),
       }}>
+        <CssBaseline />
         <MuiGlobalStyles />
         {routes}
         <ChatBotComponent />

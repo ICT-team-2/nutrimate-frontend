@@ -13,6 +13,8 @@ import InfoBoardWritePage from '@src/pages/board/InfoBoardWritePage.jsx';
 import FeedBoardWritePage from '@src/pages/board/FeedBoardWritePage.jsx';
 import LayoutWithoutSideBar from '@src/layout/LayoutWithoutSideBar.jsx';
 import NotFound404Page from '@src/pages/NotFound404Page.jsx';
+import FeedBoardEditPage from '@src/pages/board/FeedBoardEditPage.jsx';
+import InfoBoardEditPage from '@src/pages/board/InfoBoardEditPage.jsx';
 
 const BoardRoutes = () => {
   return (
@@ -35,14 +37,17 @@ const BoardRoutes = () => {
 
       </Route>
       <Route path={'/'} element={<LayoutWithoutSideBar />}>
-
         <Route path={ROUTER_LINKS.INFO_BOARD_WRITE}
                element={<InfoBoardWritePage />}></Route>
+        <Route path={ROUTER_LINKS.INFO_BOARD_EDIT + '/:boardId'}
+               element={<InfoBoardEditPage />}></Route>
         <Route path={ROUTER_LINKS.FEED_BOARD_WRITE}
                element={<FeedBoardWritePage />}></Route>
+        <Route path={ROUTER_LINKS.FEED_BOARD_EDIT + '/:boardId'}
+               element={<FeedBoardEditPage />}></Route>
       </Route>
       <Route path={'*'} element={<NotFound404Page />}></Route>
-      
+
     </Routes>
   );
 };

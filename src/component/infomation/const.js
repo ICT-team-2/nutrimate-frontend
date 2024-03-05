@@ -82,3 +82,8 @@ export const SPORT_CATEGORY = {
   UPPER_BODY: '상체',
   LOWER_BODY: '하체',
 };
+
+export const PLACE_CATEGORY = {
+  RESTAURANT: '음식점',
+  GYM: '헬스장',
+};

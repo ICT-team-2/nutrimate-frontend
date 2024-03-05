@@ -7,18 +7,21 @@ export const BOARD = {
       PATH: LINKS.ALL_INFO_BOARD,
       PATH_PARAMS: PATH_PARAMS.ALL,
       ROUTER_LINKS: ROUTER_LINKS.ALL_INFO_BOARD,
+      CATEGORY: 'ALL',
     },
     FOOD: {
       TITLE: '식단',
       PATH: LINKS.FOOD_BOARD,
       PATH_PARAMS: PATH_PARAMS.FOOD,
       ROUTER_LINKS: ROUTER_LINKS.FOOD_BOARD,
+      CATEGORY: 'FOOD',
     },
     SPORT: {
       TITLE: '운동',
       PATH: LINKS.SPORT_BOARD,
       PATH_PARAMS: PATH_PARAMS.SPORT,
       ROUTER_LINKS: ROUTER_LINKS.SPORT_BOARD,
+      CATEGORY: 'EXERCISE',
     },
   },
   FEED: {
@@ -37,4 +40,41 @@ export const INIT_MAP_STATE = {
   ZOOM_LEVEL: 3,
   PATHS: [],
   DISTANCES: [],
+};
+
+export const COMMENT_TYPE = {
+  COMMENT: 'comment',
+  REPLY: 'reply',
+};
+
+export const INIT_COMMENT_STATE = {
+  boardId: undefined,
+  cmtContent: '',
+  cmtRef: undefined,
+  replyNick: undefined,
+  type: COMMENT_TYPE.COMMENT, // comment, reply
+};
+
+export const INIT_EDIT_COMMENT_STATE = {
+  cmtContent: '',
+  cmtId: undefined,
+};
+
+export const SELECT_COLUMNS = {
+  TITLE: {
+    value: 'board_title',
+    label: '제목',
+  },
+  CONTENT: {
+    value: 'board_content',
+    label: '내용',
+  },
+  WRITER: {
+    value: 'user_nick',
+    label: '작성자',
+  },
+  TAG: {
+    value: 'tag_name',
+    label: '태그',
+  },
 };

@@ -8,10 +8,12 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { useAtom, useSetAtom } from 'jotai/react';
-import { profileModalAtom, profilePromptModalAtom, uploadedImageAtom } from '@src/component/mypage/atom.js';
+import { profileModalAtom, profilePromptModalAtom, profileImageAtom } from '@src/component/mypage/atom.js';
 import { ResetStyleInput } from '@src/component/common/ImgUploader.jsx';
 import { styled as muiStyled } from '@mui/material/styles';
 import ProfileAIPromptModal from '@src/component/mypage/myinfo/ProfileAIPromptModal.jsx';
+import styled from 'styled-components';
+import useChangeProfileImage from '@src/hooks/mypage/useChangeProfileImage.jsx';
 
 const style = {
   position: 'absolute',
@@ -19,7 +21,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 200,
-  height: 200,
+  height: 230,
   bgcolor: 'background.paper',
   boxShadow: 24,
   padding: '20px',
@@ -29,12 +31,17 @@ const style = {
 const StyldListItemText = muiStyled(ListItemText)`
   text-align: center;
 `;
+const TitleH3 = styled.h3`
+    margin-bottom: 20px;
+`;
 
 export default function ChangeProfileModal() {
+
   const [open, setOpen] = useAtom(profileModalAtom);
   const fileInputRef = useRef();
-  const setSelectedImage = useSetAtom(uploadedImageAtom);
+  const setSelectedImage = useSetAtom(profileImageAtom);
   const [promptModalState, setPromptModalState] = useAtom(profilePromptModalAtom);
+  const changeProfile = useChangeProfileImage();
 
   const handleClose = () => setOpen(false);
   const uploadImg = (event) => {
@@ -47,6 +54,7 @@ export default function ChangeProfileModal() {
       setSelectedImage(reader.result);
     };
     reader.readAsDataURL(file);
+    changeProfile.mutate(file);
     handleClose();
   };
   return (
@@ -63,13 +71,12 @@ export default function ChangeProfileModal() {
               textAlign: 'center',
             }}
           >
-            <h3>프로필 변경</h3>
+            <TitleH3>프로필 변경</TitleH3>
             <Divider />
             <List>
               <ListItem disablePadding>
                 <ListItemButton
-                  onClick={() => setPromptModalState(true)}
-                >
+                  onClick={() => setPromptModalState(true)}>
                   <StyldListItemText
                     primary="AI로 생성"
                   />
@@ -77,8 +84,7 @@ export default function ChangeProfileModal() {
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton
-                  onClick={uploadImg}
-                >
+                  onClick={uploadImg}>
                   <StyldListItemText
                     primary="사진 업로드"
                   />

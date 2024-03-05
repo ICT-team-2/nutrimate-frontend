@@ -1,10 +1,10 @@
 import React from 'react';
-import FeedContent from '@src/component/board/feed/FeedContent.jsx';
+import FeedBrowseContent from '@src/component/board/feed/FeedBrowseContent.jsx';
 
 const FeedBoardPage = () => {
   return (
     <>
-      <FeedContent />
+      <FeedBrowseContent />
     </>
   );
 };
