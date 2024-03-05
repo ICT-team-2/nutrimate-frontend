@@ -246,4 +246,5 @@ export const REACT_QUERY_KEYS = {
   RESTAURANT: 'restaurant',
   GYM: 'gym',
   OCR: 'ocr',
+  ANALYZE: 'analyze',
 };

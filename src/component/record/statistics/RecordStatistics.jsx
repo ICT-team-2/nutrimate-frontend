@@ -6,8 +6,8 @@ import { Button } from '@mui/material';
 import { useAtom } from 'jotai';
 import { selectedRecordResultAtom, selectedStatisticsPeriodBtnAtom } from '@src/component/record/atom.js';
 import Typography from '@mui/material/Typography';
-import FoodRecordList from '@src/component/record/diet/FoodRecordList.jsx';
-import RecordResults from '@src/component/record/RecordResults.jsx';
+import FoodRecordList from '@src/component/record/record/diet/FoodRecordList.jsx';
+import RecordResults from '@src/component/record/record/RecordResults.jsx';
 import RecordResultsMenu from '@src/component/record/statistics/RecordResultsMenu.jsx';
 
 const OuterContainer = styled.div`

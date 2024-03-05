@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import RecordResults from '@src/component/record/RecordResults.jsx';
+import RecordResults from '@src/component/record/record/RecordResults.jsx';
 import { SPORT_RECORD_BUTTONS } from '@src/component/record/const.js';
 import { Button, Paper } from '@mui/material';
 import { faClock, faDumbbell, faWeightScale } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ManualRecordSport from '@src/component/record/sport/ManualRecordSport.jsx';
-import SearchSportDB from '@src/component/record/sport/SearchSportDB.jsx';
+import ManualRecordSport from '@src/component/record/record/sport/ManualRecordSport.jsx';
+import SearchSportDB from '@src/component/record/record/sport/SearchSportDB.jsx';
 import { useAtom } from 'jotai';
 import { selectedRecordTabsAtom } from '@src/component/record/atom.js';
 

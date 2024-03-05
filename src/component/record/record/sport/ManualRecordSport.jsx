@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import RecordResults from '@src/component/record/RecordResults.jsx';
+import RecordResults from '@src/component/record/record/RecordResults.jsx';
 import { SPORT_RECORD_BUTTONS } from '@src/component/record/const.js';
 import { Button, Paper } from '@mui/material';
 import { faClock, faDumbbell, faWeightScale } from '@fortawesome/free-solid-svg-icons';
