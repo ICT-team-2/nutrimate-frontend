@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -6,25 +6,20 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CommentIcon from '@mui/icons-material/Comment';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
 import {
   FlexGrowDiv,
   UserAvatar,
 } from '@src/component/common/GlobalComponents.jsx';
-import { Button } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
-import LikeButton from '@src/component/board/LikeButton.jsx';
 import FeedDetailContent from '@src/component/board/feed/FeedDetailContent.jsx';
-import useClickLikeButton from '@src/component/board/feed/hooks/useClickLikeButton.jsx';
-import { NO_IMAGE_PATH } from '@src/component/const.js';
+import { LINKS, NO_IMAGE_PATH } from '@src/utils/const.js';
+import FeedDropMenu from '@src/component/board/feed/FeedDropMenu.jsx';
+import BoardBookmarkButton from '@src/component/board/BoardBookmarkButton.jsx';
+import BoardLikeButton from '@src/component/board/BoardLikeButton.jsx';
+import useUpdateViewCount from '@src/hooks/board/common/useUpdateViewCount.jsx';
 
 const ViewContentContainer = styled.div`
     margin: 30px 0;
@@ -33,11 +28,12 @@ const StyledCard = muiStyled(Card)`
 
 `;
 const ContentTypo = styled(Typography)`
-    overflow: ${({ clickmoreview }) => clickmoreview === 'true' ? 'auto' : 'hidden'};
+    overflow: ${({ clickmoreview }) => clickmoreview === 'true'
+            ? 'auto' : 'hidden'};
     text-overflow: ${({ clickmoreview }) => clickmoreview === 'true'
-            ? 'clip'
-            : 'ellipsis'};
-    white-space: ${({ clickmoreview }) => clickmoreview === 'true' ? 'normal' : 'nowrap'};
+            ? 'clip' : 'ellipsis'};
+    white-space: ${({ clickmoreview }) => clickmoreview === 'true'
+            ? 'normal' : 'nowrap'};
 `;
 
 const MoreViewButton = styled(Typography)`
@@ -62,13 +58,19 @@ function FeedViewContent(props) {
   const [modalOpen, setModalOpen] = useState(false);
   const {
     boardContent, boardId, boardThumbnail,
-    checkedLike, likeCount, userNick: writer,
+    checkedLike, userNick: writer, checkedBookmark,
+    userId: writerId, userProfile: writerProfile,
   } = props;
-  const clickLikeButton = useClickLikeButton(boardId);
+  const [likeClicked, setLikeClicked] = useState(checkedLike === 1);
+  const userId = parseInt(sessionStorage.getItem('userId'));
 
-  const onClickLike = () => {
-    clickLikeButton.mutate();
-  };
+  const updateViewCount = useUpdateViewCount();
+
+
+  useEffect(() => {
+    setLikeClicked(checkedLike === 1);
+  }, [checkedLike]);
+
 
   return (
     <>
@@ -77,10 +79,14 @@ function FeedViewContent(props) {
           <CardHeader
             avatar={
               <UserAvatar
+                src={import.meta.env.REACT_APP_BACKEND_URL + writerProfile}
                 userNick={writer}
-                sx={{ bgcolor: red[500] }} aria-label="recipe">
+                aria-label="recipe">
                 {writer}
               </UserAvatar>
+            }
+            action={
+              (writerId === userId) && <FeedDropMenu boardId={boardId} />
             }
             title={writer}
           />
@@ -96,7 +102,15 @@ function FeedViewContent(props) {
           <CardActions disableSpacing>
             <Tooltip title="댓글">
               <IconButton
-                onClick={() => setModalOpen(true)}
+                onClick={() => {
+                  updateViewCount.mutate(boardId);
+                  //   {
+                  //   onSuccess: () => {
+                  //     setModalOpen(true);
+                  //   },
+                  // });
+                  setModalOpen(true);
+                }}
                 aria-label="comment">
                 <CommentIcon />
               </IconButton>
@@ -104,16 +118,18 @@ function FeedViewContent(props) {
             <FlexGrowDiv />
             <Tooltip title={'좋아요'}>
               <LikeButtonContainer>
-                <LikeButton
-                  onClick={onClickLike}
+                <BoardLikeButton
+                  boardId={boardId}
                   size={7}
-                  clicked={checkedLike === 1} />
+                  clicked={likeClicked}
+                />
               </LikeButtonContainer>
             </Tooltip>
             <Tooltip title="북마크">
-              <IconButton aria-label="bookmark">
-                <BookmarkIcon />
-              </IconButton>
+              <BoardBookmarkButton
+                boardid={boardId}
+                clicked={(checkedBookmark === 1) + ''}
+              />
             </Tooltip>
           </CardActions>
           <CardContent>

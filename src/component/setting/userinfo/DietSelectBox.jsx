@@ -29,7 +29,7 @@ const StyledSelect = muiStyled(Select)`
 `;
 
 const DietSelectBox = (props) => {
-  const { title, label, keys, values, disabled } = props;
+  const { title, label, keys, values, disabled, onChange } = props;
   const [isFocused, setIsFocused] = useState(undefined);
 
   const [diet, setDiet] = useAtom(dietStateAtom);
@@ -67,6 +67,7 @@ const DietSelectBox = (props) => {
 
   const handleChange = (event) => {
     setDiet(event.target.value);
+    onChange(event)
   };
   return (
     <>
@@ -105,6 +106,7 @@ DietSelectBox.defaultProps = {
   label: SETTING_USER_INFOS.DIET.LABEL,
   values: SETTING_USER_INFOS.DIET.VALUES,
   keys: SETTING_USER_INFOS.DIET.KEYS,
+  onChange:()=>{}
 };
 
 export default DietSelectBox;

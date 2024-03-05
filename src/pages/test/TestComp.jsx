@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, MenuItem, Tab, Tabs } from '@mui/material';
+import { RECOMMAND_MENU } from '@src/component/infomation/const.js';
 
 export default function TestComp() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -33,10 +34,22 @@ export default function TestComp() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={(event) => handleMenuItemClick(event, 0)}>영양제 추천</MenuItem>
-        <MenuItem onClick={(event) => handleMenuItemClick(event, 1)}>운동 추천</MenuItem>
-        <MenuItem onClick={(event) => handleMenuItemClick(event, 2)}>장소 추천</MenuItem>
-        <MenuItem onClick={(event) => handleMenuItemClick(event, 3)}>음식 추천</MenuItem>
+        <MenuItem onClick={(event) =>
+          handleMenuItemClick(event, RECOMMAND_MENU.NUTRIENTS)}>
+          영양제 추천
+        </MenuItem>
+        <MenuItem onClick={(event) =>
+          handleMenuItemClick(event, RECOMMAND_MENU.SPORT)}>
+          운동 추천
+        </MenuItem>
+        <MenuItem onClick={(event) =>
+          handleMenuItemClick(event, RECOMMAND_MENU.PLACE)}>
+          장소 추천
+        </MenuItem>
+        <MenuItem onClick={(event) =>
+          handleMenuItemClick(event, RECOMMAND_MENU.FOOD)}>
+          음식 추천
+        </MenuItem>
         {/* 이하 동일하게 추가... */}
       </Menu>
     </div>

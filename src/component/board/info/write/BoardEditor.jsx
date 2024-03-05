@@ -1,18 +1,23 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { EDITOR_HEIGHT } from '@src/utils/const.js';
 import styled from 'styled-components';
-import { useAtom } from 'jotai/react';
+import { useAtom, useAtomValue } from 'jotai/react';
 import { quillRefAtom } from '@src/component/board/atom.js';
+import { ocrTextAtom } from '@src/component/board/OcrModal.jsx';
 
 const StyledEditor = styled(ReactQuill)`
     min-height: ${EDITOR_HEIGHT}px;
 `;
 
 function BoardEditor({ content }) {
+  const [value, setValue] = useState(content);
+  const ocrText = useAtomValue(ocrTextAtom);
+
   const quillRef = useRef(null);
   const [quillRefState, setQuillRefState] = useAtom(quillRefAtom);
+
   useEffect(() => {
     if (quillRef.current) {
       const quill = quillRef.current.getEditor();
@@ -20,6 +25,19 @@ function BoardEditor({ content }) {
       setQuillRefState(quillRef.current);
     }
   }, []);
+
+  useEffect(() => {
+    setValue(content);
+  }, [content]);
+
+  useEffect(() => {
+    if (ocrText !== '') {
+      const quill = quillRef.current.getEditor();
+      const range = quill.getSelection(true);
+      quill.insertText(range.index, ocrText, Quill.sources.USER);
+    }
+  }, [ocrText]);
+
 
   function imageHandler() {
     const fileInput = document.createElement('input');
@@ -86,6 +104,8 @@ function BoardEditor({ content }) {
           'image',
         ]}
         ref={quillRef}
+        value={value}
+        onChange={setValue}
       />
     </div>
   );

@@ -9,6 +9,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { LINKS } from '@src/utils/const.js';
 import { useNavigate } from 'react-router-dom';
+import useUpdateViewCount from '@src/hooks/board/common/useUpdateViewCount.jsx';
+import { useEffect } from 'react';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -20,55 +22,61 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
   // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
+  cursor: 'pointer',
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread2', 356, 16.0, 49, 3.9),
-  createData('Gingerbread3', 356, 16.0, 49, 3.9),
-  createData('Gingerbread4', 356, 16.0, 49, 3.9),
-  createData('Gingerbread5', 356, 16.0, 49, 3.9),
-  createData('Gingerbread6', 356, 16.0, 49, 3.9),
-  createData('Gingerbread7', 356, 16.0, 49, 3.9),
-];
 
 //정보 공유 게시판 글 목록 테이블
-export default function InfoBoardTable() {
+export default function InfoBoardTable({ data }) {
+
+  useEffect(() => {
+    console.log('data', data);
+  }, [data]);
+
+  if (data?.length === 0) {
+    return <div>등록된 글이 없습니다.</div>;
+  }
+
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 400 }} aria-label="customized table">
+      <Table sx={{ minWidth: 200 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>번호</StyledTableCell>
-            <StyledTableCell align="right">제목</StyledTableCell>
-            <StyledTableCell align="right">작성자</StyledTableCell>
-            <StyledTableCell align="right">등록일</StyledTableCell>
-            <StyledTableCell align="right">조회수</StyledTableCell>
+            <StyledTableCell>제목</StyledTableCell>
+            <StyledTableCell align="center">작성자</StyledTableCell>
+            <StyledTableCell align="center">등록일</StyledTableCell>
+            <StyledTableCell align="center">조회수</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
-            <StyledTableRow key={row.name + index}>
-              <TitleTableCell component="th" scope="row">
-                {row.name}</TitleTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
+          {data && data.map((d, index) => (
+            <StyledTableRow key={d.boardTitle + index}>
+              <DataTableCell
+                data={d}
+                component="th" scope="row">
+                {d.boardTitle}
+              </DataTableCell>
+              <DataTableCell
+                data={d} align="center">
+                {d.userNick}
+              </DataTableCell>
+              <DataTableCell
+                data={d} align="center">
+                {d.createdDate}
+              </DataTableCell>
+              <DataTableCell
+                data={d} align="center">
+                {d.boardViewCount}
+              </DataTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
@@ -77,10 +85,24 @@ export default function InfoBoardTable() {
   );
 }
 
-const TitleTableCell = (props) => {
+const DataTableCell = (props) => {
   const navigate = useNavigate();
-  const { children: title } = props;
-  return <StyledTableCell onClick={() => {
-    navigate(LINKS.INFO_BOARD_VIEW + '/506');
-  }}>{title}</StyledTableCell>;
+  const updateViewCount = useUpdateViewCount();
+
+  const { children: title, data } = props;
+  return <StyledTableCell
+    {...props}
+    onClick={() => {
+      console.log(data.boardId);
+      if (data == null) return;
+      updateViewCount.mutate(data.boardId);
+
+      navigate(LINKS.INFO_BOARD_VIEW + `/${data.boardId}`, {
+        state: {
+          category: data.boardCategory.toUpperCase(),
+        },
+      });
+    }}>
+    {title}
+  </StyledTableCell>;
 };

@@ -5,7 +5,7 @@ import ChangeProfileComponent from '@src/component/common/ChangeProfileComponent
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import { useAtomValue } from 'jotai/react';
-import { uploadedImageAtom } from '@src/component/mypage/atom.js';
+import { profileImageAtom } from '@src/component/mypage/atom.js';
 
 const PROFILE_IMG_SIZE = 100;
 
@@ -35,8 +35,8 @@ const ProfileContainer = styled.div`
 const SubTitleTypo = muiStyled(Typography)`
   color: ${({ theme }) => theme['gray-light-text']};
 `;
-const NameProfileComponent = ({ profileButton,name,nickname }) => {
-  const uploadImg = useAtomValue(uploadedImageAtom);
+const NameProfileComponent = ({ profileButton, name, nickname }) => {
+  const uploadImg = useAtomValue(profileImageAtom);
 
   return (
     <StyledContainerDiv>

@@ -3,9 +3,7 @@ import FeedView from '@src/component/board/feed/FeedView.jsx';
 
 const FeedBoardViewPage = () => {
   return (
-    <>
-      <FeedView />
-    </>
+    <FeedView />
   );
 };
 

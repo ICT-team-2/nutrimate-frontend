@@ -20,7 +20,7 @@ const RecordContainer = styled.div`
     //margin: 0 auto;
     //width: 80%;
     //height: 80%;
-    display: flex;
+    //display: flex;
     flex-direction: row;
     margin-bottom: 30px;
     justify-content: space-between;
@@ -70,7 +70,9 @@ const DietRecord = () => {
       <RecordContainer>
         {btnValue === FOOD_RECORD_BUTTONS.IMAGE.VALUE && <RecordImgUploader />}
         {btnValue === FOOD_RECORD_BUTTONS.SEARCH_DB.VALUE && <SearchFoodDB />}
-        {btnValue === FOOD_RECORD_BUTTONS.MANUAL.VALUE && <ManualRecordDiet />}
+        {btnValue === FOOD_RECORD_BUTTONS.SEARCH_DB.VALUE && <ManualRecordDiet />}
+
+        {/* {btnValue === FOOD_RECORD_BUTTONS.MANUAL.VALUE && <ManualRecordDiet />} */}
       </RecordContainer>
       <RecordResults selectedRecordTab={selectedRecordTab} />
     </OuterContainer>

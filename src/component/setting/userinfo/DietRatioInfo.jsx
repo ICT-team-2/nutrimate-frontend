@@ -82,6 +82,7 @@ const DietRatioInfo = ({ disabled }) => {
           onBlur={() => setIsCarboFocused(undefined)}
           value={carbo}
           disabled={disabled || diet !== SETTING_USER_INFOS.DIET.CUSTOM.KEYS}
+          onChange={(e) => setCarbo(e.target.value)}
         ></StyledTextField>
         <ColonDiv>:</ColonDiv>
         <StyledTextField
@@ -90,7 +91,7 @@ const DietRatioInfo = ({ disabled }) => {
           onBlur={() => setIsProteinFocused(undefined)}
           value={protein}
           disabled={disabled || diet !== SETTING_USER_INFOS.DIET.CUSTOM.KEYS}
-
+          onChange={(e) => setProtein(e.target.value)}
         ></StyledTextField>
         <ColonDiv>:</ColonDiv>
         <StyledTextField
@@ -99,6 +100,7 @@ const DietRatioInfo = ({ disabled }) => {
           onBlur={() => setIsFatFocused(undefined)}
           value={fat}
           disabled={disabled || diet !== SETTING_USER_INFOS.DIET.CUSTOM.KEYS}
+          onChange={(e) => setFat(e.target.value)}
         ></StyledTextField>
       </UserInfoContainerDiv>
     </>
