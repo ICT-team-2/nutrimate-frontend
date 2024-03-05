@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@bootpay/client-js": "^4.3.4",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
@@ -53,6 +54,7 @@
     "react-cookie": "^7.0.2",
     "react-dom": "^18.2.0",
     "react-kakao-maps-sdk": "^1.1.26",
+    "react-native-bootpay-api": "^13.6.13",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.22.0",
     "run": "^1.5.0",

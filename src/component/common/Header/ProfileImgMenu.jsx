@@ -68,6 +68,7 @@ const ProfileImgMenu = () => {
               await axios.get('/logout');
               setUserId(undefined);
               navigate('/');
+              localStorage.removeItem('isPaid'); // 로그아웃 처리시 결제 상태를 로컬 스토리지에 삭제
             }
           }}
           >
