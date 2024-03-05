@@ -24,7 +24,7 @@ const useFetchProfileInfoBoardList = (profileUserId, page = 1) => {
       REACT_QUERY_KEYS.PROFILE,
       REACT_QUERY_KEYS.BOARD,
       REACT_QUERY_KEYS.LIST,
-      profileUserId,
+      parseInt(profileUserId),
       page],
     queryFn: fetchProfileInfoBoardList,
   });

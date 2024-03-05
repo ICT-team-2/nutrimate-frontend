@@ -13,7 +13,7 @@ import { userIdAtom } from '@src/pages/login/atom';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import useFetchProfileData from '@src/hooks/mypage/useFetchProfileData.jsx';
+import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -38,7 +38,9 @@ const ProfileImgMenu = () => {
     <Box sx={{ flexGrow: 0 }}>
       {/* 프로필 아이콘 */}
       <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-        <UserAvatar src={import.meta.env.REACT_APP_BACKEND_URL + data?.userProfile} />
+        <UserAvatar
+          userNick={data?.userNick}
+          src={import.meta.env.REACT_APP_BACKEND_URL + data?.userProfile} />
       </IconButton>
 
 

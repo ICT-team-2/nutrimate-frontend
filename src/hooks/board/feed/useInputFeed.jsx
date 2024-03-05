@@ -27,7 +27,13 @@ const useInputFeed = () => {
     mutationFn: inputFeed,
     mutationKey: [REACT_QUERY_KEYS.BOARD, REACT_QUERY_KEYS.FEED, REACT_QUERY_KEYS.INSERT],
     onSuccess: () => {
-      queryClient.invalidateQueries([REACT_QUERY_KEYS.FEED, REACT_QUERY_KEYS.LIST])
+      queryClient.invalidateQueries(
+        {
+          predicate: (query) => {
+            return query.queryKey.includes(REACT_QUERY_KEYS.FEED)
+              && query.queryKey.includes(REACT_QUERY_KEYS.LIST);
+          },
+        })
         .then(() => {
           navigate(LINKS.FEEDBOARD_VIEW);
         });

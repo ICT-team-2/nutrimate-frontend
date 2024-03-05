@@ -17,6 +17,14 @@ selectedStatisticsPeriodBtnAtom.debugLabel = 'recordSelectedStatisticsBtnAtom';
 
 export const selectedRecordResultAtom = atom(RECORD_STATISTICS_RESULT_TYPE.FOOD_RECORD?.VALUE);
 selectedRecordResultAtom.debugLabel = 'recordSelectedRecordResultAtom';
+console.log();
+
+export const foodsAtom = atom([]);
+export const calAtom = atom(2200);
+
+export const isTotalIntakeUpdatedAtom = atom(false);
+
+export const foodCalAtom = atom(0);
 
 export const selectedPriceCategoryAtom = atom('5,000원 미만'); // 초기 상태 값으로 '5000원 미만'을 설정
 selectedPriceCategoryAtom.debugLabel = 'selectedPriceCategoryAtom';

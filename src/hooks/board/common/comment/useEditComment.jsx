@@ -7,11 +7,15 @@ const useEditComment = (boardId) => {
   const queryClient = useQueryClient();
 
   //axios
+  /**
+   *
+   * @param data
+   * @param data.cmtId {number}
+   * @param data.cmtContent {string}
+   * @returns {Promise<any>}
+   */
   const editComment = async (data) => {
-    const response = await axios.put('/board/comments/edit', {
-      cmtId: data.cmtId,
-      cmtContent: data.cmtContent,
-    });
+    const response = await axios.put('/board/comments/edit', data);
     return response.data;
   };
   //react-query
@@ -19,7 +23,13 @@ const useEditComment = (boardId) => {
     mutationKey: [REACT_QUERY_KEYS.COMMENTS, REACT_QUERY_KEYS.UPDATE],
     mutationFn: editComment,
     onSuccess: () => {
-      queryClient.invalidateQueries([REACT_QUERY_KEYS.COMMENTS, boardId]);
+      console.log('댓글 수정 성공');
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          return query.queryKey.includes(REACT_QUERY_KEYS.COMMENTS)
+            && query.queryKey.includes(boardId);
+        },
+      });
     },
     onError: (error) => {
       console.error(error);

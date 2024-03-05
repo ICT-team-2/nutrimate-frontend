@@ -1,5 +1,5 @@
 import React from 'react';
-import AllergyImage from '@src/asset/image/Allergy.png';
+import AllergyImage from '@src/asset/image/allergy1.png';
 import styled from 'styled-components';
 import Paper from '@mui/material/Paper';
 import { ALLERGY_IMG } from '@src/component/survey/const.js';
@@ -20,7 +20,7 @@ const AllergyImg = styled.div`
     background-position: ${({ index }) =>
             ALLERGY_IMG.START[0] + ALLERGY_IMG.NEXT_X * (index % 5)}% ${({ index }) =>
             ALLERGY_IMG.START[1] + ALLERGY_IMG.NEXT_Y * (Math.floor(index / 5))}%;
-    width: ${ALLERGY_IMG.IMG_SIZE};
+     width: ${ALLERGY_IMG.IMG_SIZE};
     height: ${ALLERGY_IMG.IMG_SIZE};
     border-radius: 10px;
 `;

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
-import MainPageImg from '@src/asset/image/MainPageImg.jpg';
+import SurveyImg from '@src/asset/image/SurveyImg.png';
 import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
 import { useAtom } from 'jotai/react';
@@ -25,8 +25,8 @@ const GlobalStyle = createGlobalStyle`
 const SurveyStartContainer = styled.div`
     display: flex;
     flex-direction: row;
-    width: 100%;
-    height: 100vh;
+    // width: 100%;
+    // height: 100vh;
 `;
 
 const StyledImg = styled.img`
@@ -39,14 +39,26 @@ const HalfDiv = styled(FlexGrowDiv)`
     display: flex;
 `;
 const ContentContainer = styled.div`
-    margin: auto;
+    margin-top: 150px;
+    margin-left: 50px;
+    float: center;
 `;
+
+const StyledTitle = styled(Typography)`
+    //margin-bottom: 100px;
+    margin-top: 50px;
+    margin-left: 120px;
+    font-style: bold;
+   `; 
+  
 
 const StyledTitleTypography = styled(Typography)`
     margin-bottom: 20px;
+    // float: right;
 `;
 const StyledSubTitleTypography = styled(Typography)`
     margin-bottom: 20px;
+    // float: right;
     color: ${({ theme }) => theme['extra-light-text']};
 `;
 
@@ -56,23 +68,26 @@ const SurveyStart = () => {
     <>
       <GlobalStyle /> {/* 전역 스타일 적용 */}
       <SurveyStartContainer>
+
+        
         <HalfDiv>
           <SurveyContainer>
+          <StyledTitle
+              variant='h6'>NutriMate에 오신것을 환영합니다.</StyledTitle>
+            <ContentContainer>
             <StyledTitleTypography
-              variant='h3'>잘 먹는다는 건 어떤 의미일까요?</StyledTitleTypography>
+              variant='h4'>건강한 식습관이란 무엇일까요?</StyledTitleTypography>
             <StyledSubTitleTypography
-              variant='h6'>행동심리학 기반의 지속가능한 건강관리를 만나보세요.</StyledSubTitleTypography>
+              variant='h7'>건강한 식습관의 의미를 찾아보고 자신만의 지속가능한 건강관리를 만나보세요.<br/><br/></StyledSubTitleTypography>
             <Button
-              variant='contained' color='primary' size='large'
+              variant='contained' color='primary' size='medium'
               onClick={() => {
                 setProgress(SURVEY_PROGRESS.NAME);
               }}>
-              <Typography variant='h6'>시작하기</Typography>
+              <Typography variant='h8'>시작하기</Typography>
             </Button>
+            </ContentContainer>
           </SurveyContainer>
-        </HalfDiv>
-        <HalfDiv>
-          <StyledImg src={MainPageImg} alt='MainPageImg' />
         </HalfDiv>
       </SurveyStartContainer>
     </>

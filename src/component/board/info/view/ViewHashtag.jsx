@@ -19,7 +19,7 @@ const ViewHashtag = ({ hashtags }) => {
         m: 0,
       }}
     >
-      {hashtags.map((data, index) => {
+      {hashtags && hashtags.map((data, index) => {
         return (
           <ListItem key={index}>
             <Chip

@@ -14,9 +14,6 @@ const useFetchFeedList = (search = '', receivePage = 5) => {
     debouncedSetSearchWord(search);
   }, [search]);
 
-  useEffect(() => {
-    console.log('searchWord', searchWord);
-  }, [searchWord]);
 
   //axios
   const fetchFeedList = async ({ pageParam = 1 }) => {
@@ -37,7 +34,8 @@ const useFetchFeedList = (search = '', receivePage = 5) => {
   ;
 
   return useInfiniteQuery({
-    queryKey: [REACT_QUERY_KEYS.BOARD, REACT_QUERY_KEYS.FEED, REACT_QUERY_KEYS.LIST, searchWord?.trim()],
+    queryKey: [REACT_QUERY_KEYS.BOARD, REACT_QUERY_KEYS.FEED,
+      REACT_QUERY_KEYS.LIST, searchWord?.trim()],
     queryFn: fetchFeedList,
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage.nowPage >= lastPage.totalPages) {

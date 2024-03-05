@@ -11,12 +11,9 @@ import FeedCommentComponent
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import CommentIcon from '@mui/icons-material/Comment';
-import LikeButton from '@src/component/board/LikeButton.jsx';
 import { Button, TextField } from '@mui/material';
-import useClickLikeButton
-  from '@src/component/board/hooks/useClickLikeButton.jsx';
 import useFetchCommentsList
-  from '@src/component/board/hooks/useFetchCommentsList.jsx';
+  from '@src/hooks/board/common/comment/useFetchCommentsList.jsx';
 import CommentInputTextField from '@src/component/board/CommentInputTextField.jsx';
 import { atom, useAtom } from 'jotai';
 import {
@@ -26,11 +23,14 @@ import {
 } from '@src/component/board/atom.js';
 import { useSetAtom } from 'jotai/react';
 import { INIT_EDIT_COMMENT_STATE } from '@src/component/board/const.js';
-import BookmarkButton from '@src/component/board/BookmarkButton.jsx';
-import useFetchFeedDetail from '@src/component/board/feed/hooks/useFetchFeedDetail.jsx';
-import useClickBookmark from '@src/component/board/hooks/useClickBookmark.jsx';
+import useFetchFeedDetail from '@src/hooks/board/feed/useFetchFeedDetail.jsx';
 import CommentEditTextField from '@src/component/board/CommentEditTextField.jsx';
-import FeedContentDropMenu from '@src/component/board/feed/FeedContentDropMenu.jsx';
+import FeedDropMenu from '@src/component/board/feed/FeedDropMenu.jsx';
+import BoardLikeButton from '@src/component/board/BoardLikeButton.jsx';
+import BoardBookmarkButton from '@src/component/board/BoardBookmarkButton.jsx';
+import FollowButton from '@src/component/common/FollowButton.jsx';
+import { useQueryClient } from '@tanstack/react-query';
+import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 
 const CONTAINER_MAX_HEIGHT = 'calc(100vh - 100px)';
 const COMMENT_LIST_MAX_HEIGHT = 'calc(200% - 120px)';
@@ -44,13 +44,10 @@ const FeedCommentInnerContainer = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
-
 `;
 const FeedCommentOuterContainer = styled.div`
     width: 500px;
-
 `;
-
 const FeedCommentHeader = styled.div`
     display: flex;
     align-items: flex-start;
@@ -69,7 +66,6 @@ const FeedCommentBody = styled.div`
     backface-visibility: hidden; //하드웨어 가속을 강제로 활성화
     transform: translate3d(0, 0, 0);
 `;
-
 const LikeButtonContainer = styled.div`
     position: relative;
     left: 13px;
@@ -78,18 +74,10 @@ const LikeButtonContainer = styled.div`
 const ButtonsContainer = styled.div`
     display: flex;
 `;
-const CommentInputContainer = styled.div`
-    display: flex;
-`;
-const StyledButton = styled(Button)`
-    height: 40px;
-    margin-left: 5px;
-`;
 const LikeViewContainer = styled.div`
     position: relative;
     bottom: 5px;
 `;
-
 const LikeTypography = styled(Typography)`
     font-weight: bold;
 `;
@@ -98,9 +86,10 @@ const LikeTypography = styled(Typography)`
 const FeedCommentList = (props) => {
   const { feedData } = props;
   const {
-    boardId, boardContent, boardThumbnail,
-    checkedLike, likeCount, userNick: writer,
+    boardId, likeCount, userNick: writer,
+    userId: writerId,
   } = feedData;
+
   const commentInputRef = useRef(null);
   const commentEditRef = useRef(null);
   const commentListRef = useRef(null);
@@ -108,25 +97,27 @@ const FeedCommentList = (props) => {
   const [cmtListRef, setCmtListRef] = useAtom(commentListRefAtom);//스크롤 내리는 용도
   const setEditCommentData = useSetAtom(commentEditDataAtom);
   const setReplyChipData = useSetAtom(replyChipDataAtom);
+  const [isEdit, setIsEdit] = useAtom(isCommentEditAtom);//댓글 수정 모드인지
 
-  const clickLikeButton = useClickLikeButton(boardId);
-  const clickBookmark = useClickBookmark(boardId);
   const { data: detailData, isLoading: detailLoading } = useFetchFeedDetail(boardId);
   const { data: cmtData } = useFetchCommentsList(boardId);
 
-  const [isEdit, setIsEdit] = useAtom(isCommentEditAtom);//댓글 수정 모드인지
+  const isWriter = writerId === parseInt(sessionStorage.getItem('userId'));
+
+  const queryClient = useQueryClient();
+
+  const onChangeFollow = () => {
+    queryClient.invalidateQueries({
+      predicate: query => {
+        return query.queryKey.includes(REACT_QUERY_KEYS.FEED);
+      },
+    });
+  };
 
   useEffect(() => {
     setIsEdit(false);
   }, []);
 
-  const onClickLike = () => {
-    clickLikeButton.mutate();
-  };
-
-  const onClickBookmark = () => {
-    clickBookmark.mutate();
-  };
 
   useEffect(() => {
     setCmtListRef(commentListRef.current);
@@ -139,7 +130,14 @@ const FeedCommentList = (props) => {
           <UserAvatar userNick={writer} />
           <NicknameTypo variant="subtitle2">{writer}</NicknameTypo>
           <FlexGrowDiv />
-          <FeedContentDropMenu />
+          {!isWriter &&
+            <FollowButton
+              following={detailData?.checkedFollowed === 1}
+              followId={writerId}
+              onClickFollow={onChangeFollow}
+              onClickUnfollow={onChangeFollow}
+            />}
+          <FeedDropMenu boardId={boardId} />
         </FeedCommentHeader>
         <Divider />
         <FeedCommentBody ref={commentListRef}>
@@ -175,16 +173,16 @@ const FeedCommentList = (props) => {
           <FlexGrowDiv />
           <Tooltip title={'좋아요'}>
             <LikeButtonContainer>
-              <LikeButton
-                onClick={onClickLike}
+              <BoardLikeButton
+                boardId={boardId}
                 clicked={detailData?.checkedLike === 1}
                 size={7} />
             </LikeButtonContainer>
           </Tooltip>
           <Tooltip title="북마크">
-            <BookmarkButton
+            <BoardBookmarkButton
+              boardid={boardId}
               clicked={(detailData?.checkedBookmark === 1) + ''}
-              onClick={onClickBookmark}
             />
           </Tooltip>
         </ButtonsContainer>
@@ -203,7 +201,6 @@ const FeedCommentList = (props) => {
           />}
       </FeedCommentInnerContainer>
     </FeedCommentOuterContainer>
-
   );
 };
 
@@ -220,11 +217,12 @@ const FeedComments = ({ cmtData, inputRef, editRef }) => {
               editRef={editRef}
               {...cmt}
             />
-            {cmt.replies.length !== 0 && <FeedComments
-              cmtData={cmt.replies}
-              inputRef={inputRef}
-              editRef={editRef}
-            />}
+            {cmt.replies.length !== 0 &&
+              <FeedComments
+                cmtData={cmt.replies}
+                inputRef={inputRef}
+                editRef={editRef}
+              />}
           </React.Fragment>
         );
       })}

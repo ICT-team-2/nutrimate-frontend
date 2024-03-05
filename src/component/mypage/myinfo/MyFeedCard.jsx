@@ -16,12 +16,14 @@ import styled from 'styled-components';
 import Tooltip from '@mui/material/Tooltip';
 import LikeButton from '@src/component/board/LikeButton.jsx';
 import BookmarkButton from '@src/component/board/BookmarkButton.jsx';
-import useClickLikeButton from '@src/component/board/hooks/useClickLikeButton.jsx';
-import useClickBookmark from '@src/component/board/hooks/useClickBookmark.jsx';
+import useClickLikeButton from '@src/hooks/board/common/like/useClickLikeButton.jsx';
+import useClickBookmark from '@src/hooks/board/common/bookmark/useClickBookmark.jsx';
 import { useEffect, useState } from 'react';
 import FeedDetailContent from '@src/component/board/feed/FeedDetailContent.jsx';
 import { NO_IMAGE_PATH } from '@src/utils/const.js';
-import FeedContentDropMenu from '@src/component/board/feed/FeedContentDropMenu.jsx';
+import FeedDropMenu from '@src/component/board/feed/FeedDropMenu.jsx';
+import BoardLikeButton from '@src/component/board/BoardLikeButton.jsx';
+import BoardBookmarkButton from '@src/component/board/BoardBookmarkButton.jsx';
 
 const CustomCard = styled(Card)`
     width: 240px;
@@ -57,20 +59,9 @@ export default function MyFeedCard(props) {
     userId: writerId, userProfile: writerProfile,
   } = data;
   const [likeClicked, setLikeClicked] = useState(checkedLike === 1);
-  const clickLikeButton = useClickLikeButton(boardId);
-  const clickBookmark = useClickBookmark(boardId, true);
   const userId = parseInt(sessionStorage.getItem('userId'));
   const [modalOpen, setModalOpen] = useState(false);
 
-  const onClickLike = (e) => {
-    clickLikeButton.mutate();
-    e.stopPropagation();
-  };
-
-  const onClickBookmark = (e) => {
-    clickBookmark.mutate();
-    e.stopPropagation();
-  };
 
   const clickCard = () => {
     setModalOpen(true);
@@ -95,17 +86,17 @@ export default function MyFeedCard(props) {
           <FlexGrowDiv />
           <Tooltip title={'좋아요'}>
             <LikeButtonContainer>
-              <LikeButton
-                onClick={onClickLike}
+              <BoardLikeButton
                 size={7}
                 clicked={likeClicked}
+                boardId={boardId}
               />
             </LikeButtonContainer>
           </Tooltip>
           <Tooltip title="북마크">
-            <BookmarkButton
+            <BoardBookmarkButton
+              boardid={boardId}
               clicked={(checkedBookmark === 1) + ''}
-              onClick={onClickBookmark}
             />
           </Tooltip>
         </CardActions>)}

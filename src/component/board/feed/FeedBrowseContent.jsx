@@ -6,7 +6,7 @@ import { styled as muiStyled } from '@mui/material/styles';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { LINKS, NO_IMAGE_PATH } from '@src/utils/const.js';
-import useFetchFeedList from '@src/component/board/feed/hooks/useFetchFeedList.jsx';
+import useFetchFeedList from '@src/hooks/board/feed/useFetchFeedList.jsx';
 import { useEffect, useRef, useState } from 'react';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
 import FeedViewContent from '@src/component/board/feed/FeedViewContent.jsx';
@@ -83,7 +83,7 @@ const FeedBrowseContent = () => {
   }, [data]);
 
   const gotoWrite = () => {
-    navigate(LINKS.FEEDBOARD_WRITE);
+    navigate(LINKS.FEED_BOARD_WRITE);
   };
   useEffect(() => {
     const observeDiv = observerRef.current;

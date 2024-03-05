@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import useRegisterFollow from '@src/hooks/follow/useRegisterFollow.jsx';
 import useDeleteFollow from '@src/hooks/follow/useDeleteFollow.jsx';
@@ -9,6 +9,10 @@ const FollowButton = ({ following, followId, onClickFollow, onClickUnfollow }) =
 
   const registerFollow = useRegisterFollow(followId);
   const deleteFollow = useDeleteFollow(followId);
+
+  useEffect(() => {
+    setFollow(following);
+  }, [following]);
 
   const clickFollow = () => {
     console.log('팔로우');

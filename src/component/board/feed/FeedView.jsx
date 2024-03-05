@@ -5,7 +5,7 @@ import { CustomSearchInput, FlexDiv, FlexGrowDiv } from '@src/component/common/G
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
-import useFetchFeedList from '@src/component/board/feed/hooks/useFetchFeedList';
+import useFetchFeedList from '@src/hooks/board/feed/useFetchFeedList.jsx';
 import useIntersectionObserver from '@src/hooks/useIntersectionObserver.jsx';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
 
@@ -28,7 +28,7 @@ const ObserveDiv = styled.div`
 `;
 
 /**
- * 피드 상세보기 컴포넌트를 나타내는 함수입니다.
+ * 피드 목록보기 컴포넌트를 나타내는 함수입니다.
  * @return {JSX.Element} 피드 뷰 컴포넌트
  */
 const FeedView = () => {
@@ -41,7 +41,7 @@ const FeedView = () => {
 
   const navigate = useNavigate();
   const gotoWrite = () => {
-    navigate(LINKS.FEEDBOARD_WRITE);
+    navigate(LINKS.FEED_BOARD_WRITE);
   };
   const gotoFeed = () => {
     navigate(LINKS.FEED_BOARD);

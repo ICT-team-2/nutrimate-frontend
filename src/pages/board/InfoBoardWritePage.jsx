@@ -32,36 +32,11 @@ import axios from 'axios';
 import { LINKS } from '@src/utils/const.js';
 import { useNavigate } from 'react-router-dom';
 import { userIdAtom } from '@src/pages/login/atom.js';
-
-//테스트용 더미 데이터 - 추후 삭제 예정
-const dummyPaths = [
-  {
-    'lat': 37.40046141857395,
-    'lng': 126.97577439745241,
-  },
-  {
-    'lat': 37.400939258037475,
-    'lng': 126.97727635344604,
-  },
-  {
-    'lat': 37.399731909002526,
-    'lng': 126.97737836289424,
-  },
-  {
-    'lat': 37.40022780065983,
-    'lng': 126.9791739522065,
-  },
-];
-const dummyDistances = [
-  0,
-  143,
-  277,
-  446,
-];
-const dummyCenter = {
-  lat: 37.4,
-  lng: 126.9780,
-};
+import useInputDietBoard from '@src/hooks/board/info/diet/useInputDietBoard.jsx';
+import useInputSportBoard from '@src/hooks/board/info/sport/useInputSportBoard.jsx';
+import { foodIdAtom } from '@src/component/board/info/atom.js';
+import { base64toFile } from '@src/utils/functions.js';
+import OcrModal from '@src/component/board/OcrModal.jsx';
 
 const LoadableMap = loadable(
   () => import('@src/component/board/KakaoMap.jsx'),
@@ -69,11 +44,11 @@ const LoadableMap = loadable(
     fallback: <LoadingComponent />,
   });
 
-const InlineTypography = muiStyled(Typography)`
+const InlineTypography = styled(Typography)`
     display: inline-block;
     margin-right: 10px;
 `;
-const InfoBoardContainer = muiStyled(Container)`
+const InfoBoardContainer = styled(Container)`
     margin-top: 20px;
     width: 90%;
 `;
@@ -94,137 +69,64 @@ const InputHashtagContainer = styled.div`
     padding: 20px 0;
 `;
 
+const StyledTextField = styled(TextField)`
+    margin-bottom: 20px;
+`;
+
 //정보 공유 게시판 글 작성 내용
 const InfoBoardWritePage = (props) => {
   const [category, setCategory] = useState(useLocation()?.state.title);
-  const [searchValue, setSearchValue] = useState('');
   const [title, setTitle] = useState('');
-  const [userId, setUserId] = useAtom(userIdAtom);
+
+  //식단 이미지
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [foodId, setFoodId] = useAtom(foodIdAtom);
 
   // 지도 정보 서버 저장용
   const [mapPaths, setMapPaths] = useAtom(mapPathsAtom);
   const [mapDistances, setMapDistances] = useAtom(mapDistancesAtom);
   const [mapCenter, setMapCenter] = useAtom(mapCenterAtom);
-  //라이브러리 jotai 참조
+  //map dom
   const [mapRefState, setMapRefState] = useAtom(mapRefAtom);
+
   //에디터 글 가져오기
   const [quillRefState, setQuillRefState] = useAtom(quillRefAtom);
   const [inputHashTag, setInputHashTag] = useAtom(inputHashTagAtom);
 
+  const inputDietBoard = useInputDietBoard();
+  const inputSportBoard = useInputSportBoard();
+
   // 지도 정보를 초기화
   const initMapData = useInitMapData();
-  // initMapData(dummyPaths, dummyDistances, dummyCenter);
   useEffect(() => {
     initMapData();
+    setInputHashTag([]);
+    setFoodId([1, 2, 3, 4, 5]);
   }, []);
 
 
-  const handleSearch = (e) => {
-    setSearchValue(e.target.value);
-  };
-
-  useEffect(() => {
-    console.log(`유저가 검색한 단어:${searchValue}`);
-  }, [searchValue]);
-
-  // 지도 정보를 초기화 - 쓰기에는 필요가 없으니까
-  // 서버에서 데이터를 받은 후 상세보기나 수정 페이지에서나 사용하고
-  // 이건 추후 삭제하면 됨(테스트용)
-
-  useEffect(() => {
-    console.log('zoomlevel:', mapRefState?.getLevel()); //지도의 확대 레벨
-    console.log('center:', mapRefState?.getCenter()); //지도의 중심좌표
-  }, [mapRefState]);
-
-  // 유효성 검사
-  const validateForm = () => {
-    function removeHtmlTags(content) {
-      return content.replace(/<[^>]*>?/gm, '').trim();
-    }
-
-    // 제목, 내용, 지도가 비어있는지 확인
-    let content = quillRefState.getEditor().root.innerHTML;
-    content = removeHtmlTags(content);
-    if (!title || !content || !mapPaths.length) {
-      alert('제목, 내용, 지도는 필수입니다.');
-      return false;
-    }
-
-    // 해시태그 중복 확인
-    const hashTagLabels = inputHashTag.map(tag => tag.label);
-    const hashTagSet = new Set(hashTagLabels);
-    if (hashTagSet.size !== hashTagLabels.length) {
-      alert('해시태그에 중복이 있습니다.');
-      return false;
-    }
-
-    return true;
-  };
-  const navigate = useNavigate();
-  const onClickRegister = async () => {
-
-    // 유효성 검사
-    if (!validateForm()) return;
-
-    function removeHtmlTags(content) {
-      return content.replace(/<[^>]*>?/gm, '').trim();
-    }
-
-    //식단 게시판 글쓰기
-
-    //--------------------
-    //운동 게시판 글 쓰기
-    console.log('category:', category === '운동' ? 'exercise' : category);
-    console.log('title:', title);
-    console.log('paths:', mapPaths);
-    console.log('distances:', mapDistances);
-    console.log('center:', mapCenter);
-    console.log('zoomlevel:', mapRefState?.getLevel());
-    let content = quillRefState.getEditor().root.innerHTML;
-    content = removeHtmlTags(content);
-    console.log('DOMPurify content:', content);
-    const hashTagData = inputHashTag.map(tag => tag.label);
-    console.log('hashTag:', hashTagData);
-
-    // 데이터를 JSON 형식으로 준비
-    const data = {
-      boardCategory: category === '운동' ? 'exercise' : category,
-      boardTitle: title,
-      mapPaths: JSON.stringify(mapPaths),
-      mapDistances: JSON.stringify(mapDistances),
-      mapCenterLat: mapCenter.lat,
-      mapCenterLng: mapCenter.lng,
-      mapZoomlevel: mapRefState?.getLevel(),
-      boardContent: removeHtmlTags(content), // HTML 태그 제거
-      hashtag: hashTagData,
-      userId: userId, // 더미 유저 ID 추가
-    };
-
-    // axios를 통해 서버에 데이터 전송
-    try {
-      const response = await axios.post('/boards/sport', data, {
-        headers: { 'Content-Type': 'application/json' },
+  const handleInputBoard = () => {
+    if (category === BOARD.INFO.FOOD.TITLE) {
+      inputDietBoard.mutate({
+        boardTitle: title,
+        boardContent: DOMPurify.sanitize(quillRefState.value),
+        tagNameList: inputHashTag.map((item) => item.label),
+        files: base64toFile(selectedImage, 'foodImage.png'),
+        foodId: foodId,
       });
-      console.log(response.data);
-      if (response.status === 200) { // HTTP 상태 코드가 200인 경우(요청 성공)
-        alert('등록 완료'); // 등록 완료 알림
-
-        // 상세 조회 페이지로 이동
-        let boardId = response.data.boardId;
-        let link = LINKS.INFO_BOARD_VIEW.replace(':boardId', boardId);
-        navigate(link);
-        const gotoBoardView = () => {
-          navigate(LINKS.INFO_BOARD_VIEW + '/boardId');
-        };
-
-      } else {
-        alert('등록 실패'); // 등록 실패 알림
-      }
-    } catch (error) {
-      console.error(error);
-      alert('등록 중 오류가 발생'); // 오류 발생 알림
+    } else {
+      inputSportBoard.mutate({
+        boardTitle: title,
+        boardContent: DOMPurify.sanitize(quillRefState.value),
+        hashtag: inputHashTag.map((item) => item.label),
+        files: selectedImage,
+        mapPaths: JSON.stringify(mapPaths),
+        mapDistances: JSON.stringify(mapDistances),
+        mapCenterLat: mapCenter.lat,
+        mapCenterLng: mapCenter.lng,
+        mapZoomlevel: mapRefState?.getLevel(),
+      });
     }
-
   };
 
   return (
@@ -237,29 +139,34 @@ const InfoBoardWritePage = (props) => {
         {/* <WriteCategoryMenu setTitle={setTitle} title={title} /> */}
         <FlexGrowDiv />
         <Button
-          onClick={onClickRegister}
+          onClick={handleInputBoard}
           variant="contained">등록</Button>
       </TitleContainer>
-      <TextField label="제목" size="small" value={title} onChange={(e) => setTitle(e.target.value)} />
-
+      <StyledTextField
+        label="제목" size="small" value={title}
+        onChange={(e) => setTitle(e.target.value)} />
       {/* 식단 or 운동코스 등록(지도) */}
       {/* nogps는 gps사용하지 않겠다는 옵션 - 쓰기에는 불필요하니 추후 삭제하면 됨 */}
-      {category !== BOARD.INFO.FOOD.TITLE ?
-        <LoadableMap
+      {category !== BOARD.INFO.FOOD.TITLE
+        ? <LoadableMap
           nogps zoomlevel={3}
-        /> : <FoodImgAnaylsis />
+        />
+        : <FoodImgAnaylsis
+          selectedImage={selectedImage}
+          setSelectedImage={setSelectedImage}
+          foodId={foodId}
+          editMode />
       }
       {/* 해시태그 입력 */}
       <InputHashtagContainer>
         <InputHashtag />
       </InputHashtagContainer>
+      <OcrModal />
       {/* 에디터 */}
       <EditorContainer>
         <BoardEditor />
       </EditorContainer>
-
-      <BottomContainer>
-      </BottomContainer>
+      <BottomContainer />
     </InfoBoardContainer>
   );
 };

@@ -2,7 +2,7 @@ import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-const useRecommandFollowList = (userId) => {
+const useFetchRecommandFollowList = (userId) => {
 
   userId = userId || parseInt(sessionStorage.getItem('userId'));
   //axios
@@ -22,11 +22,11 @@ const useRecommandFollowList = (userId) => {
         REACT_QUERY_KEYS.FOLLOW,
         REACT_QUERY_KEYS.RECOMMAND,
         REACT_QUERY_KEYS.LIST,
-        userId,
       ],
       queryFn: fetchRecommandList,
+      staleTime: 1000 * 60 * 5,
     },
   );
 };
 
-export default useRecommandFollowList;
+export default useFetchRecommandFollowList;

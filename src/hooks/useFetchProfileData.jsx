@@ -4,7 +4,7 @@ import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 
 /**
  * 회원 데이터를 가져오는 훅
- * @param userId {number||string||undefined} 사용자 아이디 (기본값: sessionStorage.getItem('userId'))
+ * @param profileUserId {number||string||undefined} 사용자 아이디 (기본값: sessionStorage.getItem('userId'))
  * @returns {*} react-query의 useQuery 결과
  */
 const useFetchProfileData = (profileUserId = undefined) => {
@@ -27,8 +27,9 @@ const useFetchProfileData = (profileUserId = undefined) => {
     queryKey: [REACT_QUERY_KEYS.MEMBER,
       REACT_QUERY_KEYS.PROFILE,
       REACT_QUERY_KEYS.MEMBER_DATA,
-      profileUserId],
+      parseInt(profileUserId)],
     queryFn: fetchMyData,
+
   });
 };
 
