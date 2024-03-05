@@ -65,13 +65,14 @@ const ChallengeCommentInput = (props) => {
 
 
     }else{
-      onhandleComment(comment);
       axios.post(`http://localhost:9999/challenge/comment/record`,{
           'cmtContent': comment,
           'userId': userId,
   
       }).then(data => {
-        console.log(data.data.SUCCESS)
+        
+        console.log(data.data.cmtId)
+        onhandleComment(comment,data.data.cmtId);
         if(data.data.SUCCESSNOT){
              alert('입력에 실패했습니다.')
         }

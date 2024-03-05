@@ -35,10 +35,13 @@ const ChallengeComments = () => {
   const [message, setMessage] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [text, setText] = useState([]);
+  const [cmtId, setCmtId] = useState([]);
 
 
-  const onhandleComment = (comment) => {
-     setMessage(comment);
+  const onhandleComment = (comment,cmt) => {
+    console.log('바뀜',cmt)
+    setCmtId(cmt);
+    setMessage(comment);
   }
 
   const handleOpenMenu = (event) => {
@@ -53,6 +56,8 @@ const ChallengeComments = () => {
     setAnchorEl(null);
   };
 
+
+
   
 
   return (
@@ -63,7 +68,7 @@ const ChallengeComments = () => {
         <MoreVertIcon style={{ display: 'inline', float: 'right' }} onClick={event=>handleOpenMenu(event)} />
         </TitleTypography>
       <ChallengeCommentInput userId={userId}  onhandleComment={onhandleComment}/>
-      <ChallengeCommentList message={message} userId={userId} />
+      <ChallengeCommentList cmtId={cmtId} message={message} userId={userId} />
     </CommentContainer>
        <Menu
        anchorEl={anchorEl}

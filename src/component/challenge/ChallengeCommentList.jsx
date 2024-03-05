@@ -40,7 +40,7 @@ const CommentInputTextField = muiStyled(TextField)`
   width: 95%;
 `;
 
-function ChallengeCommentList({ message, userId }) {
+function ChallengeCommentList({ message, userId,cmtId }) {
   const len = 15;
   const listRef = useRef();
   const topRef = useRef();
@@ -52,7 +52,6 @@ function ChallengeCommentList({ message, userId }) {
   const [cmdId, setCmdId] = useState(null);
   const [updateComment, setUpdateComment] = useState(false);
   const [userNick, setUserNick] = useState('');
-   
 
 
   const options = {
@@ -125,16 +124,18 @@ function ChallengeCommentList({ message, userId }) {
     console.log(message)
     if(typeof message === 'string' && message.trim() !== ""){
             axios.get(`http://localhost:9999/challenge/usernick?userId=${userId}`).then(data => {
-            console.log(data)
+            console.log(cmdId)
             if(data.data.SUCCESSNOT){
               alert('닉네임 불러오기에 실패했습니다.')
             }else{
             setUserNick(data.data.USER_NICK)
+            console.log('!@#$',cmtId)
             const newData = {
               'createdDate': formattedDate,
               'userNick': data.data.USER_NICK,
               'cmtContent': message,
-              'userId': userId
+              'userId': userId,
+              'cmtId': cmtId
             };
             setInsertComment(true)
             setTimeout(() => {
@@ -190,7 +191,7 @@ function ChallengeCommentList({ message, userId }) {
   const onhandleEdit = (comments,) => {
     console.log('comment',comments)
     setCommentData(commentData.map(comment => 
-      comment.cmtId === cmdId ? {...comment, cmtContent: comments} : comment
+      comment.cmtId === cmdId ? {...comment, cmtContent: comments, cmtId: comment.cmtId} : comment
     ));
     setUpdateComment(false);
     setCmdId('');
