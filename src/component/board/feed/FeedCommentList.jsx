@@ -11,10 +11,7 @@ import FeedCommentComponent
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import CommentIcon from '@mui/icons-material/Comment';
-import LikeButton from '@src/component/board/LikeButton.jsx';
 import { Button, TextField } from '@mui/material';
-import useClickLikeButton
-  from '@src/hooks/board/common/like/useClickLikeButton.jsx';
 import useFetchCommentsList
   from '@src/hooks/board/common/comment/useFetchCommentsList.jsx';
 import CommentInputTextField from '@src/component/board/CommentInputTextField.jsx';
@@ -26,9 +23,7 @@ import {
 } from '@src/component/board/atom.js';
 import { useSetAtom } from 'jotai/react';
 import { INIT_EDIT_COMMENT_STATE } from '@src/component/board/const.js';
-import BookmarkButton from '@src/component/board/BookmarkButton.jsx';
 import useFetchFeedDetail from '@src/hooks/board/feed/useFetchFeedDetail.jsx';
-import useClickBookmark from '@src/hooks/board/common/bookmark/useClickBookmark.jsx';
 import CommentEditTextField from '@src/component/board/CommentEditTextField.jsx';
 import FeedDropMenu from '@src/component/board/feed/FeedDropMenu.jsx';
 import BoardLikeButton from '@src/component/board/BoardLikeButton.jsx';
@@ -49,13 +44,10 @@ const FeedCommentInnerContainer = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
-
 `;
 const FeedCommentOuterContainer = styled.div`
     width: 500px;
-
 `;
-
 const FeedCommentHeader = styled.div`
     display: flex;
     align-items: flex-start;
@@ -74,7 +66,6 @@ const FeedCommentBody = styled.div`
     backface-visibility: hidden; //하드웨어 가속을 강제로 활성화
     transform: translate3d(0, 0, 0);
 `;
-
 const LikeButtonContainer = styled.div`
     position: relative;
     left: 13px;
@@ -83,18 +74,10 @@ const LikeButtonContainer = styled.div`
 const ButtonsContainer = styled.div`
     display: flex;
 `;
-const CommentInputContainer = styled.div`
-    display: flex;
-`;
-const StyledButton = styled(Button)`
-    height: 40px;
-    margin-left: 5px;
-`;
 const LikeViewContainer = styled.div`
     position: relative;
     bottom: 5px;
 `;
-
 const LikeTypography = styled(Typography)`
     font-weight: bold;
 `;
@@ -103,8 +86,7 @@ const LikeTypography = styled(Typography)`
 const FeedCommentList = (props) => {
   const { feedData } = props;
   const {
-    boardId, boardContent, boardThumbnail,
-    checkedLike, likeCount, userNick: writer,
+    boardId, likeCount, userNick: writer,
     userId: writerId,
   } = feedData;
 
@@ -120,14 +102,11 @@ const FeedCommentList = (props) => {
   const { data: detailData, isLoading: detailLoading } = useFetchFeedDetail(boardId);
   const { data: cmtData } = useFetchCommentsList(boardId);
 
-  const [isFollow, setIsFollow] = useState(false);
-
   const isWriter = writerId === parseInt(sessionStorage.getItem('userId'));
 
   const queryClient = useQueryClient();
 
   const onChangeFollow = () => {
-    console.log('팔로우 변경');
     queryClient.invalidateQueries({
       predicate: query => {
         return query.queryKey.includes(REACT_QUERY_KEYS.FEED);

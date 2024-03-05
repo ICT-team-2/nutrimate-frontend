@@ -83,7 +83,7 @@ const FeedBrowseContent = () => {
   }, [data]);
 
   const gotoWrite = () => {
-    navigate(LINKS.FEEDBOARD_WRITE);
+    navigate(LINKS.FEED_BOARD_WRITE);
   };
   useEffect(() => {
     const observeDiv = observerRef.current;

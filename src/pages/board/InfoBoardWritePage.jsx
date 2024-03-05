@@ -38,36 +38,6 @@ import { foodIdAtom } from '@src/component/board/info/atom.js';
 import { base64toFile } from '@src/utils/functions.js';
 import OcrModal from '@src/component/board/OcrModal.jsx';
 
-//테스트용 더미 데이터 - 추후 삭제 예정
-const dummyPaths = [
-  {
-    'lat': 37.40046141857395,
-    'lng': 126.97577439745241,
-  },
-  {
-    'lat': 37.400939258037475,
-    'lng': 126.97727635344604,
-  },
-  {
-    'lat': 37.399731909002526,
-    'lng': 126.97737836289424,
-  },
-  {
-    'lat': 37.40022780065983,
-    'lng': 126.9791739522065,
-  },
-];
-const dummyDistances = [
-  0,
-  143,
-  277,
-  446,
-];
-const dummyCenter = {
-  lat: 37.4,
-  lng: 126.9780,
-};
-
 const LoadableMap = loadable(
   () => import('@src/component/board/KakaoMap.jsx'),
   {

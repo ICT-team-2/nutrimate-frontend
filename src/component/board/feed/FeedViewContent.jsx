@@ -58,7 +58,7 @@ function FeedViewContent(props) {
   const [modalOpen, setModalOpen] = useState(false);
   const {
     boardContent, boardId, boardThumbnail,
-    checkedLike, likeCount, userNick: writer, checkedBookmark,
+    checkedLike, userNick: writer, checkedBookmark,
     userId: writerId, userProfile: writerProfile,
   } = props;
   const [likeClicked, setLikeClicked] = useState(checkedLike === 1);

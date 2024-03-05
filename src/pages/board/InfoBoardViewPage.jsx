@@ -97,10 +97,6 @@ const InfoBoardViewPage = (props) => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
     <InfoBoardViewContainer>
       <Typography variant="h6">{data?.boardTitle}</Typography>
