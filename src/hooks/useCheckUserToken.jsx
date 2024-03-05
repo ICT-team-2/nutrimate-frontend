@@ -11,14 +11,22 @@ const useCheckUserToken = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (cookies.ACCESS) {//ACCESS 토큰이 있을 경우
-      const decodedToken = jwtDecode(cookies.ACCESS);
-      setUserId(decodedToken?.userInfo.userId);
-    } else {//ACCESS 토큰이 없을 경우
+    if (!cookies.ACCESS) {
       setUserId(null);
       sessionStorage.removeItem('userId');
       navigate('/');
+      return;
     }
+    const decodedToken = jwtDecode(cookies.ACCESS);
+    console.log(decodedToken?.userInfo);
+    if (!decodedToken?.userInfo) {
+      setUserId(null);
+      sessionStorage.removeItem('userId');
+      navigate('/');
+      return;
+    }
+    sessionStorage.setItem('userId', decodedToken?.userInfo.userId);
+    setUserId(decodedToken?.userInfo.userId);
   }, [cookies.ACCESS]);
 };
 
