@@ -7,10 +7,6 @@ import MyDietRecommend from './MyDietRecommend';
 function MyDietPayment() {
   const [isPaid, setIsPaid] = useState(false);
 
-  // const handlePayment = () => {
-  //     setIsPaid(true);
-  // }
-
   useEffect(() => {
     const paymentStatus = localStorage.getItem('isPaid');
     if (paymentStatus) {
