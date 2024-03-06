@@ -143,16 +143,32 @@ export default function ReportsTable({ data }) {
     setPage(0);
   };
 
+  
+  axios.post('http://localhost:9999/report', {
+    'seachKeyWord': searchKeyWord,
+    'boardid': boardId,
+    'reportreason': '신고합니다.',
+    'userid':userId
+  })
+  .then(response => {
+    // 서버에서 반환하는 데이터에 따라 적절한 동작을 수행합니다.
+    alert(response.data.REPORTOK); // 예시로 경고창을 띄움
+  })
+  .catch(error => {
+    console.error('Error submitting report:', error);
+    alert('Failed to submit report'); // 오류가 발생했을 때 처리
+  });
+
   return (
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+            <StyledTableCell>제목</StyledTableCell>
+            <StyledTableCell align="right">글쓴이</StyledTableCell>
+            <StyledTableCell align="right">카테고리</StyledTableCell>
+            <StyledTableCell align="right">차단</StyledTableCell>
+            <StyledTableCell align="right">신고</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -179,7 +195,7 @@ export default function ReportsTable({ data }) {
         <TableFooter>
           <TableRow>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+              rowsPerPageOptions={[5]}
               count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}
