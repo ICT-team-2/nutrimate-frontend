@@ -8,46 +8,48 @@ import { Button } from '@mui/material';
 const PaymentComponent = ({ pay = null, onPayment  }) => {
     const [userId, setUserId] = useAtom(userIdAtom);
     const [isPaid, setIsPaid] = useState(false);
-    // const payHandler = async () => {
-    //     let response; 
-    //     try {
-    //         response = await Bootpay.requestPayment({
-    //             "application_id":"65c22b2100be04001c1f28e3",
-    //             "price": "1000",
-    //             "order_name": "NutriMate 개인 맞춤형 식단",
-    //             "order_id": "TEST_ORDER_ID",
-    //             "tax_free": 0,
-                
-    //             "user": {
-    //                 "id": userId,
-    //                 // "username": "김유진",
-    //                 // "phone": "01072957204",
-    //                 // "email": "uujean12@gmail.com"
-    //             },
-    //             "items": [
-    //                 {
-    //                 "id": "item_id",
-    //                 "name": "식단 구독료",
-    //                 "qty": 1,
-    //                 "price": 1000,
-    //                 }
-    //             ],
-    //             "extra": {
-    //                 "open_type": "iframe",
-    //                 "card_quota": "0,2,3",
-    //                 "escrow": false,
-    //             },
-    //         });
-    //         paycheck(response);
-    //     } catch (error) {
-    //         console.log(error.message); 
-    //     }
-    // }
 
     const payHandler = async () => {
-        onPayment(); // 결제를 가정하고 isPaid 상태를 true로 변경
-        alert('결제가 완료되었습니다.');
+        let response; 
+        try {
+            response = await Bootpay.requestPayment({
+                "application_id":"65c22b2100be04001c1f28e3",
+                "price": "100",
+                "order_name": "NutriMate 개인 맞춤형 식단",
+                "order_id": "TEST_ORDER_ID",
+                "tax_free": 0,
+                
+                "user": {
+                    "id": userId,
+                    // "username": "김유진",
+                    // "phone": "01072957204",
+                    // "email": "uujean12@gmail.com"
+                },
+                "items": [
+                    {
+                    "id": "item_id",
+                    "name": "식단 구독료",
+                    "qty": 1,
+                    "price": 100,
+                    }
+                ],
+                "extra": {
+                    "open_type": "iframe",
+                    "card_quota": "0,2,3",
+                    "escrow": false,
+                },
+            });
+            paycheck(response);
+        } catch (error) {
+            console.log(error.message); 
+        }
     }
+
+    // 테스트용
+    // const payHandler = async () => {
+    //     onPayment(); // 결제를 가정하고 isPaid 상태를 true로 변경
+    //     alert('결제가 완료되었습니다.');
+    // }
 
     const paycheck = (response) => {
         console.log(response);
