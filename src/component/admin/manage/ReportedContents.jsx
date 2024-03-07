@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
@@ -25,16 +25,22 @@ const SearchContainer = styled.div`
     margin: 20px 0;
 `;
 
-const ReportedContents = ({ data, title }) => {
+const ReportedContents = ({ data, title, property }) => {
+  const [searchValue, setSearchValue] = useState('');
+
+
   return (
     <StyledContainer>
       <StylePaper>
         <TitleTypo variant="h6">{title}</TitleTypo>
         <Divider />
         <SearchContainer>
-          <CustomSearchInput />
+        <CustomSearchInput
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+        />
         </SearchContainer>
-        <ReportsTable data={data} />
+        <ReportsTable data={data} property={property} searchValue={searchValue}/>
       </StylePaper>
     </StyledContainer>
   );

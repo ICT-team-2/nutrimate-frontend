@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,6 +9,9 @@ import { LINKS } from '@src/utils/const.js';
 import AskDeleteDialog from '@src/component/board/AskDeleteDialog.jsx';
 import useDeleteBoard from '@src/hooks/board/common/useDeleteBoard.jsx';
 import ReportModal from '@src/component/admin/manage/ReportModal.jsx';
+import { useAtom } from 'jotai';
+import { userIdAtom } from '@src/pages/login/atom.js';
+
 
 const InfoBoardDropMenu = ({ boardId, category }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -17,6 +20,8 @@ const InfoBoardDropMenu = ({ boardId, category }) => {
   const navigate = useNavigate();
   const deleteBoard = useDeleteBoard();
   const [showReportModal, setShowReportModal] = useState(false);
+  const [reportUserId, setReportUserId] = useAtom(userIdAtom);
+  console.log(reportUserId)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,6 +41,7 @@ const InfoBoardDropMenu = ({ boardId, category }) => {
     handleClose();
     setDialogOpen(true);
   };
+
 
   const handleReport = () => {
     setShowReportModal(true);
@@ -64,7 +70,7 @@ const InfoBoardDropMenu = ({ boardId, category }) => {
       <AskDeleteDialog
         onClickDelete={() => deleteBoard.mutate(boardId)}
         open={dialogOpen} setOpen={setDialogOpen} />
-    {showReportModal && <ReportModal setShowReportModal={setShowReportModal} boardId={boardId} searchKeyWord={'BOARD'}/>}
+    {showReportModal && <ReportModal setShowReportModal={setShowReportModal}  showReportModal={showReportModal}  boardId={boardId} searchKeyWord={'BOARD'}/>}
     </>
   );
 };

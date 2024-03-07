@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -18,6 +18,8 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import TableHead from '@mui/material/TableHead';
 import { styled } from '@mui/material/styles';
+import axios from 'axios';
+import Button from '@mui/material/Button';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -98,41 +100,19 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
-export default function ReportsTable({ data }) {
+export default function ReportsTable({ data,property,searchValue}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [reportData, setReportData] = React.useState([]);
+  const [total, setTotal] = React.useState([]);
+  const [updateData, setUpdateData] = React.useState([]);
+  console.log(searchValue)
 
+
+  
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - total) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -143,60 +123,121 @@ export default function ReportsTable({ data }) {
     setPage(0);
   };
 
-  
-  axios.post('http://localhost:9999/report', {
-    'seachKeyWord': searchKeyWord,
-    'boardid': boardId,
-    'reportreason': '신고합니다.',
-    'userid':userId
-  })
-  .then(response => {
-    // 서버에서 반환하는 데이터에 따라 적절한 동작을 수행합니다.
-    alert(response.data.REPORTOK); // 예시로 경고창을 띄움
-  })
-  .catch(error => {
-    console.error('Error submitting report:', error);
-    alert('Failed to submit report'); // 오류가 발생했을 때 처리
-  });
+
+  const updateBlockedStatus = (boardId) => {
+    const userIndex = reportData.findIndex(user => (property=='board'? user.boardid : user.cmtid) === boardId);
+    console.log(userIndex)
+    if (userIndex !== -1) {
+      const currentBlockedValue = reportData[userIndex].blocked;
+      const newBlockedValue = currentBlockedValue === 'N' ? 'Y' : 'N';
+      const updatedReportData = [...reportData];
+      updatedReportData[userIndex] = {
+        ...updatedReportData[userIndex],
+        blocked: newBlockedValue
+      };
+      
+      // Update the state with the new reportData
+      setReportData(updatedReportData);
+    }
+  };
+
+
+  useEffect(() => {
+    let url='';
+    if(property=='board'){
+      url=`http://localhost:9999/block/list/board?nowPage=${page + 1}`  
+     }else{
+      url=`http://localhost:9999/block/list/comment?nowPage=${page + 1}`  
+     }
+     if (searchValue.length > 0) {
+      url += `&searchUser=${searchValue}`;
+     }
+
+    axios.get(url)
+      .then(response => {
+        // Assuming response.data is the array of report data from the server
+        setReportData(response.data);
+        setTotal(response.data.totalPage)
+      })
+      .catch(error => {
+        console.error('Error fetching report data:', error);
+      });
+  }, [page,searchValue]);
+
+  const block =(id,block)=>{
+     console.log(id)
+     console.log(block)
+     let url=''
+     if(property=='board'){
+          if(block=='N'){
+              url=`http://localhost:9999/block/board?boardid=${id}`
+          }else{
+              url=`http://localhost:9999/block/cancel/board?boardid=${id}`
+          }
+        }else{
+          if(block=='N'){
+            console.log('댓글')
+            url=`http://localhost:9999/block/comment?cmtid=${id}`
+        }else{
+            url=`http://localhost:9999/block/cancel/comment?cmtid=${id}`
+         }
+        }
+     axios.put(url)
+     .then(response => { 
+         if(response.data.BLOCKOK !==null){
+            updateBlockedStatus(id);
+         }else{
+            alert(response.data.BLOCKNOT);
+         }
+     })
+     .catch(error => {
+       console.error('Error fetching report data:', error);
+     });
+  }
+
 
   return (
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
-            <StyledTableCell>제목</StyledTableCell>
+            <StyledTableCell align="left">{property=='board'?'제목':'댓글내용'}</StyledTableCell>
             <StyledTableCell align="right">글쓴이</StyledTableCell>
-            <StyledTableCell align="right">카테고리</StyledTableCell>
+            {property=='board'? <StyledTableCell align="right">카테고리'</StyledTableCell>:null}
+           
+            <StyledTableCell align="right">신고횟수</StyledTableCell>
             <StyledTableCell align="right">차단</StyledTableCell>
-            <StyledTableCell align="right">신고</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {(rowsPerPage > 0
-              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : rows
-          ).map((row) => (
-            <TableRow key={row.name}>
+          {reportData.map((reportDataItem) => (
+            <TableRow key={reportDataItem.userId}>
               <StyledTableCell component="th" scope="row">
-                {row.name}
+              {reportDataItem.boardtitle !==null?reportDataItem.boardtitle:reportDataItem.boardContent !==null ? reportDataItem.boardContent :reportDataItem.cmtcontent}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
+              <StyledTableCell align="right">{reportDataItem.usernick}</StyledTableCell>
+              {property=='board'? <StyledTableCell align="right">{reportDataItem.boardcategory=='FOOD'?'음식 게시판': reportDataItem.boardcategory=='FEED'?'피드':'운동 게시판' }</StyledTableCell>:null}
+             
+              <StyledTableCell align="right">{reportDataItem.count}</StyledTableCell>
+              <StyledTableCell align="right">  <Button 
+                      style={{color:'grey'}} 
+                      onClick={() => block(reportDataItem.cmtid == null ? reportDataItem.boardid : reportDataItem.cmtid,reportDataItem.blocked)}
+                    >
+                      {reportDataItem.blocked === 'N' ? '차단' : '차단취소'}
+                    </Button></StyledTableCell>
             </TableRow>
           ))}
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
+              <TableCell colSpan={5} />
             </TableRow>
           )}
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TablePagination
+            <TablePagination           
               rowsPerPageOptions={[5]}
-              count={rows.length}
+              count={reportData[0]?.totalPage || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

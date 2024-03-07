@@ -61,6 +61,8 @@ const InfoBoardViewPage = (props) => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { category } = state;
+  const params = useParams();
+console.log('파라미터',params);
   const setFoodId = useSetAtom(foodIdAtom);
   const {
     isLoading: dietLoading,

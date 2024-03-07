@@ -10,11 +10,11 @@ const ModalBg = styled.div`
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 9999;
+    z-index: 1300;
     align-items: center;
     justify-content: center;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background-color: #ffffffe2;
 `;
 
@@ -23,6 +23,7 @@ const ModalBox = styled.div`
     width: 500px;
     height: 360px;
     padding: 40px;
+    z-index: 20000;
     text-align: center;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
@@ -61,11 +62,13 @@ export function enableScroll() {
 }
 
 const StyledTextField = styled(TextField)`
+    z-index: 2005;
+    position: relative;
     width: 100%;
     height: 100%; /* Adjust height as needed */
 `;
 
-const ReportModal = ({ setShowReportModal,boardId,cmtId,searchKeyWord }) => {
+const ReportModal = ({ setShowReportModal,boardId,cmtId,searchKeyWord,showReportModal }) => {
   const [reportReason, setReportReason] = useState('');
   const [userId, setUserId] = useAtom(userIdAtom);
 
@@ -74,22 +77,25 @@ const ReportModal = ({ setShowReportModal,boardId,cmtId,searchKeyWord }) => {
   };
 
   const reportClick = (e) => {
-
+    console.log(cmtId)
     axios.post('http://localhost:9999/report', {
       'seachKeyWord': searchKeyWord,
       'boardid': boardId,
-      'reportreason': '신고합니다.',
+      'cmtid': cmtId,
+      'reportreason': reportReason,
       'userid':userId
     })
     .then(response => {
       // 서버에서 반환하는 데이터에 따라 적절한 동작을 수행합니다.
       alert(response.data.REPORTOK); // 예시로 경고창을 띄움
+      setShowReportModal(false);
     })
     .catch(error => {
       console.error('Error submitting report:', error);
       alert('Failed to submit report'); // 오류가 발생했을 때 처리
     });
 
+  
   };
   
   const handleInputChange = (event) => {
@@ -102,11 +108,18 @@ const ReportModal = ({ setShowReportModal,boardId,cmtId,searchKeyWord }) => {
     disableScroll();
     // modal 닫히면 다시 스크롤 가능하도록 함
     return () => enableScroll();
-  }, [setShowReportModal]);
+  }, [showReportModal]);
+   
+
+  const handleModalClick = (e) => {
+    // 모달 바깥 영역 클릭 시에는 모달을 닫지 않도록 이벤트 전파 막기
+    e.stopPropagation();
+  };
+
 
   return (
     <ModalBg>
-      <ModalBox>
+      <ModalBox onClick={handleModalClick}>
         <>
           <h2>신고하기</h2>
           <ModalCloseBtn onClick={closeModal}>✖</ModalCloseBtn>

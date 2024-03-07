@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
 import AskDeleteDialog from '@src/component/board/AskDeleteDialog.jsx';
 import useDeleteBoard from '@src/hooks/board/common/useDeleteBoard.jsx';
+import ReportModal from '@src/component/admin/manage/ReportModal.jsx';
+
 
 const FeedDropMenu = ({ boardId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -15,6 +17,7 @@ const FeedDropMenu = ({ boardId }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
   const deleteBoard = useDeleteBoard();
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -29,6 +32,10 @@ const FeedDropMenu = ({ boardId }) => {
   const handleDelete = () => {
     handleClose();
     setDialogOpen(true);
+  };
+
+  const handleReport = () => {
+    setShowReportModal(true);
   };
 
   return (
@@ -50,10 +57,12 @@ const FeedDropMenu = ({ boardId }) => {
       >
         <MenuItem onClick={gotoEdit}>수정</MenuItem>
         <MenuItem onClick={handleDelete}>삭제</MenuItem>
+        <MenuItem onClick={handleReport}>신고</MenuItem>
       </Menu>
       <AskDeleteDialog
         onClickDelete={() => deleteBoard.mutate(boardId)}
         open={dialogOpen} setOpen={setDialogOpen} />
+        {showReportModal && <ReportModal setShowReportModal={setShowReportModal}  showReportModal={showReportModal}  boardId={boardId} searchKeyWord={'BOARD'}/>}
     </>
   );
 };
