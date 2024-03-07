@@ -19,7 +19,9 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 import { WEEK_CATEGORY} from '@src/component/calendar/const.js';
 import { useCookies } from 'react-cookie';
-
+import  firebaseConfigFile from '@src/component/calendar/fireConfig.js';
+import { initializeApp } from 'firebase/app';
+import { getMessaging, onMessage, getToken } from "firebase/messaging";
 const LoadEffectAnimation = keyframes`
     0% {
         opacity: 0;
@@ -204,12 +206,24 @@ const ChallengeModal = (props) => {
   const [checked, setChecked] = useState(false);
   const [category, setCategory] = useState([]);
   const [cookies] = useCookies(['ACCESS']);
+  const [fcmToken,setFcmToken] = useState('');
   
   
 
+
+  
 
   
   useEffect(() => {
+    const firebaseApp = initializeApp(firebaseConfigFile);
+    console.log(firebaseConfigFile);
+    const YOUR_PUBLIC_VAPID_KEY='BAhS2AiADnmnXSErAkh182-w5CYAZmvhUPOIVVmcBNDAjWycubfIPzXPdFI3h4dTX_grGnOr2gZuoWiE4nbPyUo';
+    const messaging = getMessaging(firebaseApp);
+    getToken(messaging,{vapidKey: YOUR_PUBLIC_VAPID_KEY}).then((token) => {
+      console.log("fcmToken:", token);
+      setFcmToken(token);
+      });
+        
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.register('firebase-messaging-sw.js')
               .then(registration => {
@@ -395,7 +409,7 @@ const Alarm = (dateTimeForDB,title,content) => {
                   'title': title,
                   'body': content,
                   'image_url': '',
-                  'token':cookies.token
+                  'token':fcmToken
               })
               .then(response => {
                   // 응답 데이터 처리

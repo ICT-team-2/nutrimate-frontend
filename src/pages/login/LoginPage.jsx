@@ -15,10 +15,6 @@ import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom';
 import { Link } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
-import  firebaseConfigFile from '@src/pages/login/fireConfig.js';
-import { initializeApp } from "firebase/app";
-import { getMessaging, onMessage, getToken } from "firebase/messaging";
-
 
 
 const LoginContainer = styled(Container)`
@@ -81,7 +77,7 @@ const LoginPage = () => {
 
   // const [userId, setUserId] = useAtom(userIdAtom);
 
-  const firebase = initializeApp(firebaseConfigFile);
+
   const handleLogin = (provider) => {
     if (id === '' || password === '') {
       window.alert('아이디와 비밀번호를 입력해주세요.');
@@ -107,19 +103,9 @@ const LoginPage = () => {
         .then(response => {
             // fcm 함수 호출 후, 완료될 때까지 기다림
             console.log('ttttttt',response.data);
-            const YOUR_PUBLIC_VAPID_KEY='BAhS2AiADnmnXSErAkh182-w5CYAZmvhUPOIVVmcBNDAjWycubfIPzXPdFI3h4dTX_grGnOr2gZuoWiE4nbPyUo';//.env에 지정이 안되서 일단 이렇게 처리
-              const messaging = getMessaging();
-              getToken(messaging,{vapidKey: YOUR_PUBLIC_VAPID_KEY}).then((token) => {
-                console.log("fcmToken!:", token);
-                document.cookie = `token=${token};`;
-                });
             const { accessToken } = response.data;
+            window.location.href = '/';
         })
-        .then(response => {
-          setTimeout(() => {
-            //window.location.href = '/';
-          }, 500)
-      })
         .catch(error => {
             // 오류 처리
             console.error("에러 발생:", error);
