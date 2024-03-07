@@ -32,7 +32,7 @@ const RecordImgUploader = () => {
     <UploaderContainer>
       <ImgUploader
         width="100%" height="100%"
-        minwidth="600px" minheight="350px"
+        minheight="350px"
         selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
       />

@@ -37,25 +37,14 @@ const RecordContainer = styled.div`
 `;
 
 const SportRecord = () => {
-  const [sportName, setSportName] = useState('');
-  const [btnValue, setBtnValue] = useState(SPORT_RECORD_BUTTONS.SEARCH_DB.VALUE);
   const [selectedRecordTab, setSelectedRecordTab] = useAtom(selectedRecordTabsAtom);
 
   return (
     <OuterContainer>
-      <ButtonContainer>
-        {Object.values(SPORT_RECORD_BUTTONS).map((button, index) => (
-          <StyledButton variant="contained" key={button.VALUE} onClick={() => {
-            setBtnValue(button.VALUE);
-          }
-          }>{button.LABEL}</StyledButton>))
-        }
-      </ButtonContainer>
       <RecordContainer>
-        {btnValue === SPORT_RECORD_BUTTONS.SEARCH_DB.VALUE && (<SearchSportDB />)}
-        {btnValue === SPORT_RECORD_BUTTONS.MANUAL.VALUE && (<ManualRecordSport />)}
+        <SearchSportDB />
       </RecordContainer>
-      <RecordResults selectedRecordTab={selectedRecordTab} />;
+      <RecordResults selectedRecordTab={selectedRecordTab} />
     </OuterContainer>
   );
 };

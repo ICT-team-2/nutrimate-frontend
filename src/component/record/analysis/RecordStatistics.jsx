@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { RecordLineChart } from '@src/component/record/statistics/RecordLineChart.jsx';
+import { RecordLineChart } from '@src/component/record/analysis/RecordLineChart.jsx';
 import { RECORD_STATISTICS_RESULT_TYPE, STATISTICS_BUTTONS } from '@src/component/record/const.js';
 import { Button } from '@mui/material';
 import { useAtom } from 'jotai';
@@ -8,7 +8,7 @@ import { selectedRecordResultAtom, selectedStatisticsPeriodBtnAtom } from '@src/
 import Typography from '@mui/material/Typography';
 import FoodRecordList from '@src/component/record/record/diet/FoodRecordList.jsx';
 import RecordResults from '@src/component/record/record/RecordResults.jsx';
-import RecordResultsMenu from '@src/component/record/statistics/RecordResultsMenu.jsx';
+import RecordResultsMenu from '@src/component/record/analysis/RecordResultsMenu.jsx';
 
 const OuterContainer = styled.div`
     display: flex;

@@ -247,4 +247,9 @@ export const REACT_QUERY_KEYS = {
   GYM: 'gym',
   OCR: 'ocr',
   ANALYZE: 'analyze',
+  DB: 'db',
+  SEARCH: 'search',
+  CUSTOM: 'custom',
+  ANALYSIS: 'analysis',
+  GRAPH: 'graph',
 };

@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FlexDiv, FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import Typography from '@mui/material/Typography';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import IconButton from '@mui/material/IconButton';
+import { useAtomValue } from 'jotai/react';
+import useFetchRecordAnalysis from '@src/hooks/record/analysis/useFetchRecordAnalysis.jsx';
+import { datePickerAtom } from '@src/component/calendar/atom.js';
+import dayjs from 'dayjs';
+import useFetchDietRecord from '@src/hooks/record/food/useFetchDietRecord.jsx';
+import { selectedMealTimeAtom } from '@src/component/record/atom.js';
+import { Button } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import useDeleteDietRecord from '@src/hooks/record/food/useDeleteDietRecord.jsx';
+import DeleteDietRecordModal from '@src/component/record/record/diet/DeleteDietRecordModal.jsx';
 
 const ContainerDiv = styled(FlexDiv)`
     margin: 20px 0;
@@ -53,35 +64,94 @@ const StyledIconButton = styled(IconButton)`
 `;
 const FoodRecordContainer = styled.div`
     width: 100%;
-    max-width: 300px;
+    min-width: 270px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
 `;
+const StyledMealTimeButton = styled(Button)`
+    min-width: fit-content;
+    width: fit-content;
+    padding: 5px 10px;
+`;
+const StyledPageIcon = styled(IconButton)`
+    border-radius: 5px;
+    margin: 0 20px;
+    color: black;
+`;
+const pageSize = 5;
 
 const FoodRecordList = () => {
+  const doDate = useAtomValue(datePickerAtom);
+  const mealTime = useAtomValue(selectedMealTimeAtom);
+  const [page, setPage] = useState(1);
+
+  const { data: recordAnalysis } = useFetchRecordAnalysis(
+    dayjs(doDate).format('YYYY-MM-DD'));
+  const { data: dietRecord } = useFetchDietRecord({
+    doDate: dayjs(doDate).format('YYYY-MM-DD'),
+    mealTime,
+  });
+  const [recordList, setRecordList] = useState([]);
+  const [totalPage, setTotalPage] = useState(0);
+
+  useEffect(() => {
+    if (!dietRecord) return;
+    setRecordList(dietRecord.slice((page - 1) * pageSize,
+      page * pageSize));
+    setTotalPage(Math.ceil(dietRecord.length / pageSize));
+  }, [dietRecord, page]);
+
+  useEffect(() => {
+    if (!dietRecord) return;
+    setTotalPage(Math.ceil(dietRecord.length / pageSize));
+  }, [dietRecord]);
+
   return (
     <ContainerDiv>
       <FirstContainerDiv>
-        <DietItem title="탄수화물" value="200" maxValue="275" />
-        <DietItem title="단백질" value="200" maxValue="275" />
-        <DietItem title="지방" value="200" maxValue="275" />
+        <DietItem
+          title="탄수화물"
+          value={recordAnalysis?.totalCarbo.toFixed(2)}
+          maxValue={recordAnalysis?.recommendCarbo.toFixed(2)} />
+        <DietItem
+          title="단백질"
+          value={recordAnalysis?.totalProtein.toFixed(2)}
+          maxValue={recordAnalysis?.recommendProtein.toFixed(2)} />
+        <DietItem
+          title="지방"
+          value={recordAnalysis?.totalProvi.toFixed(2)}
+          maxValue={recordAnalysis?.recommendProvi.toFixed(2)} />
       </FirstContainerDiv>
+      <StyledPageIcon
+        disabled={page === 1}
+        onClick={() => setPage(page - 1)}
+      >
+        <FontAwesomeIcon icon={faChevronLeft} />
+      </StyledPageIcon>
       <SecondContainerDiv>
         <FoodRecordContainer>
-          <FoodRecordItem title="아침" />
-          <FoodRecordItem
-            title={'샐러드'} calory={200} />
-          <FoodRecordItem
-            title={'샐러드'} calory={200} />
-          <FoodRecordItem
-            title={'샐러드'} calory={200} />
+          <StyledMealTimeButton>
+            아침
+          </StyledMealTimeButton>
+          {recordList?.map((record, index) => (
+            <FoodRecordItem
+              key={record.foodName + index}
+              data={record}
+              title={'샐러드'} calory={200} />
+          ))}
         </FoodRecordContainer>
-
       </SecondContainerDiv>
+      <StyledPageIcon
+        disabled={page === totalPage}
+        onClick={() => setPage(page + 1)}
+      >
+        <FontAwesomeIcon icon={faChevronRight} />
+      </StyledPageIcon>
     </ContainerDiv>
-  );
+  )
+    ;
 };
 const RecordItemTypography = styled(Typography)`
     display: inline-block;
@@ -101,23 +171,42 @@ const DietItem = (props) => {
       <DietTypography variant="body1">
         {value}/{maxValue}g
       </DietTypography>
-
     </ItemContainer>
   );
 };
-
+const StyledEmptyDiv = styled.div`
+    width: 24px;
+`;
 const FoodRecordItem = (props) => {
-  const { title, calory } = props;
+  const { data } = props;
+  const [hover, setHover] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
-    <FoodRecordItemContianer>
-      <RecordItemTypography variant="body1">{title}</RecordItemTypography>
+    <FoodRecordItemContianer
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <RecordItemTypography variant="body1">
+        {data?.foodName}
+      </RecordItemTypography>
       <FlexGrowDiv grow={3} />
-      {calory && (<>
-        <RecordItemTypography variant="body1">{calory}kcal</RecordItemTypography>
-        <StyledIconButton>
-          <CloseRoundedIcon />
-        </StyledIconButton>
+      {data && (<>
+        <RecordItemTypography variant="body1">
+          {data ? data.foodCal.toFixed(2) : 0}kcal
+        </RecordItemTypography>
+        {hover ? <StyledIconButton>
+            <CloseRoundedIcon
+              onClick={() => setModalOpen(true)}
+            />
+          </StyledIconButton>
+          : <StyledEmptyDiv />
+        }
       </>)}
+      <DeleteDietRecordModal
+        open={modalOpen}
+        setOpen={setModalOpen}
+        data={data} />
     </FoodRecordItemContianer>
   );
 };

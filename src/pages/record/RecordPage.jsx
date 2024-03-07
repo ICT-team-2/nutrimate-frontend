@@ -7,14 +7,13 @@ import styled from 'styled-components';
 import DietRecord from '@src/component/record/record/diet/DietRecord.jsx';
 import DisplayRecordDate from '@src/component/record/record/DisplayRecordDate.jsx';
 import { useParams } from 'react-router-dom';
-import { useAtom } from 'jotai/react';
+import { useAtom, useAtomValue } from 'jotai/react';
 import { datePickerAtom } from '@src/component/calendar/atom.js';
 import { convertUrlParamToDate } from '@src/utils/functions.js';
 import { selectedRecordTabsAtom } from '@src/component/record/atom.js';
 import { RECORD_TABS } from '@src/component/record/const.js';
-import ManualRecordSport from '@src/component/record/record/sport/ManualRecordSport.jsx';
 import SportRecord from '@src/component/record/record/sport/SportRecord.jsx';
-import RecordStatistics from '@src/component/record/statistics/RecordStatistics.jsx';
+import RecordStatistics from '@src/component/record/analysis/RecordStatistics.jsx';
 import Recommend from '@src/component/record/recommend/Recommend';
 
 const TabsContainer = styled.div`
@@ -25,9 +24,10 @@ const TabsContainer = styled.div`
 
 const RecordPageContainer = styled(Container)`
     margin: 0 auto;
+    max-width: 1300px;
 `;
 const InnerContainer = styled.div`
-    padding: 0 50px;
+    padding: 0 100px;
     width: 100%;
     height: 100%;
     display: flex;
@@ -66,7 +66,6 @@ const RecordPage = () => {
         {value === RECORD_TABS.RECOMMEND && <Recommend />}
         {value === RECORD_TABS.STATISTICS && <RecordStatistics />}
       </InnerContainer>
-
     </RecordPageContainer>
   );
 };

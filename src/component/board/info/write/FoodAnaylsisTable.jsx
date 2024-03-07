@@ -19,7 +19,7 @@ import { visuallyHidden } from '@mui/utils';
 import styled from 'styled-components';
 import { useAtom } from 'jotai/react';
 import { foodIdAtom } from '@src/component/board/info/atom.js';
-import useFetchFoodListByFoodId from '@src/hooks/record/food/useFetchFoodListByFoodId.jsx';
+import useFetchFoodDBByFoodId from '@src/hooks/record/food/useFetchFoodDBByFoodId.jsx';
 import { nanoid } from 'nanoid';
 
 const StyledPaper = styled(Paper)`
@@ -236,7 +236,7 @@ export default function FoodAnaylsisTable({ height, editMode, minheight }) {
   const [selected, setSelected] = useState([]);
   const [datas, setDatas] = useState([]);
   const [foodId, setFoodId] = useAtom(foodIdAtom);
-  const { data: foodList } = useFetchFoodListByFoodId(foodId);
+  const { data: foodList } = useFetchFoodDBByFoodId(foodId);
 
 
   useEffect(() => {
