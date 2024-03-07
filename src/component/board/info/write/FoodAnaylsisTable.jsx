@@ -230,6 +230,10 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
+const StyledTable = styled(Table)`
+    min-height: ${({ minheight }) => minheight || 'auto'};
+`;
+
 export default function FoodAnaylsisTable({ height, editMode, minheight }) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('calories');
@@ -301,9 +305,11 @@ export default function FoodAnaylsisTable({ height, editMode, minheight }) {
         numSelected={selected.length} />
       <StyledTableContainer
         editmode={editMode + ''}
-        height={height}>
-        <Table size="small">
-          <EnhancedTableHead
+        height={height}
+      >
+        <StyledTable
+          size="small">
+          < EnhancedTableHead
             editMode={editMode}
             numSelected={selected.length}
             order={order}
@@ -366,9 +372,8 @@ export default function FoodAnaylsisTable({ height, editMode, minheight }) {
                   rowSpan={6 - (datas?.length ?? 0)}
                   colSpan={6} />
               </TableRow>}
-
           </TableBody>
-        </Table>
+        </StyledTable>
       </StyledTableContainer>
     </StyledPaper>
   );

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 
-const useAnalyzeFoodImage = () => {
+const useAnalyzeFoodImageWithAI = () => {
   //axios
   /**
    * @param {string} base64Encoded
@@ -34,4 +34,4 @@ const useAnalyzeFoodImage = () => {
   });
 };
 
-export default useAnalyzeFoodImage;
+export default useAnalyzeFoodImageWithAI;

@@ -4,17 +4,18 @@ import { FlexDiv, FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx
 import Typography from '@mui/material/Typography';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import IconButton from '@mui/material/IconButton';
-import { useAtomValue } from 'jotai/react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai/react';
 import useFetchRecordAnalysis from '@src/hooks/record/analysis/useFetchRecordAnalysis.jsx';
 import { datePickerAtom } from '@src/component/calendar/atom.js';
 import dayjs from 'dayjs';
 import useFetchDietRecord from '@src/hooks/record/food/useFetchDietRecord.jsx';
 import { selectedMealTimeAtom } from '@src/component/record/atom.js';
-import { Button } from '@mui/material';
+import { Button, Menu } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import useDeleteDietRecord from '@src/hooks/record/food/useDeleteDietRecord.jsx';
 import DeleteDietRecordModal from '@src/component/record/record/diet/DeleteDietRecordModal.jsx';
+import MenuItem from '@mui/material/MenuItem';
 
 const ContainerDiv = styled(FlexDiv)`
     margin: 20px 0;
@@ -81,11 +82,19 @@ const StyledPageIcon = styled(IconButton)`
     color: black;
 `;
 const pageSize = 5;
+const MEAL_TIME = {
+  BREAKFAST: '아침',
+  LUNCH: '점심',
+  DINNER: '저녁',
+  SNACK: '간식',
+};
 
 const FoodRecordList = () => {
   const doDate = useAtomValue(datePickerAtom);
   const mealTime = useAtomValue(selectedMealTimeAtom);
   const [page, setPage] = useState(1);
+
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const { data: recordAnalysis } = useFetchRecordAnalysis(
     dayjs(doDate).format('YYYY-MM-DD'));
@@ -95,6 +104,10 @@ const FoodRecordList = () => {
   });
   const [recordList, setRecordList] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
+
+  const handleMealTimeMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   useEffect(() => {
     if (!dietRecord) return;
@@ -132,14 +145,15 @@ const FoodRecordList = () => {
       </StyledPageIcon>
       <SecondContainerDiv>
         <FoodRecordContainer>
-          <StyledMealTimeButton>
-            아침
+          <StyledMealTimeButton
+            onClick={handleMealTimeMenuClick}
+          >
+            {MEAL_TIME[mealTime]}
           </StyledMealTimeButton>
           {recordList?.map((record, index) => (
             <FoodRecordItem
               key={record.foodName + index}
-              data={record}
-              title={'샐러드'} calory={200} />
+              data={record} />
           ))}
         </FoodRecordContainer>
       </SecondContainerDiv>
@@ -149,10 +163,40 @@ const FoodRecordList = () => {
       >
         <FontAwesomeIcon icon={faChevronRight} />
       </StyledPageIcon>
+      <MealTimeMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
     </ContainerDiv>
-  )
-    ;
+  );
 };
+
+function MealTimeMenu({ anchorEl, setAnchorEl }) {
+
+  const setMealTime = useSetAtom(selectedMealTimeAtom);
+  const open = Boolean(anchorEl);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <Menu
+      id="meal-time-menu"
+      anchorEl={anchorEl}
+      open={open}
+      onClose={handleClose}
+    >
+      {Object.keys(MEAL_TIME).map((key) => (
+        <MenuItem
+          key={key}
+          onClick={() => {
+            setMealTime(key);
+            setAnchorEl(null);
+          }}>
+          {MEAL_TIME[key]}
+        </MenuItem>
+      ))
+      }
+    </Menu>);
+}
+
 const RecordItemTypography = styled(Typography)`
     display: inline-block;
     flex-grow: 1;
@@ -195,10 +239,10 @@ const FoodRecordItem = (props) => {
         <RecordItemTypography variant="body1">
           {data ? data.foodCal.toFixed(2) : 0}kcal
         </RecordItemTypography>
-        {hover ? <StyledIconButton>
-            <CloseRoundedIcon
-              onClick={() => setModalOpen(true)}
-            />
+        {hover ? <StyledIconButton
+            onClick={() => setModalOpen(true)}
+          >
+            <CloseRoundedIcon />
           </StyledIconButton>
           : <StyledEmptyDiv />
         }
