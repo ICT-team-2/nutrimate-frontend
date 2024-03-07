@@ -9,6 +9,7 @@ import { SubscriberLineChart } from '@src/component/admin/statistics/SubscriberL
 import { CategoricalBoardDoughnutChart } from '@src/component/admin/statistics/CategoricalBoardDoughnutChart.jsx';
 import { WeeklyCategoricalBarChart } from '@src/component/admin/statistics/WeeklyCategoricalBarChart.jsx';
 import WeeklyPopularPostsTable from '@src/component/admin/statistics/WeeklyPopularPostsTable.jsx';
+import WordCloud from '@src/component/admin/statistics/WordCloud.jsx';
 
 
 const ChartContainer = styled.div`
@@ -41,6 +42,9 @@ const AdminChartPage = () => {
           </Grid>
           <Grid item xs={12} lg={6} xl={6}>
             <WeeklyCategoricalBarChart />
+          </Grid>
+          <Grid item xs={12} lg={6} xl={6}>
+            <WordCloud />
           </Grid>
         </Grid>
       </ChartContainer>
