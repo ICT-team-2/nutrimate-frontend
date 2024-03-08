@@ -252,4 +252,16 @@ export const REACT_QUERY_KEYS = {
   CUSTOM: 'custom',
   ANALYSIS: 'analysis',
   GRAPH: 'graph',
+  FACE: 'face',
+  EMOTION: 'emotion',
+};
+
+export const FACE_EMOTION_RESULT = {
+  angry: '화남',
+  disgust: '혐오',
+  fear: '두려움',
+  happy: '기쁨',
+  sad: '슬픔',
+  surprise: '놀람',
+  neutral: '중립',
 };
