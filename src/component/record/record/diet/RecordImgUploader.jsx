@@ -66,14 +66,17 @@ const RecordImgUploader = () => {
   };
 
   useEffect(() => {
-    setFoodIds(foods?.map((f) => parseInt(f.foodId)) ?? []);
+    setFoodIds((prev) => [...prev,
+      ...foods?.map((f) => parseInt(f.foodId)) ?? []]);
   }, [foods]);
 
   useEffect(() => {
     if (!selectedImage) return;
     analyzeFoodImage.mutate(selectedImage.split(',')[1], {
       onSuccess: (data) => {
-        setFoods(data.data.foods);
+        if (!data.data.foods) return;
+        if (data.data.foods.length === 0) return;
+        setFoods((prev) => [...prev, ...data.data.foods]);
       },
     });
   }, [selectedImage]);
