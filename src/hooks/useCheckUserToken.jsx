@@ -18,7 +18,6 @@ const useCheckUserToken = () => {
       return;
     }
     const decodedToken = jwtDecode(cookies.ACCESS);
-    console.log(decodedToken?.userInfo);
     if (!decodedToken?.userInfo) {
       setUserId(null);
       sessionStorage.removeItem('userId');

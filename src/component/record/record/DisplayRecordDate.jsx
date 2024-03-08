@@ -3,7 +3,7 @@ import moment from 'moment';
 import MonthPicker from '@src/component/calendar/MonthPicker.jsx';
 import { useAtom } from 'jotai/react';
 import { datePickerAtom } from '@src/component/calendar/atom.js';
-import RecordDatePicker from '@src/component/record/RecordDatePicker.jsx';
+import RecordDatePicker from '@src/component/record/record/RecordDatePicker.jsx';
 import { useEffect } from 'react';
 
 function DisplayRecordDate(props) {
