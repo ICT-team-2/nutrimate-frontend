@@ -41,7 +41,7 @@ const useInputDietBoard = () => {
       REACT_QUERY_KEYS.INSERT],
     mutationFn: inputDietBoard,
     onSuccess: (data) => {
-      console.log('게시글 등록 성공');
+      console.log('게시글 등록 성공', data);
       queryClient.invalidateQueries({
         predicate: (query) => {
           return query.queryKey.includes(REACT_QUERY_KEYS.INFO)

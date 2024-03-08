@@ -28,6 +28,7 @@ const useFetchDietBoardDetail = (boardId, category) => {
   };
 
   //react-query
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   return useQuery({
     queryKey: [REACT_QUERY_KEYS.BOARD,
       REACT_QUERY_KEYS.INFO,

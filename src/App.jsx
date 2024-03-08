@@ -84,8 +84,7 @@ function App() {
         <ChatBotComponent />
       </ThemeProvider>
     </MuiThemeProvider>
-  )
-    ;
+  );
 }
 
 export default App;

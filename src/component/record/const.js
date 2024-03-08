@@ -20,18 +20,21 @@ export const FOOD_RECORD_BUTTONS = {
   },
 };
 
-export const STATISTICS_BUTTONS = {
+export const RECORD_ANALYSIS = {
   DAY: {
-    LABEL: '일간',
-    VALUE: 'DAY',
+    label: '일간',
+    periodType: 'DAY',
+    periodCount: 7,
   },
   WEEK: {
-    LABEL: '주간',
-    VALUE: 'WEEK',
+    label: '주간',
+    periodType: 'WEEK',
+    periodCount: 8,
   },
   MONTH: {
-    LABEL: '월간',
-    VALUE: 'MONTH',
+    label: '월간',
+    periodType: 'MONTH',
+    periodCount: 12,
   },
 };
 

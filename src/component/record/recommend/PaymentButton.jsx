@@ -59,6 +59,7 @@ const PaymentComponent = ({ pay = null, onPayment  }) => {
         //const pay_date = response.data.date;
         const pay_method = response.data.pg;
         if (status_locale === '결제완료') {
+            onPayment();
             alert('결제가 완료되었습니다.');
             payListInsert(userId, 1, pay_name, pay_price, pay_method);
             setIsPaid(true); // 결제가 완료되면 isPaid 상태를 true로 변경
@@ -67,13 +68,13 @@ const PaymentComponent = ({ pay = null, onPayment  }) => {
         }
     }
 
-    const payListInsert = async (id, pay_type, pay_name, pay_price, pay_method) => {
+    const payListInsert = async (userId, pay_type, pay_name, payPrice, payMethod) => {
         let formData = new FormData()
-        formData.append('id', id)
-        formData.append('pay_type', pay_type)
-        formData.append('pay_name', pay_name)
-        formData.append('pay_price', pay_price)
-        formData.append('pay_method', pay_method)
+        formData.append('userId', userId)
+        //formData.append('pay_type', pay_type)
+        //formData.append('pay_name', pay_name)
+        formData.append('payPrice', payPrice)
+        formData.append('payMethod', payMethod)
 
         await axios.post('/payment/insert', formData, { 
           headers: {

@@ -19,7 +19,7 @@ import { visuallyHidden } from '@mui/utils';
 import styled from 'styled-components';
 import { useAtom } from 'jotai/react';
 import { foodIdAtom } from '@src/component/board/info/atom.js';
-import useFetchFoodListByFoodId from '@src/hooks/record/food/useFetchFoodListByFoodId.jsx';
+import useFetchFoodDBByFoodId from '@src/hooks/record/food/useFetchFoodDBByFoodId.jsx';
 import { nanoid } from 'nanoid';
 
 const StyledPaper = styled(Paper)`
@@ -230,13 +230,17 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
+const StyledTable = styled(Table)`
+    min-height: ${({ minheight }) => minheight || 'auto'};
+`;
+
 export default function FoodAnaylsisTable({ height, editMode, minheight }) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('calories');
   const [selected, setSelected] = useState([]);
   const [datas, setDatas] = useState([]);
   const [foodId, setFoodId] = useAtom(foodIdAtom);
-  const { data: foodList } = useFetchFoodListByFoodId(foodId);
+  const { data: foodList } = useFetchFoodDBByFoodId(foodId);
 
 
   useEffect(() => {
@@ -301,9 +305,11 @@ export default function FoodAnaylsisTable({ height, editMode, minheight }) {
         numSelected={selected.length} />
       <StyledTableContainer
         editmode={editMode + ''}
-        height={height}>
-        <Table size="small">
-          <EnhancedTableHead
+        height={height}
+      >
+        <StyledTable
+          size="small">
+          < EnhancedTableHead
             editMode={editMode}
             numSelected={selected.length}
             order={order}
@@ -366,9 +372,8 @@ export default function FoodAnaylsisTable({ height, editMode, minheight }) {
                   rowSpan={6 - (datas?.length ?? 0)}
                   colSpan={6} />
               </TableRow>}
-
           </TableBody>
-        </Table>
+        </StyledTable>
       </StyledTableContainer>
     </StyledPaper>
   );
