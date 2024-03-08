@@ -1,9 +1,9 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
-import Loading from '@src/component/admin/statistics/Loading.jsx'
+import Loading from '@src/component/admin/statistics/Loading.jsx';
 
 const ChartContainer = styled.div`
     position: absolute;
@@ -38,23 +38,29 @@ const ChartTitleTypo = styled(Typography)`
 
 const WordCloud = (props) => {
   const { children, title, paddingbottom, titleVariant, titleComponent } = props;
-  const [image,setImage] = useState('')
-  const [loadingImage,setLoadingImage] = useState('')
-  useEffect(() =>{
-    setLoadingImage(true)
-    axios.get(`http://localhost:2222/word`)
-    .then(response =>{setImage(response.data.image_base64); setLoadingImage(false);})
+  const [image, setImage] = useState('');
+  const [loadingImage, setLoadingImage] = useState('');
+  useEffect(() => {
+    setLoadingImage(true);
+    axios.post(`${import.meta.env.REACT_APP_FLASK_URL}/word`)
+      .then(response => {
+        setImage(response.data.image_base64);
+        setLoadingImage(false);
+      })
+      .catch(error => {
+        console.error(error);
+      });
 
-  },[])
+  }, []);
 
 
   return (
     <ChartPaper paddingbottom={paddingbottom}>
       {titleComponent}
-       <ChartTitleTypo variant={titleVariant}>워드클라우드</ChartTitleTypo>
+      <ChartTitleTypo variant={titleVariant}>워드클라우드</ChartTitleTypo>
       <ChartOuterContainer paddingbottom={paddingbottom}>
         <ChartContainer>
-        {loadingImage ? <Loading /> :  <img src={`data:image/jpeg;base64,${image}`} alt="Selected Image" />}
+          {loadingImage ? <Loading /> : <img src={`data:image/jpeg;base64,${image}`} alt="Selected Image" />}
         </ChartContainer>
       </ChartOuterContainer>
     </ChartPaper>
