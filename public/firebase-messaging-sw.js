@@ -26,8 +26,13 @@ const messaging = firebase.messaging();
 //백그라우드로 수신(브라우저를 닫거나 다른 사이트로 이동시)
 //테스트시 크롬 닫고 다시 열어야 알림창이 뜬다
 
+self.addEventListener('install', function (event) {
+  event.waitUntil(self.skipWaiting());
+})
 
-
+self.addEventListener('activate', event => {
+  event.waitUntil(self.clients.claim());
+});
 
 messaging.onBackgroundMessage((payload) => 
 {  
