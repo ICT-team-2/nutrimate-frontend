@@ -30,9 +30,11 @@ self.addEventListener('install', function (event) {
   event.waitUntil(self.skipWaiting());
 })
 
+
 self.addEventListener('activate', event => {
   event.waitUntil(self.clients.claim());
 });
+
 
 messaging.onBackgroundMessage((payload) => 
 {  
@@ -41,7 +43,6 @@ messaging.onBackgroundMessage((payload) =>
   const notificationOptions = {body: payload.notification.body,icon: payload.notification.icon };
   return self.registration.showNotification(notificationTitle,notificationOptions);
 });
-
 
 
 //알림창 클릭시
