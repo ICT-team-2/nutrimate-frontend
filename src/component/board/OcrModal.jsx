@@ -31,6 +31,7 @@ const BodyTypo = styled(Typography)`
 `;
 
 export const ocrTextAtom = atom('');
+ocrTextAtom.debugLabel = 'ocrTextAtom';
 
 export default function OcrModal() {
   const [open, setOpen] = useState(false);

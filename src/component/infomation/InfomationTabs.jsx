@@ -31,8 +31,6 @@ export default function InfomationTabs() {
       <Tabs value={selectedTab} onChange={handleTabClick}>
         <Tab label="뉴스" />
         <Tab label="추천" onClick={handleMenuClick} />
-        <Tab label="알레르기" />
-        {/* 이하 동일하게 추가... */}
       </Tabs>
       <Menu
         id="simple-menu"

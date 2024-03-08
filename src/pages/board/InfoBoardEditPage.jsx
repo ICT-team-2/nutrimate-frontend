@@ -33,6 +33,7 @@ import useFetchDietBoardDetail from '@src/hooks/board/info/diet/useFetchDietBoar
 import useFetchSportBoardDetail from '@src/hooks/board/info/sport/useFetchSportBoardDetail.jsx';
 import useEditDietBoard from '@src/hooks/board/info/diet/useEditDietBoard.jsx';
 import useEditSportBoard from '@src/hooks/board/info/sport/useEditSportBoard.jsx';
+import OcrModal from '@src/component/board/OcrModal.jsx';
 
 
 const LoadableMap = loadable(
@@ -211,6 +212,7 @@ const InfoBoardEditPage = (props) => {
       <InputHashtagContainer>
         <InputHashtag />
       </InputHashtagContainer>
+      <OcrModal />
       {/* 에디터 */}
       <EditorContainer>
         <BoardEditor

@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 import { Button, TextField } from '@mui/material';
 import { ImgUploader } from '@src/component/common/ImgUploader.jsx';
 import { styled as muiStyled } from '@mui/material/styles';
 import InputHashtag from '@src/component/board/InputHashtag.jsx';
-import { useAtom } from 'jotai/react';
+import { useAtom, useAtomValue } from 'jotai/react';
 import { inputHashTagAtom } from '@src/component/board/atom.js';
 import useInputFeed from '@src/hooks/board/feed/useInputFeed.jsx';
 import { base64toFile } from '@src/utils/functions.js';
 import useEditFeed from '@src/hooks/board/feed/useEditFeed.jsx';
 import { useNavigate } from 'react-router-dom';
+import OcrModal, { ocrTextAtom } from '@src/component/board/OcrModal.jsx';
 
 const TitleContainer = styled.div`
     display: flex;
@@ -23,6 +24,9 @@ const StyledTextField = muiStyled(TextField)`
     width: 100%
 `;
 
+const StyledHashTagContainer = styled.div`
+    margin: 20px 0;
+`;
 
 /**
  * 피드 글을 작성하는 화면.
@@ -35,20 +39,22 @@ const FeedWrite = ({ editData, isEdit }) => {
   const inputFeed = useInputFeed();
   const editFeed = useEditFeed();
   const [boardContent, setBoardContent] = useState('');
+  const ocrText = useAtomValue(ocrTextAtom);
+  const textFieldRef = useRef(null);
 
-  useEffect(() => {
-    setChipData(editData?.hashtag.map((item, index) => ({
-      key: index,
-      label: item,
-    })) ?? []);
-    setBoardContent(editData?.boardContent ?? '');
-    console.log(editData);
-  }, [editData]);
+  const getCaretPosition = () => {
+    if (textFieldRef.current) {
+      return textFieldRef.current.selectionStart;
+    }
+    return 0;
+  };
 
-  useEffect(() => {
-    console.log('selectedImage', selectedImage);
-  }, [selectedImage]);
-
+  const insertAtCaret = (text) => {// 커서위치에 텍스트 삽입
+    if (textFieldRef.current) {
+      const position = getCaretPosition();
+      setBoardContent(boardContent.slice(0, position) + text + boardContent.slice(position));
+    }
+  };
   const onClickSubmit = () => {
     if (isEdit) {
       editFeed.mutate({
@@ -66,6 +72,20 @@ const FeedWrite = ({ editData, isEdit }) => {
     });
   };
 
+  useEffect(() => {
+    setChipData(editData?.hashtag.map((item, index) => ({
+      key: index,
+      label: item,
+    })) ?? []);
+    setBoardContent(editData?.boardContent ?? '');
+    console.log(editData);
+  }, [editData]);
+
+  useEffect(() => {
+    if (ocrText === '') return;
+    insertAtCaret(ocrText);
+  }, [ocrText]);
+
 
   return (
     <>
@@ -78,12 +98,16 @@ const FeedWrite = ({ editData, isEdit }) => {
       <ImgUploader
         isEdit={isEdit}
         src={isEdit ?
-          import.meta.env.REACT_APP_BACKEND_URL + editData?.boardThumbnail : null
+          import.meta.env.REACT_APP_BACKEND_URL + editData?.boardThumbnail :
+          null
         }
         width="100%" height="400px"
         selectedImage={selectedImage} setSelectedImage={setSelectedImage}
       >이미지 업로드</ImgUploader>
-      <InputHashtag />
+      <StyledHashTagContainer>
+        <InputHashtag />
+      </StyledHashTagContainer>
+      <OcrModal />
       <StyledTextField
         id="outlined-textarea"
         label="본문"
@@ -92,6 +116,7 @@ const FeedWrite = ({ editData, isEdit }) => {
         minRows={6}
         value={boardContent}
         onChange={(e) => setBoardContent(e.target.value)}
+        inputRef={textFieldRef}
       />
     </>
   );

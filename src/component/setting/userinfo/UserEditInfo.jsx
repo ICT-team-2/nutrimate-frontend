@@ -126,6 +126,7 @@ const UserEditInfo = () => {
 
     console.log({
       ...userInfo,
+      allergyList: null, //이거 추가해야함2
       roleList: null, //이거 추가해야함(
       userDiet: diet,
       userGender: gender,
@@ -137,11 +138,12 @@ const UserEditInfo = () => {
       userWeight: weight,
       userId: parseInt(sessionStorage.userId),
       userRole: 'ROLE_USER',
-    },);
+    });
     try {
       axios.put('/member/mypage', {
         ...userInfo,
-        roleList: null, //이거 추가해야함(
+        allergyList: null, //이거 추가해야함2
+        roleList: null, //이거 추가해야함
         userDiet: diet,
         userGender: gender,
         // userIntro: intro,

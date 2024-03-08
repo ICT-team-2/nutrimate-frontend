@@ -30,16 +30,30 @@ const SurveyAllergy = () => {
       ...surveyData,
       userAllergy: Object.keys(allergyList).filter((key) => allergyList[key] === true),
     });
-    console.log(surveyData.userAllergy);
     return true;
   };
 
   const onClickAllergy = (index) => {
+    console.log(index);
     setAllergyList((prevState) => ({
       ...prevState,
       [index]: !prevState[index],
     }));
   };
+
+  useEffect(() => {
+    // 초기값 설정
+    setAllergyList(surveyData.userAllergy.reduce((acc, cur) => {
+      return {
+        ...acc,
+        [cur]: true,
+      };
+    }, {}));
+  }, []);
+
+  useEffect(() => {
+    console.log(allergyList);
+  }, [allergyList]);
 
   return (
     <SurveyLayout
@@ -54,12 +68,12 @@ const SurveyAllergy = () => {
           alignItems="center"
           columns={60}
         >
-          {Object.keys(ALLERGY_LIST).map((key, index) => (
-            <Grid item xs={30} sm={20} md={15} lg={12} key={key}>
+          {Object.values(ALLERGY_LIST).map((value, index) => (
+            <Grid item xs={60} sm={30} md={20} lg={15} key={value.KEYS}>
               <SurveyAllergyCard
-                key={key} index={index}
-                onClick={() => onClickAllergy(key)}
-                checked={allergyList[key]}
+                key={value.KEYS} index={index}
+                onClick={() => onClickAllergy(value.KEYS)}
+                checked={allergyList[value.KEYS]}
               />
             </Grid>
           ))}

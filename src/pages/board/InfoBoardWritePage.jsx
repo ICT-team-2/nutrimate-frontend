@@ -101,12 +101,13 @@ const InfoBoardWritePage = (props) => {
   useEffect(() => {
     initMapData();
     setInputHashTag([]);
-    setFoodId([1, 2, 3, 4, 5]);
+    setFoodId([]);
   }, []);
 
 
   const handleInputBoard = () => {
     if (category === BOARD.INFO.FOOD.TITLE) {
+      console.log('식단 게시판 글 작성');
       inputDietBoard.mutate({
         boardTitle: title,
         boardContent: DOMPurify.sanitize(quillRefState.value),
