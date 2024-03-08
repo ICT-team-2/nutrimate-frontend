@@ -70,7 +70,7 @@ const ChartContainer = styled.div`
 
 export function RecordLineChart({ graphData }) {
 
-  const [dataSet, setDataSet] = useState();
+  const [dataSet, setDataSet] = useState(undefined);
 
   useEffect(() => {
     if (!graphData) return;
@@ -104,7 +104,7 @@ export function RecordLineChart({ graphData }) {
   return (
     <ChartContainer>
       <StatisticsCard title="기록 통계" paddingbottom={40}>
-        <Line options={options} data={dataSet} />
+        {dataSet && <Line options={options} data={dataSet} />}
       </StatisticsCard>
     </ChartContainer>
   );
