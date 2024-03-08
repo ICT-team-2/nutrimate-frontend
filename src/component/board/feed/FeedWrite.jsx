@@ -12,6 +12,8 @@ import { base64toFile } from '@src/utils/functions.js';
 import useEditFeed from '@src/hooks/board/feed/useEditFeed.jsx';
 import { useNavigate } from 'react-router-dom';
 import OcrModal, { ocrTextAtom } from '@src/component/board/OcrModal.jsx';
+import useAnalyzeFaceEmtionWithAI from '@src/hooks/useAnalyzeFaceEmtionWithAI.jsx';
+import { FACE_EMOTION_RESULT } from '@src/utils/const.js';
 
 const TitleContainer = styled.div`
     display: flex;
@@ -41,6 +43,9 @@ const FeedWrite = ({ editData, isEdit }) => {
   const [boardContent, setBoardContent] = useState('');
   const ocrText = useAtomValue(ocrTextAtom);
   const textFieldRef = useRef(null);
+
+  const analyzeFaceEmtionWithAI = useAnalyzeFaceEmtionWithAI();
+
 
   const getCaretPosition = () => {
     if (textFieldRef.current) {
@@ -85,6 +90,21 @@ const FeedWrite = ({ editData, isEdit }) => {
     if (ocrText === '') return;
     insertAtCaret(ocrText);
   }, [ocrText]);
+
+  useEffect(() => {
+    if (!selectedImage) return;
+
+    analyzeFaceEmtionWithAI.mutate(base64toFile(selectedImage, 'feedImage.jpg'), {
+      onSuccess: (data) => {
+        if (!data?.emotion) return;
+        setChipData((prev) => [...prev, {
+          key: FACE_EMOTION_RESULT[data.emotion],
+          label: FACE_EMOTION_RESULT[data.emotion],
+        }]);
+      },
+
+    });
+  }, [selectedImage]);
 
 
   return (
