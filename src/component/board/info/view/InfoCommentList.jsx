@@ -18,6 +18,7 @@ import { commentEditDataAtom, isCommentEditAtom, replyChipDataAtom } from '@src/
 import useDeleteComment from '@src/hooks/board/common/comment/useDeleteComment.jsx';
 import { COMMENT_TYPE } from '@src/component/board/const.js';
 import { Button } from '@mui/material';
+import ReportModal from '@src/component/admin/manage/ReportModal.jsx';
 
 const StyledList = muiStyled(List)({
   width: '100%',
@@ -85,12 +86,17 @@ const InfoCommentComponent = (props) => {
   } = data;
   const { boardId } = useParams();
 
+
   const setReplyChipData = useSetAtom(replyChipDataAtom);
   const setCommentEditData = useSetAtom(commentEditDataAtom);
   const deleteComment = useDeleteComment(cmtId, parseInt(boardId));
   const setIsCommentEdit = useSetAtom(isCommentEditAtom);
-
+  const handleReport = () => {
+    setShowReportModal(true);
+  };
+  const [showReportModal, setShowReportModal] = React.useState(false);
   const isWriter = parseInt(sessionStorage.getItem('userId')) === writerId;
+
 
   return (<CommentContainer
       $depth={cmtDepth}
@@ -149,7 +155,12 @@ const InfoCommentComponent = (props) => {
             deleteComment.mutate();
           }}
         >삭제</Button>}
+        {!isWriter && <Button
+          color="error"
+          onClick={handleReport}
+        >신고</Button>}
       </ListItem>
+      {showReportModal && <ReportModal setShowReportModal={setShowReportModal}  showReportModal={showReportModal} cmtId={cmtId} boardId={boardId} searchKeyWord={'CMT'}/>}
     </CommentContainer>
   );
 };

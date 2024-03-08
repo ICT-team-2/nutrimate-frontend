@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MenuItem from '@mui/material/MenuItem';
@@ -8,6 +8,10 @@ import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
 import AskDeleteDialog from '@src/component/board/AskDeleteDialog.jsx';
 import useDeleteBoard from '@src/hooks/board/common/useDeleteBoard.jsx';
+import ReportModal from '@src/component/admin/manage/ReportModal.jsx';
+import { useAtom } from 'jotai';
+import { userIdAtom } from '@src/pages/login/atom.js';
+
 
 const InfoBoardDropMenu = ({ boardId, category }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -15,6 +19,9 @@ const InfoBoardDropMenu = ({ boardId, category }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
   const deleteBoard = useDeleteBoard();
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportUserId, setReportUserId] = useAtom(userIdAtom);
+  console.log(reportUserId)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -35,6 +42,10 @@ const InfoBoardDropMenu = ({ boardId, category }) => {
     setDialogOpen(true);
   };
 
+
+  const handleReport = () => {
+    setShowReportModal(true);
+  };
   return (
     <>
       <IconButton
@@ -54,10 +65,12 @@ const InfoBoardDropMenu = ({ boardId, category }) => {
       >
         <MenuItem onClick={gotoEdit}>수정</MenuItem>
         <MenuItem onClick={handleDelete}>삭제</MenuItem>
+        <MenuItem onClick={handleReport}>신고</MenuItem>
       </Menu>
       <AskDeleteDialog
         onClickDelete={() => deleteBoard.mutate(boardId)}
         open={dialogOpen} setOpen={setDialogOpen} />
+    {showReportModal && <ReportModal setShowReportModal={setShowReportModal}  showReportModal={showReportModal}  boardId={boardId} searchKeyWord={'BOARD'}/>}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import styled from 'styled-components';
 import {
   FlexGrowDiv,
@@ -16,7 +16,7 @@ import { COMMENT_TYPE } from '@src/component/board/const.js';
 import useDeleteComment
   from '@src/hooks/board/common/comment/useDeleteComment.jsx';
 import { useSetAtom } from 'jotai/react';
-
+import ReportModal from '@src/component/admin/manage/ReportModal.jsx';
 const CommentContainer = styled.div`
     display: flex;
     width: 100%;
@@ -41,6 +41,7 @@ const ApliyButton = styled(Button)`
     margin-left: 40px;
 `;
 
+
 const commentCursorPointer = (isWriter, isContent) => {
   if (isContent) {
     return 'default';
@@ -62,10 +63,16 @@ const FeedCommentComponent = (props) => {
   const setCommentEditData = useSetAtom(commentEditDataAtom);
   const deleteComment = useDeleteComment(cmtId, boardId);
   const setIsCommentEdit = useSetAtom(isCommentEditAtom);
-
+  const [showReportModal, setShowReportModal] = useState(false);
   const isWriter = parseInt(sessionStorage.getItem('userId')) === writerId;
+   
+  const handleReport = () => {
+    setShowReportModal(true);
+  };
 
   return (
+    <>
+    {showReportModal && <ReportModal setShowReportModal={setShowReportModal}  showReportModal={showReportModal}  cmtId={cmtId} searchKeyWord={'CMT'}/>}
     <CommentContainer $depth={cmtDepth}>
       <NicknameContainer>
         <UserAvatar
@@ -115,8 +122,13 @@ const FeedCommentComponent = (props) => {
             deleteComment.mutate();
           }}
         >삭제</Button>}
+        {!isWriter && <Button
+          color="error"
+          onClick={handleReport}
+        >신고</Button>}
       </div>)}
     </CommentContainer>
+    </>
   );
 };
 

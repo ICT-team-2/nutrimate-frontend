@@ -25,8 +25,8 @@ const AdminManagePage = () => {
       <FlexDiv>
         <AdminManageContainer>
           <TitleH1>회원 관리</TitleH1>
-          <ReportedContents title="신고한 게시글" />
-          <ReportedContents title="신고한 댓글" />
+          <ReportedContents title="신고 게시글" property='board'/>
+          <ReportedContents title="신고 댓글" property='comment'/>
         </AdminManageContainer>
       </FlexDiv>
     </StyledContainer>
