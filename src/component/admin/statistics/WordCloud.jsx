@@ -42,7 +42,7 @@ const WordCloud = (props) => {
   const [loadingImage, setLoadingImage] = useState('');
   useEffect(() => {
     setLoadingImage(true);
-    axios.post(`${import.meta.env.REACT_APP_FLASK_URL}/word`)
+    axios.get(`${import.meta.env.REACT_APP_FLASK_URL}/word`)
       .then(response => {
         setImage(response.data.image_base64);
         setLoadingImage(false);
