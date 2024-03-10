@@ -211,47 +211,43 @@ const ChallengeModal = (props) => {
   
   
 
-
   
 
   
-  useEffect(() => {
+  useEffect(() => {    
     const firebaseApp = initializeApp(firebaseConfigFile);
     console.log(firebaseConfigFile);
-    const YOUR_PUBLIC_VAPID_KEY='BAhS2AiADnmnXSErAkh182-w5CYAZmvhUPOIVVmcBNDAjWycubfIPzXPdFI3h4dTX_grGnOr2gZuoWiE4nbPyUo';
+    const YOUR_PUBLIC_VAPID_KEY='BOYL_FxfbQGiRy76Ksumj3voCTi5vDw3afs17dJsTpKAuT2auESfgyEbv4PRDUxYf2AUa1gs1MqXqfA3tDShSzg';
     const messaging = getMessaging(firebaseApp);
     getToken(messaging,{vapidKey: YOUR_PUBLIC_VAPID_KEY}).then((token) => {
-      console.log("fcmToken:", token);
-      setFcmToken(token);
-      });
-
-    onMessage(messaging, (payload) => {
-      console.log('Message received. ', payload);
-      // 알림 생성
-      let title = payload.notification.title;
-      let options = {
-        body: payload.notification.body,
-        icon: payload.notification.image
-      };
-      new Notification(title, options);
+    console.log("fcmToken:", token);
+    setFcmToken(token);
     });
 
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-          if (registrations.length === 0) { // 등록된 Service Worker가 없을 경우
-              navigator.serviceWorker.register('firebase-messaging-sw.js')
-              .then((registration) => {
-                  console.log('Service Worker registered with scope:', registration.scope);
-              })
-              .catch((err) => {
-                  console.error('Service Worker registration failed:', err);
-              });
-          } else {
-              console.log('Service Worker is already registered.');
-          }
+    
+      onMessage(messaging, (payload) => {
+        console.log('Message received. ', payload);
+        // 알림 생성
+        let title = payload.notification.title;
+        let options = {
+          body: payload.notification.body,
+          icon: SiteLogo,
+          // 알림 클릭 이벤트 핸들러 추가
+          data: {url: 'http://localhost:5555'}
+        };
+      
+        let notification = new Notification(title, options);
+        
+        // 알림 클릭 이벤트 처리
+        notification.onclick = function(event) {
+          event.preventDefault(); // 브라우저에서의 기본 동작을 막습니다.
+          window.open(event.target.data.url, '_blank'); // 새 탭에서 URL 열기
+        };
       });
-  }
-}, []);
+  
+
+
+    }, []);
 
 
 
@@ -336,7 +332,7 @@ const ChallengeModal = (props) => {
                     category.forEach(week =>{          
                       if(weekdaysList[dayOfWeek] === week){
                         console.log(date);
-                        //Alarm(date+'T'+selectTime,title,content)
+                        Alarm(date+'T'+selectTime.slice(0, -3),title,content)
                         updatedAlarmWeek.push(date+'T'+selectTime);
                       }
 
@@ -365,20 +361,7 @@ const ChallengeModal = (props) => {
 };
   
   // 이벤트 핸들러 등록은 컴포넌트 바깥에서 수행되어야 합니다.
-  
-  
-  const showNotification = (data) => {
-    const notification = new Notification(data.title, {
-        body: data.body
-    });
 
-    notification.onclick = () => {
-        // 알람을 클릭했을 때 수행할 동작 정의
-        console.log('알람이 클릭되었습니다.');
-        window.location.href = 'http://localhost:5555';
-        // 원하는 동작을 여기에 추가
-    };
-}
 
 const AlarmSaveData = (updatedAlarmWeek) =>{
   console.log('sdf',updatedAlarmWeek)
@@ -410,21 +393,40 @@ const AlarmSaveData = (updatedAlarmWeek) =>{
 
 
 const Alarm = (dateTimeForDB,title,content) => {
+  /*
+  if ('serviceWorker' in navigator && !navigator.serviceWorker.controller) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      let swRegistered = false;
+  
+      for (let registration of registrations) {
+          if (registration.scope === 'firebase-cloud-messaging-push-scope') {
+              // service worker가 이미 등록되어 있다고 표시합니다.
+              swRegistered = true;
+              break;
+          }
+      }
+  
+      if (!swRegistered) {
+          // 등록된 service worker 없으면 새로 등록합니다.
+          navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: 'firebase-cloud-messaging-push-scope' })
+          .then((registration) => {
+              console.log('Service Worker 등록에 성공하였습니다:', registration.scope);
+          }).catch((err) => {
+              console.error('Service Worker 등록에 실패하였습니다:', err);
+          });
+      } else {
+          console.log('Service Worker가 이미 등록되어 있습니다.');
+      }
+  });
+}*/
    console.log(dateTimeForDB)
    console.log('fcmToken!!:', fcmToken);
   axios.post('http://localhost:2222/serviceworker', {
                   'alarm_time': dateTimeForDB,
                   'title': title,
                   'body': content,
-                  'image_url': <SiteLogo/>,
+                  'image_url':'',
                   'token':fcmToken
-              })
-              .then(response => {
-                  // 응답 데이터 처리
-                  console.log(response);
-                  // 복제 가능한 형태로 데이터 변환
-
-                  const data = JSON.parse(response.config.data);
               })
               .catch(error => {
                   console.error('Error fetching chat data:', error);

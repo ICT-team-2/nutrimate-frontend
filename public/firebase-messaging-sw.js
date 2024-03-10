@@ -26,28 +26,31 @@ const messaging = firebase.messaging();
 //백그라우드로 수신(브라우저를 닫거나 다른 사이트로 이동시)
 //테스트시 크롬 닫고 다시 열어야 알림창이 뜬다
 
-self.addEventListener('install', function (event) {
-  event.waitUntil(self.skipWaiting());
-})
-
-
-self.addEventListener('activate', event => {
-  event.waitUntil(self.clients.claim());
-});
-
 
 messaging.onBackgroundMessage((payload) => 
 {  
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
   const notificationTitle = payload.notification.title;
-  const notificationOptions = {body: payload.notification.body,icon: payload.notification.icon };
+  const notificationOptions = {body: payload.notification.body,icon: 'https://postfiles.pstatic.net/MjAyNDAzMTBfOTkg/MDAxNzEwMDY0MDUzMzE4.wgdcQyqtIlfHfh4rg3JvOdLr4gOxPoUSb5qmyKBFNlog.xPfA62occvpnnHTrs2bi-gUL7SFxjkod6zhC7-vKVjIg.PNG/LogoWhite.png?type=w966' };
   return self.registration.showNotification(notificationTitle,notificationOptions);
 });
 
 
 //알림창 클릭시
-self.addEventListener('notificationclick', event => {   
+self.addEventListener('notificationclick', event => {
   console.log(event);
-  //event.notification.close();     
+  event.notification.close(); // 알림창 닫기
 
+  // 클라이언트(브라우저 탭)를 열거나 포커스
+  event.waitUntil(
+    self.clients.matchAll({type: 'window'}).then(clientList => {
+      for (var i = 0; i < clientList.length; i++) {
+        var client = clientList[i];
+        if ('focus' in client)
+          return client.focus();
+      }
+      if (self.clients.openWindow)
+        return self.clients.openWindow('http://localhost:5555');
+    })
+  );
 });

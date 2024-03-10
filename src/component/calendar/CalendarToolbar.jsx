@@ -11,6 +11,8 @@ import React, { useEffect, useState } from 'react';
 function CalendarToolbar (props) {
   
   const [selectedDate, setSelectedDate] = useAtom(datePickerAtom);
+
+  console.log('selectedDate',selectedDate)
   
   // Toolbar 컴포넌트를 커스텀하는 로직을 여기에 작성하세요.
   // 예를 들어, 다음과 같이 날짜를 표시하는 부분을 커스텀할 수 있습니다.
@@ -45,6 +47,10 @@ function CalendarToolbar (props) {
     props.customCallback(dayjs(selectedDate).format('YYYY-MM'))
   },[selectedDate]);
 
+
+  useEffect(()=>{
+    setSelectedDate(dayjs(props.date));
+  },[props.calendarUpdate]);
 
 
   

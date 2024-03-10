@@ -16,6 +16,7 @@ export default function MonthPicker ({ children, date, onNavigate }) {
   const open = Boolean(anchorEl);
   const [selectedDate, setSelectedDate] = useAtom(datePickerAtom);
   
+  console.log('date',date);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };

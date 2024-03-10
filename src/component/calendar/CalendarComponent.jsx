@@ -110,7 +110,7 @@ const CalendarComponent = (props) => {
   const [monthData, setMonthData] = useState([]);
   const [date, setDate] = useState(new Date());
   const [anchorEl, setAnchorEl] = useState(null);
-  
+  const [calendarUpdate, setCalendarUpdate] = useState(0);
   const [userId, setUserId] = useAtom(userIdAtom);
 
   
@@ -121,14 +121,16 @@ const CalendarComponent = (props) => {
 
 
   const callendar = () => {
-    setDate(new Date());
+    //setDate(new Date());
     console.log('asdasd',date)
     setIsClickCalendar(true)
     setIsClickList(false)
+    setCalendarUpdate(prev => prev + 1);
   };
   const list = () => {
     setIsClickCalendar(false)
     setIsClickList(true)
+    
   };
   
   const onhandleMonthSelect = (dates)=>{
@@ -222,6 +224,7 @@ const CalendarComponent = (props) => {
             return (
               <CalendarToolbar
                 {...toolbar}
+                calendarUpdate={calendarUpdate}
                 customCallback={(arg) => {
                   onhandleMonthSelect(arg);
                   

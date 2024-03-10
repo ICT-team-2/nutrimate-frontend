@@ -47,30 +47,31 @@ transition: opacity 0.3s ease-in-out; /* 0.3초 동안 서서히 변화 */
 
 const CircleButton = styled(Button)`
   &&& {
-    border-radius: 50%;
+    border-radius:  50% 0 0 50%;
     aspect-ratio: 1/1;
     padding: 20px;    
-    margin: 10px;
+    margin-top: 15px;
     min-width: 50px;
     right:0px;
-    position: absolute; /* Change position to absolute */
     transition: bottom 0.3s ease-in-out; /* Add transition for smooth movement */
     &:hover {
-      transform: rotate(50deg);
-      transition: transform 0.3s ease-in-out;
+      svg {
+        transform: rotate(50deg); /* 마우스를 올렸을 때 svg 회전 */
+        transition: transform 0.3s ease-in-out; /* 부드러운 회전을 위한 전환 추가 */
+      }
     }
+
     &:not(:hover) {
-      ${({ isModalOpen }) => !isModalOpen && `
+      ${({ isModalOpen }) =>
+        !isModalOpen &&
+        `
       transform: rotate(0deg);
       transition: transform 0.3s ease-in-out;
       `}
-
-
-
+    }
 
   }
 `;
-
 
 
 const StyledTableHead = styled(TableHead)`
@@ -170,8 +171,13 @@ const ListTable = ({userId}) => {
 
 
   return (
-    
-    <TableContainer ref={tableContainerRef} component={Paper} style={{ width: '100%', height: '80%', position: 'relative', overflow: 'auto'}}>
+    <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+    <CircleButton      
+    variant='contained'
+    onClick={openModal}
+  ><Add/></CircleButton>
+  <>
+    <TableContainer ref={tableContainerRef} component={Paper} style={{ width: '100%', height: '580px', position: 'relative', overflow: 'auto'}}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <WeekPicker onChangeWeek={handleChangeWeek}></WeekPicker>
           
@@ -197,14 +203,12 @@ const ListTable = ({userId}) => {
       </Table>
       
     ))}
-      <CircleButton      
-        variant='contained'
-        onClick={openModal}
-      ><Add/></CircleButton>
+
       {isModalOpen && <AlarmModal userId={userId} showChallengeModal={isModalOpen} setChallengeModal={setIsModalOpen} handleChangeWeek={handleChangeWeek} startWeek={startWeek} endWeek={endWeek}  ></AlarmModal>}
 
     </TableContainer>
-
+    </>
+    </div>
   );
 };
 
