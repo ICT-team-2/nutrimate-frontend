@@ -208,7 +208,7 @@ const ChallengeModal = (props) => {
   const [content, setcontent] = useState('');
   const [checked, setChecked] = useState(false);
   const [category, setCategory] = useState([]);
-  const [cookies] = useCookies(['ACCESS']);
+  const [cookies] = useCookies(['fcmtoken']);
   const [fcmToken,setFcmToken] = useState('');
   
   
@@ -216,17 +216,22 @@ const ChallengeModal = (props) => {
   
 
   
-  useEffect(() => {    
+  useEffect(() => {  
+    const firebaseApp = initializeApp(firebaseConfigFile);
+    const messaging = getMessaging(firebaseApp);
+    /*  
     const firebaseApp = initializeApp(firebaseConfigFile);
     console.log(firebaseConfigFile);
     console.log(process.env.YOUR_PUBLIC_VAPI)
     const YOUR_PUBLIC_VAPID_KEY=`BF4iu85TgiNtmpCM9n0evtVZgf1oF6dzVm0cNr5oA9d49zOkvL9QvHwjaz-MaxxsXFO9xvl7YFWhU2r-MA1-2A4`;
     const messaging = getMessaging(firebaseApp);
     getToken(messaging,{vapidKey: YOUR_PUBLIC_VAPID_KEY}).then((token) => {
-    console.log("fcmToken:", token);
-    setFcmToken(token);
+        console.log("fcmToken:", token);
+        setFcmToken(token);
     });
+  */
 
+    console.log(cookies.fcmtoken)
     if ('serviceWorker' in navigator && !navigator.serviceWorker.controller) {
       navigator.serviceWorker.getRegistrations().then((registrations) => {
         let swRegistered = false;
@@ -435,14 +440,14 @@ const Alarm = (dateTimeForDB,title,content,alarmId) => {
 
 
    console.log(dateTimeForDB)
-   console.log('fcmToken!!:', fcmToken);
+   console.log('fcmToken!!:', cookies.fcmtoken);
   axios.post('http://localhost:2222/serviceworker', {
                   'alarm_time': dateTimeForDB,
                   'title': title,
                   'body': content,
                   'alarmId': alarmId,
                   'image_url':'',
-                  'token':fcmToken
+                  'token':cookies.fcmtoken
               })
               .catch(error => {
                   console.error('Error fetching chat data:', error);
