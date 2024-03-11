@@ -36,7 +36,14 @@ const TalkContentBody = styled(Paper)`
 const StyledTypography = styled(Typography)`
     text-align: right;
 `;
-
+/**
+ *
+ * @param props
+ * @param props.nick {string} 닉네임
+ * @param props.content {string} 내용
+ * @returns {Element}
+ * @constructor
+ */
 const MyTalkComponent = (props) => {
   const { nick, content, date } = props;
   return (

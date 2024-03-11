@@ -22,6 +22,8 @@ import AdminRoutes from '@src/routes/AdminRoutes.jsx';
 import RecordRoutes from '@src/routes/RecordRoutes.jsx';
 import { CssBaseline } from '@mui/material';
 import useCheckUserToken from '@src/hooks/useCheckUserToken.jsx';
+import DMChatPage from '@src/pages/dmchat/DMChatPage.jsx';
+import DMChatRoutes from '@src/routes/DMChatRoutes.jsx';
 
 
 function App() {
@@ -70,7 +72,10 @@ function App() {
       path: '/' + ROUTER_LINKS.RECORD + '/*',
       element: <RecordRoutes />,
     },
-
+    {
+      path: '/' + ROUTER_LINKS.DM + '/*',
+      element: <DMChatRoutes />,
+    },
   ]);
   return (
     <MuiThemeProvider theme={muiTheme}>

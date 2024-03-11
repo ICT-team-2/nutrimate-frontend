@@ -1,4 +1,4 @@
-import React, { useState,useAtom, useEffect } from 'react';
+import React, { useState, useAtom, useEffect } from 'react';
 import { Button, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import styled from 'styled-components';
@@ -22,20 +22,16 @@ const CommentInputTextField = muiStyled(TextField)`
 `;
 
 
-
-
-
-
 const ChallengeCommentInput = (props) => {
-  const {userId,onhandleComment,commentMessage,cmtId,onhandleEdit} = props;
-  const [comment,setComment] = useState('');
+  const { userId, onhandleComment, commentMessage, cmtId, onhandleEdit } = props;
+  const [comment, setComment] = useState('');
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-        sendMessage();
+      sendMessage();
     }
   };
-  
+
   const handleKeyUp = (event) => {
     if (event.key === 'Enter') {
       setComment('');
@@ -43,46 +39,46 @@ const ChallengeCommentInput = (props) => {
     }
   };
 
-  const sendMessage =() =>{
-    
-    if(typeof commentMessage==='string'){
-      
+  const sendMessage = () => {
+
+    if (typeof commentMessage === 'string') {
+
       onhandleEdit(comment);
-      axios.put(`http://localhost:9999/challenge/comment/list/edit`,{
+      axios.put(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/comment/list/edit`, {
         'cmtContent': comment,
         'cmtId': cmtId,
 
-    }).then(data => {
-      console.log(data)
-      if(data.data.SUCCESSNOT){
-        alert('수정에 실패했습니다.')
-      }
-      setComment('');
-    })
-    .catch(error => {
-      alert('수정에 실패했습니다.')
-    });
-
-
-    }else{
-      axios.post(`http://localhost:9999/challenge/comment/record`,{
-          'cmtContent': comment,
-          'userId': userId,
-  
       }).then(data => {
-        
-        console.log(data.data.cmtId)
-        onhandleComment(comment,data.data.cmtId);
-        if(data.data.SUCCESSNOT){
-             alert('입력에 실패했습니다.')
+        console.log(data);
+        if (data.data.SUCCESSNOT) {
+          alert('수정에 실패했습니다.');
         }
         setComment('');
       })
-      .catch(error => {
-        alert('입력에 실패했습니다.')
-      });
+        .catch(error => {
+          alert('수정에 실패했습니다.');
+        });
+
+
+    } else {
+      axios.post(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/comment/record`, {
+        'cmtContent': comment,
+        'userId': userId,
+
+      }).then(data => {
+
+        console.log(data.data.cmtId);
+        onhandleComment(comment, data.data.cmtId);
+        if (data.data.SUCCESSNOT) {
+          alert('입력에 실패했습니다.');
+        }
+        setComment('');
+      })
+        .catch(error => {
+          alert('입력에 실패했습니다.');
+        });
     }
-  }
+  };
 
   useEffect(() => {
     setComment(commentMessage);
@@ -90,23 +86,23 @@ const ChallengeCommentInput = (props) => {
   }, [commentMessage]);
 
 
-    const handleInputChange =(event) =>{
-      setComment(event.target.value); 
-     }
+  const handleInputChange = (event) => {
+    setComment(event.target.value);
+  };
   return (
     <CommentInputContainer>
       <CommentInputTextField
-              size="small"
-              label={typeof commentMessage==='string'? "":"메세지를 입력하세요"}
-              multiline
-              value={comment}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              onKeyUp={handleKeyUp}/>
+        size="small"
+        label={typeof commentMessage === 'string' ? '' : '메세지를 입력하세요'}
+        multiline
+        value={comment}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp} />
 
-        <StyledSendButton variant='contained' onClick={sendMessage}>
-         {typeof commentMessage==='string'? '수정' :<SendIcon />}
-        </StyledSendButton>
+      <StyledSendButton variant="contained" onClick={sendMessage}>
+        {typeof commentMessage === 'string' ? '수정' : <SendIcon />}
+      </StyledSendButton>
     </CommentInputContainer>
   );
 };

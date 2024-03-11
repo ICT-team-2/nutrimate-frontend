@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -46,85 +46,84 @@ const options = {
 };
 
 
-
 export function WeeklyCategoricalBarChart() {
   const [labels, setLabels] = useState([]);
   const [datas, setDatas] = useState([]);
   const [food, setFoodDatas] = useState([]);
   const [exercise, setExercise] = useState([]);
 
-      const data = {
-        labels,
-        datasets: [
-          {
-            label: 'FOOD',
-            data: food,
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-          },
-          {
-            label: 'EXERCISE',
-            data: exercise,
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-          },
-        ],
-      };
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'FOOD',
+        data: food,
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+      {
+        label: 'EXERCISE',
+        data: exercise,
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+    ],
+  };
 
-      useEffect(() => {  
-        const startDate = dayjs().subtract(6, 'day');
-        const endDate = dayjs()+1;
-        const dates = [];
-        let currentDate = startDate;
-            while (currentDate.isBefore(endDate)) {
-                dates.push(currentDate.format('YY-MM-DD'));
-                currentDate = currentDate.add(1, 'day');
-            }
+  useEffect(() => {
+    const startDate = dayjs().subtract(6, 'day');
+    const endDate = dayjs() + 1;
+    const dates = [];
+    let currentDate = startDate;
+    while (currentDate.isBefore(endDate)) {
+      dates.push(currentDate.format('YY-MM-DD'));
+      currentDate = currentDate.add(1, 'day');
+    }
 
-        console.log(datas)
+    console.log(datas);
 
-            axios.get('http://localhost:9999/statistic/list/category')
-            .then(response => {
-              setLabels(dates);
-              setDatas(response.data)
-            })
-            .catch(error => {
-              console.error('Error fetching data:', error);
-            });
+    axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/statistic/list/category`)
+      .then(response => {
+        setLabels(dates);
+        setDatas(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
 
-      }, []);
-      useEffect(() => {  
-        if(datas.length !== 0) {
-            const groupedData = datas.reduce((acc, item) => {
-                const { boardcategory } = item;
-                if (!acc[boardcategory]) {
-                    acc[boardcategory] = [];
-                }
-                acc[boardcategory].push(item);
-                return acc;
-            }, {});
-            console.log(groupedData);
-    
-            if (groupedData['FOOD']) {
-                setFoodDatas(labels.map(label => {
-                    const item = groupedData['FOOD'].find(item => dayjs(item.day).format('YY-MM-DD') === label);
-                    return item ? item.count : 0;
-                }));
-            } else {
-                setFoodDatas(labels.map(() => 0)); // If no FOOD data found, set all counts to 0
-            
-            }
-            console.log(food)
-
-            if (groupedData['exercise']) {
-              setExercise(labels.map(label => {
-                  const item = groupedData['exercise'].find(item => dayjs(item.day).format('YY-MM-DD') === label);
-                  return item ? item.count : 0;
-              }));
-          } else {
-            setExercise(labels.map(() => 0)); // If no FOOD data found, set all counts to 0
-          
-          }
+  }, []);
+  useEffect(() => {
+    if (datas.length !== 0) {
+      const groupedData = datas.reduce((acc, item) => {
+        const { boardcategory } = item;
+        if (!acc[boardcategory]) {
+          acc[boardcategory] = [];
         }
-    }, [datas]);
+        acc[boardcategory].push(item);
+        return acc;
+      }, {});
+      console.log(groupedData);
+
+      if (groupedData['FOOD']) {
+        setFoodDatas(labels.map(label => {
+          const item = groupedData['FOOD'].find(item => dayjs(item.day).format('YY-MM-DD') === label);
+          return item ? item.count : 0;
+        }));
+      } else {
+        setFoodDatas(labels.map(() => 0)); // If no FOOD data found, set all counts to 0
+
+      }
+      console.log(food);
+
+      if (groupedData['exercise']) {
+        setExercise(labels.map(label => {
+          const item = groupedData['exercise'].find(item => dayjs(item.day).format('YY-MM-DD') === label);
+          return item ? item.count : 0;
+        }));
+      } else {
+        setExercise(labels.map(() => 0)); // If no FOOD data found, set all counts to 0
+
+      }
+    }
+  }, [datas]);
 
   return (
     <StatisticsCard title="주간 게시물 수 변화 추이">

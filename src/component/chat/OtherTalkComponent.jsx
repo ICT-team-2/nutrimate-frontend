@@ -23,7 +23,14 @@ const TalkContentBody = styled(Paper)`
     width: fit-content;
     max-width: 70%;
 `;
-
+/**
+ *
+ * @param props
+ * @param props.nick {string} 닉네임
+ * @param props.content {string} 내용
+ * @returns {Element}
+ * @constructor
+ */
 const OtherTalkComponent = (props) => {
   const { nick, content, date } = props;
 
