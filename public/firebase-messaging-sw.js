@@ -27,13 +27,15 @@ const messaging = firebase.messaging();
 //테스트시 크롬 닫고 다시 열어야 알림창이 뜬다
 
 
+
 messaging.onBackgroundMessage((payload) => 
 {  
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {body: payload.notification.body,icon: 'https://postfiles.pstatic.net/MjAyNDAzMTBfOTkg/MDAxNzEwMDY0MDUzMzE4.wgdcQyqtIlfHfh4rg3JvOdLr4gOxPoUSb5qmyKBFNlog.xPfA62occvpnnHTrs2bi-gUL7SFxjkod6zhC7-vKVjIg.PNG/LogoWhite.png?type=w966' };
+  const notificationTitle = payload.data.title;
+  const notificationOptions = {body: payload.data.body,icon: `/src/asset/image/SiteLogo.png` };
   return self.registration.showNotification(notificationTitle,notificationOptions);
 });
+
 
 
 //알림창 클릭시
