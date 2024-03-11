@@ -23,6 +23,8 @@ import  firebaseConfigFile from '@src/component/calendar/fireConfig.js';
 import { initializeApp } from 'firebase/app';
 import { getMessaging, onMessage, getToken } from "firebase/messaging";
 import SiteLogo from "@src/asset/image/SiteLogo.png"
+
+
 const LoadEffectAnimation = keyframes`
     0% {
         opacity: 0;
@@ -217,7 +219,8 @@ const ChallengeModal = (props) => {
   useEffect(() => {    
     const firebaseApp = initializeApp(firebaseConfigFile);
     console.log(firebaseConfigFile);
-    const YOUR_PUBLIC_VAPID_KEY='BOYL_FxfbQGiRy76Ksumj3voCTi5vDw3afs17dJsTpKAuT2auESfgyEbv4PRDUxYf2AUa1gs1MqXqfA3tDShSzg';
+    console.log(process.env.YOUR_PUBLIC_VAPI)
+    const YOUR_PUBLIC_VAPID_KEY=`BF4iu85TgiNtmpCM9n0evtVZgf1oF6dzVm0cNr5oA9d49zOkvL9QvHwjaz-MaxxsXFO9xvl7YFWhU2r-MA1-2A4`;
     const messaging = getMessaging(firebaseApp);
     getToken(messaging,{vapidKey: YOUR_PUBLIC_VAPID_KEY}).then((token) => {
     console.log("fcmToken:", token);
@@ -347,8 +350,8 @@ const ChallengeModal = (props) => {
             if(!checked){
                 datesBetween.forEach(date => {
                   const dateTimeForDB =  date + 'T' + selectTime.slice(0, -3);
-                  Alarm(dateTimeForDB,title,content)
-                  updatedAlarmWeek.push(date+'T'+selectTime);
+                  //Alarm(dateTimeForDB,title,content)
+                  updatedAlarmWeek.push(dateTimeForDB);
                 });
 
                 AlarmSaveData(updatedAlarmWeek);
@@ -359,8 +362,8 @@ const ChallengeModal = (props) => {
                     category.forEach(week =>{          
                       if(weekdaysList[dayOfWeek] === week){
                         console.log(date);
-                        Alarm(date+'T'+selectTime.slice(0, -3),title,content)
-                        updatedAlarmWeek.push(date+'T'+selectTime);
+                        //Alarm(date+'T'+selectTime.slice(0, -3),title,content)
+                        updatedAlarmWeek.push(date+'T'+selectTime.slice(0, -3));
                       }
 
                     })
@@ -391,35 +394,44 @@ const ChallengeModal = (props) => {
 
 
 const AlarmSaveData = (updatedAlarmWeek) =>{
-  console.log('sdf',updatedAlarmWeek)
+  console.log('sdf',updatedAlarmWeek.length)
   console.log(userId);
   
 
+      if(updatedAlarmWeek.length>0){
+      axios.post('http://localhost:9999/alarm/list', {
+                      'updatedAlarmWeek': updatedAlarmWeek,
+                      'alarmCategory': title,
+                      'userId':userId
+                      
+                  })
+                  .then(response => {
+                       console.log(response.data.alarmId)
+                       for (let i=0; i<updatedAlarmWeek.length; i++){
+                        console.log('updatedAlarmWeek',updatedAlarmWeek[i],'alarmId',response.data.alarmId[i])
+                        Alarm(updatedAlarmWeek[i],title,content,response.data.alarmId[i])
+                       }
 
-  axios.post('http://localhost:9999/alarm/list', {
-                  'updatedAlarmWeek': updatedAlarmWeek,
-                  'alarmCategory': title,
-                  'userId':userId
-                  
-              })
-              .then(response => {
+                      if(response.data.alarmOk === 1){
+                        setChallengeModal(false);
+                        handleChangeWeek(startWeek,endWeek)
+                        
+                      }else{
+                        alert('알람 저장에 실패했습니다.')
+                      }
+                      
+                  })
+                  .catch(error => {
+                      console.error('Error fetching chat data:', error);
+                  });
 
-                  if(response.data.alarmOk === 1){
-                    setChallengeModal(false);
-                    handleChangeWeek(startWeek,endWeek)
-                    
-                  }else{
-                    alert('알람 저장에 실패했습니다.')
-                  }
-                  
-              })
-              .catch(error => {
-                  console.error('Error fetching chat data:', error);
-              });
+      }else{
+        alert('해당되는 날짜가 없습니다. 다시 확인해주세요.')
+      }
 }
 
 
-const Alarm = (dateTimeForDB,title,content) => {
+const Alarm = (dateTimeForDB,title,content,alarmId) => {
 
 
    console.log(dateTimeForDB)
@@ -428,6 +440,7 @@ const Alarm = (dateTimeForDB,title,content) => {
                   'alarm_time': dateTimeForDB,
                   'title': title,
                   'body': content,
+                  'alarmId': alarmId,
                   'image_url':'',
                   'token':fcmToken
               })

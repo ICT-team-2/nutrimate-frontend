@@ -125,7 +125,16 @@ const ListTable = ({userId}) => {
       if(confirm('알람을 삭제하시겠습니까?')){
         axios.delete(`http://localhost:9999/alarm/list/week/delete?alarmId=${alarmId}`)
         .then(datas => {
+          console.log(alarmId)
           if(datas.data.alarmOk===1){
+                axios.delete('http://localhost:2222/serviceworker', {
+                  data: {
+                    alarmId: alarmId,
+                  },
+                })
+                .catch(error => {
+                  console.error('Error fetching chat data:', error);
+                });
             let updatedData = { ...calendarData };
             console.log(updatedData);
             updatedData = Object.values(updatedData).filter(item => item.alarmId !== alarmId);
