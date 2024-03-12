@@ -57,22 +57,20 @@ const FeedCommentComponent = (props) => {
     cmtDepth, inputRef, editRef, isContent,
     boardId, boardContent, checkedLike,
     likeCount, userNick: writer, cmtContent,
-    cmtId, userId: writerId, userProfile: writerProfile,
+    cmtId, userId: writerId, userProfile: writerProfile,setShowReportModalComment,setCmtId
   } = props;
   const setReplyChipData = useSetAtom(replyChipDataAtom);
   const setCommentEditData = useSetAtom(commentEditDataAtom);
   const deleteComment = useDeleteComment(cmtId, boardId);
   const setIsCommentEdit = useSetAtom(isCommentEditAtom);
-  const [showReportModal, setShowReportModal] = useState(false);
   const isWriter = parseInt(sessionStorage.getItem('userId')) === writerId;
-   
   const handleReport = () => {
-    setShowReportModal(true);
+    setShowReportModalComment(true);
+    setCmtId(cmtId);
   };
 
   return (
     <>
-    {showReportModal && <ReportModal setShowReportModal={setShowReportModal}  showReportModal={showReportModal}  cmtId={cmtId} searchKeyWord={'CMT'}/>}
     <CommentContainer $depth={cmtDepth}>
       <NicknameContainer>
         <UserAvatar

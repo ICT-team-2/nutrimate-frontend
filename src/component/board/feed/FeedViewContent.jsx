@@ -66,11 +66,10 @@ function FeedViewContent(props) {
 
   const updateViewCount = useUpdateViewCount();
 
-
   useEffect(() => {
     setLikeClicked(checkedLike === 1);
   }, [checkedLike]);
-
+  
 
   return (
     <>
@@ -86,7 +85,7 @@ function FeedViewContent(props) {
               </UserAvatar>
             }
             action={
-              (writerId === userId) && <FeedDropMenu boardId={boardId} />
+              (writerId === userId) && <FeedDropMenu boardId={boardId}/>
             }
             title={writer}
           />
