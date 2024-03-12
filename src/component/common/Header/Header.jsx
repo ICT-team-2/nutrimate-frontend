@@ -17,6 +17,8 @@ import styled from 'styled-components';
 import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom';
 
+import NotiBadge from '@src/component/notice/NotiBadge.jsx'
+
 const AppBar = muiStyled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme }) => ({
@@ -92,6 +94,7 @@ const Header = (props) => {
             onClick={gotoFeed}
             logowhite={logoWhite + ''}
           >FEED</StyledButton>
+           <NotiBadge/>
           {!!userId ? (
             <ProfileImgMenu />
           ) : (
@@ -106,6 +109,7 @@ const Header = (props) => {
               </StyledButton>
             </div>
           )}
+         
         </Toolbar>
       </StyledAppBar>
       {hasDrawer && <SideMenu />}
