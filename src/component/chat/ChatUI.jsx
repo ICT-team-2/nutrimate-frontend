@@ -135,7 +135,7 @@ const ChatUI = (props) => {
       'messageType': 'CHAT',
     }]);
     setLoadingVoice(true);
-    axios.post('http://localhost:2222/chatbot', { 'content': message })
+    axios.post(`${import.meta.env.REACT_APP_FLASK_URL}/chatbot`, { 'content': message })
       .then(response => {
         const botChatData = { 'chatMessage': response.data.messages, 'challengeNick': '챗봇', 'messageType': 'CHAT' };
         setVoicedata(prevVoicedata => [...prevVoicedata, botChatData]);
