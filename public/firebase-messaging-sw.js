@@ -49,7 +49,7 @@ self.addEventListener('notificationclick', event => {
           return client.focus();
       }
       if (self.clients.openWindow)
-        return self.clients.openWindow(`http://localhost:5555/`);
+        return self.clients.openWindow(`http://localhost:5555`);
     }),
   );
 });
