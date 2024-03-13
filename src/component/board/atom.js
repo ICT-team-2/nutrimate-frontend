@@ -1,5 +1,10 @@
 import { atom } from 'jotai';
-import { INIT_MAP_STATE } from '@src/component/board/const.js';
+import {
+  COMMENT_TYPE,
+  INIT_COMMENT_STATE,
+  INIT_EDIT_COMMENT_STATE,
+  INIT_MAP_STATE,
+} from '@src/component/board/const.js';
 
 export const mapPathsAtom = atom(INIT_MAP_STATE.PATHS);
 mapPathsAtom.debugLabel = 'mapPathsAtom';
@@ -21,3 +26,16 @@ quillRefAtom.debugLabel = 'quillRefAtom';
 
 export const inputHashTagAtom = atom([]);
 inputHashTagAtom.debugLabel = 'inputHashTagAtom';
+
+export const replyChipDataAtom = atom([INIT_COMMENT_STATE]);
+replyChipDataAtom.debugLabel = 'replyChipDataAtom';
+
+export const commentEditDataAtom = atom(INIT_EDIT_COMMENT_STATE);
+commentEditDataAtom.debugLabel = 'replyDataAtom';
+
+export const commentListRefAtom = atom(undefined);
+commentListRefAtom.debugLabel = 'commentListRefAtom';
+
+export const isCommentEditAtom = atom(false);
+isCommentEditAtom.debugLabel = 'isCommentEditAtom';
+

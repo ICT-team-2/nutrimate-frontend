@@ -8,11 +8,12 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { useAtom, useSetAtom } from 'jotai/react';
-import { profileModalAtom, profilePromptModalAtom, uploadedImageAtom } from '@src/component/mypage/atom.js';
+import { profileModalAtom, profilePromptModalAtom, profileImageAtom } from '@src/component/mypage/atom.js';
 import { ResetStyleInput } from '@src/component/common/ImgUploader.jsx';
 import { styled as muiStyled } from '@mui/material/styles';
 import ProfileAIPromptModal from '@src/component/mypage/myinfo/ProfileAIPromptModal.jsx';
 import styled from 'styled-components';
+import useChangeProfileImage from '@src/hooks/mypage/useChangeProfileImage.jsx';
 
 const style = {
   position: 'absolute',
@@ -22,7 +23,6 @@ const style = {
   width: 200,
   height: 230,
   bgcolor: 'background.paper',
-  boxShadow: 24,
   padding: '20px',
   borderRadius: '3px',
 };
@@ -34,11 +34,17 @@ const TitleH3 = styled.h3`
     margin-bottom: 20px;
 `;
 
-export default function ChangeProfileModal() {
+const StyledModal = styled(Modal)`
+
+`;
+
+export default function ChangeProfileModal({ changeProfile, chatroom }) {
+
   const [open, setOpen] = useAtom(profileModalAtom);
   const fileInputRef = useRef();
-  const setSelectedImage = useSetAtom(uploadedImageAtom);
+  const setSelectedImage = useSetAtom(profileImageAtom);
   const [promptModalState, setPromptModalState] = useAtom(profilePromptModalAtom);
+
 
   const handleClose = () => setOpen(false);
   const uploadImg = (event) => {
@@ -51,13 +57,21 @@ export default function ChangeProfileModal() {
       setSelectedImage(reader.result);
     };
     reader.readAsDataURL(file);
+    changeProfile(file);
     handleClose();
   };
   return (
-    <div>
-      <Modal
+    <>
+      <StyledModal
         open={open}
         onClose={handleClose}
+        slotProps={chatroom && {
+          backdrop: {
+            style: {
+              backgroundColor: 'rgba(0, 0, 0, 0.2)', // 여기서 투명도를 조절할 수 있습니다. 0.5는 예시 값입니다.
+            },
+          },
+        }}
       >
         <Box sx={style}>
           <Box
@@ -72,8 +86,7 @@ export default function ChangeProfileModal() {
             <List>
               <ListItem disablePadding>
                 <ListItemButton
-                  onClick={() => setPromptModalState(true)}
-                >
+                  onClick={() => setPromptModalState(true)}>
                   <StyldListItemText
                     primary="AI로 생성"
                   />
@@ -81,8 +94,7 @@ export default function ChangeProfileModal() {
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton
-                  onClick={uploadImg}
-                >
+                  onClick={uploadImg}>
                   <StyldListItemText
                     primary="사진 업로드"
                   />
@@ -99,14 +111,16 @@ export default function ChangeProfileModal() {
             </List>
           </Box>
         </Box>
-      </Modal>
+      </StyledModal>
       <ResetStyleInput
         type="file"
         accept="image/*"
         ref={fileInputRef}
         onChange={handleImageUpload}
       />
-      <ProfileAIPromptModal />
-    </div>
+      <ProfileAIPromptModal
+        chatroom={chatroom}
+        changeProfile={changeProfile} />
+    </>
   );
 }

@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import styled from 'styled-components';
-import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
+import {
+  FlexGrowDiv,
+  UserAvatar,
+} from '@src/component/common/GlobalComponents.jsx';
 import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
 import Divider from '@mui/material/Divider';
-
+import { useAtom } from 'jotai';
+import {
+  commentEditDataAtom, isCommentEditAtom,
+  replyChipDataAtom,
+} from '@src/component/board/atom.js';
+import { COMMENT_TYPE } from '@src/component/board/const.js';
+import useDeleteComment
+  from '@src/hooks/board/common/comment/useDeleteComment.jsx';
+import { useSetAtom } from 'jotai/react';
+import ReportModal from '@src/component/admin/manage/ReportModal.jsx';
 const CommentContainer = styled.div`
     display: flex;
     width: 100%;
     flex-direction: column;
-    padding-left: ${({ depth }) => depth * 20}px;
+    padding-left: ${({ $depth }) => $depth * 20}px;
 `;
 const NicknameTypo = styled(Typography)`
     margin: 9px 0 0 10px;
@@ -22,38 +34,101 @@ const NicknameContainer = styled.div`
 
 const BodyTypo = styled(Typography)`
     margin-left: 50px;
+    margin-bottom: 10px;
+    cursor: ${({ cursor }) => cursor};
 `;
 const ApliyButton = styled(Button)`
     margin-left: 40px;
-
 `;
+
+
+const commentCursorPointer = (isWriter, isContent) => {
+  if (isContent) {
+    return 'default';
+  }
+  if (isWriter) {
+    return 'pointer';
+  }
+  return 'default';
+};
 
 const FeedCommentComponent = (props) => {
   const {
-    cmtDepth, inputRef, isContent,
+    cmtDepth, inputRef, editRef, isContent,
     boardId, boardContent, checkedLike,
     likeCount, userNick: writer, cmtContent,
+    cmtId, userId: writerId, userProfile: writerProfile,
   } = props;
-
+  const setReplyChipData = useSetAtom(replyChipDataAtom);
+  const setCommentEditData = useSetAtom(commentEditDataAtom);
+  const deleteComment = useDeleteComment(cmtId, boardId);
+  const setIsCommentEdit = useSetAtom(isCommentEditAtom);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const isWriter = parseInt(sessionStorage.getItem('userId')) === writerId;
+   
+  const handleReport = () => {
+    setShowReportModal(true);
+  };
 
   return (
-    <CommentContainer depth={cmtDepth}>
+    <>
+    {showReportModal && <ReportModal setShowReportModal={setShowReportModal}  showReportModal={showReportModal}  cmtId={cmtId} searchKeyWord={'CMT'}/>}
+    <CommentContainer $depth={cmtDepth}>
       <NicknameContainer>
-        <UserAvatar userNick={writer} />
+        <UserAvatar
+          src={import.meta.env.REACT_APP_BACKEND_URL + writerProfile}
+          userNick={writer} />
         <NicknameTypo variant="subtitle2">{writer}</NicknameTypo>
+        <FlexGrowDiv />
       </NicknameContainer>
       <BodyTypo
         variant="body2"
-        dangerouslySetInnerHTML={{ __html: isContent ? boardContent : cmtContent }}
+        dangerouslySetInnerHTML={{
+          __html: isContent
+            ? boardContent
+            : cmtContent,
+        }}
+        cursor={commentCursorPointer(isWriter, isContent)}
+        onClick={async () => {
+          if (!isWriter || isContent) {
+            return;
+          }
+          setCommentEditData({
+            cmtId: cmtId,
+            cmtContent: cmtContent,
+          });
+          await setIsCommentEdit(true);
+          editRef.current.focus();
+        }}
       />
       {!isContent && (<div>
         <ApliyButton
-          onClick={() => {
+          onClick={async () => {
+            setReplyChipData([
+              {
+                type: COMMENT_TYPE.REPLY,
+                cmtContent: '',
+                replyNick: writer,
+                cmtRef: cmtId,
+                boardId: boardId,
+              }]);
+            await setIsCommentEdit(false);
             inputRef.current.focus();
           }}
         >답글달기</ApliyButton>
+        {isWriter && <Button
+          color="error"
+          onClick={() => {
+            deleteComment.mutate();
+          }}
+        >삭제</Button>}
+        {!isWriter && <Button
+          color="error"
+          onClick={handleReport}
+        >신고</Button>}
       </div>)}
     </CommentContainer>
+    </>
   );
 };
 

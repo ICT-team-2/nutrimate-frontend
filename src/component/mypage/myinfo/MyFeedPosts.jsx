@@ -1,19 +1,24 @@
 import { Grid } from '@mui/material';
-import FeedCard from '@src/component/mypage/myinfo/FeedCard.jsx';
+import MyFeedCard from '@src/component/mypage/myinfo/MyFeedCard.jsx';
+import useFetchProfileFeedList from '@src/hooks/mypage/useFetchProfileFeedList.jsx';
+import { useEffect } from 'react';
 
 
-function MyFeedPosts(props) {
+function MyFeedPosts({ profileUserId }) {
+
+  const { data, isLoading, isError, error } = useFetchProfileFeedList(profileUserId);
 
   return (
-
     <Grid container spacing={3}>
       {
-        Array.from({ length: 9 }).map((_, index) => {
-          return (
-            <Grid item xs={12} sm={12} md={6} lg={4} key={index}>
-              <FeedCard />
-            </Grid>
-          );
+        data?.pages.map((feedPage, index) => {
+          return feedPage?.feedList.map((feed, index) => {
+            return (
+              <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
+                <MyFeedCard data={feed} />
+              </Grid>
+            );
+          });
         })
       }
     </Grid>

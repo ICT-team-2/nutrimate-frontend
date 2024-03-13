@@ -34,15 +34,16 @@ const StyledButton = styled(Button)`
 
 
 const ChallengeChatPage = () => {
-  const stompClient = Stomp.client('ws://localhost:9999/ws');
+  const stompClient = Stomp.client(`${import.meta.env.REACT_APP_WEBSOCKET_URL}`);
   const { chatroomId } = useParams();
   const [chatData, setChatData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showChallengeModal, setChallengeModal] = useState(false);
   const [userId, setUserId] = useAtom(userIdAtom);
-  const [nickname, setNickname] = useState('');
+  const [nickname, setNickname] = useState(undefined);
   const [roomType, setRoomType] = useState('');
   const [chatroom, setChatroom] = useState(1);
+  const [afterConnected, setAfterConnected] = useState(false);
 
 
   const [open, setOpen] = useState(false);
@@ -68,7 +69,7 @@ const ChallengeChatPage = () => {
   };
 
   const ChatLoading = () => {
-    axios.get(`http://localhost:9999/challenge/chat/prev?chatroomId=${chatroom}`)
+    axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/chat/prev?chatroomId=${chatroom}`)
       .then(datas => {
         console.log('datas: ', datas.data);
         for (const data of datas.data) {
@@ -105,13 +106,23 @@ const ChallengeChatPage = () => {
     }
 
     stompClient.connect({}, async () => {
-      await axios.post(`http://localhost:9999/challenge/chat/member?chatroomId=${chatroom}&userId=${userId}`)//@RequestBody로 받는다
+      await axios.post(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/chat/member?chatroomId=${chatroom}&userId=${userId}`)//@RequestBody로 받는다
         .then(data => {
           console.log('connect ', data.data);
           if (data.data.memberOk === 1) {
-            let newNickname = data.data.challengeNick;
-            setNickname(newNickname);
+            const newNickname = data.data.challengeNick;
+            const setNicknamePromise = (nickname) =>
+              new Promise((resolve, reject) => {
+                setNickname(nickname);
+                resolve();
+              });
             setShowModal(false);
+            setAfterConnected(true);
+            setNicknamePromise(newNickname)
+              .then(() => {
+                ChatLoading();
+              });
+
           } else if (data.data.memberOk === 0) {
             setShowModal(true);
           }
@@ -125,6 +136,8 @@ const ChallengeChatPage = () => {
         console.log('subscribe chatData:', chatData);
         setChatData(prevChatData => [...prevChatData, chatData]);
       });
+
+      // ChatLoading();
     }, (error) => {
       console.error('Error during connection:', error);
     });
@@ -149,9 +162,9 @@ const ChallengeChatPage = () => {
   }, [chatroomId, userId]);
 
   useEffect(() => {
-    if (nickname === '') return;
+    if (nickname == null || nickname.trim() === '' || afterConnected === false) return;
     ChatLoading();
-  }, [nickname]);
+  }, [nickname, afterConnected]);
 
 
   const handleSend = (message) => {
@@ -167,7 +180,7 @@ const ChallengeChatPage = () => {
 
   const handleSendModal = async (inputValue) => {
     console.log(inputValue);
-    await axios.post(`http://localhost:9999/challenge/account`,
+    await axios.post(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/account`,
       {
         'chatroomId': chatroom,
         'challengeNick': inputValue,

@@ -14,3 +14,8 @@ export const FOLLOW_MODAL = {
     KEY: 'following',
   },
 };
+
+export const BOOKMARK_MENU = {
+  INFO: 0,
+  FEED: 1,
+};

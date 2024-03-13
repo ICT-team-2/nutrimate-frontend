@@ -32,11 +32,13 @@ export const PATH_PARAMS = {
   CHAT: 'chat',
   LOGIN: 'login',
   REGISTER: 'register',
+  NEXT: 'next',
   MEMBER: 'member',
   SURVEY: 'survey',
   ADMIN: 'admin',
   CHART: 'chart',
   MANAGE: 'manage',
+  DM: 'dm',
 };
 
 //
@@ -48,9 +50,11 @@ export const ROUTER_LINKS = {
   FEED_BOARD: PATH_PARAMS.FEED,
   FEED_BOARD_WRITE: PATH_PARAMS.FEED + '/' + PATH_PARAMS.WRITE,
   FEED_BOARD_VIEW: PATH_PARAMS.FEED + '/' + PATH_PARAMS.VIEW,
+  FEED_BOARD_EDIT: PATH_PARAMS.FEED + '/' + PATH_PARAMS.EDIT,
   INFO: PATH_PARAMS.INFO,
   INFO_BOARD_WRITE: PATH_PARAMS.INFO + '/' + PATH_PARAMS.WRITE,
   INFO_BOARD_VIEW: PATH_PARAMS.INFO + '/' + PATH_PARAMS.VIEW,
+  INFO_BOARD_EDIT: PATH_PARAMS.INFO + '/' + PATH_PARAMS.EDIT,
   RECORD: PATH_PARAMS.RECORD,
   CALENDAR: PATH_PARAMS.CALENDAR,
   MYINFO: PATH_PARAMS.MYINFO,
@@ -63,26 +67,34 @@ export const ROUTER_LINKS = {
   DELETE_USER: PATH_PARAMS.INFO + '/' + PATH_PARAMS.DELETE,
   LOGIN: PATH_PARAMS.LOGIN,
   REGISTER: PATH_PARAMS.REGISTER,
+  REGISTER_NEXT: PATH_PARAMS.REGISTER + '/' + PATH_PARAMS.NEXT,
   MEMBER: PATH_PARAMS.MEMBER,
   SURVEY: PATH_PARAMS.SURVEY,
   ADMIN: PATH_PARAMS.ADMIN,
   CHART: PATH_PARAMS.CHART,
   MANAGE: PATH_PARAMS.MANAGE,
   WRITE: PATH_PARAMS.WRITE,
+  DM: PATH_PARAMS.DM,
 };
 
 export const LINKS = {
   BOARD: '/' + ROUTER_LINKS.BOARD,
   INFO_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO,
   ALL_INFO_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.ALL_INFO_BOARD,
+
   FOOD_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.FOOD_BOARD,
   SPORT_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.SPORT_BOARD,
+
   FEED_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.FEED_BOARD,
-  FEEDBOARD_WRITE: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.FEED_BOARD_WRITE,
+  FEED_BOARD_WRITE: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.FEED_BOARD_WRITE,
   FEEDBOARD_VIEW: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.FEED_BOARD_VIEW,
+  FEEDBOARD_EDIT: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.FEED_BOARD_EDIT,
+
   INFO: '/' + ROUTER_LINKS.INFO,
+  INFO_BOARD_VIEW: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_VIEW,
   INFO_BOARD_WRITE: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_WRITE,
-  //INFO_BOARD_VIEW: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_VIEW,
+  INFO_BOARD_EDIT: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_EDIT,
+
   RECORD: '/' + ROUTER_LINKS.RECORD,
   CALENDAR: '/' + ROUTER_LINKS.CALENDAR,
   MYINFO: '/' + ROUTER_LINKS.MYINFO,
@@ -95,13 +107,14 @@ export const LINKS = {
   DELETE_USER: '/' + ROUTER_LINKS.SETTING + '/' + ROUTER_LINKS.DELETE_USER,
   LOGIN: '/' + ROUTER_LINKS.MEMBER + '/' + ROUTER_LINKS.LOGIN,
   REGISTER: '/' + ROUTER_LINKS.MEMBER + '/' + ROUTER_LINKS.REGISTER,
+  REGISTER_NEXT: '/' + ROUTER_LINKS.MEMBER + '/' + ROUTER_LINKS.REGISTER_NEXT,
   SURVEY: '/' + ROUTER_LINKS.SURVEY,
   ADMIN_CHART: '/' + ROUTER_LINKS.ADMIN + '/' + ROUTER_LINKS.CHART,
   ADMIN_MANAGE: '/' + ROUTER_LINKS.ADMIN + '/' + ROUTER_LINKS.MANAGE,
   RECORD_CHART: '/' + ROUTER_LINKS.RECORD + '/' + ROUTER_LINKS.CHART,
   RECORD_WRITE: '/' + ROUTER_LINKS.RECORD + '/' + ROUTER_LINKS.WRITE,
 
-  INFO_BOARD_VIEW: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_VIEW,
+  DM: '/' + ROUTER_LINKS.DM,
 };
 
 export const FOOTER_HEIGHT = '13px';
@@ -137,7 +150,10 @@ export const MENU_LIST = {
     TITLE: '프로필',
     PATH: LINKS.MYINFO,
   },
-
+  DM: {
+    TITLE: '채팅',
+    PATH: LINKS.DM,
+  },
   SETTING: {
     TITLE: '설정',
     PATH: LINKS.SETTING,
@@ -202,3 +218,67 @@ export const USER_INFOS = {
   },
 };
 
+export const NO_IMAGE_PATH = '/src/asset/image/NoImage.png';
+
+export const REACT_QUERY_KEYS = {
+  RECORD: 'record',
+  BOARD: 'board',
+  COMMENTS: 'comments',
+  REPLY: 'reply',
+  CHALLENGE: 'challenge',
+  INFO: 'info',
+  INSERT: 'insert',
+  UPDATE: 'update',
+  DELETE: 'delete',
+  LIKE: 'like',
+  FEED: 'feed',
+  LIST: 'list',
+  VIEW_COUNT: 'viewCount',
+  RECOMMAND: 'recommand',
+  DETAIL: 'detail',
+  BOOKMARK: 'bookmark',
+  MEMBER: 'member',
+  PROFILE: 'profile',
+  IMAGE: 'image',
+  CREATE: 'create',
+  MEMBER_DATA: 'memberData',
+  FOLLOW: 'follow',
+  FOLLOWEE: 'followee',
+  UNFOLLOW: 'unfollow',
+  FOLLOWER: 'follower',
+  COUNT: 'count',
+  NUTRIENTS: 'nutrients',
+  SPORT: 'sport',
+  PLACE: 'place',
+  FOOD: 'food',
+  SURVEY: 'survey',
+  ADMIN: 'admin',
+  RESTAURANT: 'restaurant',
+  GYM: 'gym',
+  OCR: 'ocr',
+  ANALYZE: 'analyze',
+  DB: 'db',
+  SEARCH: 'search',
+  CUSTOM: 'custom',
+  ANALYSIS: 'analysis',
+  GRAPH: 'graph',
+  FACE: 'face',
+  EMOTION: 'emotion',
+  DM: 'dm',
+  CHAT: 'chat',
+  CHATROOM: 'chatroom',
+  PRIVATE: 'private',
+  GROUP: 'group',
+  ROOMNAME: 'roomname',
+  LEAVE: 'leave',
+};
+
+export const FACE_EMOTION_RESULT = {
+  angry: '화남',
+  disgust: '혐오',
+  fear: '두려움',
+  happy: '기쁨',
+  sad: '슬픔',
+  surprise: '놀람',
+  neutral: '중립',
+};

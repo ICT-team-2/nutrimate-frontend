@@ -18,8 +18,8 @@ const ModalBg = styled.div`
 
 const ModalBox = styled.div`
   position: absolute;
-  width: 300px;
-  height: 130px;
+  width: 400px;
+  height: 200px;
   padding: 40px;
   text-align: center;
   background-color: rgb(255, 255, 255);

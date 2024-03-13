@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
@@ -7,12 +7,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import { useAtomValue } from 'jotai/react';
-import { uploadedImageAtom } from '@src/component/mypage/atom.js';
+import { profileImageAtom } from '@src/component/mypage/atom.js';
 import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -20,9 +21,10 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const ProfileImgMenu = () => {
 
   const [anchorElUser, setAnchorElUser] = useState();
-  const uploadImg = useAtomValue(uploadedImageAtom);
   const [userId, setUserId] = useAtom(userIdAtom);
   const navigate = useNavigate();
+  const { data } = useFetchProfileData(userId);
+
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -36,7 +38,9 @@ const ProfileImgMenu = () => {
     <Box sx={{ flexGrow: 0 }}>
       {/* 프로필 아이콘 */}
       <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-        <UserAvatar src={uploadImg} />
+        <UserAvatar
+          userNick={data?.userNick}
+          src={import.meta.env.REACT_APP_BACKEND_URL + data?.userProfile} />
       </IconButton>
 
 
@@ -64,6 +68,7 @@ const ProfileImgMenu = () => {
               await axios.get('/logout');
               setUserId(undefined);
               navigate('/');
+              localStorage.removeItem('isPaid'); // 로그아웃 처리시 결제 상태를 로컬 스토리지에 삭제
             }
           }}
           >

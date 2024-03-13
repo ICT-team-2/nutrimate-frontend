@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import StatisticsCard from '@src/component/admin/statistics/StatisticsCard.jsx';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import axios from 'axios';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -43,25 +44,39 @@ const rows = [
 ];
 
 function CustomizedTables() {
+  const [board, setBoard] = useState([]);
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/statistic/list/best`)
+      .then(response => setBoard(response.data))
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+
+  }, []);
+
   return (
     <TableContainer component={Paper} sx={{ height: 'fit-content' }}>
       <Table aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
+            <StyledTableCell align="left">순위</StyledTableCell>
+            <StyledTableCell>닉네임</StyledTableCell>
+            <StyledTableCell>제목</StyledTableCell>
+            <StyledTableCell align="right">카테고리</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {board.map((row, index) => (
+            <StyledTableRow key={row.boardId}>
               <StyledTableCell component="th" scope="row">
-                {row.name}
+                {index + 1}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-
+              <StyledTableCell>{row.usernick}</StyledTableCell>
+              <StyledTableCell>{row.boardtitle === null ? row.boardContent : row.boardtitle}</StyledTableCell>
+              <StyledTableCell align="right">
+                {row.boardcategory === 'FEED' ? '피드' : row.boardcategory === 'exercise' ? '운동 게시판' : '음식 게시판'}
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

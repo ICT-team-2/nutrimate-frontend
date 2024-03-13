@@ -53,7 +53,6 @@ const KakaoMap = (props) => {
   // 검색 값을 관리할 상태 추가
   const [searchValue, setSearchValue] = useState('');
   const [walkCalories, setWalkCalories] = useState(0);
-  // const [runCalories, setRunCalories] = useState(0);
   const [bikeCalories, setBikeCalories] = useState(0);
 
   //지도 정보를 가져오는 용도
@@ -98,9 +97,9 @@ const KakaoMap = (props) => {
     });
 
   };
-  useEffect(() => {
-    console.log('centerValue:', centerValue);
-  }, [centerValue]);
+  // useEffect(() => {
+  //   console.log('centerValue:', centerValue);
+  // }, [centerValue]);
 
   const handleRightClick = (
     _map,
@@ -192,17 +191,12 @@ const KakaoMap = (props) => {
     const bikeTime = (totalDistance / 227) | 0; // 분 단위
 
     const walkCalories = calculateCalories(3.9, weight, walkTime);
-    const runCalories = calculateCalories(9.8, weight, walkTime);
     const bikeCalories = calculateCalories(6.8, weight, bikeTime);
 
     setWalkCalories(walkCalories);
-    // setRunCalories(runCalories);
     setBikeCalories(bikeCalories);
   }, [distanceValues]);
 
-  // useEffect(() => {
-  //   console.log('KakaoMap: mapRefState:', mapRefState);
-  // }, [mapRefState]);
 
   useEffect(() => {
     if (mapRefState == null) return;
@@ -238,10 +232,9 @@ const KakaoMap = (props) => {
       <GlobalStyle />
       <br />
       {!readonly && (
-      <CustomSearchInput searchValue={searchValue} setSearchValue={setSearchValue} />
+        <CustomSearchInput searchValue={searchValue} setSearchValue={setSearchValue} />
       )}
       <div id="map">
-
         <Map // 지도를 표시할 Container
           id={`;map`}
           center={centerValue} // 지도의 중심좌표
@@ -257,8 +250,8 @@ const KakaoMap = (props) => {
           onCreate={(map) => {
             setMapRefState(map);
           }}
-          draggable={!readonly}
-          zoomable={!readonly}
+          // draggable={!readonly}
+          // zoomable={!readonly}
         >
           <Polyline
             path={pathValues}

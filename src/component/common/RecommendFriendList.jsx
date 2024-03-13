@@ -13,8 +13,13 @@ import { styled as muiStyled } from '@mui/material/styles';
 import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import styled from 'styled-components';
 import { useAtomValue } from 'jotai/react';
-import { uploadedImageAtom } from '@src/component/mypage/atom.js';
+import { profileImageAtom } from '@src/component/mypage/atom.js';
 import Paper from '@mui/material/Paper';
+import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
+import { userIdAtom } from '@src/pages/login/atom.js';
+import { useEffect } from 'react';
+import FollowButton from '@src/component/common/FollowButton.jsx';
+import useFetchRecommandFollowList from '@src/hooks/follow/useFetchRecommandFollowList.jsx';
 
 const exampleDatas = [
   {
@@ -55,16 +60,19 @@ const AvatarContainer = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
-    padding-left: 20px;
+    padding-left: 30px;
 `;
 
 const UserNameContainer = styled.div`
     margin: 8.5px auto auto 10px;
     height: 100%;
-    color: ${({ theme }) => theme['light-text']};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
 `;
 
-const StyledPaper = styled(Paper)`
+const StyledPaper = styled.div`
     width: 100%;
     max-width: 300px;
     margin-left: 30px;
@@ -72,35 +80,58 @@ const StyledPaper = styled(Paper)`
 
 `;
 
+const StyledListSubheader = styled(ListSubheader)`
+    background-color: inherit;
+    position: static;
+`;
+
+const FollowNickContainer = styled.div`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
+`;
+const StyledListItemText = styled(ListItemText)`
+    max-width: 130px;
+    min-width: 130px;
+`;
+
 const RecommendFriendList = ({ datas = exampleDatas }) => {
-  const uploadImg = useAtomValue(uploadedImageAtom);
+  const { data: userData } = useFetchProfileData();
+  const { data: recommendFollowData } = useFetchRecommandFollowList();
 
   return (
     <FriendListContainer>
       <AvatarContainer>
-        <UserAvatar src={uploadImg} />
-        <UserNameContainer>username</UserNameContainer>
+        <UserAvatar
+          userNick={userData?.userNick}
+          src={import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
+        <UserNameContainer>{userData?.userNick}</UserNameContainer>
       </AvatarContainer>
       <StyledPaper>
         <List
           subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
+            <StyledListSubheader>
               회원님을 위한 추천
-            </ListSubheader>
+            </StyledListSubheader>
           }
         >
-          {datas.map((data, index) => (
+          {recommendFollowData && recommendFollowData.map((data, index) => (
             <StyledListItem key={data.userNick + index}>
               <ListItemAvatar>
-                <Avatar>{data.profile}</Avatar>
+                <UserAvatar
+                  userNick={data.userNick}
+                  src={import.meta.env.REACT_APP_BACKEND_URL + data.userProfile} />
               </ListItemAvatar>
-              <ListItemText primary={data.userNick} />
-              <Button color="info">팔로우</Button>
+              <StyledListItemText primary={<FollowNickContainer>{data.userNick}</FollowNickContainer>} />
+              <FollowButton
+                followId={data.userId}
+                following={data.isFollowing === 1}
+              >팔로우</FollowButton>
             </StyledListItem>
           ))}
         </List>
       </StyledPaper>
-
     </FriendListContainer>
   );
 };

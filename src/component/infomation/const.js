@@ -11,9 +11,9 @@ export const RECOMMAND_MENU = {
 };
 
 export const NEWS_CATEGORY = {
-  FOOD: 'food',
-  SPORT: 'sport',
-  NUTRIENTS: 'nutrients',
+  FOOD: '식습관',
+  SPORT: '운동습관',
+  ALLERGY: '알레르기',
 };
 
 export const NUTRIENTS_GENDER_CATEGORY = {
@@ -81,4 +81,9 @@ export const SPORT_CATEGORY = {
   STOMACH: '복부',
   UPPER_BODY: '상체',
   LOWER_BODY: '하체',
+};
+
+export const PLACE_CATEGORY = {
+  RESTAURANT: '음식점',
+  GYM: '헬스장',
 };
