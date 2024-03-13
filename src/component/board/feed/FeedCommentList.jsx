@@ -85,7 +85,7 @@ const LikeTypography = styled(Typography)`
 
 
 const FeedCommentList = (props) => {
-  const { feedData} = props;
+  const { feedData } = props;
   const {
     boardId, likeCount, userNick: writer,
     userId: writerId,
@@ -105,8 +105,8 @@ const FeedCommentList = (props) => {
 
   const isWriter = writerId === parseInt(sessionStorage.getItem('userId'));
   const [showReportModal, setShowReportModal] = useState(false);
-  const [showReportModalComment , setShowReportModalComment] = useState(false);
-  const [cmtId , setCmtId] = useState(false);
+  const [showReportModalComment, setShowReportModalComment] = useState(false);
+  const [cmtId, setCmtId] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -129,8 +129,12 @@ const FeedCommentList = (props) => {
 
   return (
     <FeedCommentOuterContainer>
-      {showReportModal && <ReportModal setShowReportModal={setShowReportModal}  showReportModal={showReportModal}  boardId={boardId} searchKeyWord={'BOARD'}/>}
-      {showReportModalComment && <ReportModal setShowReportModal={setShowReportModalComment}  showReportModal={showReportModalComment}  cmtId={cmtId} searchKeyWord={'CMT'}/>}
+      {showReportModal &&
+        <ReportModal setShowReportModal={setShowReportModal} showReportModal={showReportModal} boardId={boardId}
+                     searchKeyWord={'BOARD'} />}
+      {showReportModalComment &&
+        <ReportModal setShowReportModal={setShowReportModalComment} showReportModal={showReportModalComment}
+                     cmtId={cmtId} searchKeyWord={'CMT'} />}
       <FeedCommentInnerContainer>
         <FeedCommentHeader>
           <UserAvatar userNick={writer} />
@@ -143,7 +147,7 @@ const FeedCommentList = (props) => {
               onClickFollow={onChangeFollow}
               onClickUnfollow={onChangeFollow}
             />}
-          <FeedDropMenu boardId={boardId} setShowReportModal={setShowReportModal} setCmtId={setCmtId} />
+          {isWriter && <FeedDropMenu boardId={boardId} setShowReportModal={setShowReportModal} setCmtId={setCmtId} />}
         </FeedCommentHeader>
         <Divider />
         <FeedCommentBody ref={commentListRef}>
@@ -213,7 +217,7 @@ const FeedCommentList = (props) => {
   );
 };
 
-const FeedComments = ({ cmtData, inputRef, editRef ,setShowReportModalComment,setCmtId}) => {
+const FeedComments = ({ cmtData, inputRef, editRef, setShowReportModalComment, setCmtId }) => {
 
   return (
     <>

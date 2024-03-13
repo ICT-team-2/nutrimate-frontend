@@ -62,7 +62,7 @@ const InfoBoardViewPage = (props) => {
   const { state } = useLocation();
   const { category } = state;
   const params = useParams();
-console.log('파라미터',params);
+  console.log('파라미터', params);
   const setFoodId = useSetAtom(foodIdAtom);
   const {
     isLoading: dietLoading,
@@ -115,9 +115,10 @@ console.log('파라미터',params);
         <BoardBookmarkButton
           clicked={data?.checkedBookmark === 1}
           boardid={parseInt(boardId)} />
-        <InfoBoardDropMenu
-          category={category}
-          boardId={parseInt(boardId)} />
+        {data?.userId === parseInt(sessionStorage.getItem('userId'))
+          && <InfoBoardDropMenu
+            category={category}
+            boardId={parseInt(boardId)} />}
       </WriterTypo>
       <HashtagContainer>
         {data && data?.tagNameList && <ViewHashtag hashtags={data?.tagNameList.map((data) => {

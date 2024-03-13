@@ -29,7 +29,7 @@ const useFetchProfileData = (profileUserId = undefined) => {
       REACT_QUERY_KEYS.MEMBER_DATA,
       parseInt(profileUserId)],
     queryFn: fetchMyData,
-
+    staleTime: 1000 * 60 * 5,//5분
   });
 };
 

@@ -51,7 +51,7 @@ const FeedDetailContent = ({ data, open, setOpen }) => {
     <Modal
       open={open}
       onClose={handleClose}
-    >   
+    >
       <OuterContainer>
         <StyledBox>
           <FlexGrowDiv>
