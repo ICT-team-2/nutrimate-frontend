@@ -107,7 +107,7 @@ const LoginPage = () => {
 
 
   const handleSocialLogin = (provider) => {
-    window.location.href = `http://localhost:9999/oauth2/authorization/${provider}`;
+    window.location.href = `${import.meta.env.REACT_APP_BACKEND_URL}/oauth2/authorization/${provider}`;
   };
 
 
@@ -169,13 +169,13 @@ const LoginPage = () => {
         </LoginBody>
         <Divider>간편 로그인</Divider>
         <OAuthContainer>
-        <OAuthButton onClick={
-          () => {
-            handleSocialLogin('google');
-            setSignupStatus('google');
-          }}>
-          <img src="/src/asset/image/oauth/GoogleLogin.png" alt="구글 로그인" />
-        </OAuthButton>
+          <OAuthButton onClick={
+            () => {
+              handleSocialLogin('google');
+              setSignupStatus('google');
+            }}>
+            <img src="/src/asset/image/oauth/GoogleLogin.png" alt="구글 로그인" />
+          </OAuthButton>
           <OAuthButton onClick={() => {
             handleSocialLogin('facebook');
             setSignupStatus('facebook');

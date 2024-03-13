@@ -16,7 +16,7 @@ import {
 import { MENU_LIST } from '@src/utils/const.js';
 import {
   faCalendar,
-  faClipboard,
+  faClipboard, faComments,
   faGear,
   faHeart,
   faHouse,
@@ -90,20 +90,11 @@ const StyledDrawer = styled(Drawer)`
 `;
 
 //메뉴 아이템들
-const menuItem = [
-  MENU_LIST.HOME,
-  MENU_LIST.RECORD,
-  MENU_LIST.CALENDAR,
-  MENU_LIST.INFOBOARD,
-  MENU_LIST.FEEDBOARD,
-  MENU_LIST.CHALLENGE,
-  MENU_LIST.MYINFO,
-  MENU_LIST.SETTING,
-];
+const menuItem = Object.values(MENU_LIST);
 
 const menuTitle = menuItem.map((item) => item.TITLE);
 
-const itemMargin = [0, 3, 2, 1, 1, 0, 2, 1];
+const itemMargin = [0, 3, 2, 1, 1, 0, 2, 0, 1];
 
 //메뉴 아이콘들
 const menuIcon = [
@@ -119,6 +110,7 @@ const menuIcon = [
   <FontAwesomeIcon key="icon7" icon={faTrophy} />,
   <FontAwesomeIcon key="icon8" icon={faUser}
                    style={{ paddingLeft: '2px' }} />,
+  <FontAwesomeIcon icon={faComments} />,
   <FontAwesomeIcon key="icon10" icon={faGear}
                    style={{ paddingLeft: '1px' }} />,
 ];
