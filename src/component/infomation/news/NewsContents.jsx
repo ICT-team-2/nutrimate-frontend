@@ -77,7 +77,7 @@ const NewsContents = () => {
             dataSearched?.slice(pageItemNumber * (page - 1), pageItemNumber * (page))
               .map((d, index) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} lg={3} key={d + index}>
+                  <Grid item xs={12} sm={6} md={4} lg={12} key={d + index}>
                     <NewsCard
                       title={d.title}
                       content={d.content}
