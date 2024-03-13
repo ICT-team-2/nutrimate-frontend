@@ -73,7 +73,7 @@
     "styled-components": "^6.1.8",
     "vite-plugin-env-compatible": "^2.0.1",
     "wonka": "^6.3.4",
-    "timepicker": "^1.14.1",
+    "timepicker": "^1.14.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

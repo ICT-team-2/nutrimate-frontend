@@ -49,7 +49,7 @@ self.addEventListener('notificationclick', event => {
           return client.focus();
       }
       if (self.clients.openWindow)
-        return self.clients.openWindow(`${import.meta.env.REACT_APP_FRONTEND_URL}`);
+        return self.clients.openWindow(`http://localhost:5555/`);
     }),
   );
 });
