@@ -1,4 +1,4 @@
-import React, { Fragment,useEffect,useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import styled from 'styled-components';
@@ -41,8 +41,8 @@ const SubTitleTypo = styled(TitleTypo)`
 `;
 
 export function CategoricalBoardDoughnutChart() {
-  const [boardData,setBoardData] =useState([]);
-  const [labels,setLabels] =useState(['피드', '운동 게시판', '음식 게시판']);
+  const [boardData, setBoardData] = useState([]);
+  const [labels, setLabels] = useState(['피드', '운동 게시판', '음식 게시판']);
 
 
   const data = {
@@ -55,13 +55,13 @@ export function CategoricalBoardDoughnutChart() {
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
           'rgba(255, 206, 86, 0.2)',
-  
+
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
           'rgba(54, 162, 235, 1)',
           'rgba(255, 206, 86, 1)',
-  
+
         ],
         borderWidth: 1,
       },
@@ -70,20 +70,20 @@ export function CategoricalBoardDoughnutChart() {
 
 
   useEffect(() => {
-    axios.get('http://localhost:9999/statistic/list/category/month')
-    .then(response => {
-      const data = response.data;
-      // 통계 데이터를 가져온 후, 적절한 형식으로 가공하여 boardData를 설정합니다.
-      const label=['FEED','exercise','FOOD']
-      setBoardData(label.map(label => {
-        const item = response.data.find(item => item.boardcategory === label);
-        return item ? item.count : 0;
-       }));
+    axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/statistic/list/category/month`)
+      .then(response => {
+        const data = response.data;
+        // 통계 데이터를 가져온 후, 적절한 형식으로 가공하여 boardData를 설정합니다.
+        const label = ['FEED', 'exercise', 'FOOD'];
+        setBoardData(label.map(label => {
+          const item = response.data.find(item => item.boardcategory === label);
+          return item ? item.count : 0;
+        }));
 
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
   }, []);
 
   return (

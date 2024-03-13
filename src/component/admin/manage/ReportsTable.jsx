@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -103,7 +103,7 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-export default function ReportsTable({ data,property,searchValue}) {
+export default function ReportsTable({ data, property, searchValue }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [reportData, setReportData] = React.useState([]);
@@ -133,15 +133,14 @@ export default function ReportsTable({ data,property,searchValue}) {
 
 
   const updateBlockedStatus = (boardId) => {
-    const userIndex = reportData.findIndex(user => (property=='board'? user.boardid : user.cmtid) === boardId);
-    console.log(userIndex)
+    const userIndex = reportData.findIndex(user => (property == 'board' ? user.boardid : user.cmtid) === boardId);
     if (userIndex !== -1) {
       const currentBlockedValue = reportData[userIndex].blocked;
       const newBlockedValue = currentBlockedValue === 'N' ? 'Y' : 'N';
       const updatedReportData = [...reportData];
       updatedReportData[userIndex] = {
         ...updatedReportData[userIndex],
-        blocked: newBlockedValue
+        blocked: newBlockedValue,
       };
       
       // Update the state with the new reportData
@@ -151,57 +150,57 @@ export default function ReportsTable({ data,property,searchValue}) {
 
 
   useEffect(() => {
-    let url='';
-    if(property=='board'){
-      url=`http://localhost:9999/block/list/board?nowPage=${page + 1}`  
-     }else{
-      url=`http://localhost:9999/block/list/comment?nowPage=${page + 1}`  
-     }
-     if (searchValue.length > 0) {
+    let url = '';
+    if (property == 'board') {
+      url = `${import.meta.env.REACT_APP_BACKEND_URL}/block/list/board?nowPage=${page + 1}`;
+    } else {
+      url = `${import.meta.env.REACT_APP_BACKEND_URL}/block/list/comment?nowPage=${page + 1}`;
+    }
+    if (searchValue.length > 0) {
       url += `&searchUser=${searchValue}`;
-     }
+    }
 
     axios.get(url)
       .then(response => {
         // Assuming response.data is the array of report data from the server
         setReportData(response.data);
-        setTotal(response.data.totalPage)
+        setTotal(response.data.totalPage);
       })
       .catch(error => {
         console.error('Error fetching report data:', error);
       });
-  }, [page,searchValue]);
+  }, [page, searchValue]);
 
-  const block =(id,block)=>{
-     console.log(id)
-     console.log(block)
-     let url=''
-     if(property=='board'){
-          if(block=='N'){
-              url=`http://localhost:9999/block/board?boardid=${id}`
-          }else{
-              url=`http://localhost:9999/block/cancel/board?boardid=${id}`
-          }
-        }else{
-          if(block=='N'){
-            console.log('댓글')
-            url=`http://localhost:9999/block/comment?cmtid=${id}`
-        }else{
-            url=`http://localhost:9999/block/cancel/comment?cmtid=${id}`
-         }
+  const block = (id, block) => {
+    console.log(id);
+    console.log(block);
+    let url = '';
+    if (property == 'board') {
+      if (block == 'N') {
+        url = `${import.meta.env.REACT_APP_BACKEND_URL}/block/board?boardid=${id}`;
+      } else {
+        url = `${import.meta.env.REACT_APP_BACKEND_URL}/block/cancel/board?boardid=${id}`;
+      }
+    } else {
+      if (block == 'N') {
+        console.log('댓글');
+        url = `${import.meta.env.REACT_APP_BACKEND_URL}/block/comment?cmtid=${id}`;
+      } else {
+        url = `${import.meta.env.REACT_APP_BACKEND_URL}/block/cancel/comment?cmtid=${id}`;
+      }
+    }
+    axios.put(url)
+      .then(response => {
+        if (response.data.BLOCKOK !== null) {
+          updateBlockedStatus(id);
+        } else {
+          alert(response.data.BLOCKNOT);
         }
-     axios.put(url)
-     .then(response => { 
-         if(response.data.BLOCKOK !==null){
-            updateBlockedStatus(id);
-         }else{
-            alert(response.data.BLOCKNOT);
-         }
-     })
-     .catch(error => {
-       console.error('Error fetching report data:', error);
-     });
-  }
+      })
+      .catch(error => {
+        console.error('Error fetching report data:', error);
+      });
+  };
 
   const blockReason =(id,e)=>{
     
@@ -209,9 +208,9 @@ export default function ReportsTable({ data,property,searchValue}) {
     console.log(clientX)
     let url=''
     if(property=='board'){
-          url=`http://localhost:9999/block/reason/board?boardid=${id}`
+          url=`${import.meta.env.REACT_APP_BACKEND_URL}/block/reason/board?boardid=${id}`
        }else{
-          url=`http://localhost:9999/block/reason/comment?cmtid=${id}`
+          url=`${import.meta.env.REACT_APP_BACKEND_URL}/block/reason/comment?cmtid=${id}`
        }
     axios.get(url)
     .then(response => { 
@@ -231,9 +230,9 @@ export default function ReportsTable({ data,property,searchValue}) {
   console.log(id)
   let url=''
   if(property=='board'){
-         url=`http://localhost:9999/block/list?boardid=${id}`
+         url=`${import.meta.env.REACT_APP_BACKEND_URL}/block/list?boardid=${id}`
      }else{
-         url=`http://localhost:9999/block/list/comment?cmtid=${id}`
+         url=`${import.meta.env.REACT_APP_BACKEND_URL}/block/list/comment?cmtid=${id}`
      }
   axios.delete(url)
   .then(response => { 
@@ -264,10 +263,10 @@ export default function ReportsTable({ data,property,searchValue}) {
       <Table>
         <TableHead>
           <TableRow>
-            <StyledTableCell align="left">{property=='board'?'제목':'댓글내용'}</StyledTableCell>
+            <StyledTableCell align="left">{property == 'board' ? '제목' : '댓글내용'}</StyledTableCell>
             <StyledTableCell align="right">글쓴이</StyledTableCell>
-            {property=='board'? <StyledTableCell align="right">카테고리</StyledTableCell>:null}
-           
+            {property == 'board' ? <StyledTableCell align="right">카테고리'</StyledTableCell> : null}
+
             <StyledTableCell align="right">신고횟수</StyledTableCell>
             <StyledTableCell align="right">차단</StyledTableCell>
             <StyledTableCell align="right">신고내역삭제</StyledTableCell>
@@ -277,14 +276,14 @@ export default function ReportsTable({ data,property,searchValue}) {
           {reportData.map((reportDataItem,index) => (
             <TableRow key={index}>
               <StyledTableCell component="th" scope="row">
-              {reportDataItem.boardtitle !==null?reportDataItem.boardtitle:reportDataItem.boardContent !==null ? reportDataItem.boardContent :reportDataItem.cmtcontent}
+                {reportDataItem.boardtitle !== null ? reportDataItem.boardtitle : reportDataItem.boardContent !== null ? reportDataItem.boardContent : reportDataItem.cmtcontent}
               </StyledTableCell>
               <StyledTableCell align="right">{reportDataItem.usernick}</StyledTableCell>
               {property=='board'? <StyledTableCell align="right">{reportDataItem.boardcategory=='FOOD'?'음식 게시판': reportDataItem.boardcategory=='FEED'?'피드':'운동 게시판' }</StyledTableCell>:null}
              
               <StyledTableCell align="right"><Button style={{color:'grey'}} onClick={(e) => blockReason(reportDataItem.cmtid == null ? reportDataItem.boardid : reportDataItem.cmtid,e)} >{reportDataItem.count}</Button></StyledTableCell>
-              <StyledTableCell align="right">  <Button 
-                      style={{color:'grey'}} 
+              <StyledTableCell align="right">  <Button
+                      style={{color:'grey'}}
                       onClick={() => block(reportDataItem.cmtid == null ? reportDataItem.boardid : reportDataItem.cmtid,reportDataItem.blocked)}
                     >
                       {reportDataItem.blocked === 'N' ? '차단' : '차단취소'}
@@ -300,7 +299,7 @@ export default function ReportsTable({ data,property,searchValue}) {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TablePagination           
+            <TablePagination
               rowsPerPageOptions={[5]}
               count={reportData[0]?.totalPage || 0}
               rowsPerPage={rowsPerPage}

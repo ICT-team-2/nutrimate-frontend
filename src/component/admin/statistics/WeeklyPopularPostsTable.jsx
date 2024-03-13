@@ -51,7 +51,7 @@ function CustomizedTables() {
   const [board, setBoard] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:9999/statistic/list/best')
+    axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/statistic/list/best`)
       .then(response => setBoard(response.data))
       .catch(error => {
         console.error('Error fetching data:', error);

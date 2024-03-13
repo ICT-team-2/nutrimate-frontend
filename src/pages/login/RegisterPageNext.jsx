@@ -149,7 +149,7 @@ const RegisterPageNext = () => {
 
     try {
       // 서버에 POST 요청 보내기
-      const response = await axios.post('http://localhost:9999/member/join', postData);
+      const response = await axios.post(`${import.meta.env.REACT_APP_BACKEND_URL}/member/join`, postData);
 
       console.log('response:', response);
 

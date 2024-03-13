@@ -75,7 +75,7 @@ const InnerContainer = styled.div`
     padding: 20px;
 `;
 
-export default function ProfileAIPromptModal() {
+export default function ProfileAIPromptModal({ changeProfile, chatroom }) {
   const [open, setOpen] = useAtom(profilePromptModalAtom);
   const setOpenFirstModal = useSetAtom(profileModalAtom);
   const [prompt, setPrompt] = useState('');
@@ -83,7 +83,6 @@ export default function ProfileAIPromptModal() {
 
   const handleClose = () => setOpen(false);
   const createImageAI = useCreateImageAI();
-  const changeProfileImage = useChangeProfileImage();
 
   const onKeyDownEnter = (e) => {
     if (e.key === 'Enter') {
@@ -103,7 +102,7 @@ export default function ProfileAIPromptModal() {
 
 
   const onClickSaveImage = () => {
-    changeProfileImage.mutate(base64toFile(image, 'profile.png'));
+    changeProfile(base64toFile(image, 'profile.png'));
     setOpen(false);
     setOpenFirstModal(false);
   };
@@ -121,6 +120,13 @@ export default function ProfileAIPromptModal() {
         slotProps={{
           backdrop: {
             timeout: 500,
+          },
+          ...chatroom && {
+            backdrop: {
+              style: {
+                backgroundColor: 'rgba(0, 0, 0, 0.1)', // 여기서 투명도를 조절할 수 있습니다. 0.5는 예시 값입니다.
+              },
+            },
           },
         }}
       >

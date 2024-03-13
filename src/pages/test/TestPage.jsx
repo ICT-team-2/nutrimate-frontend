@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TestComp from '@src/pages/test/TestComp.jsx';
 import SurveyAllergy from '@src/component/survey/SurveyAllergy.jsx';
 import OcrModal from '@src/component/board/OcrModal.jsx';
+import TestStomp from '@src/pages/test/TestStomp.jsx';
 
 
 const PageContainer = styled.div`
@@ -14,7 +15,7 @@ const PageContainer = styled.div`
 
 const TestPage = () => {
   return (
-    <OcrModal />
+    <TestComp />
   );
 };
 

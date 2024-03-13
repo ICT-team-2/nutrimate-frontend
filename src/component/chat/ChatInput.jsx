@@ -31,15 +31,10 @@ const ChatInput = ({ onSend }) => {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !event.shiftKey) {
       handleSendClick();
-    }
-  };
-
-  const handleKeyUp = (event) => {
-    if (event.key === 'Enter') {
-      setMessage('');
       event.preventDefault();
+      event.stopPropagation();
     }
   };
 
@@ -52,7 +47,6 @@ const ChatInput = ({ onSend }) => {
         value={message}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        onKeyUp={handleKeyUp}
       />
       <StyledButton variant="contained" onClick={handleSendClick}>
         <SendIcon />

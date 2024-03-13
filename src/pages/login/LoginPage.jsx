@@ -15,7 +15,10 @@ import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom';
 import { Link } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
-
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken } from 'firebase/messaging';
+import firebaseConfigFile from '@src/component/calendar/fireConfig.js';
+import { useCookies } from 'react-cookie';
 
 const LoginContainer = styled(Container)`
     display: flex;
@@ -74,6 +77,8 @@ const LoginPage = () => {
   const [checked, setChecked] = useState(false);
   const [id, setId] = useState(localStorage.getItem('savedId') || '');
   const [password, setPassword] = useState('');
+  const [cookies, setCookie] = useCookies(['fcmtoken']);
+
   // const [userId, setUserId] = useAtom(userIdAtom);
 
 
@@ -99,15 +104,29 @@ const LoginPage = () => {
       userUid: id,
       userPwd: password,
     })
-      .then(response => {
+      .then(async response => {
         const { accessToken } = response.data;
-        window.location.href = '/';
+        const firebaseApp = initializeApp(firebaseConfigFile);
+
+        // const YOUR_PUBLIC_VAPID_KEY = `BNrVEpkMuonyjj2m5qjiOrBWesOqUxgDkCfCDBWN2jf_JlCnrTDdvdflYEue9wxQK4Abhno4kpuWlBKLWVqHgW0`;//.env에 지정이 안되서 일단 이렇게 처리
+
+        const messaging = getMessaging();
+        getToken(messaging, { vapidKey: import.meta.env.REACT_APP_FIREBASE_TOKEN }).then((token) => {
+          setCookie('fcmtoken', token);
+          console.log('fcmToken:', token);
+          console.log('fcmToken!:', cookies.fcmtoken);
+          window.location.href = '/';
+        });
+      })
+      .catch(error => {
+        // 오류 처리
+        console.error('에러 발생:', error);
       });
   };
 
 
   const handleSocialLogin = (provider) => {
-    window.location.href = `http://localhost:9999/oauth2/authorization/${provider}`;
+    window.location.href = `${import.meta.env.REACT_APP_BACKEND_URL}/oauth2/authorization/${provider}`;
   };
 
 
@@ -169,13 +188,13 @@ const LoginPage = () => {
         </LoginBody>
         <Divider>간편 로그인</Divider>
         <OAuthContainer>
-        <OAuthButton onClick={
-          () => {
-            handleSocialLogin('google');
-            setSignupStatus('google');
-          }}>
-          <img src="/src/asset/image/oauth/GoogleLogin.png" alt="구글 로그인" />
-        </OAuthButton>
+          <OAuthButton onClick={
+            () => {
+              handleSocialLogin('google');
+              setSignupStatus('google');
+            }}>
+            <img src="/src/asset/image/oauth/GoogleLogin.png" alt="구글 로그인" />
+          </OAuthButton>
           <OAuthButton onClick={() => {
             handleSocialLogin('facebook');
             setSignupStatus('facebook');

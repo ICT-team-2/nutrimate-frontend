@@ -38,10 +38,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 //정보 공유 게시판 글 목록 테이블
 export default function InfoBoardTable({ data }) {
 
-  useEffect(() => {
-    console.log('data', data);
-  }, [data]);
-
   if (data?.length === 0) {
     return <div>등록된 글이 없습니다.</div>;
   }
