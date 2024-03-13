@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import isBetweenPlugin from 'dayjs/plugin/isBetween';
 import { styled } from '@mui/material/styles';
@@ -6,13 +6,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
-import WeekToolbar from '@src/component/calendar/CalendarWeeKToolbar.jsx'; 
+import WeekToolbar from '@src/component/calendar/CalendarWeeKToolbar.jsx';
 import style from 'styled-components';
 
 dayjs.extend(isBetweenPlugin);
 
 const AnimatedContainer = style.div`
-  max-height: ${({ isopen}) => (isopen=='true' ? '500px' : '0')};
+  max-height: ${({ isopen }) => (isopen == 'true' ? '500px' : '0')};
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
 `;
@@ -53,7 +53,6 @@ const isInSameWeek = (dayA, dayB) => {
 };
 
 
-
 function Day(props) {
   const { day, selectedDay, hoveredDay, ...other } = props;
 
@@ -71,11 +70,11 @@ function Day(props) {
 }
 
 // eslint-disable-next-line
-export default function WeekPicker({onChangeWeek}) {
+export default function WeekPicker({ onChangeWeek }) {
 
-    
-  const [hoveredDay, setHoveredDay] = React.useState(null);
-  const [value, setValue] = React.useState(dayjs(new Date()));
+
+  const [hoveredDay, setHoveredDay] = useState(null);
+  const [value, setValue] = useState(dayjs(new Date()));
 
   const startOfWeek = value.startOf('week');
   const endOfWeek = value.endOf('week');
@@ -83,40 +82,39 @@ export default function WeekPicker({onChangeWeek}) {
 
   const toggleCalendar = () => {
     setIsOpen(!isOpen);
-    
+
   };
   useEffect(() => {
-     onChangeWeek(value.startOf('week'), value.endOf('week'));
-   }, []);
-
+    onChangeWeek(value.startOf('week'), value.endOf('week'));
+  }, []);
 
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} >
-    <div onClick={toggleCalendar} style={{ borderBottom:'2px solid #e5e5e5' }}>
-    <WeekToolbar startOfWeek={startOfWeek} endOfWeek={endOfWeek} isOpen={isOpen}/>
-    </div>
-     <AnimatedContainer isopen={isOpen.toString()}>
-     <div style={{ backgroundColor: '#f8fbfa', border:'2px solid #e5e5e5' }}>
-      <DateCalendar
-        value={value}
-        onChange={(newValue) => {
-            setValue(newValue);
-            onChangeWeek(newValue.startOf('week'), newValue.endOf('week'));
-        }}
-        showDaysOutsideCurrentMonth
-        displayWeekNumber
-        slots={{ day: Day }}
-        slotProps={{
-          day: (ownerState) => ({
-            selectedDay: value,
-            hoveredDay,
-            onPointerEnter: () => setHoveredDay(ownerState.day),
-            onPointerLeave: () => setHoveredDay(null),
-          }),
-        }}
-      />
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <div onClick={toggleCalendar} style={{ borderBottom: '2px solid #e5e5e5' }}>
+        <WeekToolbar startOfWeek={startOfWeek} endOfWeek={endOfWeek} isOpen={isOpen} />
       </div>
+      <AnimatedContainer isopen={isOpen.toString()}>
+        <div style={{ backgroundColor: '#f8fbfa', border: '2px solid #e5e5e5' }}>
+          <DateCalendar
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+              onChangeWeek(newValue.startOf('week'), newValue.endOf('week'));
+            }}
+            showDaysOutsideCurrentMonth
+            displayWeekNumber
+            slots={{ day: Day }}
+            slotProps={{
+              day: (ownerState) => ({
+                selectedDay: value,
+                hoveredDay,
+                onPointerEnter: () => setHoveredDay(ownerState.day),
+                onPointerLeave: () => setHoveredDay(null),
+              }),
+            }}
+          />
+        </div>
       </AnimatedContainer>
     </LocalizationProvider>
   );

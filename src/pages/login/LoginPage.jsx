@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken } from 'firebase/messaging';
-import  firebaseConfigFile from '@src/component/calendar/fireConfig.js';
+import firebaseConfigFile from '@src/component/calendar/fireConfig.js';
 import { useCookies } from 'react-cookie';
 
 const LoginContainer = styled(Container)`
@@ -100,30 +100,28 @@ const LoginPage = () => {
     console.log('ddd');
 
 
-          axios.post('/login', {
-            userUid: id,
-            userPwd: password,
-        })
-        .then(async response => {
-          const { accessToken } = response.data;
-          const firebaseApp = initializeApp(firebaseConfigFile);
-        
-          const YOUR_PUBLIC_VAPID_KEY=`BNrVEpkMuonyjj2m5qjiOrBWesOqUxgDkCfCDBWN2jf_JlCnrTDdvdflYEue9wxQK4Abhno4kpuWlBKLWVqHgW0`;//.env에 지정이 안되서 일단 이렇게 처리
-          const messaging = getMessaging();
-          getToken(messaging,{vapidKey: YOUR_PUBLIC_VAPID_KEY}).then((token) => {
-            setCookie('fcmtoken', token)
-            console.log("fcmToken:", token);
-            console.log("fcmToken!:", cookies.fcmtoken);
-            window.location.href = '/';
-          });
-              
-              
-          })
-      
-        .catch(error => {
-            // 오류 처리
-            console.error("에러 발생:", error);
+    axios.post('/login', {
+      userUid: id,
+      userPwd: password,
+    })
+      .then(async response => {
+        const { accessToken } = response.data;
+        const firebaseApp = initializeApp(firebaseConfigFile);
+
+        // const YOUR_PUBLIC_VAPID_KEY = `BNrVEpkMuonyjj2m5qjiOrBWesOqUxgDkCfCDBWN2jf_JlCnrTDdvdflYEue9wxQK4Abhno4kpuWlBKLWVqHgW0`;//.env에 지정이 안되서 일단 이렇게 처리
+
+        const messaging = getMessaging();
+        getToken(messaging, { vapidKey: import.meta.env.REACT_APP_FIREBASE_TOKEN }).then((token) => {
+          setCookie('fcmtoken', token);
+          console.log('fcmToken:', token);
+          console.log('fcmToken!:', cookies.fcmtoken);
+          window.location.href = '/';
         });
+      })
+      .catch(error => {
+        // 오류 처리
+        console.error('에러 발생:', error);
+      });
   };
   //axios.defaults.headers.common['ACCESS'] = `${accessToken}`;
 
@@ -150,7 +148,7 @@ const LoginPage = () => {
 
 
   const handleSocialLogin = (provider) => {
-    window.location.href = `http://localhost:9999/oauth2/authorization/${provider}`;
+    window.location.href = `${import.meta.env.REACT_APP_BACKEND_URL}/oauth2/authorization/${provider}`;
   };
 
 
