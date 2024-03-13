@@ -1,15 +1,17 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
+import { addCommentFB } from '@src/component/notice/NotiBadge.jsx';
 
 const useRegisterFollow = (followeeId) => {
   const userId = parseInt(sessionStorage.getItem('userId'));
   const queryClient = useQueryClient();
   const registerFollow = async () => {
-    await axios.post('/follow/follow', {
+    const response = await axios.post('/follow/follow', {
       followeeId: followeeId,
       followerId: userId,
     });
+    return response.data;
   };
 
   return useMutation({
@@ -19,8 +21,9 @@ const useRegisterFollow = (followeeId) => {
       followeeId,
     ],
     mutationFn: registerFollow,
-    onSuccess: () => {
-      console.log('팔로우 성공');
+    onSuccess: (data) => {
+      console.log(data);
+      addCommentFB(data.recordId,data,userId+'가 팔로우 했습니다.');
     },
     onError: (error) => {
       console.error(error);

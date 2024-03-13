@@ -5,7 +5,6 @@ import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 const useDeleteFollow = (followeeId) => {
 
   const userId = parseInt(sessionStorage.getItem('userId'));
-
   //axios
   const deleteFollow = async () => {
     await axios.delete('/follow/unfollow', {
