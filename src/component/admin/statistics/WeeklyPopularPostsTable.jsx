@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import StatisticsCard from '@src/component/admin/statistics/StatisticsCard.jsx';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -43,17 +43,21 @@ const rows = [
   createData('Gingerbread', 356, 16.0),
 ];
 
+const StyledTableCategoryCell = styled(StyledTableCell)`
+    min-width: 100px;
+`;
+
 function CustomizedTables() {
-  const [board,setBoard] =useState([]);
+  const [board, setBoard] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     axios.get('http://localhost:9999/statistic/list/best')
-    .then(response=>setBoard(response.data))
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
+      .then(response => setBoard(response.data))
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
 
-  },[])
+  }, []);
 
   return (
     <TableContainer component={Paper} sx={{ height: 'fit-content' }}>
@@ -61,22 +65,22 @@ function CustomizedTables() {
         <TableHead>
           <TableRow>
             <StyledTableCell align="left">순위</StyledTableCell>
-            <StyledTableCell >닉네임</StyledTableCell>
+            <StyledTableCell>닉네임</StyledTableCell>
             <StyledTableCell>제목</StyledTableCell>
-            <StyledTableCell align="right">카테고리</StyledTableCell>
+            <StyledTableCategoryCell align="right">카테고리</StyledTableCategoryCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {board.map((row,index) => (
-                <StyledTableRow key={row.boardId}>
-                <StyledTableCell component="th" scope="row">
-                    {index+1} 
-                </StyledTableCell>
-                <StyledTableCell>{row.usernick}</StyledTableCell>
-                <StyledTableCell>{row.boardtitle === null ? row.boardContent : row.boardtitle}</StyledTableCell>
-                <StyledTableCell align="right">
-                    {row.boardcategory === 'FEED' ? '피드' : row.boardcategory === 'exercise' ? '운동 게시판' : '음식 게시판'}
-                </StyledTableCell>
+          {board.map((row, index) => (
+            <StyledTableRow key={row.boardId}>
+              <StyledTableCell component="th" scope="row">
+                {index + 1}
+              </StyledTableCell>
+              <StyledTableCell>{row.usernick}</StyledTableCell>
+              <StyledTableCell>{row.boardtitle === null ? row.boardContent : row.boardtitle}</StyledTableCell>
+              <StyledTableCategoryCell align="right">
+                {row.boardcategory === 'FEED' ? '피드' : row.boardcategory === 'exercise' ? '운동 게시판' : '음식 게시판'}
+              </StyledTableCategoryCell>
             </StyledTableRow>
           ))}
         </TableBody>
