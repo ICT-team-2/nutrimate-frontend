@@ -8,16 +8,16 @@ import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
 import AskDeleteDialog from '@src/component/board/AskDeleteDialog.jsx';
 import useDeleteBoard from '@src/hooks/board/common/useDeleteBoard.jsx';
-import ReportModal from '@src/component/admin/manage/ReportModal.jsx';
 
 
-const FeedDropMenu = ({ boardId }) => {
+
+const FeedDropMenu = ({ boardId,setShowReportModal}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
   const deleteBoard = useDeleteBoard();
-  const [showReportModal, setShowReportModal] = useState(false);
+  console.log(boardId)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -62,7 +62,7 @@ const FeedDropMenu = ({ boardId }) => {
       <AskDeleteDialog
         onClickDelete={() => deleteBoard.mutate(boardId)}
         open={dialogOpen} setOpen={setDialogOpen} />
-        {showReportModal && <ReportModal setShowReportModal={setShowReportModal}  showReportModal={showReportModal}  boardId={boardId} searchKeyWord={'BOARD'}/>}
+        
     </>
   );
 };

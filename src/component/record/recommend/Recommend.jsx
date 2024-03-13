@@ -29,7 +29,7 @@ const Recommend = () => {
 
   useEffect(() => { // 가격별
     if (price !== null) {
-      fetch(`http://localhost:2222/price?price=${price}`)
+      fetch(`${import.meta.env.REACT_APP_FLASK_URL}/price?price=${price}`)
         .then((response) => response.json())
         .then((data) => setDiets(data));
     }
@@ -47,7 +47,7 @@ const Recommend = () => {
           setUserAllergy(userAllergy);
         });
 
-      fetch(`http://localhost:2222/allergy?userId=${userId}`, {
+      fetch(`${import.meta.env.REACT_APP_FLASK_URL}/allergy?userId=${userId}`, {
         credentials: 'include',
       })
         .then((response) => {

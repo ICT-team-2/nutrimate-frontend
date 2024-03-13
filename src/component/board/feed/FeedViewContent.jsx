@@ -97,7 +97,7 @@ function FeedViewContent(props) {
               </UserAvatar>
             }
             action={
-              (writerId === userId) && <FeedDropMenu boardId={boardId} />
+              (writerId === userId) && <FeedDropMenu boardId={boardId}/>
             }
             title={writer}
           />

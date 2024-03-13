@@ -43,6 +43,10 @@ const rows = [
   createData('Gingerbread', 356, 16.0),
 ];
 
+const StyledTableCategoryCell = styled(StyledTableCell)`
+    min-width: 100px;
+`;
+
 function CustomizedTables() {
   const [board, setBoard] = useState([]);
 
@@ -63,7 +67,7 @@ function CustomizedTables() {
             <StyledTableCell align="left">순위</StyledTableCell>
             <StyledTableCell>닉네임</StyledTableCell>
             <StyledTableCell>제목</StyledTableCell>
-            <StyledTableCell align="right">카테고리</StyledTableCell>
+            <StyledTableCategoryCell align="right">카테고리</StyledTableCategoryCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -74,9 +78,9 @@ function CustomizedTables() {
               </StyledTableCell>
               <StyledTableCell>{row.usernick}</StyledTableCell>
               <StyledTableCell>{row.boardtitle === null ? row.boardContent : row.boardtitle}</StyledTableCell>
-              <StyledTableCell align="right">
+              <StyledTableCategoryCell align="right">
                 {row.boardcategory === 'FEED' ? '피드' : row.boardcategory === 'exercise' ? '운동 게시판' : '음식 게시판'}
-              </StyledTableCell>
+              </StyledTableCategoryCell>
             </StyledTableRow>
           ))}
         </TableBody>

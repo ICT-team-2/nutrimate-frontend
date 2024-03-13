@@ -119,8 +119,8 @@ const ReportModal = ({ setShowReportModal, boardId, cmtId, searchKeyWord, showRe
 
 
   return (
-    <ModalBg>
-      <ModalBox onClick={handleModalClick}>
+    <ModalBg onClick={handleModalClick}> 
+      <ModalBox >
         <>
           <h2>신고하기</h2>
           <ModalCloseBtn onClick={closeModal}>✖</ModalCloseBtn>
