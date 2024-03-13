@@ -3,7 +3,7 @@ import DMChatUI from '@src/component/chat/dm/DMChatUI.jsx';
 import { Container } from '@mui/material';
 import DMChatComponent from '@src/component/chat/dm/DMChatComponent.jsx';
 import styled from 'styled-components';
-import DMChatRoomListComponent from '@src/component/chat/dm/DMChatRoomListComponent.jsx';
+import DMChatroomListComponent from '@src/component/chat/dm/room/DMChatroomListComponent.jsx';
 
 const PageContainer = styled(Container)`
     max-width: 960px;
@@ -14,8 +14,9 @@ const PageContainer = styled(Container)`
 const DMChatPage = () => {
   return (
     <PageContainer>
-      <DMChatRoomListComponent />
-      <DMChatComponent height="calc(85vh - 200px)" overflow />
+      <DMChatroomListComponent />
+      <DMChatComponent
+        height="calc(85vh - 200px)" overflow />
     </PageContainer>
   );
 };

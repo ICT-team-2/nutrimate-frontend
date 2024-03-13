@@ -1,20 +1,22 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
+import { useAtom } from 'jotai/react';
+import { userIdAtom } from '@src/pages/login/atom.js';
 
 const useFetchChatroomList = () => {
+
+
   //axios
   const fetchChatroomList = async () => {
-    try {
-      const response = await axios.get('/dm/room/list', {
-        params: {
-          userId: parseInt(sessionStorage.getItem('userId')),
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
+
+    const response = await axios.get('/dm/room/list', {
+      params: {
+        userId: sessionStorage.getItem('userId'),
+      },
+    });
+
+    return response.data;
   };
 
   //react-query

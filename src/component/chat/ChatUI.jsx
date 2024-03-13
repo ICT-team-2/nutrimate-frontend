@@ -134,11 +134,9 @@ const ChatUI = (props) => {
       'challengeNick': '유저',
       'messageType': 'CHAT',
     }]);
-    console.log(voicedata.length);
     setLoadingVoice(true);
     axios.post('http://localhost:2222/chatbot', { 'content': message })
       .then(response => {
-        console.log(response.data);
         const botChatData = { 'chatMessage': response.data.messages, 'challengeNick': '챗봇', 'messageType': 'CHAT' };
         setVoicedata(prevVoicedata => [...prevVoicedata, botChatData]);
         setLoadingVoice(false);
@@ -152,7 +150,6 @@ const ChatUI = (props) => {
 
   useEffect(() => {
     console.log(voiceReading);
-
     if (voiceReading) {
       if (!('webkitSpeechRecognition' in window)) {
         setTranscript('당신의 브라우저는 STT를 지원하지 않습니다.');

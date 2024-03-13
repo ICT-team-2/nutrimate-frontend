@@ -1,17 +1,31 @@
 import { useEffect, useRef, useState } from 'react';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
+import { useAtom } from 'jotai/react';
+import { openedChatroomAtom } from '@src/component/chat/dm/atom.js';
 //url = `http://localhost:9999/dm`
 /**
  * Stomp
- * @param props {object}
- * @param props.url {string} - 연결할 서버 URL
- * @param props.afterConnect {function} - 연결 후 실행할 함수
+ * @param options {object}
+ * @param options.url {string} - 연결할 서버 URL
+ * @param options.onInsert {function} - 메시지 추가 시 실행할 함수
+ * @param options.onDelete {function} - 메시지 삭제 시 실행할 함수
+ * @param options.afterConnect {function} - 연결 후 실행할 함수
  */
-const useConnectStomp = (props) => {
-  const { url, afterConnect, chatroomId } = props;
+const useConnectStomp = (options) => {
+  const {
+    url,
+    afterConnect,
+    onInsert = () => {
+    },
+    onDelete = () => {
+    },
+  } = options;
   const client = new useRef(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [openedChatroom, setOpenedChatroom] = useAtom(openedChatroomAtom);
+  const [insertSubscription, setInsertSubscription] = useState(undefined);
+  const [deleteSubscription, setDeleteSubscription] = useState(undefined);
 
   useEffect(() => {
     // SockJS와 Stomp 클라이언트 설정
@@ -38,17 +52,31 @@ const useConnectStomp = (props) => {
     // 컴포넌트 언마운트 시 연결 종료
     return () => {
       client.current.deactivate();
+      setIsConnected(false);
     };
   }, []);
 
   useEffect(() => {
-    if (isConnected && chatroomId !== undefined) {
-      client.current.subscribe(`/sub/topic/dm/${chatroomId}`, onMessageReceived);
+    if (!isConnected || openedChatroom.chatroomId === undefined) return;
+    if (insertSubscription) {
+      insertSubscription.unsubscribe();
     }
-  }, [chatroomId]);
+    if (deleteSubscription) {
+      deleteSubscription.unsubscribe();
+    }
+    setInsertSubscription(client.current.subscribe(
+      `/sub/topic/dm/${openedChatroom.chatroomId}`
+      , onInsertMessageReceived));
+    setDeleteSubscription(client.current.subscribe(
+      `/sub/topic/dm/delete/${openedChatroom.chatroomId}`
+      , onDeletedMessageReceived));
+  }, [openedChatroom.chatroomId, isConnected]);
 
-  const onMessageReceived = (message) => {
-    console.log('Received message:', message.body);
+  const onInsertMessageReceived = (message) => {
+    onInsert(JSON.parse(message.body));
+  };
+  const onDeletedMessageReceived = (message) => {
+    onDelete(JSON.parse(message.body));
   };
 
   // 메시지 전송 함수 추가

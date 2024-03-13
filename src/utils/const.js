@@ -270,6 +270,7 @@ export const REACT_QUERY_KEYS = {
   PRIVATE: 'private',
   GROUP: 'group',
   ROOMNAME: 'roomname',
+  LEAVE: 'leave',
 };
 
 export const FACE_EMOTION_RESULT = {

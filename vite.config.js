@@ -5,6 +5,7 @@ import envCompatible from 'vite-plugin-env-compatible';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
   envPrefix: 'REACT_APP_',
   plugins: [react(), envCompatible()],
   resolve: {
@@ -17,6 +18,10 @@ export default defineConfig({
   server: {
     port: 5555,
     open: true,
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'asset',
   },
 });
 

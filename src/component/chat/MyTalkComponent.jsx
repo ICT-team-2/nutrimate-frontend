@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import Typography from '@mui/material/Typography';
-import { Paper } from '@mui/material';
+import { Menu, MenuItem, Paper } from '@mui/material';
+import Box from '@mui/material/Box';
 
 const AlignLeftContainer = styled.div`
     display: flex;
@@ -36,6 +37,15 @@ const TalkContentBody = styled(Paper)`
 const StyledTypography = styled(Typography)`
     text-align: right;
 `;
+const MenuBox = styled(Box)`
+    cursor: pointer;
+    padding: 5px 20px;
+
+    &:hover {
+        background-color: ${({ theme }) => theme['chat-bg']};
+    }
+`;
+
 /**
  *
  * @param props
@@ -45,25 +55,67 @@ const StyledTypography = styled(Typography)`
  * @constructor
  */
 const MyTalkComponent = (props) => {
-  const { nick, content, date } = props;
+  const { nick, content, date, src, onDelete } = props;
+
+  const [menuAnchorPosition, setMenuAnchorPosition] = useState(null);
+  const open = Boolean(menuAnchorPosition);
+
+  const handleClick = (event) => {
+    setMenuAnchorPosition({
+      top: event.clientY,
+      left: event.clientX,
+    });
+  };
+
+  const handleClose = (e) => {
+    setMenuAnchorPosition(null);
+    e.stopPropagation();
+  };
+
   return (
-    <AlignLeftContainer>
-      <MyTalkContainer>
-        <TalkContentContainer>
-          <StyledTypography variant="caption" fontWeight="bold">{nick}</StyledTypography>
-          <TalkContentBody>
-            {content}
-          </TalkContentBody>
-        </TalkContentContainer>
-        <StyledUserAvatar />
-      </MyTalkContainer>
-    </AlignLeftContainer>
+    <>
+      <AlignLeftContainer
+      >
+        <MyTalkContainer>
+          <TalkContentContainer
+            onContextMenu={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleClick(e);
+            }}
+          >
+            <StyledTypography variant="caption" fontWeight="bold">{nick}</StyledTypography>
+            <TalkContentBody>
+              {content}
+            </TalkContentBody>
+          </TalkContentContainer>
+          <StyledUserAvatar userNick={nick} src={src} />
+        </MyTalkContainer>
+      </AlignLeftContainer>
+      <Menu
+        anchorReference="anchorPosition"
+        anchorPosition={menuAnchorPosition}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuBox
+          selected={false}
+          onClick={(e) => {
+            onDelete();
+            handleClose(e);
+          }}>
+          메세지 삭제
+        </MenuBox>
+      </Menu>
+    </>
   );
 };
 MyTalkComponent.defaultProps = {
   nick: '닉네임1',
   content: '내용1',
   date: '2021-10-01',
+  onDelete: () => {
+  },
 };
 
 export default MyTalkComponent;

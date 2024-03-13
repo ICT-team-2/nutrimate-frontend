@@ -1,8 +1,11 @@
 import axios from 'axios';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useCreateGroupChatroom = () => {
+
+  const queryClient = useQueryClient();
+  
   //axios
   const createGroupChatRoom = async (userIds) => {
     try {
@@ -24,6 +27,12 @@ const useCreateGroupChatroom = () => {
       REACT_QUERY_KEYS.INSERT],
     onSuccess: () => {
       console.log('createGroupChatRoom onSuccess');
+      queryClient.invalidateQueries({
+        predicate: query => {
+          return query.queryKey.includes(REACT_QUERY_KEYS.DM) &&
+            query.queryKey.includes(REACT_QUERY_KEYS.CHATROOM);
+        },
+      });
     },
     onError: () => {
       console.log('createGroupChatRoom onError');

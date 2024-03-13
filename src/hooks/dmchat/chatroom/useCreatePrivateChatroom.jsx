@@ -1,8 +1,11 @@
 import axios from 'axios';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 
 const useCreatePrivateChatroom = () => {
+
+  const queryClient = useQueryClient();
+
   //axios
   const createPrivateDmRoom = async (opponentId) => {
     try {
@@ -25,6 +28,12 @@ const useCreatePrivateChatroom = () => {
       REACT_QUERY_KEYS.INSERT],
     onSuccess: () => {
       console.log('createPrivateDmRoom onSuccess');
+      queryClient.invalidateQueries({
+        predicate: query => {
+          return query.queryKey.includes(REACT_QUERY_KEYS.DM) &&
+            query.queryKey.includes(REACT_QUERY_KEYS.CHATROOM);
+        },
+      });
     },
     onError: () => {
       console.log('createPrivateDmRoom onError');

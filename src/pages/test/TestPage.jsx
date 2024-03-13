@@ -15,7 +15,7 @@ const PageContainer = styled.div`
 
 const TestPage = () => {
   return (
-    <TestStomp />
+    <TestComp />
   );
 };
 

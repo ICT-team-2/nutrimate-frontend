@@ -32,11 +32,11 @@ const TalkContentBody = styled(Paper)`
  * @constructor
  */
 const OtherTalkComponent = (props) => {
-  const { nick, content, date } = props;
+  const { nick, content, date, src } = props;
 
   return (
     <OtherTalkContainer>
-      <StyledUserAvatar />
+      <StyledUserAvatar userNick={nick} src={src} />
       <TalkContentContainer>
         <Typography variant="caption" fontWeight="bold">{nick}</Typography>
         <TalkContentBody>
