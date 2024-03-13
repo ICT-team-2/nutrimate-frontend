@@ -13,7 +13,7 @@ import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import axios from 'axios';
 import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken } from 'firebase/messaging';
@@ -78,6 +78,7 @@ const LoginPage = () => {
   const [id, setId] = useState(localStorage.getItem('savedId') || '');
   const [password, setPassword] = useState('');
   const [cookies, setCookie] = useCookies(['fcmtoken']);
+  const navigate = useNavigate();
 
   // const [userId, setUserId] = useAtom(userIdAtom);
 
@@ -115,12 +116,13 @@ const LoginPage = () => {
           setCookie('fcmtoken', token);
           console.log('fcmToken:', token);
           console.log('fcmToken!:', cookies.fcmtoken);
-          window.location.href = '/';
         });
+        navigate('/');
       })
       .catch(error => {
         // 오류 처리
         console.error('에러 발생:', error);
+        navigate('/');
       });
   };
 
