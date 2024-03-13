@@ -108,7 +108,7 @@ const InfoCommentComponent = (props) => {
           <UserAvatar
             userNick={data.userNick}
             alt={data.userNick}
-            src={import.meta.env.REACT_APP_BACKEND_URL + data.userProfile} />
+            src={data.userProfile && (import.meta.env.REACT_APP_BACKEND_URL + data.userProfile)} />
         </ListItemAvatar>
         <StyledListItemText
           cursor={isWriter ? 'pointer' : 'default'}
@@ -160,7 +160,9 @@ const InfoCommentComponent = (props) => {
           onClick={handleReport}
         >신고</Button>}
       </ListItem>
-      {showReportModal && <ReportModal setShowReportModal={setShowReportModal}  showReportModal={showReportModal} cmtId={cmtId} boardId={boardId} searchKeyWord={'CMT'}/>}
+      {showReportModal &&
+        <ReportModal setShowReportModal={setShowReportModal} showReportModal={showReportModal} cmtId={cmtId}
+                     boardId={boardId} searchKeyWord={'CMT'} />}
     </CommentContainer>
   );
 };

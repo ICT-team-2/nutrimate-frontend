@@ -22,7 +22,7 @@ export default function SimpleSnackbar() {
   const action = (
     <>
       <Button color="secondary" size="small" onClick={handleClose}>
-        UNDO
+        undo
       </Button>
       <IconButton
         size="small"

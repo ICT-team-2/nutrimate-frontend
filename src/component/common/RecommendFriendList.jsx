@@ -105,7 +105,7 @@ const RecommendFriendList = ({ datas = exampleDatas }) => {
       <AvatarContainer>
         <UserAvatar
           userNick={userData?.userNick}
-          src={import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
+          src={userData?.userProfile && import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
         <UserNameContainer>{userData?.userNick}</UserNameContainer>
       </AvatarContainer>
       <StyledPaper>
@@ -121,7 +121,7 @@ const RecommendFriendList = ({ datas = exampleDatas }) => {
               <ListItemAvatar>
                 <UserAvatar
                   userNick={data.userNick}
-                  src={import.meta.env.REACT_APP_BACKEND_URL + data.userProfile} />
+                  src={data.userProfile && import.meta.env.REACT_APP_BACKEND_URL + data.userProfile} />
               </ListItemAvatar>
               <StyledListItemText primary={<FollowNickContainer>{data.userNick}</FollowNickContainer>} />
               <FollowButton

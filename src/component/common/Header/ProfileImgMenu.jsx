@@ -41,7 +41,7 @@ const ProfileImgMenu = () => {
       <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
         <UserAvatar
           userNick={data?.userNick}
-          src={import.meta.env.REACT_APP_BACKEND_URL + data?.userProfile} />
+          src={data?.userProfile && import.meta.env.REACT_APP_BACKEND_URL + data?.userProfile} />
       </IconButton>
 
 

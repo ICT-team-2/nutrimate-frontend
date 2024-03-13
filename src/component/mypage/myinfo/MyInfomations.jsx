@@ -83,7 +83,8 @@ const MyInfomations = () => {
         <UserAvatar
           userNick={userData?.userNick}
           size={130} variant="rounded"
-          src={import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
+          src={userData?.userProfile &&
+            import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
       }
       <StyledContainerDiv>
         <NicknNameH3>

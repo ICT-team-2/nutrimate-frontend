@@ -128,7 +128,7 @@ const InfoBoardViewPage = (props) => {
       {category === BOARD.INFO.FOOD.CATEGORY &&
         <FoodImageContainer>
           <FoodImage
-            src={import.meta.env.REACT_APP_BACKEND_URL + data?.fbImg}
+            src={data?.fbImg && (import.meta.env.REACT_APP_BACKEND_URL + data?.fbImg)}
             onError={(event) => {
               event.target.src = NO_IMAGE_PATH;
             }} />

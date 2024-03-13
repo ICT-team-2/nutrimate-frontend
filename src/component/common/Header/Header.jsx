@@ -91,7 +91,7 @@ const Header = (props) => {
           <StyledButton
             onClick={gotoRecord}
             logowhite={logoWhite + ''}
-          >RECORD</StyledButton>
+          >Record</StyledButton>
           <StyledButton
             onClick={gotoBoard}
             logowhite={logoWhite + ''}
@@ -103,7 +103,7 @@ const Header = (props) => {
           {userData?.userRole === 'ROLE_ADMIN' && <StyledButton
             onClick={gotoAdmin}
             logowhite={logoWhite + ''}
-          >ADMIN</StyledButton>}
+          >Admin</StyledButton>}
           {!!userId ? (
             <ProfileImgMenu />
           ) : (

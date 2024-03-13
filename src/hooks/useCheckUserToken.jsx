@@ -11,7 +11,6 @@ const useCheckUserToken = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('cookie', document.cookie);
     if (!cookies.ACCESS) {
       setUserId(undefined);
       sessionStorage.removeItem('userId');

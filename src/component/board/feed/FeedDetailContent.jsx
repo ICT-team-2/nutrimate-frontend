@@ -57,7 +57,7 @@ const FeedDetailContent = ({ data, open, setOpen }) => {
           <FlexGrowDiv>
             <ImgContainer>
               <StyledImg
-                src={import.meta.env.REACT_APP_BACKEND_URL + boardThumbnail}
+                src={boardThumbnail && (import.meta.env.REACT_APP_BACKEND_URL + boardThumbnail)}
                 alt="feed image"
                 onError={(e) => {
                   e.target.src = NO_IMAGE_PATH;

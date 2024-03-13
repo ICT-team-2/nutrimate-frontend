@@ -30,6 +30,7 @@ const useFetchProfileData = (profileUserId = undefined) => {
       parseInt(profileUserId)],
     queryFn: fetchMyData,
     staleTime: 1000 * 60 * 5,//5분
+    enabled: !!profileUserId,
   });
 };
 

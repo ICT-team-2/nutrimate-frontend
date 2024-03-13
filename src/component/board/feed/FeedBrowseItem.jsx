@@ -57,7 +57,7 @@ const FeedBrowseItem = (props) => {
         onClick={clickModalOpen}
       >
         <img
-          src={import.meta.env.REACT_APP_BACKEND_URL + item.boardThumbnail}
+          src={item.boardThumbnail && (import.meta.env.REACT_APP_BACKEND_URL + item.boardThumbnail)}
           alt={item.title}
           loading="lazy"
           onError={(e) => {
