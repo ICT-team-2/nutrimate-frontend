@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   Button,
@@ -9,7 +9,7 @@ import {
   RadioGroup,
   Radio,
   FormControl,
-  FormLabel
+  FormLabel,
 } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
@@ -22,7 +22,6 @@ import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const';
 import axios from 'axios';
 import { data } from '@tensorflow/tfjs';
-
 
 
 const LoginContainer = styled(Container)`
@@ -45,7 +44,7 @@ const LoginPaper = styled(Paper)`
     width: 40%;
     height: 90vh; // add this line
     overflow-y: auto; // add this line
-    // background-color: ${({ theme }) => theme['main-background']};
+        // background-color: ${({ theme }) => theme['main-background']};
     // margin: auto;
     margin-bottom: 0px;
 `;
@@ -71,29 +70,29 @@ const AdditionalContainer = styled.div`
 `;
 
 const StyledFormControl = styled(FormControl)`
-  margin-top:30px;
-  margin-bottom: 10px;
+    margin-top: 30px;
+    margin-bottom: 10px;
 `;
 
 const StyledRadioGroup = styled(RadioGroup)`
-  flex-direction: row;
+    flex-direction: row;
 `;
 
 const StyledFormControlLabel = styled(FormControlLabel)`
-  margin-right: 40px;
+    margin-right: 40px;
 `;
 
 const StyledButton = styled(Button)`
-  margin-top: 10px;
-  width: 100%;
+    margin-top: 10px;
+    width: 100%;
 `;
 
 const StyledButtonSmall = styled(Button)`
-  height: 40px;
-  width: 60px;
-  margin-bottom: 18px;
-  margin-top: 8px;
-  margin-left: 40px;
+    height: 40px;
+    width: 60px;
+    margin-bottom: 18px;
+    margin-top: 8px;
+    margin-left: 40px;
 `;
 
 
@@ -109,7 +108,7 @@ const OAuthButton = styled.div`
 
 
 const RegisterPage = () => {
-  
+
   const savedUserData = JSON.parse(sessionStorage.getItem('userData')) || {};
   // useState 훅을 사용하여 상태 변수 정의 및 초기값 설정
   const [id, setId] = useState(savedUserData.id || '');
@@ -125,11 +124,12 @@ const RegisterPage = () => {
     setEmail(savedUserData.email || '');
   }, []); // 빈 배열을 두번째 인자로 전달하여 컴포넌트가 처음 마운트될 때 한 번만 실행
   const saveUserDataToSessionStorage = () => {
-    const userData = { 
+    const userData = {
       userUid: id,
       userPwd: password,
       userPhone: tel,
-      userEmail: email };
+      userEmail: email,
+    };
     sessionStorage.setItem('userData', JSON.stringify(userData));
   };
 
@@ -161,7 +161,7 @@ const RegisterPage = () => {
   // cosnt [EMError, setEMError] = useState('');
   const [isDialogTwoShow, setIsDialogTwoShow] = useState(false);
   const navigate = useNavigate();
-  
+
   const validatePNCK = () => {
     const regex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
     if (!regex.test(tel)) {
@@ -178,7 +178,7 @@ const RegisterPage = () => {
       return false;
     }
     return true;
-  }
+  };
 
   const handleCertification = async () => {
     if (verification === 'phone') {
@@ -186,7 +186,7 @@ const RegisterPage = () => {
     } else if (verification === 'email') {
       validateEMCK();
     }
-  
+
     if (PNError === '' && EMError === '') {
       const data = {
         userUid: id,
@@ -194,50 +194,50 @@ const RegisterPage = () => {
         userPhone: tel,
         userEmail: email,
       };
-  
-      console.log("유저데이터,수정이?", data);
+
+      console.log('유저데이터,수정이?', data);
       return data;
     } else {
       console.log('유효성 검사를 통과하지 못했습니다.');
       throw new Error('Validation failed');
     }
   };
-  
+
 
   const handleButtonClickMessage = async () => {
 
     try {
       setIsCertifiedPNVisible(true);
-    
+
       const certificationResult = await handleCertification();
       if (!certificationResult) {
         return;
       }
-    
+
       const checkResponse = await axios.post('/checkPhoneNumber', { userPhone: tel });
-    
+
       if (checkResponse.data.exists) {
         alert('이미 가입된 번호입니다.');
         setIsDialogVisible(false);
         return;
       }
-    
+
       const response = await axios.post('/message/send', { userPhone: tel });
-    
+
       if (response.status !== 200) {
         throw new Error('Failed to send the message');
       }
-     
-      if(setIsDialogVisible == true){
-      console.log('Message sent successfully');
-      alert('인증번호가 발송되었습니다.');
-    
-      // resetTimer();
-      // startTimer();
-    
-      setIsDialogTwoShow(!isDialogTwoShow);
+
+      if (setIsDialogVisible == true) {
+        console.log('Message sent successfully');
+        alert('인증번호가 발송되었습니다.');
+
+        // resetTimer();
+        // startTimer();
+
+        setIsDialogTwoShow(!isDialogTwoShow);
       }
-    
+
     } catch (error) {
       if (error.message === 'Validation failed') {
         alert('회원정보를 올바르게 입력했는지 확인해주세요.');
@@ -258,7 +258,7 @@ const RegisterPage = () => {
 
       if (response.status === 200) {
         setIsValidCertifiedPN(true);
-        registerUser(); 
+        registerUser();
 
         // const data = await handleCertification();
         // await registerUser(data, isValidCertifiedPN);
@@ -267,42 +267,42 @@ const RegisterPage = () => {
       alert(error);
       setIsValidCertifiedPN(false);
     }
-  }
+  };
 
   const handleButtonClickEmail = async () => {
 
     try {
       setIsCertifiedEMVisible(true);
-    
+
       const certificationResult = await handleCertification();
       if (!certificationResult) {
         return;
       }
-    
+
       const checkResponse = await axios.post('/checkEmail', { userEmail: email });
-    
+
       if (checkResponse.data.exists) {
         alert('이미 가입된 메일입니다.');
         setIsDialogVisible(false);
         return;
       }
-    
+
       const response = await axios.post('/email/send', { userEmail: email });
-    
+
       if (response.status !== 200) {
         throw new Error('Failed to send the message');
       }
       alert('인증번호가 발송되었습니다.');
-     
-      if(setIsDialogVisible == true){
-      console.log('Message sent successfully');
-    
-      // resetTimer();
-      // startTimer();
-    
-      setIsDialogTwoShow(!isDialogTwoShow);
+
+      if (setIsDialogVisible == true) {
+        console.log('Message sent successfully');
+
+        // resetTimer();
+        // startTimer();
+
+        setIsDialogTwoShow(!isDialogTwoShow);
       }
-    
+
     } catch (error) {
       if (error.message === 'Validation failed') {
         alert('회원정보를 올바르게 입력했는지 확인해주세요.');
@@ -313,7 +313,7 @@ const RegisterPage = () => {
       setIsDialogVisible(false);
     }
   };
-  
+
   const verifyCertificationEmail = async () => {
     try {
       const response = await axios.post('/verifyEmail', {
@@ -323,7 +323,7 @@ const RegisterPage = () => {
 
       if (response.status === 200) {
         setIsValidCertifiedEM(true);
-        registerUser(); 
+        registerUser();
 
         // const data = await handleCertification();
         // await registerUser(data, isValidCertifiedPN);
@@ -336,14 +336,14 @@ const RegisterPage = () => {
       alert(error);
       setIsValidCertifiedEM(false);
     }
-  }
+  };
 
-  
+
   const registerUser = async () => {
 
     alert('인증이 완료되었습니다.');
     return;
-  }
+  };
 
 
   // const registerUser = async (data, isValidCertifiedPN) => {
@@ -361,16 +361,16 @@ const RegisterPage = () => {
   //   }
   // };
 
-  
-   const handleSocialLogin = (provider) => {
-    window.location.href = `http://localhost:9999/oauth2/authorization/${provider}`;
+
+  const handleSocialLogin = (provider) => {
+    window.location.href = `${import.meta.env.REACT_APP_BACKEND_URL}/oauth2/authorization/${provider}`;
   };
-  
+
   //todo 로깅용 - 나중에 지울 것
   // useEffect(() => {
   //   console.log(`id: ${id}, password: ${password}, checked: ${checked}`);
   // }, [checked, id, password]);
-  
+
   return (
     <LoginContainer>
       <LoginPaper>
@@ -381,11 +381,11 @@ const RegisterPage = () => {
         <Divider />
         <LoginBody>
           <StyledTextField
-            label='아이디' value={id}
+            label="아이디" value={id}
             onChange={handleIdChange}
           />
           <StyledTextField
-            label='비밀번호'
+            label="비밀번호"
             type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={handlePasswordChange}
@@ -398,97 +398,98 @@ const RegisterPage = () => {
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
-              )
+              ),
             }}
           />
-         
+
           <StyledFormControl component="fieldset">
             <FormLabel component="legend">인증 방식</FormLabel>
-            <StyledRadioGroup aria-label="verification" name="row-radio-buttons-group" value={verification} onChange={(e) => setVerification(e.target.value)}>
+            <StyledRadioGroup aria-label="verification" name="row-radio-buttons-group" value={verification}
+                              onChange={(e) => setVerification(e.target.value)}>
               <StyledFormControlLabel value="email" control={<Radio />} label="이메일 인증" />
               <StyledFormControlLabel value="phone" control={<Radio />} label="휴대폰 인증" />
             </StyledRadioGroup>
           </StyledFormControl>
-          {verification === 'email' ? 
-          <Grid container spacing={1} alignItems="flex-end">
-            <Grid item xs={8}>
-              <StyledTextField
-                label='이메일' 
-                type='email' 
-                value={email}
-                onChange={handleEmailChange}
-              />
+          {verification === 'email' ?
+            <Grid container spacing={1} alignItems="flex-end">
+              <Grid item xs={8}>
+                <StyledTextField
+                  label="이메일"
+                  type="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                />
+              </Grid>
+              <Grid item>
+                <StyledButtonSmall variant="contained" onClick={handleButtonClickEmail}>인증</StyledButtonSmall>
+              </Grid>
+              {isCertifiedEMVisible && (
+                <Grid item xs={12}>
+                  <StyledTextField
+                    label="인증번호 입력"
+                    type="text"
+                    value={certifiedEM}
+                    onChange={(e) => setCertifiedEN(e.target.value)}
+                  />
+                  <StyledButton variant="contained" onClick={verifyCertificationEmail}>
+                    확인
+                  </StyledButton>
+                </Grid>
+              )}
             </Grid>
-            <Grid item>
-              <StyledButtonSmall variant='contained' onClick={handleButtonClickEmail}>인증</StyledButtonSmall>
+
+            :
+            <Grid container spacing={1}>
+              <Grid item xs={8}>
+                <StyledTextField
+                  label="휴대폰 번호"
+                  type="tel"
+                  value={tel}
+                  onChange={handleTelChange}
+                />
+              </Grid>
+              <Grid item>
+                <StyledButtonSmall variant="contained" onClick={handleButtonClickMessage}>
+                  인증
+                </StyledButtonSmall>
+              </Grid>
+              {isCertifiedPNVisible && (
+                <Grid item xs={12}>
+                  <StyledTextField
+                    label="인증번호 입력"
+                    type="text"
+                    value={certifiedPN}
+                    onChange={(e) => setCertifiedPN(e.target.value)}
+                  />
+                  <StyledButton variant="contained" onClick={verifyCertification}>
+                    확인
+                  </StyledButton>
+                </Grid>
+              )}
             </Grid>
-            {isCertifiedEMVisible &&(
-            <Grid item xs={12}>
-              <StyledTextField
-                label='인증번호 입력'
-                type='text'
-                value={certifiedEM}
-                onChange={(e) => setCertifiedEN(e.target.value)}
-              />
-              <StyledButton variant='contained' onClick={verifyCertificationEmail}>
-                확인
-              </StyledButton>
-            </Grid>
-          )}
-        </Grid>
-          
-          :
-          <Grid container spacing={1}>
-          <Grid item xs={8}>
-            <StyledTextField
-              label='휴대폰 번호'
-              type='tel'
-              value={tel}
-              onChange={handleTelChange}
-            />
-          </Grid>
-          <Grid item>
-            <StyledButtonSmall variant='contained' onClick={handleButtonClickMessage}>
-              인증
-            </StyledButtonSmall>
-          </Grid>
-          {isCertifiedPNVisible &&(
-            <Grid item xs={12}>
-              <StyledTextField
-                label='인증번호 입력'
-                type='text'
-                value={certifiedPN}
-                onChange={(e) => setCertifiedPN(e.target.value)}
-              />
-              <StyledButton variant='contained' onClick={verifyCertification}>
-                확인
-              </StyledButton>
-            </Grid>
-          )}
-        </Grid>
-        }
+          }
           <AdditionalContainer>
-          <Checkbox
-            checked={agreed}
-            onChange={(e) => {
-              if (verification === 'email' && !isValidCertifiedEM) {
-                alert('이메일 인증을 완료해주세요');
-                return;
-              }
-              if (verification === 'phone' && !isValidCertifiedPN) {
-                alert('휴대폰 인증을 완료해주세요');
-                return;
-              }
-              setAgreed(e.target.checked);
-            }}
-          />
-          <div style={{marginTop: '12px'}}>
-          <h5>
-            NutriMate 이용약관 및 개인정보 처리방침에 동의합니다.
-          </h5>
-          </div>
-        </AdditionalContainer>
-        <StyledButton variant='contained' disabled={!agreed} onClick={() => {
+            <Checkbox
+              checked={agreed}
+              onChange={(e) => {
+                if (verification === 'email' && !isValidCertifiedEM) {
+                  alert('이메일 인증을 완료해주세요');
+                  return;
+                }
+                if (verification === 'phone' && !isValidCertifiedPN) {
+                  alert('휴대폰 인증을 완료해주세요');
+                  return;
+                }
+                setAgreed(e.target.checked);
+              }}
+            />
+            <div style={{ marginTop: '12px' }}>
+              <h5>
+                NutriMate 이용약관 및 개인정보 처리방침에 동의합니다.
+              </h5>
+            </div>
+          </AdditionalContainer>
+          <StyledButton variant="contained" disabled={!agreed} onClick={() => {
             if (id === '') {
               alert('아이디를 입력해주세요');
               return;
@@ -502,13 +503,13 @@ const RegisterPage = () => {
         </LoginBody>
         <Divider>간편 회원가입 / 로그인</Divider>
         <OAuthContainer>
-        <OAuthButton onClick={
-          () => {
-            handleSocialLogin('google');
-            setSignupStatus('google');
-          }}>
-          <img src="/src/asset/image/oauth/GoogleLogin.png" alt="구글 로그인" />
-        </OAuthButton>
+          <OAuthButton onClick={
+            () => {
+              handleSocialLogin('google');
+              setSignupStatus('google');
+            }}>
+            <img src="/src/asset/image/oauth/GoogleLogin.png" alt="구글 로그인" />
+          </OAuthButton>
           <OAuthButton onClick={() => {
             handleSocialLogin('facebook');
             setSignupStatus('facebook');

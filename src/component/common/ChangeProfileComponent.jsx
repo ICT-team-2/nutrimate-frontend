@@ -3,6 +3,7 @@ import { profileModalAtom } from '@src/component/mypage/atom.js';
 import ChangeProfileModal from '@src/component/mypage/myinfo/ChangeProfileModal.jsx';
 import { Button } from '@mui/material';
 import React from 'react';
+import useChangeProfileImage from '@src/hooks/mypage/useChangeProfileImage.jsx';
 
 /**
  *
@@ -14,8 +15,12 @@ const ChangeProfileComponent = (props) => {
 
   const setOpenModal = useSetAtom(profileModalAtom);
   const { buttonSize } = props;
+  const changeProfile = useChangeProfileImage();
+
   return (<>
-    <ChangeProfileModal />
+    <ChangeProfileModal changeProfile={(file) => {
+      changeProfile.mutate(file);
+    }} />
     <Button
       onClick={() => setOpenModal(true)}
       variant="contained"

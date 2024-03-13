@@ -43,7 +43,7 @@ const SurveyDiet = () => {
     setCheckedDiet(surveyData.userDiet);
     setCarbo(surveyData.carbo);
     setProtein(surveyData.protein);
-    setFat(surveyData.fat);
+    setFat(surveyData.province);
   }, [surveyData]);
 
 
@@ -55,7 +55,7 @@ const SurveyDiet = () => {
         return false;
       }
     }
-    setSurveyData({ ...surveyData, userDiet: checkedDiet, carbo, protein, fat });
+    setSurveyData({ ...surveyData, userDiet: checkedDiet, carbo, protein, province: fat });
     return true;
   };
 
@@ -79,18 +79,21 @@ const SurveyDiet = () => {
           label="탄수화물"
           type="number"
           value={carbo}
+          onChange={(e) => setCarbo(e.target.value)}
         /><StyledColonContainer>:</StyledColonContainer>
         <StyledTextField
           variant="standard"
           label="단백질"
           type="number"
           value={protein}
+          onChange={(e) => setProtein(e.target.value)}
         /><StyledColonContainer>:</StyledColonContainer>
         <StyledTextField
           variant="standard"
           label="지방"
           type="number"
           value={fat}
+          onChange={(e) => setFat(e.target.value)}
         />
       </StyledContainer>)
       }
