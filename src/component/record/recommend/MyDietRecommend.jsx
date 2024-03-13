@@ -20,7 +20,7 @@ const MyDietRecommend = () => {
     const getDietRecommendation = async () => {
       try {
         await new Promise(resolve => setTimeout(resolve, 3000));
-        const response = await axios.get(`http://localhost:2222/diet?userId=${userId}`);
+        const response = await axios.get(`${import.meta.env.REACT_APP_FLASK_URL}/diet?userId=${userId}`);
         setDiet(response.data);
       } catch (error) {
         console.error('식단 추천을 불러오는데 실패했습니다.', error);

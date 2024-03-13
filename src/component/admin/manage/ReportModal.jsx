@@ -5,6 +5,7 @@ import { Button, TextField } from '@mui/material';
 import axios from 'axios';
 import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom.js';
+
 const ModalBg = styled.div`
     display: flex;
     position: fixed;
@@ -68,7 +69,7 @@ const StyledTextField = styled(TextField)`
     height: 100%; /* Adjust height as needed */
 `;
 
-const ReportModal = ({ setShowReportModal,boardId,cmtId,searchKeyWord,showReportModal }) => {
+const ReportModal = ({ setShowReportModal, boardId, cmtId, searchKeyWord, showReportModal }) => {
   const [reportReason, setReportReason] = useState('');
   const [userId, setUserId] = useAtom(userIdAtom);
 
@@ -77,27 +78,27 @@ const ReportModal = ({ setShowReportModal,boardId,cmtId,searchKeyWord,showReport
   };
 
   const reportClick = (e) => {
-    console.log(cmtId)
-    axios.post('http://localhost:9999/report', {
+    console.log(cmtId);
+    axios.post(`${import.meta.env.REACT_APP_BACKEND_URL}/report`, {
       'seachKeyWord': searchKeyWord,
       'boardid': boardId,
       'cmtid': cmtId,
       'reportreason': reportReason,
-      'userid':userId
+      'userid': userId,
     })
-    .then(response => {
-      // 서버에서 반환하는 데이터에 따라 적절한 동작을 수행합니다.
-      alert(response.data.REPORTOK); // 예시로 경고창을 띄움
-      setShowReportModal(false);
-    })
-    .catch(error => {
-      console.error('Error submitting report:', error);
-      alert('Failed to submit report'); // 오류가 발생했을 때 처리
-    });
+      .then(response => {
+        // 서버에서 반환하는 데이터에 따라 적절한 동작을 수행합니다.
+        alert(response.data.REPORTOK); // 예시로 경고창을 띄움
+        setShowReportModal(false);
+      })
+      .catch(error => {
+        console.error('Error submitting report:', error);
+        alert('Failed to submit report'); // 오류가 발생했을 때 처리
+      });
 
-  
+
   };
-  
+
   const handleInputChange = (event) => {
 
     setReportReason(event.target.value);
@@ -109,7 +110,7 @@ const ReportModal = ({ setShowReportModal,boardId,cmtId,searchKeyWord,showReport
     // modal 닫히면 다시 스크롤 가능하도록 함
     return () => enableScroll();
   }, [showReportModal]);
-   
+
 
   const handleModalClick = (e) => {
     // 모달 바깥 영역 클릭 시에는 모달을 닫지 않도록 이벤트 전파 막기
@@ -118,8 +119,8 @@ const ReportModal = ({ setShowReportModal,boardId,cmtId,searchKeyWord,showReport
 
 
   return (
-    <ModalBg>
-      <ModalBox onClick={handleModalClick}>
+    <ModalBg onClick={handleModalClick}> 
+      <ModalBox >
         <>
           <h2>신고하기</h2>
           <ModalCloseBtn onClick={closeModal}>✖</ModalCloseBtn>

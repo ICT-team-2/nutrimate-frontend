@@ -43,7 +43,7 @@ const ChallengeRank = () => {
   const [challengeListData, setChallengeListData] = React.useState(undefined);
   //랭크 리스트를 부르는 함수
   const ChallengeRankList = () => {
-    axios.get(`http://localhost:9999/challenge/success?chatroomId=${chatroomId}`)
+    axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/success?chatroomId=${chatroomId}`)
       .then(datas => {
         console.log(datas.data);
         setChallengeListData(datas.data);

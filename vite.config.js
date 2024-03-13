@@ -6,6 +6,7 @@ import * as fs from 'fs';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
   envPrefix: 'REACT_APP_',
   plugins: [react(), envCompatible()],
   resolve: {
@@ -24,6 +25,8 @@ export default defineConfig({
       cert: fs.readFileSync(path.resolve(__dirname, 'cert.pem')),
     },
   },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'asset',
+  },
 });
-
-

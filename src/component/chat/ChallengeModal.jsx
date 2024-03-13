@@ -183,7 +183,7 @@ const ChallengeModal = (props) => {
     console.log((prediction[0].probability.toFixed(2)) * 100);
     if (prediction[0].probability >= 0.7) {
 
-      fetch(`http://localhost:9999/challenge/success/record?chatroomId=${chatroom}&userId=${userId}`, {
+      fetch(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/success/record?chatroomId=${chatroom}&userId=${userId}`, {
         credentials: 'include',
       })
         .then(response => response.json())

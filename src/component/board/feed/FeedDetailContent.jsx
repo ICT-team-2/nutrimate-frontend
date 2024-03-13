@@ -7,6 +7,7 @@ import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import FeedCommentList from '@src/component/board/feed/FeedCommentList.jsx';
 import { NO_IMAGE_PATH } from '@src/utils/const.js';
 
+
 const StyledBox = styled(Box)`
     position: absolute;
     top: 50%;
@@ -50,7 +51,7 @@ const FeedDetailContent = ({ data, open, setOpen }) => {
     <Modal
       open={open}
       onClose={handleClose}
-    >
+    >   
       <OuterContainer>
         <StyledBox>
           <FlexGrowDiv>

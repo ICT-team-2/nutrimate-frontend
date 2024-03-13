@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -50,58 +50,56 @@ export const options = {
 
 
 const StatisticsContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 const StatisticsCardWrapper = styled.div`
-  flex: 1;
-  margin-right: 10px;
+    flex: 1;
+    margin-right: 10px;
 `;
 
 
-
-
-export function SubscriberLineChart({chart}) {
+export function SubscriberLineChart({ chart }) {
   const [borderColor, setBorderColor] = useState('rgb(53, 162, 235)');
   const [backgroundColor, setBackgroundColor] = useState('rgba(53, 162, 235, 0.5)');
   const [title, setTitle] = useState('주간 가입자 현황');
   const [labels, setLabels] = useState([]);
   const [label, setLabel] = useState([]);
   const [datas, setDatas] = useState([]);
-  let url='';
+  let url = '';
 
   useEffect(() => {
     if (chart === 'week') {
       setBorderColor('rgb(53, 162, 235)');
       setBackgroundColor('rgba(53, 162, 235, 0.5)');
       setTitle('주간 가입자 현황');
-      setLabel('주간 가입자')
-      url='http://localhost:9999/statistic/list/member/week'
+      setLabel('주간 가입자');
+      url = `${import.meta.env.REACT_APP_BACKEND_URL}/statistic/list/member/week`;
       const startDate = dayjs().subtract(6, 'day');
-      const endDate = dayjs()+1;
+      const endDate = dayjs() + 1;
       const dates = [];
       let currentDate = startDate;
-          while (currentDate.isBefore(endDate)) {
-              dates.push(currentDate.format('YY-MM-DD'));
-              currentDate = currentDate.add(1, 'day');
-          }
-          axios.get(url)
-          .then(response => {
-            setDatas(response.data)
-            setLabels(dates)
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-          });
-      
+      while (currentDate.isBefore(endDate)) {
+        dates.push(currentDate.format('YY-MM-DD'));
+        currentDate = currentDate.add(1, 'day');
+      }
+      axios.get(url)
+        .then(response => {
+          setDatas(response.data);
+          setLabels(dates);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+
     } else if (chart === 'month') {
       setBorderColor('rgb(255, 99, 132)');
       setBackgroundColor('rgba(255, 99, 132, 0.5)');
       setTitle('월간 가입자 현황');
-      setLabel('월간 가입자')
-      url = 'http://localhost:9999/statistic/list/member/month'
+      setLabel('월간 가입자');
+      url = `${import.meta.env.REACT_APP_BACKEND_URL}/statistic/list/member/month`;
       const today = dayjs(); // 현재 날짜를 가져옵니다.
       const dates = []; // 날짜들을 저장할 배열을 생성합니다.
 
@@ -110,14 +108,13 @@ export function SubscriberLineChart({chart}) {
         dates.push(date.format('YY-MM')); // 형식에 맞게 날짜를 배열에 추가합니다.
       }
       axios.get(url)
-      .then(response => {
-        setDatas(response.data)
-        setLabels(dates)
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-
+        .then(response => {
+          setDatas(response.data);
+          setLabels(dates);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
 
 
     }
@@ -136,7 +133,7 @@ export function SubscriberLineChart({chart}) {
   const data = {
     labels,
     datasets: [
-  
+
       {
         label: label,
         data: datas,
@@ -147,7 +144,7 @@ export function SubscriberLineChart({chart}) {
   };
   return (
     <StatisticsCard title={title}>
-      <Line options={options} data={data}/>
+      <Line options={options} data={data} />
     </StatisticsCard>
   );
 }
