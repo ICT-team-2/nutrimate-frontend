@@ -1,13 +1,27 @@
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
-import { FACE_EMOTION_RESULT, REACT_QUERY_KEYS } from '@src/utils/const.js';
+import {
+  REACT_QUERY_KEYS, TOAST_MESSAGE, TOAST_OPTIONS,
+} from '@src/utils/const.js';
+import { useRef } from 'react';
+import { toast } from 'react-toastify';
 
 const useAnalyzeFaceEmtionWithAI = () => {
-  //axios
 
+  const toastId = useRef(null);
+
+  const loadingToast = () => {
+    toastId.current = toast(TOAST_MESSAGE.ANALYZE.LOADING,
+      TOAST_OPTIONS.LOADING);
+  };
+
+  //axios
   const fetchAnalyzeFaceEmtionWithAI = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
+
+    loadingToast();
+
     const response = await axios.post(`${import.meta.env.REACT_APP_FLASK_URL}/face`,
       formData,
       {
@@ -28,9 +42,16 @@ const useAnalyzeFaceEmtionWithAI = () => {
       REACT_QUERY_KEYS.ANALYZE,
     ],
     onSuccess: (data) => {
-      console.log(data);
+      toast.update(toastId.current, {
+        ...TOAST_OPTIONS.SUCCESS,
+        render: TOAST_MESSAGE.ANALYZE.SUCCESS,
+      });
     },
     onError: (error) => {
+      toast.update(toastId.current, {
+        ...TOAST_OPTIONS.ERROR,
+        render: TOAST_MESSAGE.ANALYZE.ERROR,
+      });
       console.error(error);
     },
   });

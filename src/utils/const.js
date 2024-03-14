@@ -282,3 +282,61 @@ export const FACE_EMOTION_RESULT = {
   surprise: '놀람',
   neutral: '중립',
 };
+
+export const TOAST_OPTIONS = {
+  SUCCESS: {
+    closeOnClick: true,
+    autoClose: 1000,
+    isLoading: false,
+    type: 'success',
+  },
+  ERROR: {
+    closeOnClick: true,
+    autoClose: 1000,
+    isLoading: false,
+    type: 'error',
+  },
+  LOADING: {
+    autoClose: false,
+    isLoading: true,
+    closeOnClick: false,
+  },
+  WARN: {
+    autoClose: 1000,
+    isLoading: false,
+    closeOnClick: true,
+    type: 'warning',
+  },
+};
+
+export const TOAST_MESSAGE = {
+  ANALYZE: {
+    LOADING: '분석 중입니다...',
+    SUCCESS: '분석 완료',
+    ERROR: '분석 실패',
+  },
+  SLOW_NETWORK: '네트워크 상태가 좋지 않습니다.',
+  IMAGE_CREATE: {
+    LOADING: '이미지 생성 중...',
+    SUCCESS: '이미지 생성 완료',
+    ERROR: '이미지 생성 실패',
+  },
+  RECORD: {
+    SUCCESS: '기록 저장 성공',
+    ERROR: '기록 저장 실패',
+  },
+  BOARD: {
+    WRITE: {
+      SUCCESS: '글쓰기 성공',
+      ERROR: '글쓰기 실패',
+    },
+    UPDATE: {
+      SUCCESS: '수정 성공',
+      ERROR: '수정 실패',
+    },
+  },
+  PROFILE: {
+    SUCCESS: '프로필 변경 성공',
+    ERROR: '프로필 변경 실패',
+  },
+};

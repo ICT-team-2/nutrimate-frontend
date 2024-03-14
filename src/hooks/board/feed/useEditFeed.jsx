@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { LINKS, REACT_QUERY_KEYS } from '@src/utils/const.js';
+import { LINKS, REACT_QUERY_KEYS, TOAST_MESSAGE } from '@src/utils/const.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const useEditFeed = () => {
   const queryClient = useQueryClient();
@@ -27,7 +28,7 @@ const useEditFeed = () => {
     mutationKey: [REACT_QUERY_KEYS.BOARD, REACT_QUERY_KEYS.FEED, REACT_QUERY_KEYS.UPDATE],
     mutationFn: updateFeed,
     onSuccess: () => {
-      console.log('게시글 수정 성공');
+      toast.success(TOAST_MESSAGE.BOARD.UPDATE.SUCCESS);
       queryClient.invalidateQueries({
         predicate: (query) => {
           return query.queryKey.includes(REACT_QUERY_KEYS.FEED)
@@ -38,6 +39,7 @@ const useEditFeed = () => {
       });
     },
     onError: (error) => {
+      toast.error(TOAST_MESSAGE.BOARD.UPDATE.ERROR);
       console.error(error);
     },
   });

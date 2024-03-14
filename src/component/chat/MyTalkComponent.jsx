@@ -99,7 +99,6 @@ const MyTalkComponent = (props) => {
         onClose={handleClose}
       >
         <MenuBox
-          selected={false}
           onClick={(e) => {
             onDelete();
             handleClose(e);

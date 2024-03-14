@@ -52,9 +52,7 @@ const ChatBotComponent = (props) => {
     axios.post(`${import.meta.env.REACT_APP_FLASK_URL}/chatbot`, { 'content': message })
       .then(response => {
         setLoading(false);
-        console.log(response.data);
         const botChatData = { 'chatMessage': response.data.messages, 'challengeNick': '챗봇', 'messageType': 'CHAT' };
-        console.log(response.data.messages);
         setChatData(prevChatData => [...prevChatData, botChatData]);
       })
       .catch(error => {

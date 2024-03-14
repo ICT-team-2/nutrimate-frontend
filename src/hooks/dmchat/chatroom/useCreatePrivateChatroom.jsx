@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
+import { toast } from 'react-toastify';
 
 const useCreatePrivateChatroom = () => {
 
@@ -27,7 +28,7 @@ const useCreatePrivateChatroom = () => {
       REACT_QUERY_KEYS.PRIVATE,
       REACT_QUERY_KEYS.INSERT],
     onSuccess: () => {
-      console.log('createPrivateDmRoom onSuccess');
+      toast.success('채팅방 생성 성공');
       queryClient.invalidateQueries({
         predicate: query => {
           return query.queryKey.includes(REACT_QUERY_KEYS.DM) &&
@@ -36,7 +37,8 @@ const useCreatePrivateChatroom = () => {
       });
     },
     onError: () => {
-      console.log('createPrivateDmRoom onError');
+      toast.error('채팅방 생성 실패');
+      console.error('createPrivateDmRoom onError');
     },
   });
 };

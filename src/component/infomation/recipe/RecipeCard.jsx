@@ -1,23 +1,17 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import Typography from '@mui/material/Typography';
+import CardMedia from '@mui/material/CardMedia';
 
-const CustomCard = styled(Card)`
-    width: 250px;
-    //margin: 20px;
-    height: 320px;
-`;
-
+// CardMedia 커스터마이징
 const CustomCardMedia = styled(CardMedia)`
-    height: 220px;
-    //object-fit: cover;
+    width: 270px; // 이미지 너비 설정
+    height: 240px; // 이미지 높이 설정
+    object-fit: cover; // 이미지 비율 유지
 `;
 
-/// ...처리
+// Typography 커스터마이징
 const TitleTypography = styled(Typography)`
     display: -webkit-box;
     overflow: hidden;
@@ -25,42 +19,39 @@ const TitleTypography = styled(Typography)`
     word-break: break-all;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-`;
-const CardContentContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
-const TypoContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: auto 20px;
+    color: #383838; // 텍스트 색상 설정
+    font-size: 16px;
+    margin-top: 3px;
 `;
 
+// 이미지와 텍스트를 감싸는 컨테이너
+const ContentContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    //align-items: center; // 가운데 정렬
+    text-decoration: none; // 링크 텍스트 꾸밈 제거
+`;
 
 export default function RecipeCard(props) {
   const { title, image, url } = props;
 
   return (
     <Link to={url} style={{ textDecoration: 'none' }}>
-      <CustomCard>
+      <ContentContainer>
         <CustomCardMedia
+          component="img"
           image={image}
-          title={title}
+          alt={title}
         />
-
-        <CardContent>
-          <TitleTypography
-            gutterBottom
-            variant="h6"
-            component="div"
-            sx={{ margin: 0 }}
-          >
-            {title}
-          </TitleTypography>
-        </CardContent>
-      </CustomCard>
+        <TitleTypography
+          gutterBottom
+          variant="h6"
+          component="div"
+        >
+        {title}
+        </TitleTypography>
+      </ContentContainer>
     </Link>
-
   );
 }
 
@@ -69,4 +60,3 @@ RecipeCard.defaultProps = {
   image: '/src/asset/image/loading.png',
   url: 'https://naver.com',
 };
-

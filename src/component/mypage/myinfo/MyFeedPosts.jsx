@@ -1,12 +1,21 @@
 import { Grid } from '@mui/material';
 import MyFeedCard from '@src/component/mypage/myinfo/MyFeedCard.jsx';
-import useFetchProfileFeedList from '@src/hooks/mypage/useFetchProfileFeedList.jsx';
+import useFetchProfileFeedList
+  from '@src/hooks/mypage/useFetchProfileFeedList.jsx';
 import { useEffect } from 'react';
+import * as React from 'react';
+import { useParams } from 'react-router-dom';
 
+function MyFeedPosts() {
 
-function MyFeedPosts({ profileUserId }) {
+  const { profileUserId } = useParams();
 
-  const { data, isLoading, isError, error } = useFetchProfileFeedList(profileUserId);
+  const { data } = useFetchProfileFeedList(
+    profileUserId);
+
+  if (data?.pages[0]?.feedList?.length === 0) {
+    return <div>등록된 글이 없습니다.</div>;
+  }
 
   return (
     <Grid container spacing={3}>
@@ -22,7 +31,6 @@ function MyFeedPosts({ profileUserId }) {
         })
       }
     </Grid>
-
 
   );
 }

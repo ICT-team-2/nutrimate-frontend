@@ -23,7 +23,6 @@ const useEditComment = (boardId) => {
     mutationKey: [REACT_QUERY_KEYS.COMMENTS, REACT_QUERY_KEYS.UPDATE],
     mutationFn: editComment,
     onSuccess: () => {
-      console.log('댓글 수정 성공');
       queryClient.invalidateQueries({
         predicate: (query) => {
           return query.queryKey.includes(REACT_QUERY_KEYS.COMMENTS)

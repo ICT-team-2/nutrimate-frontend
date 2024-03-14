@@ -11,6 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import axios from 'axios';
 import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom.js';
+import { toast } from 'react-toastify';
 
 const ChallengeChatContainer = styled(Paper)`
     width: 60%;
@@ -71,7 +72,6 @@ const ChallengeChatPage = () => {
   const ChatLoading = () => {
     axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/chat/prev?chatroomId=${chatroom}`)
       .then(datas => {
-        console.log('datas: ', datas.data);
         for (const data of datas.data) {
           setChatData(prevChatData => [...prevChatData, data]);
         }
@@ -108,7 +108,6 @@ const ChallengeChatPage = () => {
     stompClient.connect({}, async () => {
       await axios.post(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/chat/member?chatroomId=${chatroom}&userId=${userId}`)//@RequestBody로 받는다
         .then(data => {
-          console.log('connect ', data.data);
           if (data.data.memberOk === 1) {
             const newNickname = data.data.challengeNick;
             const setNicknamePromise = (nickname) =>
@@ -127,13 +126,11 @@ const ChallengeChatPage = () => {
             setShowModal(true);
           }
         })
-        .catch(err => console.log(err));
+        .catch(err => console.error(err));
 
 
-      console.log('Connected to WebSocket');
       stompClient.subscribe('/sub/channel/' + (chatroomId === '1' ? 'FIRST_ROOM' : 'SECOND_ROOM'), (message) => {
         const chatData = JSON.parse(message.body);
-        console.log('subscribe chatData:', chatData);
         setChatData(prevChatData => [...prevChatData, chatData]);
       });
 
@@ -179,7 +176,6 @@ const ChallengeChatPage = () => {
 
 
   const handleSendModal = async (inputValue) => {
-    console.log(inputValue);
     await axios.post(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/account`,
       {
         'chatroomId': chatroom,
@@ -192,7 +188,7 @@ const ChallengeChatPage = () => {
           setNickname(newNickname);
           setShowModal(false);
         } else if (data.data.memberDupl != null) {
-          alert(data.data.memberDupl);
+          toast.warn(data.data.memberDupl);
         }
       });
 

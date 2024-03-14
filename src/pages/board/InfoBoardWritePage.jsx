@@ -53,7 +53,7 @@ const InfoBoardContainer = styled(Container)`
     width: 90%;
 `;
 const EditorContainer = styled.div`
-    margin-top: 20px;
+    //margin-top: 5px;
     min-height: ${EDITOR_HEIGHT + 70}px;
 `;
 const BottomContainer = styled.div`
@@ -71,6 +71,12 @@ const InputHashtagContainer = styled.div`
 
 const StyledTextField = styled(TextField)`
     margin-bottom: 20px;
+`;
+
+const FlexContainer = styled.div`
+  display: flex;
+  justify-content: space-between; // 자식 요소들 사이에 공간을 균등하게 배분
+  align-items: center; // 자식 요소들을 세로 방향으로 중앙 정렬
 `;
 
 //정보 공유 게시판 글 작성 내용
@@ -107,7 +113,6 @@ const InfoBoardWritePage = (props) => {
 
   const handleInputBoard = () => {
     if (category === BOARD.INFO.FOOD.TITLE) {
-      console.log('식단 게시판 글 작성');
       inputDietBoard.mutate({
         boardTitle: title,
         boardContent: DOMPurify.sanitize(quillRefState.value),
@@ -143,9 +148,6 @@ const InfoBoardWritePage = (props) => {
           onClick={handleInputBoard}
           variant="contained">등록</Button>
       </TitleContainer>
-      <StyledTextField
-        label="제목" size="small" value={title}
-        onChange={(e) => setTitle(e.target.value)} />
       {/* 식단 or 운동코스 등록(지도) */}
       {/* nogps는 gps사용하지 않겠다는 옵션 - 쓰기에는 불필요하니 추후 삭제하면 됨 */}
       {category !== BOARD.INFO.FOOD.TITLE
@@ -162,7 +164,13 @@ const InfoBoardWritePage = (props) => {
       <InputHashtagContainer>
         <InputHashtag />
       </InputHashtagContainer>
-      <OcrModal />
+      <FlexContainer>
+        <StyledTextField
+          label="제목" size="small" value={title}
+          onChange={(e) => setTitle(e.target.value)} 
+        />
+        <OcrModal />
+      </FlexContainer>
       {/* 에디터 */}
       <EditorContainer>
         <BoardEditor />

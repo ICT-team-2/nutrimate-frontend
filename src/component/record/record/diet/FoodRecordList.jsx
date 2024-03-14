@@ -158,7 +158,7 @@ const FoodRecordList = () => {
         </FoodRecordContainer>
       </SecondContainerDiv>
       <StyledPageIcon
-        disabled={page === totalPage}
+        disabled={page >= totalPage}
         onClick={() => setPage(page + 1)}
       >
         <FontAwesomeIcon icon={faChevronRight} />

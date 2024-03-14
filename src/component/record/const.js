@@ -2,7 +2,8 @@ export const RECORD_TABS = {
   FOOD_RECORD: 0,
   SPORT_RECORD: 1,
   RECOMMEND: 2,
-  STATISTICS: 3,
+  HEALTH_PREDICTION: 3,
+  STATISTICS: 4,
 };
 
 export const FOOD_RECORD_BUTTONS = {
@@ -77,4 +78,9 @@ export const RECOMMEND_CATEGORY = {
   PRICE: '가격별 음식',
   ALLERGY: '알레르기별 음식',
   DIET: '나만의 식단 추천받기',
+};
+
+export const PREDICTION_CATEGORY = {
+  DIABETES: '당뇨병 예측',
+  HIGH_BLOOD_PRESSURE: '고혈압 예측',
 };

@@ -4,6 +4,7 @@ import { TextField } from '@mui/material';
 import { surveyDataAtom } from '@src/component/survey/atom.js';
 import { useAtom } from 'jotai/react';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 
 const TextFieldContainer = styled.div`
     margin: 20px 0;
@@ -31,7 +32,7 @@ const SurveyWeight = () => {
 
   const onClickNext = () => {
     if (surveyData.userWeight === '' || surveyData.userWeight === 0) {
-      alert('몸무게를 입력해주세요.');
+      toast.warn('몸무게를 입력해주세요.');
       return false;
     }
     return true;

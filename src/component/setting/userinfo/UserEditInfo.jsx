@@ -90,7 +90,6 @@ const UserEditInfo = () => {
   const [intro, setIntro] = useAtom(introAtom);
 
   useEffect(() => {
-    console.log('UserViewInfo useEffect - userId: ', userId);
     window.scrollTo(0, 0);
 
     axios.get('/member/mypage', {
@@ -99,7 +98,6 @@ const UserEditInfo = () => {
       },
     })
       .then(response => {
-        console.log(response.data);
         setUserInfo(response.data.memberDto);
         setGender(response.data.memberDto.userGender);
         setHeight(response.data.memberDto.userHeight);
@@ -123,22 +121,6 @@ const UserEditInfo = () => {
 
   const navigate = useNavigate();
   const handleUpdate = async () => {
-
-    console.log({
-      ...userInfo,
-      allergyList: null, //이거 추가해야함2
-      roleList: null, //이거 추가해야함(
-      userDiet: diet,
-      userGender: gender,
-      userSportHard: sport,
-      carbo: carbo,
-      protein: protein,
-      province: fat,
-      userHeight: height,
-      userWeight: weight,
-      userId: parseInt(sessionStorage.userId),
-      userRole: 'ROLE_USER',
-    });
     try {
       axios.put('/member/mypage', {
         ...userInfo,
@@ -172,12 +154,6 @@ const UserEditInfo = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-
-  useEffect(() => {
-    console.log(diet);
-    console.log('user', userInfo);
-  }, [userInfo]);
 
 
   return (

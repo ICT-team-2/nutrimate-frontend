@@ -36,9 +36,6 @@ const RecordStatistics = () => {
     endDate: dayjs(doDate).format('YYYY-MM-DD'),
   });
 
-  useEffect(() => {
-    console.log('graphData', graphData);
-  }, [graphData]);
 
   return (
     <OuterContainer>

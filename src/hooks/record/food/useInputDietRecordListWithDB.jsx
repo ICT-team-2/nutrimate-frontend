@@ -26,13 +26,12 @@ const useInputDietRecordListWithDB = () => {
       REACT_QUERY_KEYS.LIST],
     mutationFn: inputDietRecordListWithDB,
     onSuccess: () => {
-      console.log('useInputDietRecordListWithDB onSuccess');
       queryClient.invalidateQueries({
         queryKey: [REACT_QUERY_KEYS.RECORD],
       });
     },
     onError: () => {
-      console.log('useInputDietRecordListWithDB onError');
+      console.error('useInputDietRecordListWithDB onError');
     },
   });
 };

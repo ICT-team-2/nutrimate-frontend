@@ -5,7 +5,7 @@ import MuiGlobalStyles from '@src/styles/MuiGlobalStyles.jsx';
 import { useAtomValue } from 'jotai/react';
 import { isDarkModeAtom } from '@src/config/theme/atom.js';
 import useMuiTheme from '@src/config/theme/useMuiTheme.js';
-import { ThemeProvider } from 'styled-components';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { ROUTER_LINKS } from '@src/utils/const.js';
 import BoardRoutes from '@src/routes/BoardRoutes.jsx';
@@ -22,14 +22,28 @@ import AdminRoutes from '@src/routes/AdminRoutes.jsx';
 import RecordRoutes from '@src/routes/RecordRoutes.jsx';
 import { CssBaseline } from '@mui/material';
 import useCheckUserToken from '@src/hooks/useCheckUserToken.jsx';
-import DMChatPage from '@src/pages/dmchat/DMChatPage.jsx';
 import DMChatRoutes from '@src/routes/DMChatRoutes.jsx';
+import { Flip, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+
+const StyledToastContainer = styled(ToastContainer)`
+    .Toastify__toast--default {
+        color: black;
+    }
+`;
+const ToastGlobalStyles = createGlobalStyle`
+    :root {
+        --toastify-spinner-color: ${({ theme }) => theme['primary-color']};
+        --toastify-spinner-color-empty-area: #e5e5e5;
+    }
+`;
 
 
 function App() {
   const darkMode = useAtomValue(isDarkModeAtom);
   const muiTheme = useMuiTheme();
   useCheckUserToken();
+
   const routes = useRoutes([
     { path: '/*', element: <MainRoutes /> },
     {
@@ -85,6 +99,18 @@ function App() {
       }}>
         <CssBaseline />
         <MuiGlobalStyles />
+        <ToastGlobalStyles />
+        <StyledToastContainer
+          position="top-center"
+          autoClose={1000}
+          hideProgressBar
+          pauseOnFocusLoss={false}
+          pauseOnHover={false}
+          closeOnClick
+          transition={Flip}
+          closeButton={false}
+          stacked
+        />
         {routes}
         <ChatBotComponent />
       </ThemeProvider>

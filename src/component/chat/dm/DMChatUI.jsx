@@ -87,6 +87,7 @@ const DMChatUI = (props) => {
           } else {
             return <OtherTalkComponent
               key={d.chatId}
+              userId={d.userId}
               src={d.userProfile
                 && `${import.meta.env.REACT_APP_BACKEND_URL}${d.userProfile}`}
               content={d.chatMessage}

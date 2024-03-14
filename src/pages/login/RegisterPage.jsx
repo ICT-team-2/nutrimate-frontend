@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const';
 import axios from 'axios';
 import { data } from '@tensorflow/tfjs';
+import { toast } from 'react-toastify';
 
 
 const LoginContainer = styled(Container)`
@@ -165,7 +166,7 @@ const RegisterPage = () => {
   const validatePNCK = () => {
     const regex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
     if (!regex.test(tel)) {
-      alert('올바른 전화번호를 입력해주세요');
+      toast.warn('올바른 전화번호를 입력해주세요');
       return false;
     }
     return true;
@@ -174,7 +175,7 @@ const RegisterPage = () => {
   const validateEMCK = () => {
     const regex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     if (!regex.test(email)) {
-      alert('올바른 EMAIL를 입력해주세요');
+      toast.warn('올바른 EMAIL를 입력해주세요');
       return false;
     }
     return true;
@@ -194,11 +195,8 @@ const RegisterPage = () => {
         userPhone: tel,
         userEmail: email,
       };
-
-      console.log('유저데이터,수정이?', data);
       return data;
     } else {
-      console.log('유효성 검사를 통과하지 못했습니다.');
       throw new Error('Validation failed');
     }
   };
@@ -217,7 +215,7 @@ const RegisterPage = () => {
       const checkResponse = await axios.post('/checkPhoneNumber', { userPhone: tel });
 
       if (checkResponse.data.exists) {
-        alert('이미 가입된 번호입니다.');
+        toast.warn('이미 가입된 번호입니다.');
         setIsDialogVisible(false);
         return;
       }
@@ -229,8 +227,7 @@ const RegisterPage = () => {
       }
 
       if (setIsDialogVisible == true) {
-        console.log('Message sent successfully');
-        alert('인증번호가 발송되었습니다.');
+        toast.success('인증번호가 발송되었습니다.');
 
         // resetTimer();
         // startTimer();
@@ -240,10 +237,10 @@ const RegisterPage = () => {
 
     } catch (error) {
       if (error.message === 'Validation failed') {
-        alert('회원정보를 올바르게 입력했는지 확인해주세요.');
+        toast.warn('회원정보를 올바르게 입력했는지 확인해주세요.');
       } else {
         console.error('An unknown error occurred:', error);
-        alert('인증번호 발송에 실패하였습니다. 다시 시도해주세요.');
+        toast.error('인증번호 발송에 실패하였습니다. 다시 시도해주세요.');
       }
       setIsDialogVisible(false);
     }
@@ -264,7 +261,7 @@ const RegisterPage = () => {
         // await registerUser(data, isValidCertifiedPN);
       }
     } catch (error) {
-      alert(error);
+      console.error(error);
       setIsValidCertifiedPN(false);
     }
   };
@@ -282,7 +279,7 @@ const RegisterPage = () => {
       const checkResponse = await axios.post('/checkEmail', { userEmail: email });
 
       if (checkResponse.data.exists) {
-        alert('이미 가입된 메일입니다.');
+        toast.warn('이미 가입된 메일입니다.');
         setIsDialogVisible(false);
         return;
       }
@@ -292,23 +289,18 @@ const RegisterPage = () => {
       if (response.status !== 200) {
         throw new Error('Failed to send the message');
       }
-      alert('인증번호가 발송되었습니다.');
+      toast.success('인증번호가 발송되었습니다.');
 
       if (setIsDialogVisible == true) {
-        console.log('Message sent successfully');
-
-        // resetTimer();
-        // startTimer();
-
         setIsDialogTwoShow(!isDialogTwoShow);
       }
 
     } catch (error) {
       if (error.message === 'Validation failed') {
-        alert('회원정보를 올바르게 입력했는지 확인해주세요.');
+        toast.warn('회원정보를 올바르게 입력했는지 확인해주세요.');
       } else {
         console.error('An unknown error occurred:', error);
-        alert('인증번호 발송에 실패하였습니다. 다시 시도해주세요.');
+        toast.error('인증번호 발송에 실패하였습니다. 다시 시도해주세요.');
       }
       setIsDialogVisible(false);
     }
@@ -325,51 +317,26 @@ const RegisterPage = () => {
         setIsValidCertifiedEM(true);
         registerUser();
 
-        // const data = await handleCertification();
-        // await registerUser(data, isValidCertifiedPN);
       } else {
-        // 인증번호가 잘못된 경우 alert를 표시
-        alert('인증번호가 잘못되었습니다.');
+        toast.error('인증번호가 잘못되었습니다.');
         setIsValidCertifiedEM(false);
       }
     } catch (error) {
-      alert(error);
+      console.error(error);
       setIsValidCertifiedEM(false);
     }
   };
 
 
   const registerUser = async () => {
-
-    alert('인증이 완료되었습니다.');
+    toast.success('인증이 완료되었습니다.');
     return;
   };
-
-
-  // const registerUser = async (data, isValidCertifiedPN) => {
-  //   try {
-  //     // 문자 인증이 완료되지 않은 경우
-  //     if (!isValidCertifiedPN) {
-  //       alert('문자 인증이 완료되지 않았습니다.');
-  //       return; // 함수 종료
-  //     }
-  //     // 성공적으로 문자 인증이 완료된 경우 다음 페이지로 데이터를 전달하고 페이지 이동
-  //     history.push('/next-page', { userData: data });
-  //   } catch (error) {
-  //     console.error('An error occurred while registering user:', error);
-  //     alert('사용자 등록 중 오류가 발생했습니다.');
-  //   }
-  // };
 
 
   const handleSocialLogin = (provider) => {
     window.location.href = `${import.meta.env.REACT_APP_BACKEND_URL}/oauth2/authorization/${provider}`;
   };
-
-  //todo 로깅용 - 나중에 지울 것
-  // useEffect(() => {
-  //   console.log(`id: ${id}, password: ${password}, checked: ${checked}`);
-  // }, [checked, id, password]);
 
   return (
     <LoginContainer>
@@ -473,11 +440,11 @@ const RegisterPage = () => {
               checked={agreed}
               onChange={(e) => {
                 if (verification === 'email' && !isValidCertifiedEM) {
-                  alert('이메일 인증을 완료해주세요');
+                  toast.warn('이메일 인증을 완료해주세요');
                   return;
                 }
                 if (verification === 'phone' && !isValidCertifiedPN) {
-                  alert('휴대폰 인증을 완료해주세요');
+                  toast.warn('휴대폰 인증을 완료해주세요');
                   return;
                 }
                 setAgreed(e.target.checked);
@@ -491,11 +458,11 @@ const RegisterPage = () => {
           </AdditionalContainer>
           <StyledButton variant="contained" disabled={!agreed} onClick={() => {
             if (id === '') {
-              alert('아이디를 입력해주세요');
+              toast.warn('아이디를 입력해주세요');
               return;
             }
             if (password === '') {
-              alert('비밀번호를 입력해주세요');
+              toast.warn('비밀번호를 입력해주세요');
               return;
             }
             navigate(LINKS.REGISTER_NEXT);
@@ -506,25 +473,25 @@ const RegisterPage = () => {
           <OAuthButton onClick={
             () => {
               handleSocialLogin('google');
-              setSignupStatus('google');
+              // setSignupStatus('google');
             }}>
             <img src="/src/asset/image/oauth/GoogleLogin.png" alt="구글 로그인" />
           </OAuthButton>
           <OAuthButton onClick={() => {
             handleSocialLogin('facebook');
-            setSignupStatus('facebook');
+            // setSignupStatus('facebook');
           }}>
             <img src="/src/asset/image/oauth/FacebookLogin.png" alt="페이스북 로그인" />
           </OAuthButton>
           <OAuthButton onClick={() => {
             handleSocialLogin('naver');
-            setSignupStatus('naver');
+            // setSignupStatus('naver');
           }}>
             <img src="/src/asset/image/oauth/NaverLogin.png" alt="네이버 로그인" />
           </OAuthButton>
           <OAuthButton onClick={() => {
             handleSocialLogin('kakao');
-            setSignupStatus('kakao');
+            // setSignupStatus('kakao');
           }}>
             <img src="/src/asset/image/oauth/KakaoLogin.png" alt="카카오 로그인" />
           </OAuthButton>

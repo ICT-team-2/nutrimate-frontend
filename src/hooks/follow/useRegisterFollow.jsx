@@ -20,7 +20,7 @@ const useRegisterFollow = (followeeId) => {
     ],
     mutationFn: registerFollow,
     onSuccess: () => {
-      console.log('팔로우 성공');
+
     },
     onError: (error) => {
       console.error(error);

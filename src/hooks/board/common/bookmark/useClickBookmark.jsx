@@ -25,7 +25,6 @@ const useClickBookmark = (boardId, profile) => {
       REACT_QUERY_KEYS.DELETE],
     mutationFn: clickBookmark,
     onSuccess: () => {
-      console.log('북마크 성공');
       if (!profile) {
         queryClient.invalidateQueries({
           predicate: (query) => {

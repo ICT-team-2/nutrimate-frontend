@@ -9,6 +9,7 @@ import React, { useRef } from 'react';
 
 import { useAtom } from 'jotai/react';
 import { mapCenterAtom, mapDistancesAtom, mapPathsAtom, mapRefAtom } from '@src/component/board/atom.js';
+import { toast } from 'react-toastify';
 
 const GlobalStyle = createGlobalStyle`
     .number {
@@ -24,6 +25,18 @@ const StyledPaper = muiStyled(Paper)`
   justify-content: space-between;
 `;
 
+// 지도와 검색창을 감싸는 컨테이너 스타일
+const MapContainer = styled.div`
+  position: relative; // 내부 절대 위치 요소의 기준점 설정
+`;
+
+// 검색창 스타일링 (이미 있는 CustomSearchInput 컴포넌트에 추가할 스타일)
+const SearchInputContainer = styled.div`
+  position: absolute; // 절대 위치 설정
+  top: 5px; // 상단에서 10px 떨어진 위치
+  left: 5px; // 왼쪽에서 10px 떨어진 위치
+  z-index: 1000; // 지도 위에 나타나도록 z-index 설정
+`;
 
 /**
  * 카카오 지도를 표시하는 컴포넌트
@@ -97,9 +110,7 @@ const KakaoMap = (props) => {
     });
 
   };
-  // useEffect(() => {
-  //   console.log('centerValue:', centerValue);
-  // }, [centerValue]);
+
 
   const handleRightClick = (
     _map,
@@ -155,7 +166,7 @@ const KakaoMap = (props) => {
       return;
     }
     if (!navigator.geolocation) {
-      alert('이 브라우저에서는 Geolocation이 지원되지 않습니다.');
+      toast.warn('이 브라우저에서는 Geolocation이 지원되지 않습니다.');
     }
   }, []);
 
@@ -164,9 +175,6 @@ const KakaoMap = (props) => {
     if (searchValue) {
       const places = new window.kakao.maps.services.Places();
 
-      // 객체 생성 확인 로그 추가
-      // console.log(places);
-
       places.keywordSearch(searchValue, function(result, status) {
         if (status === window.kakao.maps.services.Status.OK) {
           setCenterValue({
@@ -174,15 +182,11 @@ const KakaoMap = (props) => {
             lng: result[0].x,
           });
         } else {
-          //alert("장소 검색에 실패했습니다.");
         }
       });
     }
   }, [searchValue]);
 
-  // useEffect(() => {
-  //   console.log(`유저가 검색한 단어:${searchValue}`);
-  // }, [searchValue]);
 
   // 걷기,달리기,자전거 소모 칼로리
   useEffect(() => {
@@ -221,99 +225,91 @@ const KakaoMap = (props) => {
     return mets * weight * (time / 60);
   }
 
-  // todo console.log 주석처리할 것
-  // useEffect(() => {
-  //   console.log('pathValues:', pathValues, 'distanceValues:', distanceValues,
-  //     'centerValue:', centerValue);
-  // }, [centerValue, distanceValues, pathValues]);
-
   return (
     <>
       <GlobalStyle />
-      <br />
-      {!readonly && (
-        <CustomSearchInput searchValue={searchValue} setSearchValue={setSearchValue} />
-      )}
-      <div id="map">
-        <Map // 지도를 표시할 Container
-          id={`;map`}
-          center={centerValue} // 지도의 중심좌표
-          style={{
-            // 지도의 크기
-            width: '100%',
-            height: '450px',
-          }}
-          level={zoomlevel} // 지도의 확대 레벨
-          onClick={handleClick}
-          onRightClick={handleRightClick}
-          onMouseMove={handleMouseMove}
-          onCreate={(map) => {
-            setMapRefState(map);
-          }}
-          // draggable={!readonly}
-          // zoomable={!readonly}
-        >
-          <Polyline
-            path={pathValues}
-            strokeWeight={3} // 선의 두께입니다
-            strokeColor={'#db4040'} // 선의 색깔입니다
-            strokeOpacity={1} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-            strokeStyle={'solid'} // 선의 스타일입니다
-            onCreate={setClickLine}
-          />
-          {pathValues.map((path) => (
-            <CustomOverlayMap
-              key={`;dot -${path.lat},${path.lng}`}
-              position={path}
-              zIndex={1}
-            >
-              <span className="dot"></span>
-            </CustomOverlayMap>
-          ))}
-          {pathValues.length > 1 &&
-            distanceValues.slice(1, distanceValues.length).map((distance, index) => (
+      <MapContainer>
+        {!readonly && (
+          <SearchInputContainer>
+            <CustomSearchInput searchValue={searchValue} setSearchValue={setSearchValue} />
+          </SearchInputContainer>
+        )}
+        <div id="map">
+          <Map // 지도를 표시할 Container
+            id={`;map`}
+            center={centerValue} // 지도의 중심좌표
+            style={{
+              // 지도의 크기
+              width: '100%',
+              height: '450px',
+            }}
+            level={zoomlevel} // 지도의 확대 레벨
+            onClick={handleClick}
+            onRightClick={handleRightClick}
+            onMouseMove={handleMouseMove}
+            onCreate={(map) => {
+              setMapRefState(map);
+            }}
+            // draggable={!readonly}
+            // zoomable={!readonly}
+          >
+            <Polyline
+              path={pathValues}
+              strokeWeight={3} // 선의 두께입니다
+              strokeColor={'#db4040'} // 선의 색깔입니다
+              strokeOpacity={1} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+              strokeStyle={'solid'} // 선의 스타일입니다
+              onCreate={setClickLine}
+            />
+            {pathValues.map((path) => (
               <CustomOverlayMap
-                key={`;distance -${pathValues[index + 1].lat},${pathValues[index + 1].lng}`}
-                position={pathValues[index + 1]}
-                yAnchor={1}
-                zIndex={2}
+                key={`;dot -${path.lat},${path.lng}`}
+                position={path}
+                zIndex={1}
               >
-                {!isdrawing && distanceValues.length === index + 2 ? (
-                  <DistanceInfo distance={distance} />
-                ) : (
-                  /* todo 이거 스타일 입히기 */
-                  <StyledPaper className="dotOverlay">
-                    거리 <span className="number">{distance}</span>m
-                  </StyledPaper>
-                )}
+                <span className="dot"></span>
               </CustomOverlayMap>
             ))}
-          <Polyline
-            path={isdrawing ? [pathValues[pathValues.length - 1], mousePosition] : []}
-            strokeWeight={3} // 선의 두께입니다
-            strokeColor={'#db4040'} // 선의 색깔입니다
-            strokeOpacity={0.5} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-            strokeStyle={'solid'} // 선의 스타일입니다
-            onCreate={setMoveLine}
-          />
-          {isdrawing && (
-            <CustomOverlayMap position={mousePosition} yAnchor={1} zIndex={2}>
-              <StyledPaper className="dotOverlay distanceInfo">
-                총거리{' '}
-                <span className="number">
-                {Math.round(clickLine.getLength() + moveLine.getLength())}
-              </span>
-                m
-              </StyledPaper>
-            </CustomOverlayMap>
-          )}
-        </Map>
-      </div>
-      {/*<div>*/}
-      {/*  걷기 칼로리: {walkCalories.toFixed(2)} kcal*/}
-      {/*  달리기 칼로리: {runCalories.toFixed(2)} kcal*/}
-      {/*  자전거 칼로리: {bikeCalories.toFixed(2)} kcal*/}
-      {/*</div>*/}
+            {pathValues.length > 1 &&
+              distanceValues.slice(1, distanceValues.length).map((distance, index) => (
+                <CustomOverlayMap
+                  key={`;distance -${pathValues[index + 1].lat},${pathValues[index + 1].lng}`}
+                  position={pathValues[index + 1]}
+                  yAnchor={1}
+                  zIndex={2}
+                >
+                  {!isdrawing && distanceValues.length === index + 2 ? (
+                    <DistanceInfo distance={distance} />
+                  ) : (
+                    /* todo 이거 스타일 입히기 */
+                    <StyledPaper className="dotOverlay">
+                      거리 <span className="number">{distance}</span>m
+                    </StyledPaper>
+                  )}
+                </CustomOverlayMap>
+              ))}
+            <Polyline
+              path={isdrawing ? [pathValues[pathValues.length - 1], mousePosition] : []}
+              strokeWeight={3} // 선의 두께입니다
+              strokeColor={'#db4040'} // 선의 색깔입니다
+              strokeOpacity={0.5} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+              strokeStyle={'solid'} // 선의 스타일입니다
+              onCreate={setMoveLine}
+            />
+            {isdrawing && (
+              <CustomOverlayMap position={mousePosition} yAnchor={1} zIndex={2}>
+                <StyledPaper className="dotOverlay distanceInfo">
+                  총거리{' '}
+                  <span className="number">
+                  {Math.round(clickLine.getLength() + moveLine.getLength())}
+                </span>
+                  m
+                </StyledPaper>
+              </CustomOverlayMap>
+            )}
+          </Map>
+        </div>
+      </MapContainer>
     </>
   );
 };

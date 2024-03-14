@@ -41,10 +41,6 @@ const FeedBrowseItem = (props) => {
   const [open, setOpen] = useState(false);
 
 
-  useEffect(() => {
-    console.log('item', index, item);
-  }, [item]);
-
   const clickModalOpen = () => {
     setOpen(true);
   };
@@ -57,7 +53,7 @@ const FeedBrowseItem = (props) => {
         onClick={clickModalOpen}
       >
         <img
-          src={import.meta.env.REACT_APP_BACKEND_URL + item.boardThumbnail}
+          src={item.boardThumbnail && (import.meta.env.REACT_APP_BACKEND_URL + item.boardThumbnail)}
           alt={item.title}
           loading="lazy"
           onError={(e) => {
