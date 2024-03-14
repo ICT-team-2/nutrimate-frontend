@@ -32,6 +32,7 @@ import axios from 'axios';
 import { LINKS } from '@src/utils/const.js';
 import { useNavigate } from 'react-router-dom';
 import { userIdAtom } from '@src/pages/login/atom.js';
+import { toast } from 'react-toastify';
 
 //테스트용 더미 데이터 - 추후 삭제 예정
 const dummyPaths = [
@@ -123,19 +124,6 @@ const InfoBoardWritePage = (props) => {
     setSearchValue(e.target.value);
   };
 
-  useEffect(() => {
-    console.log(`유저가 검색한 단어:${searchValue}`);
-  }, [searchValue]);
-
-  // 지도 정보를 초기화 - 쓰기에는 필요가 없으니까
-  // 서버에서 데이터를 받은 후 상세보기나 수정 페이지에서나 사용하고
-  // 이건 추후 삭제하면 됨(테스트용)
-
-  useEffect(() => {
-    console.log('zoomlevel:', mapRefState?.getLevel()); //지도의 확대 레벨
-    console.log('center:', mapRefState?.getCenter()); //지도의 중심좌표
-  }, [mapRefState]);
-
   // 유효성 검사
   const validateForm = () => {
     function removeHtmlTags(content) {
@@ -146,7 +134,7 @@ const InfoBoardWritePage = (props) => {
     let content = quillRefState.getEditor().root.innerHTML;
     content = removeHtmlTags(content);
     if (!title || !content || !mapPaths.length) {
-      alert('제목, 내용, 지도는 필수입니다.');
+      toast.warn('제목, 내용, 지도는 필수입니다.');
       return false;
     }
 
@@ -154,7 +142,7 @@ const InfoBoardWritePage = (props) => {
     const hashTagLabels = inputHashTag.map(tag => tag.label);
     const hashTagSet = new Set(hashTagLabels);
     if (hashTagSet.size !== hashTagLabels.length) {
-      alert('해시태그에 중복이 있습니다.');
+      toast.warn('해시태그에 중복이 있습니다.');
       return false;
     }
     return true;
@@ -173,17 +161,10 @@ const InfoBoardWritePage = (props) => {
 
     //--------------------
     //운동 게시판 글 쓰기
-    console.log('category:', category === '운동' ? 'exercise' : category);
-    console.log('title:', title);
-    console.log('paths:', mapPaths);
-    console.log('distances:', mapDistances);
-    console.log('center:', mapCenter);
-    console.log('zoomlevel:', mapRefState?.getLevel());
+
     let content = quillRefState.getEditor().root.innerHTML;
     content = removeHtmlTags(content);
-    console.log('DOMPurify content:', content);
     const hashTagData = inputHashTag.map(tag => tag.label);
-    console.log('hashTag:', hashTagData);
 
     // 데이터를 JSON 형식으로 준비
     const data = {
@@ -204,7 +185,6 @@ const InfoBoardWritePage = (props) => {
       const response = await axios.post('/boards/sport', data, {
         headers: { 'Content-Type': 'application/json' },
       });
-      console.log(response.data);
       if (response.status === 200) { // HTTP 상태 코드가 200인 경우(요청 성공)
         // alert('등록 완료'); // 등록 완료 알림
 
@@ -217,11 +197,11 @@ const InfoBoardWritePage = (props) => {
         };
 
       } else {
-        alert('등록 실패'); // 등록 실패 알림
+        toast.warn('등록 실패'); // 등록 실패 알림
       }
     } catch (error) {
       console.error(error);
-      alert('등록 중 오류가 발생'); // 오류 발생 알림
+      toast.error('등록 중 오류가 발생'); // 오류 발생 알림
     }
 
   };

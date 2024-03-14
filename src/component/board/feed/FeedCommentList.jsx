@@ -31,6 +31,7 @@ import BoardBookmarkButton from '@src/component/board/BoardBookmarkButton.jsx';
 import FollowButton from '@src/component/common/FollowButton.jsx';
 import { useQueryClient } from '@tanstack/react-query';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
+import ReportModal from '@src/component/admin/manage/ReportModal.jsx';
 
 const CONTAINER_MAX_HEIGHT = 'calc(100vh - 100px)';
 const COMMENT_LIST_MAX_HEIGHT = 'calc(200% - 120px)';
@@ -103,6 +104,9 @@ const FeedCommentList = (props) => {
   const { data: cmtData } = useFetchCommentsList(boardId);
 
   const isWriter = writerId === parseInt(sessionStorage.getItem('userId'));
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [showReportModalComment, setShowReportModalComment] = useState(false);
+  const [cmtId, setCmtId] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -114,10 +118,10 @@ const FeedCommentList = (props) => {
     });
   };
 
+
   useEffect(() => {
     setIsEdit(false);
   }, []);
-
 
   useEffect(() => {
     setCmtListRef(commentListRef.current);
@@ -125,6 +129,12 @@ const FeedCommentList = (props) => {
 
   return (
     <FeedCommentOuterContainer>
+      {showReportModal &&
+        <ReportModal setShowReportModal={setShowReportModal} showReportModal={showReportModal} boardId={boardId}
+                     searchKeyWord={'BOARD'} />}
+      {showReportModalComment &&
+        <ReportModal setShowReportModal={setShowReportModalComment} showReportModal={showReportModalComment}
+                     cmtId={cmtId} searchKeyWord={'CMT'} />}
       <FeedCommentInnerContainer>
         <FeedCommentHeader>
           <UserAvatar userNick={writer} />
@@ -137,12 +147,14 @@ const FeedCommentList = (props) => {
               onClickFollow={onChangeFollow}
               onClickUnfollow={onChangeFollow}
             />}
-          <FeedDropMenu boardId={boardId} />
+          {isWriter && <FeedDropMenu boardId={boardId} setShowReportModal={setShowReportModal} setCmtId={setCmtId} />}
         </FeedCommentHeader>
         <Divider />
         <FeedCommentBody ref={commentListRef}>
           {/*처음은 본문 표시*/}
           <FeedCommentComponent
+            setShowReportModalComment={setShowReportModalComment}
+            setCmtId={setCmtId}
             cmtDepth={0}
             inputRef={commentInputRef}
             editRef={commentEditRef}
@@ -153,8 +165,9 @@ const FeedCommentList = (props) => {
             cmtData={cmtData}
             inputRef={commentInputRef}
             editRef={commentEditRef}
+            setCmtId={setCmtId}
+            setShowReportModalComment={setShowReportModalComment}
           />
-          {/*<FeedCommentComponent />*/}
         </FeedCommentBody>
         <Divider />
         <ButtonsContainer>
@@ -204,7 +217,7 @@ const FeedCommentList = (props) => {
   );
 };
 
-const FeedComments = ({ cmtData, inputRef, editRef }) => {
+const FeedComments = ({ cmtData, inputRef, editRef, setShowReportModalComment, setCmtId }) => {
 
   return (
     <>
@@ -213,12 +226,16 @@ const FeedComments = ({ cmtData, inputRef, editRef }) => {
           <React.Fragment
             key={`comment-${index}`}>
             <FeedCommentComponent
+              setShowReportModalComment={setShowReportModalComment}
+              setCmtId={setCmtId}
               inputRef={inputRef}
               editRef={editRef}
               {...cmt}
             />
             {cmt.replies.length !== 0 &&
               <FeedComments
+                setShowReportModalComment={setShowReportModalComment}
+                setCmtId={setCmtId}
                 cmtData={cmt.replies}
                 inputRef={inputRef}
                 editRef={editRef}

@@ -31,13 +31,15 @@ const NewsContents = () => {
   useEffect(() => {
     if (data === undefined) return;
     if (searchKeyword.trim() === '') {
-      setDataSearched(data);
+      setDataSearched(data.filter((item) => item.keyword === category));
     } else {
-      setDataSearched(data.filter((item) =>
-        item.title.toLowerCase().includes(searchKeyword.toLowerCase())
-        || item.content.toLowerCase().includes(searchKeyword.toLowerCase())));
+      setDataSearched(data
+        .filter((item) => item.keyword === category)
+        .filter((item) =>
+          item.title?.toLowerCase().includes(searchKeyword.toLowerCase())
+          || item.content?.toLowerCase().includes(searchKeyword.toLowerCase())));
     }
-  }, [searchKeyword, data]);
+  }, [searchKeyword, data, category]);
 
   useEffect(() => {
     setTotalPage(Math.ceil((dataSearched?.length ?? pageItemNumber) / pageItemNumber));
@@ -59,25 +61,25 @@ const NewsContents = () => {
               setCategory(NEWS_CATEGORY.FOOD);
             }}
           >식단</StyledButton>
-          {/*<StyledButton*/}
-          {/*  variant={category === NEWS_CATEGORY.SPORT ? 'contained' : 'outlined'}*/}
-          {/*  onClick={() => {*/}
-          {/*    setCategory(NEWS_CATEGORY.SPORT);*/}
-          {/*  }}*/}
-          {/*>운동</StyledButton>*/}
-          {/*<StyledButton*/}
-          {/*  variant={category === NEWS_CATEGORY.NUTRIENTS ? 'contained' : 'outlined'}*/}
-          {/*  onClick={() => {*/}
-          {/*    setCategory(NEWS_CATEGORY.NUTRIENTS);*/}
-          {/*  }}*/}
-          {/*>영양제</StyledButton>*/}
+          <StyledButton
+            variant={category === NEWS_CATEGORY.SPORT ? 'contained' : 'outlined'}
+            onClick={() => {
+              setCategory(NEWS_CATEGORY.SPORT);
+            }}
+          >운동</StyledButton>
+          <StyledButton
+            variant={category === NEWS_CATEGORY.ALLERGY ? 'contained' : 'outlined'}
+            onClick={() => {
+              setCategory(NEWS_CATEGORY.ALLERGY);
+            }}
+          >알레르기</StyledButton>
         </CategoryButtonContainer>
         <Grid container spacing={3}>
           {
             dataSearched?.slice(pageItemNumber * (page - 1), pageItemNumber * (page))
               .map((d, index) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} lg={3} key={d + index}>
+                  <Grid item xs={12} sm={6} md={4} lg={12} key={d + index}>
                     <NewsCard
                       title={d.title}
                       content={d.content}

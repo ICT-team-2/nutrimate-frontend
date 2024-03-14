@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -47,6 +47,9 @@ const LikeButtonContainer = styled.div`
     left: 13px;
 
 `;
+const isEllipsisActive = (element) => {
+  return element.offsetWidth < element.scrollWidth;
+};
 
 /**
  * 상세보기의 카드형태의 피드 하나를 렌더링합니다.
@@ -64,12 +67,20 @@ function FeedViewContent(props) {
   const [likeClicked, setLikeClicked] = useState(checkedLike === 1);
   const userId = parseInt(sessionStorage.getItem('userId'));
 
+  const [contentEllipsis, setContentEllipsis] = useState(false);
+  const contentRef = useRef(null);
+
   const updateViewCount = useUpdateViewCount();
 
 
   useEffect(() => {
     setLikeClicked(checkedLike === 1);
   }, [checkedLike]);
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+    setContentEllipsis(isEllipsisActive(contentRef.current));
+  }, [contentRef.current]);
 
 
   return (
@@ -79,7 +90,7 @@ function FeedViewContent(props) {
           <CardHeader
             avatar={
               <UserAvatar
-                src={import.meta.env.REACT_APP_BACKEND_URL + writerProfile}
+                src={writerProfile && (import.meta.env.REACT_APP_BACKEND_URL + writerProfile)}
                 userNick={writer}
                 aria-label="recipe">
                 {writer}
@@ -134,11 +145,13 @@ function FeedViewContent(props) {
           </CardActions>
           <CardContent>
             <ContentTypo
+              ref={contentRef}
               variant="body2" color="text.secondary"
-              clickmoreview={clickMoreView + ''}>
+              clickmoreview={clickMoreView + ''}
+            >
               {boardContent}
             </ContentTypo>
-            {!clickMoreView &&
+            {!clickMoreView && contentEllipsis &&
               <MoreViewButton
                 onClick={() => setClickMoreView(true)}
                 variant="body2" color="text.secondary">

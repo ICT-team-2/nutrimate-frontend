@@ -16,6 +16,8 @@ import Menu from '@mui/material/Menu';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import axios from 'axios';
+import SentimentAnalysisImg from '@image/SentimentAnalysis.png';
+import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 
 
 const CommentContainer = styled(Paper)`
@@ -28,6 +30,16 @@ const TitleTypography = styled(Typography)`
     margin-bottom: 10px;
 `;
 
+const SentimentAnalysisIcon = styled.img`
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+
+`;
+const TitleContainer = styled.div`
+    display: flex;
+`;
+
 
 const ChallengeComments = () => {
 
@@ -38,47 +50,48 @@ const ChallengeComments = () => {
   const [cmtId, setCmtId] = useState([]);
 
 
-  const onhandleComment = (comment,cmt) => {
-    console.log('바뀜',cmt)
+  const onhandleComment = (comment, cmt) => {
     setCmtId(cmt);
     setMessage(comment);
-  }
+  };
 
   const handleOpenMenu = (event) => {
     setAnchorEl(event.currentTarget);
-    axios.get(`http://localhost:2222/text`,{
-  
-      }).then(data => {
-        setText(data.data);
-      });
-      };
+    axios.get(`${import.meta.env.REACT_APP_FLASK_URL}/text`, {}).then(data => {
+      setText(data.data);
+    });
+  };
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
 
 
-
-  
-
   return (
     <>
-    <CommentContainer>
-      <TitleTypography
-        variant='subtitle1'>댓글 목록
-        <MoreVertIcon style={{ display: 'inline', float: 'right' }} onClick={event=>handleOpenMenu(event)} />
-        </TitleTypography>
-      <ChallengeCommentInput userId={userId}  onhandleComment={onhandleComment}/>
-      <ChallengeCommentList cmtId={cmtId} message={message} userId={userId} />
-    </CommentContainer>
-       <Menu
-       anchorEl={anchorEl}
-       open={Boolean(anchorEl)}
-       onClose={handleCloseMenu}
-     > 
-       <MenuItem><InsertEmoticonIcon/> : {isNaN(text) ? `${Math.round(text.positive_ratio)}%` : 'Loading...'}</MenuItem>
-       <MenuItem><SentimentVeryDissatisfiedIcon/> : {isNaN(text) ? `${Math.round(text.negative_ratio)}%` : 'Loading...'}</MenuItem>
-     </Menu>
-     </>
+      <CommentContainer>
+        <TitleContainer>
+          <TitleTypography
+            variant="subtitle1">댓글 목록
+          </TitleTypography>
+          <FlexGrowDiv />
+          <SentimentAnalysisIcon
+            src={SentimentAnalysisImg}
+            onClick={event => handleOpenMenu(event)} />
+        </TitleContainer>
+        <ChallengeCommentInput userId={userId} onhandleComment={onhandleComment} />
+        <ChallengeCommentList cmtId={cmtId} message={message} userId={userId} />
+      </CommentContainer>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleCloseMenu}
+      >
+        <MenuItem><InsertEmoticonIcon /> : {isNaN(text) ? `${Math.round(text.positive_ratio)}%` : 'Loading...'}
+        </MenuItem>
+        <MenuItem><SentimentVeryDissatisfiedIcon /> : {isNaN(text) ? `${Math.round(text.negative_ratio)}%` : 'Loading...'}
+        </MenuItem>
+      </Menu>
+    </>
   );
 };
 

@@ -30,9 +30,9 @@ const ChatBotContainer = styled.div`
 `;
 
 
-let count=0;
+let count = 0;
 const ChatBotComponent = (props) => {
-  const { voiceReading} = props;
+  const { voiceReading } = props;
   const [openChat, setOpenChat] = useState(false);
   const documentRef = useRef(document);
   const chatBotRef = useRef(null);
@@ -41,33 +41,35 @@ const ChatBotComponent = (props) => {
   const [loading, setLoading] = useState(false);
   const [nickname, setNickname] = useState('유저');
 
-  const handleSend =  (message) => {
+  const handleSend = (message) => {
 
-    setChatData(prevChatData => [...prevChatData, { 'chatMessage': message, 'challengeNick': '유저', 'messageType': 'CHAT' }]);
-    setLoading(true); 
-    axios.post('http://localhost:2222/chatbot', { 'content': message })
-    .then(response => {
-      setLoading(false);
-      console.log(response.data);
-      const botChatData = { 'chatMessage': response.data.messages, 'challengeNick': '챗봇', 'messageType': 'CHAT' };
-      console.log(response.data.messages)
-      setChatData(prevChatData => [...prevChatData, botChatData]);
-    })
-    .catch(error => {
-      setLoading(false);
-      console.error('Error:', error);
-    });
+    setChatData(prevChatData => [...prevChatData, {
+      'chatMessage': message,
+      'challengeNick': '유저',
+      'messageType': 'CHAT',
+    }]);
+    setLoading(true);
+    axios.post(`${import.meta.env.REACT_APP_FLASK_URL}/chatbot`, { 'content': message })
+      .then(response => {
+        setLoading(false);
+        const botChatData = { 'chatMessage': response.data.messages, 'challengeNick': '챗봇', 'messageType': 'CHAT' };
+        setChatData(prevChatData => [...prevChatData, botChatData]);
+      })
+      .catch(error => {
+        setLoading(false);
+        console.error('Error:', error);
+      });
   };
 
 
   //chatbot 밖을 클릭하면 챗봇 닫힘
   useEffect(() => {
-      count++;
-      
-      if(count==1){
-          const chatData={ 'chatMessage' : '안녕하세요. 챗봇입니다. 무엇을 도와드릴까요?', 'challengeNick': '챗봇','messageType':'CHAT' }
-          setChatData(prevChatData => [...prevChatData, chatData]); 
-      }  
+    count++;
+
+    if (count == 1) {
+      const chatData = { 'chatMessage': '안녕하세요. 챗봇입니다. 무엇을 도와드릴까요?', 'challengeNick': '챗봇', 'messageType': 'CHAT' };
+      setChatData(prevChatData => [...prevChatData, chatData]);
+    }
 
 
     const handleClickOutside = (event) => {
@@ -82,16 +84,17 @@ const ChatBotComponent = (props) => {
     };
   }, [voiceReading]);
 
-  
+
   return (
     <ChatBotContainer>
       <Fade in={openChat} timeout={250}>
         <ChatBotPaper openchat={openChat + ''} ref={chatBotRef}>
-          <ChatUI title='챗봇' overflow height={'450px'} onSend={handleSend}  data={chatData} nickname={nickname} loading={loading} micicon='micicon'/>
+          <ChatUI title="챗봇" overflow height={'450px'} onSend={handleSend} data={chatData} nickname={nickname}
+                  loading={loading} micicon="micicon" />
         </ChatBotPaper>
       </Fade>
       <CircleButton
-        variant='contained'
+        variant="contained"
         onClick={() => {
           setOpenChat(!openChat);
         }}

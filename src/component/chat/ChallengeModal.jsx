@@ -4,6 +4,8 @@ import { Button, TextField } from '@mui/material';
 import { ImgUploader } from '@src/component/common/ImgUploader.jsx';
 import * as tmImage from '@teachablemachine/image';
 import ChallengeImgUploader from '@src/component/chat/ChallengeImgUploader.jsx';
+import { toast } from 'react-toastify';
+import { TOAST_OPTIONS } from '@src/utils/const.js';
 
 
 const ModalBg = styled.div`
@@ -175,15 +177,13 @@ const ChallengeModal = (props) => {
     const img = new Image();
     img.src = uploadedImage;
     const prediction = await model.predict(img);
-    console.log('에측확률: ', prediction);
     //예측 결과를 labelContainer에 표시주는 반복문
     //className:클래스명(분류명)
     //probability:확률
     //toFixed(소수점 자리수):자리수까지 표현(반올림)
-    console.log((prediction[0].probability.toFixed(2)) * 100);
     if (prediction[0].probability >= 0.7) {
 
-      fetch(`http://localhost:9999/challenge/success/record?chatroomId=${chatroom}&userId=${userId}`, {
+      fetch(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/success/record?chatroomId=${chatroom}&userId=${userId}`, {
         credentials: 'include',
       })
         .then(response => response.json())
@@ -191,21 +191,21 @@ const ChallengeModal = (props) => {
           if (data.SUCCESSNOT == null) {
             if (data.SUCCESS == 1) {
               setChallengeSuccess(true);
-              alert(nickname + '님 챌린지에 성공했습니다.');
+              toast.success(nickname + '님 챌린지에 성공했습니다.');
               setChallengeModal(false);
             } else {
-              alert(nickname + '님 오늘 이미 챌린지에 참여했습니다.');
+              toast.warn(nickname + '님 오늘 이미 챌린지에 참여했습니다.');
               setChallengeModal(false);
 
             }
           } else {
-            alert(nickname + '님 챌린지에 실패했습니다. 만약 올바른 이미지를 등록했다면 다시 한 번 시도해주세요!!');
+            toast.error(nickname + '님 챌린지에 실패했습니다. 만약 올바른 이미지를 등록했다면 다시 한 번 시도해주세요!!');
             setChallengeModal(false);
           }
         });
     } else {
       setChallengeModal(false);
-      alert(nickname + '님 챌린지에 실패했습니다. 만약 올바른 이미지를 등록했다면 다시 한 번 시도해주세요.');
+      toast.error(nickname + '님 챌린지에 실패했습니다. 만약 올바른 이미지를 등록했다면 다시 한 번 시도해주세요.');
     }
   }
 
@@ -221,7 +221,6 @@ const ChallengeModal = (props) => {
 
   // 이미지가 업로드될 때 호출되는 콜백 함수
   const handleImageSelect = (imageData) => {
-    // console.log('imageData: ', imageData);
     setUploadedImage(imageData);
   };
 
@@ -232,9 +231,8 @@ const ChallengeModal = (props) => {
         initialize();
       }, 3000);
 
-
     } else {
-      console.log('이미지가 선택되지 않았습니다.');
+      toast.error('이미지를 업로드해주세요.', TOAST_OPTIONS.ERROR);
     }
   };
 

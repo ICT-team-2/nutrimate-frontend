@@ -7,6 +7,7 @@ import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import FeedCommentList from '@src/component/board/feed/FeedCommentList.jsx';
 import { NO_IMAGE_PATH } from '@src/utils/const.js';
 
+
 const StyledBox = styled(Box)`
     position: absolute;
     top: 50%;
@@ -56,7 +57,7 @@ const FeedDetailContent = ({ data, open, setOpen }) => {
           <FlexGrowDiv>
             <ImgContainer>
               <StyledImg
-                src={import.meta.env.REACT_APP_BACKEND_URL + boardThumbnail}
+                src={boardThumbnail && (import.meta.env.REACT_APP_BACKEND_URL + boardThumbnail)}
                 alt="feed image"
                 onError={(e) => {
                   e.target.src = NO_IMAGE_PATH;

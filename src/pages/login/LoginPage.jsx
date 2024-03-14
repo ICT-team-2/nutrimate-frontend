@@ -13,9 +13,13 @@ import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 import axios from 'axios';
 import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const.js';
-
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken } from 'firebase/messaging';
+import firebaseConfigFile from '@src/component/calendar/fireConfig.js';
+import { useCookies } from 'react-cookie';
+import { toast } from 'react-toastify';
 
 const LoginContainer = styled(Container)`
     display: flex;
@@ -74,40 +78,48 @@ const LoginPage = () => {
   const [checked, setChecked] = useState(false);
   const [id, setId] = useState(localStorage.getItem('savedId') || '');
   const [password, setPassword] = useState('');
+  const [cookies, setCookie] = useCookies(['fcmtoken']);
+  const navigate = useNavigate();
+
   // const [userId, setUserId] = useAtom(userIdAtom);
 
 
   const handleLogin = (provider) => {
     if (id === '' || password === '') {
-      window.alert('아이디와 비밀번호를 입력해주세요.');
+      toast.warn('아이디와 비밀번호를 입력해주세요.');
       return;
     }
     if (!/^[a-zA-Z0-9]+$/.test(id)) {
-      window.alert('아이디가 잘못입력되었습니다.');
+      toast.warn('아이디가 잘못입력되었습니다.');
       return;
     }
     if (!/^[a-zA-Z0-9]+$/.test(password)) {
-      window.alert('비밀번호가 잘못 입력되었습니다.');
+      toast.warn('비밀번호가 잘못 입력되었습니다.');
       return;
     }
-
-    console.log(`Logging in with id: ${id}, password: ${password}`);
-    console.log('ddd');
-
-
     axios.post('/login', {
       userUid: id,
       userPwd: password,
     })
-      .then(response => {
+      .then(async response => {
         const { accessToken } = response.data;
-        window.location.href = '/';
+        const firebaseApp = initializeApp(firebaseConfigFile);
+
+        navigate('/');
+        const messaging = getMessaging();
+        getToken(messaging, { vapidKey: import.meta.env.REACT_APP_FIREBASE_TOKEN }).then((token) => {
+          setCookie('fcmtoken', token);
+        });
+      })
+      .catch(error => {
+        // 오류 처리
+        console.error('에러 발생:', error);
       });
   };
 
 
   const handleSocialLogin = (provider) => {
-    window.location.href = `http://localhost:9999/oauth2/authorization/${provider}`;
+    window.location.href = `${import.meta.env.REACT_APP_BACKEND_URL}/oauth2/authorization/${provider}`;
   };
 
 
@@ -115,30 +127,28 @@ const LoginPage = () => {
     window.sessionStorage.setItem('signup_status', status);
   };
 
-  // 아이디 저장 체크박스의 상태가 변경되었을 때 실행되는 useEffect
   useEffect(() => {
-    // 아이디 저장 체크박스가 체크된 상태라면 아이디를 로컬 스토리지에 저장합니다.
-    if (checked && savedId) {
-      setId(savedId);
+    if (localStorage.getItem('savedId') != null) {
+      setChecked(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (checked) {
+      // 체크박스가 체크될 때 로컬 스토리지에 아이디를 저장합니다.
+      localStorage.setItem('savedId', id);
+    }
+  }, [id, checked]);
+
+  useEffect(() => {
+    if (!checked) {
+      localStorage.removeItem('savedId');
     }
   }, [checked]);
 
   const handleCheckboxChange = (event) => {
-    if (event.target.checked) {
-      // 체크박스가 체크될 때 로컬 스토리지에 아이디를 저장합니다.
-      localStorage.setItem('savedId', id);
-    } else {
-      // 체크박스가 체크 해제될 때는 이벤트를 무시하고 체크 상태를 유지합니다.
-      event.preventDefault();
-      setChecked(true);
-    }
+    setChecked(event.target.checked);
   };
-
-
-  //todo 로깅용 - 나중에 지울것
-  useEffect(() => {
-    console.log(`id: ${id}, password: ${password}, checked: ${checked}`);
-  }, [checked, id, password]);
 
   return (
     <LoginContainer>
@@ -169,13 +179,13 @@ const LoginPage = () => {
         </LoginBody>
         <Divider>간편 로그인</Divider>
         <OAuthContainer>
-        <OAuthButton onClick={
-          () => {
-            handleSocialLogin('google');
-            setSignupStatus('google');
-          }}>
-          <img src="/src/asset/image/oauth/GoogleLogin.png" alt="구글 로그인" />
-        </OAuthButton>
+          <OAuthButton onClick={
+            () => {
+              handleSocialLogin('google');
+              setSignupStatus('google');
+            }}>
+            <img src="/src/asset/image/oauth/GoogleLogin.png" alt="구글 로그인" />
+          </OAuthButton>
           <OAuthButton onClick={() => {
             handleSocialLogin('facebook');
             setSignupStatus('facebook');

@@ -22,8 +22,8 @@ const MainApp = () => {
       <QueryClientProvider client={queryClient}>
         <StyledEngineProvider injectFirst>
           <BrowserRouter>
-            <JotaiDevTools />
-            <ReactQueryDevtools initialIsOpen={true} buttonPosition="bottom-left" />
+            {/*<JotaiDevTools />*/}
+            {/*<ReactQueryDevtools buttonPosition="bottom-left" />*/}
             <App />
           </BrowserRouter>
         </StyledEngineProvider>

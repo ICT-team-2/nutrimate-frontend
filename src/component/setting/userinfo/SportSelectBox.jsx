@@ -31,13 +31,13 @@ const StyledSelect = muiStyled(Select)`
 const SportSelectBox = (props) => {
   const { title, label, keys, values, id, disabled } = props;
   const [isFocused, setIsFocused] = useState(undefined);
-  const [exercise, setExercise] = useAtom(sportStateAtom);  
+  const [exercise, setExercise] = useAtom(sportStateAtom);
 
   const handleChange = (event) => {
 
     setExercise(event.target.value);
   };
-  console.log("스포츠 key:" ,keys);
+
   return (
     <>
       <StyledLabel

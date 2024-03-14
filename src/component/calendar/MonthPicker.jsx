@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,11 +11,11 @@ import { useAtom } from 'jotai/react';
 import { datePickerAtom } from '@src/component/calendar/atom.js';
 import dayjs from 'dayjs';
 
-export default function MonthPicker ({ children, date, onNavigate }) {
+export default function MonthPicker({ children, date, onNavigate }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [selectedDate, setSelectedDate] = useAtom(datePickerAtom);
-  
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,26 +24,26 @@ export default function MonthPicker ({ children, date, onNavigate }) {
   };
   const handleDateChange = (d) => {
     setSelectedDate(d['$d']);
-    console.log(d);
     date.setYear(d['$d'].getFullYear());
     date.setMonth(d['$d'].getMonth());
     onNavigate('current');
+
   };
-  
   return (
     <>
       <Button
-        id='basic-button'
+        id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup='true'
+        aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-        color='inherit'
+        color="inherit"
+
       >
         {children}
       </Button>
       <Menu
-        id='basic-menu'
+        id="basic-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -52,11 +52,11 @@ export default function MonthPicker ({ children, date, onNavigate }) {
           {' '}
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              label='날짜 선택'
+              label="날짜 선택"
               value={dayjs(selectedDate)}
               onChange={handleDateChange}
               views={['year', 'month']}
-              format='YYYY/MM'
+              format="YYYY/MM"
               renderInput={(props) => <TextField {...props} />}
             />
           </LocalizationProvider>

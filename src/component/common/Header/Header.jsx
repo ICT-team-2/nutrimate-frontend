@@ -16,6 +16,8 @@ import { LINKS } from '@src/utils/const.js';
 import styled from 'styled-components';
 import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom';
+import { convertDateToUrlParam } from '@src/utils/functions.js';
+import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 
 import NotiBadge from '@src/component/notice/NotiBadge.jsx'
 
@@ -58,6 +60,10 @@ const Header = (props) => {
   const [userId, setUserId] = useAtom(userIdAtom);
   const open = useAtomValue(drawerStateAtom);
   const navigate = useNavigate();
+
+  const { data: userData } = useFetchProfileData();
+
+
   const gotoInfo = () => {
     navigate(LINKS.INFO);
   };
@@ -66,11 +72,13 @@ const Header = (props) => {
     navigate(LINKS.ALL_INFO_BOARD + '/1');
   };
 
-  const gotoFeed = () => {
-    navigate(LINKS.FEEDBOARD_VIEW);
+  const gotoRecord = () => {
+    navigate(`${LINKS.RECORD_WRITE}/${convertDateToUrlParam()}`);
   };
 
-
+  const gotoAdmin = () => {
+    navigate(LINKS.ADMIN_CHART);
+  };
   return (
     <Box sx={{ display: 'flex' }}>
       <StyledAppBar open={open} logowhite={logoWhite + ''}>
@@ -82,18 +90,21 @@ const Header = (props) => {
           {/* 빈 공간 */}
           <Box sx={{ flexGrow: 1 }} />
           <StyledButton
-            onClick={gotoInfo}
+            onClick={gotoRecord}
             logowhite={logoWhite + ''}
-          >Infomation</StyledButton>
+          >Record</StyledButton>
           <StyledButton
             onClick={gotoBoard}
             logowhite={logoWhite + ''}
           >Board</StyledButton>
           <StyledButton
-            onClick={gotoFeed}
+            onClick={gotoInfo}
             logowhite={logoWhite + ''}
-          >FEED</StyledButton>
-         
+          >Infomation</StyledButton>
+          {userData?.userRole === 'ROLE_ADMIN' && <StyledButton
+            onClick={gotoAdmin}
+            logowhite={logoWhite + ''}
+          >Admin</StyledButton>}
           {!!userId ? (
             <>
             <div style={{ marginRight: '20px' }}><NotiBadge/></div>
@@ -111,7 +122,6 @@ const Header = (props) => {
               </StyledButton>
             </div>
           )}
-         
         </Toolbar>
       </StyledAppBar>
       {hasDrawer && <SideMenu />}

@@ -22,7 +22,6 @@ const useRegisterFollow = (followeeId) => {
     ],
     mutationFn: registerFollow,
     onSuccess: (data) => {
-      console.log(data);
       addCommentFB(data.recordId,data,data?.userNick+'가 팔로우 했습니다.');
     },
     onError: (error) => {

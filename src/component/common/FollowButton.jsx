@@ -15,13 +15,11 @@ const FollowButton = ({ following, followId, onClickFollow, onClickUnfollow }) =
   }, [following]);
 
   const clickFollow = () => {
-    console.log('팔로우');
     registerFollow.mutate();
     setFollow(true);
     onClickFollow();
   };
   const clickUnfollow = () => {
-    console.log('해제');
     deleteFollow.mutate();
     setFollow(false);
     onClickUnfollow();

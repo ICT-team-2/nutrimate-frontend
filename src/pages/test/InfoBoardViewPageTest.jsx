@@ -14,6 +14,7 @@ import axios from 'axios';
 import useInitMapData from '@src/component/board/info/hooks/useInitMapData.jsx';
 import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom.js';
+import { toast } from 'react-toastify';
 
 const InfoBoardViewContainer = muiStyled(Container)`
   margin-top: 20px;
@@ -57,13 +58,12 @@ const InfoBoardViewPage = () => {
   const fetchBoard = async () => {
     try {
       const response = await axios.get(`/boards/sport/${boardId}`);
-      console.log(response.data);
       setBoard(response.data.current);  // current만 저장
       setLikeCount(response.data.current.likeCount);
       return response.data.current;
     } catch (error) {
       console.error(error);
-      alert('게시글을 불러오는 중 오류가 발생했습니다.');
+      toast.error('게시글을 불러오는 중 오류가 발생했습니다.');
     }
   };
 
@@ -77,7 +77,7 @@ const InfoBoardViewPage = () => {
       }
     } catch (error) {
       console.error(error);
-      alert('해시태그를 불러오는 중 오류가 발생했습니다.');
+      toast.warn('해시태그를 불러오는 중 오류가 발생했습니다.');
     }
   };
 
@@ -91,7 +91,7 @@ const InfoBoardViewPage = () => {
       // setLikeId(response.data.likeId);
     } catch (error) {
       console.error(error);
-      alert('좋아요 상태를 불러오는 중 오류가 발생했습니다.');
+      toast.error('좋아요 상태를 불러오는 중 오류가 발생했습니다.');
     }
   };
 
@@ -111,7 +111,6 @@ const InfoBoardViewPage = () => {
         response = await axios.post(`/boards/sport/${boardId}/likes`, likeDto);
       }
       await fetchLikeStatus();
-      console.log(response.data.message);
       return response.data.message;
     } catch (error) {
       console.error('좋아요 업데이트 중 오류 발생:', error);
@@ -150,16 +149,11 @@ const InfoBoardViewPage = () => {
 
   useEffect(() => {
     fetchBoard().then((board) => {
-      console.log('BOARD:', board);
     });
     fetchLikeStatus().then((likeStatus) => {
-
     });
   }, [boardId]);
 
-  useEffect(() => {
-    console.log('HASHTAG', hashtag);
-  }, [hashtag]);
 
   if (!board) return null;  // 게시글 데이터가 아직 없는 경우
 

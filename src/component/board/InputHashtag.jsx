@@ -64,11 +64,6 @@ const InputHashtag = () => {
     );
   };
 
-  // useEffect(() => {
-  //   console.log(chipData);
-  // }, [chipData]);
-
-
   return (
     <div>
       <BoardSubtitleTypo text="해시태그 추가" />

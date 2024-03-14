@@ -17,7 +17,6 @@ selectedStatisticsPeriodBtnAtom.debugLabel = 'recordSelectedStatisticsBtnAtom';
 
 export const selectedRecordResultAtom = atom(RECORD_STATISTICS_RESULT_TYPE.FOOD_RECORD?.VALUE);
 selectedRecordResultAtom.debugLabel = 'recordSelectedRecordResultAtom';
-console.log();
 
 export const foodsAtom = atom([]);
 export const calAtom = atom(2200);

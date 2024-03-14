@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import { Outlet } from 'react-router-dom';
 import { FOOTER_HEIGHT } from '@src/utils/const.js';
+import useCheckUserToken from '@src/hooks/useCheckUserToken.jsx';
 
 
 const Wrapper = styled.div`

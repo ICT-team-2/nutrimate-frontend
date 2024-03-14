@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Menu, MenuItem, Tab, Tabs } from '@mui/material';
 import { useAtom, useSetAtom } from 'jotai/react';
 import { infoTabStateAtom, recommandMenuStateAtom } from '@src/component/infomation/atom.js';
-import { RECOMMAND_MENU } from '@src/component/infomation/const.js';
+import { INFO_TABS, RECOMMAND_MENU } from '@src/component/infomation/const.js';
 
 export default function InfomationTabs() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -30,7 +30,14 @@ export default function InfomationTabs() {
     <div>
       <Tabs value={selectedTab} onChange={handleTabClick}>
         <Tab label="뉴스" />
-        <Tab label="추천" onClick={handleMenuClick} />
+        <Tab label="추천"
+             onMouseOver={handleMenuClick}
+             onMouseLeave={() => {
+               setTimeout(() => {
+                 handleClose();
+               }, 3000);
+             }}
+        />
       </Tabs>
       <Menu
         id="simple-menu"
@@ -39,18 +46,32 @@ export default function InfomationTabs() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={(event) =>
-          handleMenuItemClick(event, RECOMMAND_MENU.NUTRIENTS)}>
+        <MenuItem
+          onClick={(event) => {
+            setSelectedTab(INFO_TABS.RECOMMAND);
+            handleMenuItemClick(event, RECOMMAND_MENU.NUTRIENTS);
+          }}
+        >
           영양제 추천
         </MenuItem>
-        <MenuItem onClick={(event) =>
-          handleMenuItemClick(event, RECOMMAND_MENU.SPORT)}>운동 추천
+        <MenuItem
+          onClick={(event) => {
+            setSelectedTab(INFO_TABS.RECOMMAND);
+            handleMenuItemClick(event, RECOMMAND_MENU.SPORT);
+          }}
+        >운동 추천
         </MenuItem>
-        <MenuItem onClick={(event) =>
-          handleMenuItemClick(event, RECOMMAND_MENU.PLACE)}>장소 추천
+        <MenuItem
+          onClick={(event) => {
+            setSelectedTab(INFO_TABS.RECOMMAND);
+            handleMenuItemClick(event, RECOMMAND_MENU.PLACE);
+          }}>장소 추천
         </MenuItem>
-        <MenuItem onClick={(event) =>
-          handleMenuItemClick(event, RECOMMAND_MENU.FOOD)}>음식 추천
+        <MenuItem
+          onClick={(event) => {
+            setSelectedTab(INFO_TABS.RECOMMAND);
+            handleMenuItemClick(event, RECOMMAND_MENU.FOOD);
+          }}>음식 추천
         </MenuItem>
         {/* 이하 동일하게 추가... */}
       </Menu>

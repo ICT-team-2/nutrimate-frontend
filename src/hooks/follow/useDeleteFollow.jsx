@@ -8,7 +8,7 @@ const useDeleteFollow = (followeeId) => {
   //axios
   const deleteFollow = async () => {
     await axios.delete('/follow/unfollow', {
-      data: {
+      params: {
         followeeId: followeeId,
         userId: userId,
       },
@@ -20,7 +20,6 @@ const useDeleteFollow = (followeeId) => {
     mutationKey: [REACT_QUERY_KEYS.FOLLOW, REACT_QUERY_KEYS.DELETE, userId, followeeId],
     mutationFn: deleteFollow,
     onSuccess: () => {
-      console.log('팔로우 취소 성공');
     },
     onError: (error) => {
       console.error(error);

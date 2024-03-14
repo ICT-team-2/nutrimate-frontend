@@ -78,9 +78,6 @@ const FeedBrowseContent = () => {
     () => fetchNextPage(),
     1);
   const observerRef = useRef(null);
-  useEffect(() => {
-    console.log('data', data?.pages);
-  }, [data]);
 
   const gotoWrite = () => {
     navigate(LINKS.FEED_BOARD_WRITE);

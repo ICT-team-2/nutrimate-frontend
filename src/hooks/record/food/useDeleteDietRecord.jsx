@@ -26,13 +26,12 @@ const useDeleteDietRecord = () => {
     ],
     mutationFn: deleteDietRecord,
     onSuccess: () => {
-      console.log('삭제 성공');
       queryClient.invalidateQueries({
         queryKey: [REACT_QUERY_KEYS.RECORD],
       });
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
 };

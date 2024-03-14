@@ -38,6 +38,7 @@ export const PATH_PARAMS = {
   ADMIN: 'admin',
   CHART: 'chart',
   MANAGE: 'manage',
+  DM: 'dm',
 };
 
 //
@@ -73,21 +74,27 @@ export const ROUTER_LINKS = {
   CHART: PATH_PARAMS.CHART,
   MANAGE: PATH_PARAMS.MANAGE,
   WRITE: PATH_PARAMS.WRITE,
+  DM: PATH_PARAMS.DM,
 };
 
 export const LINKS = {
   BOARD: '/' + ROUTER_LINKS.BOARD,
   INFO_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO,
   ALL_INFO_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.ALL_INFO_BOARD,
+
   FOOD_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.FOOD_BOARD,
   SPORT_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.SPORT_BOARD,
+
   FEED_BOARD: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.FEED_BOARD,
   FEED_BOARD_WRITE: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.FEED_BOARD_WRITE,
   FEEDBOARD_VIEW: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.FEED_BOARD_VIEW,
   FEEDBOARD_EDIT: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.FEED_BOARD_EDIT,
+
   INFO: '/' + ROUTER_LINKS.INFO,
+  INFO_BOARD_VIEW: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_VIEW,
   INFO_BOARD_WRITE: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_WRITE,
   INFO_BOARD_EDIT: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_EDIT,
+
   RECORD: '/' + ROUTER_LINKS.RECORD,
   CALENDAR: '/' + ROUTER_LINKS.CALENDAR,
   MYINFO: '/' + ROUTER_LINKS.MYINFO,
@@ -107,7 +114,7 @@ export const LINKS = {
   RECORD_CHART: '/' + ROUTER_LINKS.RECORD + '/' + ROUTER_LINKS.CHART,
   RECORD_WRITE: '/' + ROUTER_LINKS.RECORD + '/' + ROUTER_LINKS.WRITE,
 
-  INFO_BOARD_VIEW: '/' + ROUTER_LINKS.BOARD + '/' + ROUTER_LINKS.INFO_BOARD_VIEW,
+  DM: '/' + ROUTER_LINKS.DM,
 };
 
 export const FOOTER_HEIGHT = '13px';
@@ -143,7 +150,10 @@ export const MENU_LIST = {
     TITLE: '프로필',
     PATH: LINKS.MYINFO,
   },
-
+  DM: {
+    TITLE: '채팅',
+    PATH: LINKS.DM,
+  },
   SETTING: {
     TITLE: '설정',
     PATH: LINKS.SETTING,
@@ -254,6 +264,13 @@ export const REACT_QUERY_KEYS = {
   GRAPH: 'graph',
   FACE: 'face',
   EMOTION: 'emotion',
+  DM: 'dm',
+  CHAT: 'chat',
+  CHATROOM: 'chatroom',
+  PRIVATE: 'private',
+  GROUP: 'group',
+  ROOMNAME: 'roomname',
+  LEAVE: 'leave',
 };
 
 export const FACE_EMOTION_RESULT = {
@@ -264,4 +281,62 @@ export const FACE_EMOTION_RESULT = {
   sad: '슬픔',
   surprise: '놀람',
   neutral: '중립',
+};
+
+export const TOAST_OPTIONS = {
+  SUCCESS: {
+    closeOnClick: true,
+    autoClose: 1000,
+    isLoading: false,
+    type: 'success',
+  },
+  ERROR: {
+    closeOnClick: true,
+    autoClose: 1000,
+    isLoading: false,
+    type: 'error',
+  },
+  LOADING: {
+    autoClose: false,
+    isLoading: true,
+    closeOnClick: false,
+  },
+  WARN: {
+    autoClose: 1000,
+    isLoading: false,
+    closeOnClick: true,
+    type: 'warning',
+  },
+};
+
+export const TOAST_MESSAGE = {
+  ANALYZE: {
+    LOADING: '분석 중입니다...',
+    SUCCESS: '분석 완료',
+    ERROR: '분석 실패',
+  },
+  SLOW_NETWORK: '네트워크 상태가 좋지 않습니다.',
+  IMAGE_CREATE: {
+    LOADING: '이미지 생성 중...',
+    SUCCESS: '이미지 생성 완료',
+    ERROR: '이미지 생성 실패',
+  },
+  RECORD: {
+    SUCCESS: '기록 저장 성공',
+    ERROR: '기록 저장 실패',
+  },
+  BOARD: {
+    WRITE: {
+      SUCCESS: '글쓰기 성공',
+      ERROR: '글쓰기 실패',
+    },
+    UPDATE: {
+      SUCCESS: '수정 성공',
+      ERROR: '수정 실패',
+    },
+  },
+  PROFILE: {
+    SUCCESS: '프로필 변경 성공',
+    ERROR: '프로필 변경 실패',
+  },
 };

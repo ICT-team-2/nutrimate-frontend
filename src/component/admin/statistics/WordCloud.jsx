@@ -8,7 +8,7 @@ import Loading from '@src/component/admin/statistics/Loading.jsx';
 const ChartContainer = styled.div`
     position: absolute;
     top: 0;
-    bottom: 0;
+    bottom: 50%;
     left: 0;
     right: 0;
     margin: 30px;
@@ -27,13 +27,18 @@ const ChartOuterContainer = styled.div`
 const ChartPaper = styled(Paper)`
     width: 100%;
     height: 0;
-    padding-bottom: ${({ paddingbottom }) => paddingbottom + 50}%; // 가로 세로 비율 1.5:1에 맞는 padding-bottom 값
+    padding-bottom: ${({ paddingbottom }) => paddingbottom + 10}%; // 가로 세로 비율 1.5:1에 맞는 padding-bottom 값
     position: relative; // 내부 요소를 absolute positioning하기 위해
 `;
 
 const ChartTitleTypo = styled(Typography)`
     padding: 20px 0 0 20px;
     color: #333;
+`;
+
+const StyledWordCloudImg = styled.img`
+    max-width: 60%;
+    margin: 0 auto;
 `;
 
 const WordCloud = (props) => {
@@ -60,7 +65,8 @@ const WordCloud = (props) => {
       <ChartTitleTypo variant={titleVariant}>워드클라우드</ChartTitleTypo>
       <ChartOuterContainer paddingbottom={paddingbottom}>
         <ChartContainer>
-          {loadingImage ? <Loading /> : <img src={`data:image/jpeg;base64,${image}`} alt="Selected Image" />}
+          {loadingImage ? <Loading /> :
+            <StyledWordCloudImg src={`data:image/jpeg;base64,${image}`} alt="Selected Image" />}
         </ChartContainer>
       </ChartOuterContainer>
     </ChartPaper>

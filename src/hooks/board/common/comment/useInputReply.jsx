@@ -7,7 +7,6 @@ const useInputReply = (boardId) => {
 
   //axios
   const inputReply = async (data) => {
-    console.log(data);
     const response = await axios.post('/board/comments/write/replies', {
       boardId: data.boardId,
       userId: sessionStorage.getItem('userId'),
@@ -21,7 +20,6 @@ const useInputReply = (boardId) => {
     mutationKey: [REACT_QUERY_KEYS.COMMENTS, REACT_QUERY_KEYS.REPLY, REACT_QUERY_KEYS.INSERT],
     mutationFn: inputReply,
     onSuccess: async () => {
-      console.log('답글 입력 성공');
       await queryClient.invalidateQueries({
         predicate: (query) => {
           return query.queryKey.includes(REACT_QUERY_KEYS.COMMENTS)

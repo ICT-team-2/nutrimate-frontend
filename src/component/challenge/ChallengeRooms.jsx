@@ -13,6 +13,7 @@ const ChatRoomContainer = styled.div`
 
 const StyledImg = styled.img`
     width: 100%;
+    border-radius: 5px;
 `;
 const StyledTypography = styled(Typography)`
     margin: 10px;
@@ -20,6 +21,7 @@ const StyledTypography = styled(Typography)`
 `;
 const StyledPaper = styled(Paper)`
     cursor: pointer;
+    border-radius: 10px;
 `;
 
 const ChallengeRooms = () => {
@@ -33,7 +35,7 @@ const ChallengeRooms = () => {
           <StyledPaper onClick={() => {
             navigate(LINKS.CHALLENGE_CHAT + '/1');
           }}>
-            <StyledImg src="/src/asset/image/ChatImage.png" alt="채팅룸" />
+            <StyledImg src="/src/asset/image/water.png" alt="채팅룸" height={'330px'} />
             <StyledTypography variant="body1">
               물마시기 챌린지
             </StyledTypography>
@@ -43,7 +45,7 @@ const ChallengeRooms = () => {
           <StyledPaper onClick={() => {
             navigate(LINKS.CHALLENGE_CHAT + '/3');
           }}>
-            <StyledImg src="/src/asset/image/ChatImage.png" alt="채팅룸" />
+            <StyledImg src="/src/asset/image/salad.jpg" alt="채팅룸" height={'330px'} />
             <StyledTypography variant="body1">
               샐러드 챌린지
             </StyledTypography>

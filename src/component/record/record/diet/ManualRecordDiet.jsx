@@ -108,7 +108,7 @@ const ManualRecordDiet = () => {
               setData({ ...data, foodName: e.target.value })}
             variant={'standard'} label={'음식명'} />
         </StyledGrid>
-        <StyledGrid item xs={12} sm={12} md={6} xl={4}>
+        <StyledGrid item xs={12} sm={12} md={6} xl={4} style={{ marginLeft: '-1px' }}>
           <StyledTypography variant="subtitle1">섭취 칼로리</StyledTypography>
           <StyledTextField
             value={data.foodCal}
@@ -116,7 +116,7 @@ const ManualRecordDiet = () => {
               setData({ ...data, foodCal: e.target.value })}
             variant={'standard'} label={'섭취 칼로리(kcal)'} type="number" />
         </StyledGrid>
-        <StyledGrid item xs={12} sm={12} md={6} xl={4}>
+        <StyledGrid item xs={12} sm={12} md={6} xl={4} style={{ marginLeft: '-1px' }}>
           <IntakeUnitButton
             intakeunit={data.intakeUnit}
             onClick={handleMenuBtnClick}

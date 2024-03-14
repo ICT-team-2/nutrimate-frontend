@@ -21,12 +21,12 @@ const StyledIcon = styled(FontAwesomeIcon)`
 `;
 const IconContainer = styled.div`
     background-color: ${({ theme }) => theme['primary-transparent']};
-    padding: 10px;
+    padding: 10px 25px;
     border-radius: 10px;
     width: 36px;
     align-items: center;
     display: flex;
-    justify-content: center
+    justify-content: center;
 `;
 
 const ChallengeTableContainer = styled.div`
@@ -43,9 +43,8 @@ const ChallengeRank = () => {
   const [challengeListData, setChallengeListData] = React.useState(undefined);
   //랭크 리스트를 부르는 함수
   const ChallengeRankList = () => {
-    axios.get(`http://localhost:9999/challenge/success?chatroomId=${chatroomId}`)
+    axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/success?chatroomId=${chatroomId}`)
       .then(datas => {
-        console.log(datas.data);
         setChallengeListData(datas.data);
 
       })
