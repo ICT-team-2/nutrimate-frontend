@@ -308,7 +308,9 @@ const ChatUI = (props) => {
               d && d.messageType == 'CHAT' ?
                 d.challengeNick == nickname ?
                   <MyTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
-                  : <OtherTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
+                  : <OtherTalkComponent
+                    userId={d.userId}
+                    key={i} content={d.chatMessage} nick={d.challengeNick} />
                 : d && d.messageType == 'CHALLENGE' ?
                   <ChallengeSuccess key={i}> -- {d.chatMessage} --</ChallengeSuccess>
                   : d ? <ChatOutAndEnter key={i}>{d.chatMessage}</ChatOutAndEnter>
@@ -320,6 +322,7 @@ const ChatUI = (props) => {
                   content={voicedata.chatMessage}
                   nick={voicedata.challengeNick} />
                 : <OtherTalkComponent
+                  userId={d.userId}
                   content={voicedata.chatMessage} nick={voicedata.challengeNick} />
               : voicedata.messageType == 'CHALLENGE' ?
                 <ChallengeSuccess> {voicedata.chatMessage}</ChallengeSuccess>

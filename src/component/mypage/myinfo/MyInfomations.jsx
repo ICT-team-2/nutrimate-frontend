@@ -82,7 +82,7 @@ const MyInfomations = () => {
     <MyInfomationContainer>
       {/* 프로필 사진 */}
       {uploadImg ?
-        <UserAvatar size={130} variant='rounded' src={uploadImg} /> :
+        <UserAvatar size={130} variant="rounded" src={uploadImg} /> :
         <UserAvatar
           userNick={userData?.userNick}
           size={130} variant="rounded"
@@ -104,9 +104,9 @@ const MyInfomations = () => {
               followId={profileUserId} />}
         </NicknNameH3>
         <SecondaryInfoSpan>
-          <SecInfoTypo variant='subtitle1'>
+          <SecInfoTypo variant="subtitle1">
             <StyledButton
-              color='inherit'
+              color="inherit"
               onClick={() => setTabNumber(0)}
             >게시물 {userData?.postCount}</StyledButton>
           </SecInfoTypo>

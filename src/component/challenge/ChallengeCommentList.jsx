@@ -1,5 +1,4 @@
-import React, { useState, useAtom } from 'react';
-import { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -17,6 +16,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import EditInput from '@src/component/challenge/ChallengeCommentInput.jsx';
 import { toast } from 'react-toastify';
+import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
+import { LINKS } from '@src/utils/const.js';
+import { useNavigate } from 'react-router-dom';
 
 
 const blinkEffect = keyframes`
@@ -53,7 +55,7 @@ function ChallengeCommentList({ message, userId, cmtId }) {
   const [cmdId, setCmdId] = useState(null);
   const [updateComment, setUpdateComment] = useState(false);
   const [userNick, setUserNick] = useState('');
-
+  const navigate = useNavigate();
 
   const options = {
     threshold: 1.0,
@@ -117,6 +119,7 @@ function ChallengeCommentList({ message, userId, cmtId }) {
     const formattedDate = dayjs().format('YYYY-MM-DD');
     if (typeof message === 'string' && message.trim() !== '') {
       axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/usernick?userId=${userId}`).then(data => {
+        console.log('data', data.data);
         if (data.data.SUCCESSNOT) {
           toast.error('닉네임 불러오기에 실패했습니다.');
         } else {
@@ -196,7 +199,14 @@ function ChallengeCommentList({ message, userId, cmtId }) {
             <React.Fragment key={index}>
               <ListItem alignItems="flex-start" ref={listRef}>
                 <ListItemAvatar>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                  <UserAvatar
+                    clickable
+                    onClick={() => {
+                      navigate(`${LINKS.MYINFO}/${comment.userId}`);
+                    }}
+                    userNick={comment?.userNick}
+                    src={comment?.userProfile && import.meta.env.REACT_APP_BACKEND_URL + comment?.userProfile}
+                  />
                 </ListItemAvatar>
                 <ListItemText
                   primary={

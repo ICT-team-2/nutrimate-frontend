@@ -11,7 +11,9 @@ import styled from 'styled-components';
 import FollowButton from '@src/component/common/FollowButton.jsx';
 import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import { useAtom, useSetAtom } from 'jotai/react';
-import { followingCountAtom } from '@src/component/mypage/atom.js';
+import { followerListModalAtom, followingCountAtom, followingListModalAtom } from '@src/component/mypage/atom.js';
+import { useNavigate } from 'react-router-dom';
+import { LINKS } from '@src/utils/const.js';
 
 const exampleDatas = [
   {
@@ -72,9 +74,14 @@ const StyledList = muiStyled(List)({
 });
 
 const FollowList = ({ data, setData }) => {
-  
+
   const setFollowingCount = useSetAtom(followingCountAtom);
-  
+  const navigate = useNavigate();
+  const [followerModalState, setFollowerModalState] = useAtom(
+    followerListModalAtom);
+  const [followingModalState, setFollowingModalState] = useAtom(
+    followingListModalAtom);
+
   const handleFollow = (index) => {
     setFollowingCount((prev) => prev + 1);
     setData((prev) => {
@@ -91,7 +98,7 @@ const FollowList = ({ data, setData }) => {
       return newData;
     });
   };
-  
+
   return (
     <FollowListContainer>
       <StyledList>
@@ -99,6 +106,12 @@ const FollowList = ({ data, setData }) => {
           <StyledListItem key={item.userNick + index}>
             <ListItemAvatar>
               <UserAvatar
+                clickable
+                onClick={() => {
+                  navigate(`${LINKS.MYINFO}/${item.userId}`);
+                  setFollowerModalState(false);
+                  setFollowingModalState(false);
+                }}
                 userNick={item.userNick}
                 src={import.meta.env.REACT_APP_BACKEND_URL + item.userProfile}
               />

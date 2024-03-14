@@ -4,16 +4,19 @@ import useFetchProfileFeedList
   from '@src/hooks/mypage/useFetchProfileFeedList.jsx';
 import { useEffect } from 'react';
 import * as React from 'react';
+import { useParams } from 'react-router-dom';
 
-function MyFeedPosts ({ profileUserId }) {
-  
-  const { data, isLoading, isError, error } = useFetchProfileFeedList(
+function MyFeedPosts() {
+
+  const { profileUserId } = useParams();
+
+  const { data } = useFetchProfileFeedList(
     profileUserId);
-  
+
   if (data?.pages[0]?.feedList?.length === 0) {
     return <div>등록된 글이 없습니다.</div>;
   }
-  
+
   return (
     <Grid container spacing={3}>
       {
@@ -28,7 +31,7 @@ function MyFeedPosts ({ profileUserId }) {
         })
       }
     </Grid>
-  
+
   );
 }
 
