@@ -12,13 +12,16 @@ import {
   profileModalAtom,
   profileImageAtom, followerCountAtom, followingCountAtom,
 } from '@src/component/mypage/atom.js';
-import FollowerListModal from '@src/component/mypage/follow/FollowerListModal.jsx';
-import FolloweeListModal from '@src/component/mypage/follow/FolloweeListModal.jsx';
+import FollowerListModal
+  from '@src/component/mypage/follow/FollowerListModal.jsx';
+import FolloweeListModal
+  from '@src/component/mypage/follow/FolloweeListModal.jsx';
 import { FOLLOW_MODAL } from '@src/component/mypage/const.js';
-import ChangeProfileComponent from '@src/component/common/ChangeProfileComponent.jsx';
+import ChangeProfileComponent
+  from '@src/component/common/ChangeProfileComponent.jsx';
 import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 import { useParams } from 'react-router-dom';
-
+import FollowButton from '@src/component/common/FollowButton.jsx';
 
 const MyInfomationContainer = styled.div`
     display: flex;
@@ -58,7 +61,7 @@ const StyledButton = muiStyled(Button)`
 `;
 
 const MyInfomations = () => {
-
+  
   const setOpenModal = useSetAtom(profileModalAtom);
   const uploadImg = useAtomValue(profileImageAtom);
   const setTabNumber = useSetAtom(myPageTabAtom);
@@ -66,46 +69,55 @@ const MyInfomations = () => {
   const setFollowingModal = useSetAtom(followingListModalAtom);
   const { profileUserId } = useParams();
   const { data: userData, isLoading } = useFetchProfileData(profileUserId);
-
+  
   const [followerCount, setFollowerCount] = useAtom(followerCountAtom);
   const [followingCount, setFollowingCount] = useAtom(followingCountAtom);
-
+  
   useEffect(() => {
     setFollowingCount(userData?.followingCount);
+    console.log(userData);
   }, [userData]);
-
-
+  
   return (
     <MyInfomationContainer>
       {/* 프로필 사진 */}
       {uploadImg ?
-        <UserAvatar size={130} variant="rounded" src={uploadImg} /> :
+        <UserAvatar size={130} variant='rounded' src={uploadImg} /> :
         <UserAvatar
           userNick={userData?.userNick}
-          size={130} variant="rounded"
+          size={130} variant='rounded'
           src={import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
       }
       <StyledContainerDiv>
         <NicknNameH3>
           <NickNameSpan>{userData?.userNick}</NickNameSpan>
-          <ChangeProfileComponent />
+          <ChangeProfileComponent
+            isLoginUser={parseInt(profileUserId) ===
+              parseInt(sessionStorage.getItem('userId'))}
+            profileUserId={profileUserId}
+          />
+          {parseInt(profileUserId) !==
+            parseInt(sessionStorage.getItem('userId')) &&
+            <FollowButton
+              following={userData?.isFollowing === 1}
+              followId={profileUserId} />}
         </NicknNameH3>
         <SecondaryInfoSpan>
-          <SecInfoTypo variant="subtitle1">
+          <SecInfoTypo variant='subtitle1'>
             <StyledButton
-              color="inherit"
+              color='inherit'
               onClick={() => setTabNumber(0)}
             >게시물 {userData?.postCount}</StyledButton>
           </SecInfoTypo>
-          <SecInfoTypo variant="subtitle1">
+          <SecInfoTypo variant='subtitle1'>
             <StyledButton
-              color="inherit"
+              color='inherit'
               onClick={() => setFollowerModal(true)}
             >{FOLLOW_MODAL.FOLLOWER.TITLE} {userData?.followerCount}</StyledButton>
           </SecInfoTypo>
-          <SecInfoTypo variant="subtitle1">
+          <SecInfoTypo variant='subtitle1'>
             <StyledButton
-              color="inherit"
+              color='inherit'
               onClick={() => setFollowingModal(true)}
             >{FOLLOW_MODAL.FOLLOWING.TITLE} {followingCount}</StyledButton>
           </SecInfoTypo>
@@ -117,6 +129,5 @@ const MyInfomations = () => {
     </MyInfomationContainer>
   );
 };
-
 
 export default MyInfomations;
