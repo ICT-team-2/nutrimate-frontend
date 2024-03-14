@@ -119,7 +119,6 @@ function ChallengeCommentList({ message, userId, cmtId }) {
     const formattedDate = dayjs().format('YYYY-MM-DD');
     if (typeof message === 'string' && message.trim() !== '') {
       axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/usernick?userId=${userId}`).then(data => {
-        console.log('data', data.data);
         if (data.data.SUCCESSNOT) {
           toast.error('닉네임 불러오기에 실패했습니다.');
         } else {

@@ -19,6 +19,8 @@ import { userIdAtom } from '@src/pages/login/atom';
 import { convertDateToUrlParam } from '@src/utils/functions.js';
 import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 
+import NotiBadge from '@src/component/notice/NotiBadge.jsx'
+
 const AppBar = muiStyled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme }) => ({
@@ -55,7 +57,6 @@ const StyledButton = styled(Button)`
 const Header = (props) => {
   // const theme = useTheme();
   const { hasDrawer, logoWhite } = props;
-
   const [userId, setUserId] = useAtom(userIdAtom);
   const open = useAtomValue(drawerStateAtom);
   const navigate = useNavigate();
@@ -105,7 +106,10 @@ const Header = (props) => {
             logowhite={logoWhite + ''}
           >Admin</StyledButton>}
           {!!userId ? (
+            <>
+            <div style={{ marginRight: '20px' }}><NotiBadge/></div>
             <ProfileImgMenu />
+            </>
           ) : (
             <div>
               <StyledButton
@@ -122,8 +126,7 @@ const Header = (props) => {
       </StyledAppBar>
       {hasDrawer && <SideMenu />}
     </Box>
-  )
-    ;
+  );
 };
 
 Header.defaultProps = {

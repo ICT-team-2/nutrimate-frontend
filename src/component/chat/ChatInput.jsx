@@ -38,10 +38,7 @@ const ChatInput = ({ onSend }) => {
       event.stopPropagation();
     }
   };
-
-  useEffect(() => {
-    console.log('message:', message);
-  }, [message]);
+  
 
   return (
     <ChatInputContainer>

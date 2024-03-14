@@ -124,7 +124,7 @@ UserAvatar.defaultProps = {
   src: null,
   size: 40,
   variant: 'circular',
-  onClick: false,
+  onClick: undefined,
 };
 
 export const BoardSubtitleTypo = ({ text }) => {
