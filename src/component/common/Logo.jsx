@@ -9,9 +9,9 @@ const StyledLogo = styled.img`
 
 const StyledLogoWhite = styled(StyledLogo)`
     position: relative;
-    top: 7px;
+    top: 4px;
     right: 5px;
-    width: 118px;
+    width: 130px;
 
 `;
 

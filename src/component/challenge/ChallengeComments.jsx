@@ -16,6 +16,8 @@ import Menu from '@mui/material/Menu';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import axios from 'axios';
+import SentimentAnalysisImg from '@image/SentimentAnalysis.png';
+import { FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 
 
 const CommentContainer = styled(Paper)`
@@ -26,6 +28,16 @@ const CommentContainer = styled(Paper)`
 const TitleTypography = styled(Typography)`
     font-weight: bold;
     margin-bottom: 10px;
+`;
+
+const SentimentAnalysisIcon = styled.img`
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+
+`;
+const TitleContainer = styled.div`
+    display: flex;
 `;
 
 
@@ -57,10 +69,15 @@ const ChallengeComments = () => {
   return (
     <>
       <CommentContainer>
-        <TitleTypography
-          variant="subtitle1">댓글 목록
-          <MoreVertIcon style={{ display: 'inline', float: 'right' }} onClick={event => handleOpenMenu(event)} />
-        </TitleTypography>
+        <TitleContainer>
+          <TitleTypography
+            variant="subtitle1">댓글 목록
+          </TitleTypography>
+          <FlexGrowDiv />
+          <SentimentAnalysisIcon
+            src={SentimentAnalysisImg}
+            onClick={event => handleOpenMenu(event)} />
+        </TitleContainer>
         <ChallengeCommentInput userId={userId} onhandleComment={onhandleComment} />
         <ChallengeCommentList cmtId={cmtId} message={message} userId={userId} />
       </CommentContainer>

@@ -4,6 +4,9 @@
 		"paths": {
 			"@src/*": [
 				"./src/*"
+			],
+			"@image/*": [
+				"./src/asset/image/*"
 			]
 		}
 	}

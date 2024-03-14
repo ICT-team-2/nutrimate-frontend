@@ -10,9 +10,8 @@ export default defineConfig({
   plugins: [react(), envCompatible()],
   resolve: {
     alias: [
-      {
-        find: '@src', replacement: path.resolve(__dirname, 'src'),
-      },
+      { find: '@src', replacement: path.resolve(__dirname, 'src') },
+      { find: '@image', replacement: path.resolve(__dirname, 'src/asset/image') },
     ],
   },
   server: {
