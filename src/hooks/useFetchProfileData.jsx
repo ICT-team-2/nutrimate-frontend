@@ -6,7 +6,8 @@ import { toast } from 'react-toastify';
 
 /**
  * 회원 데이터를 가져오는 훅
- * @param profileUserId {number||string||undefined} 사용자 아이디 (기본값: sessionStorage.getItem('userId'))
+ * @param profileUserId {number||string||undefined} 사용자 아이디 (기본값:
+ *   sessionStorage.getItem('userId'))
  * @returns {*} react-query의 useQuery 결과
  */
 const useFetchProfileData = (profileUserId = undefined) => {
@@ -22,7 +23,8 @@ const useFetchProfileData = (profileUserId = undefined) => {
 
     const response = await axios.get('/profile', {
       params: {
-        userId: profileUserId,
+        userId: sessionStorage.getItem('userId'),
+        profileUserId: profileUserId,
       },
     }).catch((error) => {
       clearTimeout(toastTimeout);
@@ -30,13 +32,15 @@ const useFetchProfileData = (profileUserId = undefined) => {
     clearTimeout(toastTimeout);
     return response.data;
   };
-  
+
   //react-query
   return useQuery({
-    queryKey: [REACT_QUERY_KEYS.MEMBER,
+    queryKey: [
+      REACT_QUERY_KEYS.MEMBER,
       REACT_QUERY_KEYS.PROFILE,
       REACT_QUERY_KEYS.MEMBER_DATA,
-      parseInt(profileUserId)],
+      parseInt(profileUserId),
+    ],
     queryFn: fetchMyData,
     staleTime: 1000 * 60 * 5,//5분
     enabled: !!profileUserId,
