@@ -20,6 +20,7 @@ import dayjs from 'dayjs';
 import { color } from '@mui/system';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { toast } from 'react-toastify';
 
 
 dayjs.locale('ko');
@@ -96,7 +97,6 @@ const ListTable = ({ userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleChangeWeek = (startOfWeek, endOfWeek) => {
-    console.log(startOfWeek);
     setStartWeek(startOfWeek);
     setEndWeek(endOfWeek);
     axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/alarm/list/week?startWeek=${startOfWeek.format('YYYY-MM-DD')}&endWeek=${endOfWeek.format('YYYY-MM-DD')}&userId=${userId}`)
@@ -104,7 +104,7 @@ const ListTable = ({ userId }) => {
         setCalendarData(datas.data);
       })
       .catch(error => {
-        alert('알람을 읽어오는 데 실패했습니다.');
+        toast.error('알람을 읽어오는 데 실패했습니다.');
       });
   };
 
@@ -125,7 +125,6 @@ const ListTable = ({ userId }) => {
     if (confirm('알람을 삭제하시겠습니까?')) {
       axios.delete(`${import.meta.env.REACT_APP_BACKEND_URL}/alarm/list/week/delete?alarmId=${alarmId}`)
         .then(datas => {
-          console.log(alarmId);
           if (datas.data.alarmOk === 1) {
             axios.delete(`${import.meta.env.REACT_APP_FLASK_URL}/serviceworker`, {
               data: {
@@ -136,26 +135,17 @@ const ListTable = ({ userId }) => {
                 console.error('Error fetching chat data:', error);
               });
             let updatedData = { ...calendarData };
-            console.log(updatedData);
             updatedData = Object.values(updatedData).filter(item => item.alarmId !== alarmId);
-            console.log(updatedData);
-
             // 변경된 상태를 적용
             setCalendarData(updatedData);
           }
-
         })
         .catch(error => {
-          alert('알람을 읽어오는 데 실패했습니다.');
+          toast.error('알람을 읽어오는 데 실패했습니다.');
         });
 
     }
   };
-
-  useEffect(() => {
-
-
-  }, []);
 
   useEffect(() => {
     const updatedGroupedData = {};
@@ -167,14 +157,9 @@ const ListTable = ({ userId }) => {
       }
       updatedGroupedData[date].push(d);
     });
-
     setGroupedData(updatedGroupedData);
 
   }, [calendarData]);
-
-  useEffect(() => {
-    console.log(groupedData);
-  }, [groupedData]);
 
 
   return (

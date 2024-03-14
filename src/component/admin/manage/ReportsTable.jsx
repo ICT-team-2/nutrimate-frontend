@@ -23,6 +23,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { toast } from 'react-toastify';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -114,10 +115,8 @@ export default function ReportsTable({ data, property, searchValue }) {
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
-  
 
 
-  
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - total) : 0;
@@ -142,7 +141,7 @@ export default function ReportsTable({ data, property, searchValue }) {
         ...updatedReportData[userIndex],
         blocked: newBlockedValue,
       };
-      
+
       // Update the state with the new reportData
       setReportData(updatedReportData);
     }
@@ -172,8 +171,6 @@ export default function ReportsTable({ data, property, searchValue }) {
   }, [page, searchValue]);
 
   const block = (id, block) => {
-    console.log(id);
-    console.log(block);
     let url = '';
     if (property == 'board') {
       if (block == 'N') {
@@ -183,7 +180,6 @@ export default function ReportsTable({ data, property, searchValue }) {
       }
     } else {
       if (block == 'N') {
-        console.log('댓글');
         url = `${import.meta.env.REACT_APP_BACKEND_URL}/block/comment?cmtid=${id}`;
       } else {
         url = `${import.meta.env.REACT_APP_BACKEND_URL}/block/cancel/comment?cmtid=${id}`;
@@ -194,7 +190,7 @@ export default function ReportsTable({ data, property, searchValue }) {
         if (response.data.BLOCKOK !== null) {
           updateBlockedStatus(id);
         } else {
-          alert(response.data.BLOCKNOT);
+          toast.warn(response.data.BLOCKNOT);
         }
       })
       .catch(error => {
@@ -202,60 +198,52 @@ export default function ReportsTable({ data, property, searchValue }) {
       });
   };
 
-  const blockReason =(id,e)=>{
-    
+  const blockReason = (id, e) => {
+
     const { clientX, clientY } = e;
-    console.log(clientX)
-    let url=''
-    if(property=='board'){
-          url=`${import.meta.env.REACT_APP_BACKEND_URL}/block/reason/board?boardid=${id}`
-       }else{
-          url=`${import.meta.env.REACT_APP_BACKEND_URL}/block/reason/comment?cmtid=${id}`
-       }
+    let url = '';
+    if (property == 'board') {
+      url = `${import.meta.env.REACT_APP_BACKEND_URL}/block/reason/board?boardid=${id}`;
+    } else {
+      url = `${import.meta.env.REACT_APP_BACKEND_URL}/block/reason/comment?cmtid=${id}`;
+    }
     axios.get(url)
-    .then(response => { 
-      console.log(response)
-      setAnchorEl({
-        top: clientY, // Y 좌표 설정
-        left: clientX, // X 좌표 설정
-        item: response.data,
+      .then(response => {
+        setAnchorEl({
+          top: clientY, // Y 좌표 설정
+          left: clientX, // X 좌표 설정
+          item: response.data,
+        });
+
+      })
+      .catch(error => {
+        console.error('Error fetching report data:', error);
       });
-        
-    })
-    .catch(error => {
-      console.error('Error fetching report data:', error);
-    });
- }
- const blockDelete=(id)=>{
-  console.log(id)
-  let url=''
-  if(property=='board'){
-         url=`${import.meta.env.REACT_APP_BACKEND_URL}/block/list?boardid=${id}`
-     }else{
-         url=`${import.meta.env.REACT_APP_BACKEND_URL}/block/list/comment?cmtid=${id}`
-     }
-  axios.delete(url)
-  .then(response => { 
-      if(response.data.BLOCKOK !==null){
-        console.log(reportData)
-        setReportData(prev => prev.filter(item => (property === 'board' ? item.boardid : item.cmtid) !== id));
-         console.log(reportData.length)
-         if(reportData.length==1){
-          setPage(prev=>prev !==0? prev-1 : prev)
-         }
+  };
+  const blockDelete = (id) => {
+    let url = '';
+    if (property == 'board') {
+      url = `${import.meta.env.REACT_APP_BACKEND_URL}/block/list?boardid=${id}`;
+    } else {
+      url = `${import.meta.env.REACT_APP_BACKEND_URL}/block/list/comment?cmtid=${id}`;
+    }
+    axios.delete(url)
+      .then(response => {
+        if (response.data.BLOCKOK !== null) {
+          setReportData(prev => prev.filter(item => (property === 'board' ? item.boardid : item.cmtid) !== id));
+          if (reportData.length == 1) {
+            setPage(prev => prev !== 0 ? prev - 1 : prev);
+          }
 
 
-      }else{
-         alert(response.data.BLOCKNOT);
-      }
-  })
-  .catch(error => {
-    console.error('Error fetching report data:', error);
-  });
-}
-
- 
-
+        } else {
+          toast.warn(response.data.BLOCKNOT);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching report data:', error);
+      });
+  };
 
 
   return (
@@ -265,7 +253,8 @@ export default function ReportsTable({ data, property, searchValue }) {
           <TableRow>
             <StyledTableCell align="left">{property == 'board' ? '제목' : '댓글내용'}</StyledTableCell>
             <StyledTableCell align="right">글쓴이</StyledTableCell>
-            {property == 'board' ? <StyledTableCell align="right">카테고리'</StyledTableCell> : null}
+            {property == 'board' ? <StyledTableCell align="right">
+              카테고리</StyledTableCell> : null}
 
             <StyledTableCell align="right">신고횟수</StyledTableCell>
             <StyledTableCell align="right">차단</StyledTableCell>
@@ -273,22 +262,25 @@ export default function ReportsTable({ data, property, searchValue }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {reportData.map((reportDataItem,index) => (
+          {reportData.map((reportDataItem, index) => (
             <TableRow key={index}>
               <StyledTableCell component="th" scope="row">
                 {reportDataItem.boardtitle !== null ? reportDataItem.boardtitle : reportDataItem.boardContent !== null ? reportDataItem.boardContent : reportDataItem.cmtcontent}
               </StyledTableCell>
               <StyledTableCell align="right">{reportDataItem.usernick}</StyledTableCell>
-              {property=='board'? <StyledTableCell align="right">{reportDataItem.boardcategory=='FOOD'?'음식 게시판': reportDataItem.boardcategory=='FEED'?'피드':'운동 게시판' }</StyledTableCell>:null}
-             
-              <StyledTableCell align="right"><Button style={{color:'grey'}} onClick={(e) => blockReason(reportDataItem.cmtid == null ? reportDataItem.boardid : reportDataItem.cmtid,e)} >{reportDataItem.count}</Button></StyledTableCell>
-              <StyledTableCell align="right">  <Button
-                      style={{color:'grey'}}
-                      onClick={() => block(reportDataItem.cmtid == null ? reportDataItem.boardid : reportDataItem.cmtid,reportDataItem.blocked)}
-                    >
-                      {reportDataItem.blocked === 'N' ? '차단' : '차단취소'}
-                    </Button></StyledTableCell>
-            <StyledTableCell align="right"><Button style={{color:'grey'}} onClick={(e) => blockDelete(reportDataItem.cmtid == null ? reportDataItem.boardid : reportDataItem.cmtid,e)} ><DeleteIcon/></Button></StyledTableCell>
+              {property == 'board' ? <StyledTableCell
+                align="right">{reportDataItem.boardcategory == 'FOOD' ? '음식 게시판' : reportDataItem.boardcategory == 'FEED' ? '피드' : '운동 게시판'}</StyledTableCell> : null}
+
+              <StyledTableCell align="right"><Button style={{ color: 'grey' }}
+                                                     onClick={(e) => blockReason(reportDataItem.cmtid == null ? reportDataItem.boardid : reportDataItem.cmtid, e)}>{reportDataItem.count}</Button></StyledTableCell>
+              <StyledTableCell align="right"> <Button
+                style={{ color: 'grey' }}
+                onClick={() => block(reportDataItem.cmtid == null ? reportDataItem.boardid : reportDataItem.cmtid, reportDataItem.blocked)}
+              >
+                {reportDataItem.blocked === 'N' ? '차단' : '차단취소'}
+              </Button></StyledTableCell>
+              <StyledTableCell align="right"><Button style={{ color: 'grey' }}
+                                                     onClick={(e) => blockDelete(reportDataItem.cmtid == null ? reportDataItem.boardid : reportDataItem.cmtid, e)}><DeleteIcon /></Button></StyledTableCell>
             </TableRow>
           ))}
           {emptyRows > 0 && (
@@ -312,17 +304,21 @@ export default function ReportsTable({ data, property, searchValue }) {
         </TableFooter>
       </Table>
       <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleCloseMenu}
-          anchorReference="anchorPosition"
-          anchorPosition={{ top: anchorEl?.top || 0, left: anchorEl?.left || 0}}
-          style={{height:'300px'}}
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleCloseMenu}
+        anchorReference="anchorPosition"
+        anchorPosition={{ top: anchorEl?.top || 0, left: anchorEl?.left || 0 }}
+        style={{ height: '300px' }}
 
-        >
-          <MenuItem style={{backgroundColor : 'grey', color:'white',width:'300px',textAlign: 'center'}}><span style={{ marginRight: '10px',fontSize: '12px',width:'50px'}}>닉네임</span> | <span style={{ marginRight: '10px',fontSize: '12px',width:'100px'}}>신고사유</span> | <span style={{ marginRight: '10px',fontSize: '12px',width:'50px'}}>신고날짜</span> </MenuItem>
-          {anchorEl?.item.map((item, index) => (
-          <MenuItem style={{fontSize:'15px',textAlign: 'center'}} key={index}>  <span style={{ marginRight: '10px',fontSize: '12px',width:'50px'}}>{item.usernick}</span>    <span style={{
+      >
+        <MenuItem style={{ backgroundColor: 'grey', color: 'white', width: '300px', textAlign: 'center' }}><span
+          style={{ marginRight: '10px', fontSize: '12px', width: '50px' }}>닉네임</span> | <span
+          style={{ marginRight: '10px', fontSize: '12px', width: '100px' }}>신고사유</span> | <span
+          style={{ marginRight: '10px', fontSize: '12px', width: '50px' }}>신고날짜</span> </MenuItem>
+        {anchorEl?.item.map((item, index) => (
+          <MenuItem style={{ fontSize: '15px', textAlign: 'center' }} key={index}> <span
+            style={{ marginRight: '10px', fontSize: '12px', width: '50px' }}>{item.usernick}</span> <span style={{
             marginRight: '10px',
             fontSize: '12px',
             width: '100px',
@@ -330,14 +326,15 @@ export default function ReportsTable({ data, property, searchValue }) {
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            position: 'relative'
+            position: 'relative',
           }}
-          onMouseEnter={e => e.currentTarget.title = e.currentTarget.textContent}
+                                                                                                          onMouseEnter={e => e.currentTarget.title = e.currentTarget.textContent}
           >
             {item.reportreason}
-          </span> <span style={{ marginRight: '10px',fontSize: '12px',width:'50px'}}>{item.createddate}</span></MenuItem>
+          </span> <span
+            style={{ marginRight: '10px', fontSize: '12px', width: '50px' }}>{item.createddate}</span></MenuItem>
         ))}
-     </Menu>
+      </Menu>
     </TableContainer>
   );
 }

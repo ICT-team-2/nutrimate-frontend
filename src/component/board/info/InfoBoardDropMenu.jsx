@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MenuItem from '@mui/material/MenuItem';
@@ -20,8 +20,6 @@ const InfoBoardDropMenu = ({ boardId, category }) => {
   const navigate = useNavigate();
   const deleteBoard = useDeleteBoard();
   const [showReportModal, setShowReportModal] = useState(false);
-  const [reportUserId, setReportUserId] = useAtom(userIdAtom);
-  console.log(reportUserId)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -70,7 +68,9 @@ const InfoBoardDropMenu = ({ boardId, category }) => {
       <AskDeleteDialog
         onClickDelete={() => deleteBoard.mutate(boardId)}
         open={dialogOpen} setOpen={setDialogOpen} />
-    {showReportModal && <ReportModal setShowReportModal={setShowReportModal}  showReportModal={showReportModal}  boardId={boardId} searchKeyWord={'BOARD'}/>}
+      {showReportModal &&
+        <ReportModal setShowReportModal={setShowReportModal} showReportModal={showReportModal} boardId={boardId}
+                     searchKeyWord={'BOARD'} />}
     </>
   );
 };

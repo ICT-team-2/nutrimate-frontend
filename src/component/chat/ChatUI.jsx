@@ -11,6 +11,7 @@ import { faMicrophone, faVolumeXmark, faVolumeHigh } from '@fortawesome/free-sol
 import ChatLoadingText from '@src/component/chat/chatbot/ChatLoadingText';
 import { Tooltip, Typography, Stack, IconButton } from '@mui/material';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const ChatContainer = styled.div`
     width: 100%;
@@ -149,7 +150,6 @@ const ChatUI = (props) => {
 
 
   useEffect(() => {
-    console.log(voiceReading);
     if (voiceReading) {
       if (!('webkitSpeechRecognition' in window)) {
         setTranscript('당신의 브라우저는 STT를 지원하지 않습니다.');
@@ -160,13 +160,10 @@ const ChatUI = (props) => {
         recognition.interimResults = true;
 
         recognition.onspeechstart = () => {//음성 인식 서비스에서 음성으로 인식하는 소리가 감지되면 실헹되는 이벤트
-          console.log('Recognition Start!');
-
         };
 
 
         recognition.onspeechend = () => { //음성 인식 서비스에서 인식한 음성이 더 이상 감지되지 않으면 실행되는 이벤트
-          console.log('Recognition Stop!');
           recognition.stop();
 
           setIsRecognizing(false);
@@ -175,32 +172,27 @@ const ChatUI = (props) => {
         };
 
         recognition.onresult = function(event) { //음성 인식 서비스가 결과를 반환할 때 실행되는 이벤트
-          console.log('event.results:', event.results);
           // 최종 결과를 저장할 변수를 초기화합니다.
           let finalTranscript = '';
 
 
           setTranscript(Array.from(event.results).map(results => results[0].transcript).join(''));
-          console.log(transcript);
           // 결과를 반복하면서 최종 결과를 추출합니다.
           for (let i = event.resultIndex; i < event.results.length; ++i) {
             if (event.results[i].isFinal) {
               finalTranscript = Array.from(event.results).map(results => results[0].transcript).join('');
-              console.log('최종 텍스트:', finalTranscript);
             }
           }
 
           // 최종 결과를 서버로 전송합니다.
           if (finalTranscript.trim() !== '') {
-            //console.log(chatDataTest)
-            console.log(finalTranscript);
             handleSend(finalTranscript);
 
           }
         };
 
         recognition.onerror = () => {
-          alert('음성인식에 실패했습니다. 다시 한 번 시도 해주세요.');
+          toast.warn('음성인식에 실패했습니다. 다시 한 번 시도 해주세요.');
           setVoiceReading(false);
           setIsRecognizing(false);
           setLoadingtext(false);
@@ -229,7 +221,6 @@ const ChatUI = (props) => {
   //tts
   useEffect(() => {
     // useEffect 훅 내부에서 스크롤 이동을 처리합니다.
-    console.log(voicedata.length);
     if ('speechSynthesis' in window) {
       setSynthesisSupported(true);
       loadVoices();
@@ -317,7 +308,9 @@ const ChatUI = (props) => {
               d && d.messageType == 'CHAT' ?
                 d.challengeNick == nickname ?
                   <MyTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
-                  : <OtherTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
+                  : <OtherTalkComponent
+                    userId={d.userId}
+                    key={i} content={d.chatMessage} nick={d.challengeNick} />
                 : d && d.messageType == 'CHALLENGE' ?
                   <ChallengeSuccess key={i}> -- {d.chatMessage} --</ChallengeSuccess>
                   : d ? <ChatOutAndEnter key={i}>{d.chatMessage}</ChatOutAndEnter>
@@ -329,6 +322,7 @@ const ChatUI = (props) => {
                   content={voicedata.chatMessage}
                   nick={voicedata.challengeNick} />
                 : <OtherTalkComponent
+                  userId={d.userId}
                   content={voicedata.chatMessage} nick={voicedata.challengeNick} />
               : voicedata.messageType == 'CHALLENGE' ?
                 <ChallengeSuccess> {voicedata.chatMessage}</ChallengeSuccess>

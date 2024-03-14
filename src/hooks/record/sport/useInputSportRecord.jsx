@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { REACT_QUERY_KEYS } from '@src/utils/const.js';
+import { REACT_QUERY_KEYS, TOAST_MESSAGE } from '@src/utils/const.js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 
 const useInputSportRecord = () => {
 
@@ -37,13 +38,14 @@ const useInputSportRecord = () => {
     ],
     mutationFn: inputSportRecord,
     onSuccess: () => {
-      console.log('입력 성공');
+      toast.success(TOAST_MESSAGE.RECORD.SUCCESS);
       queryClient.invalidateQueries({
         queryKey: [REACT_QUERY_KEYS.RECORD],
       });
     },
     onError: (error) => {
-      console.log(error);
+      toast.error(TOAST_MESSAGE.RECORD.ERROR);
+      console.error(error);
     },
   });
 };

@@ -1,16 +1,24 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { REACT_QUERY_KEYS } from '@src/utils/const.js';
+import { REACT_QUERY_KEYS, TOAST_MESSAGE, TOAST_OPTIONS } from '@src/utils/const.js';
 import { profileImageAtom } from '@src/component/mypage/atom.js';
 import { useAtom } from 'jotai/react';
+import { useRef } from 'react';
+import { toast } from 'react-toastify';
 
 const useCreateImageAI = () => {
 
+  const toastId = useRef(null);
+  const loadingToast = () => {
+    toastId.current = toast.loading(TOAST_MESSAGE.IMAGE_CREATE.LOADING,
+      TOAST_OPTIONS.LOADING);
+  };
+
   //axios
   const createImageAI = async ({ prompt }) => {
+    loadingToast();
     const formData = new FormData();
     formData.append('prompt', prompt);
-    console.log('prompt:', prompt);
     const response = await axios.post(import.meta.env.REACT_APP_FLASK_URL + '/profile/img', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -27,10 +35,17 @@ const useCreateImageAI = () => {
     ],
     mutationFn: createImageAI,
     onSuccess: () => {
-      console.log('이미지 생성 성공');
+      toast.update(toastId.current, {
+        render: TOAST_MESSAGE.IMAGE_CREATE.SUCCESS,
+        ...TOAST_OPTIONS.SUCCESS,
+      });
     },
     onError: (error) => {
       console.error(error);
+      toast.update(toastId.current, {
+        render: TOAST_MESSAGE.IMAGE_CREATE.ERROR,
+        ...TOAST_OPTIONS.ERROR,
+      });
     },
   });
 };

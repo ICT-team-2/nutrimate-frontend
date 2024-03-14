@@ -15,39 +15,41 @@ import LayoutWithoutSideBar from '@src/layout/LayoutWithoutSideBar.jsx';
 import NotFound404Page from '@src/pages/NotFound404Page.jsx';
 import FeedBoardEditPage from '@src/pages/board/FeedBoardEditPage.jsx';
 import InfoBoardEditPage from '@src/pages/board/InfoBoardEditPage.jsx';
+import PrivateRoute from '@src/routes/PrivateRoute.jsx';
 
 const BoardRoutes = () => {
   return (
     <Routes>
-      <Route path={'/'} element={<Layout />}>
-        <Route path={''} element={<BoardLayout />}>
-          <Route path={ROUTER_LINKS.ALL_INFO_BOARD + '/:page'}
-                 element={<AllBoardPage />}></Route>
-          <Route path={ROUTER_LINKS.FOOD_BOARD + '/:page'}
-                 element={<FoodBoardPage />}></Route>
-          <Route path={ROUTER_LINKS.SPORT_BOARD + '/:page'}
-                 element={<SportBoardPage />}></Route>
-          <Route path={ROUTER_LINKS.FEED_BOARD}
-                 element={<FeedBoardPage />}></Route>
-          <Route path={ROUTER_LINKS.INFO_BOARD_VIEW + '/:boardId'}
-                 element={<InfoBoardViewPage />}></Route>
-          <Route path={ROUTER_LINKS.FEED_BOARD_VIEW}
-                 element={<FeedBoardViewPage />}></Route>
-        </Route>
+      <Route path="" element={<PrivateRoute />}>
+        <Route path={''} element={<Layout />}>
+          <Route path={''} element={<BoardLayout />}>
+            <Route path={ROUTER_LINKS.ALL_INFO_BOARD + '/:page'}
+                   element={<AllBoardPage />}></Route>
+            <Route path={ROUTER_LINKS.FOOD_BOARD + '/:page'}
+                   element={<FoodBoardPage />}></Route>
+            <Route path={ROUTER_LINKS.SPORT_BOARD + '/:page'}
+                   element={<SportBoardPage />}></Route>
+            <Route path={ROUTER_LINKS.FEED_BOARD}
+                   element={<FeedBoardPage />}></Route>
+            <Route path={ROUTER_LINKS.INFO_BOARD_VIEW + '/:boardId'}
+                   element={<InfoBoardViewPage />}></Route>
+            <Route path={ROUTER_LINKS.FEED_BOARD_VIEW}
+                   element={<FeedBoardViewPage />}></Route>
+          </Route>
 
-      </Route>
-      <Route path={'/'} element={<LayoutWithoutSideBar />}>
-        <Route path={ROUTER_LINKS.INFO_BOARD_WRITE}
-               element={<InfoBoardWritePage />}></Route>
-        <Route path={ROUTER_LINKS.INFO_BOARD_EDIT + '/:boardId'}
-               element={<InfoBoardEditPage />}></Route>
-        <Route path={ROUTER_LINKS.FEED_BOARD_WRITE}
-               element={<FeedBoardWritePage />}></Route>
-        <Route path={ROUTER_LINKS.FEED_BOARD_EDIT + '/:boardId'}
-               element={<FeedBoardEditPage />}></Route>
+        </Route>
+        <Route path={'/'} element={<LayoutWithoutSideBar />}>
+          <Route path={ROUTER_LINKS.INFO_BOARD_WRITE}
+                 element={<InfoBoardWritePage />}></Route>
+          <Route path={ROUTER_LINKS.INFO_BOARD_EDIT + '/:boardId'}
+                 element={<InfoBoardEditPage />}></Route>
+          <Route path={ROUTER_LINKS.FEED_BOARD_WRITE}
+                 element={<FeedBoardWritePage />}></Route>
+          <Route path={ROUTER_LINKS.FEED_BOARD_EDIT + '/:boardId'}
+                 element={<FeedBoardEditPage />}></Route>
+        </Route>
       </Route>
       <Route path={'*'} element={<NotFound404Page />}></Route>
-
     </Routes>
   );
 };

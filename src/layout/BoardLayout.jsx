@@ -43,23 +43,12 @@ const FlexGrowDiv = styled.div`
 
 const BoardLayout = ({ data, title = '전체', category = 'all' }) => {
   
-  const { page } = useParams();
-  const [pageState, setPageState] = useState(page);
-  const navigate = useNavigate();
-  const handlePageChange = (event, value) => {
-    setPageState(value);
-    navigate(`/board/${category}/${value}`);
-  };
-  const OutletContainer = muiStyled(Container)`
-    
-  `;
-  
   return (
     <InfoBoardContainer>
       <RowFlexDiv>
-        <OutletContainer>
+        <Container>
           <Outlet />
-        </OutletContainer>
+        </Container>
         <RecommendFriendList />
       </RowFlexDiv>
     </InfoBoardContainer>

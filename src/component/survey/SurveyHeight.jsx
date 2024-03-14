@@ -4,6 +4,7 @@ import { TextField } from '@mui/material';
 import { surveyDataAtom } from '@src/component/survey/atom.js';
 import { useAtom } from 'jotai/react';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 
 const TextFieldContainer = styled.div`
     margin: 20px 0;
@@ -31,7 +32,7 @@ const SurveyHeight = () => {
 
   const onClickNext = () => {
     if (surveyData.userHeight === '' || surveyData.userHeight === 0) {
-      alert('키를 입력해주세요.');
+      toast.warn('키를 입력해주세요.');
       return false;
     }
     return true;

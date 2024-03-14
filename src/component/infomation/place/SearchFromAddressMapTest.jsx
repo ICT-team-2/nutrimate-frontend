@@ -36,7 +36,6 @@ const SearchFromAddressMap = ({ address, place, indexData }) => {
       (data, status) => {
         if (status === kakao.maps.services.Status.ERROR
           || status === kakao.maps.services.Status.ZERO_RESULT) {
-          console.log('주소 검색 실패');
         }
         if (status === kakao.maps.services.Status.OK) {
           // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해

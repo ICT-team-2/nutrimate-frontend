@@ -21,7 +21,6 @@ const useDeleteFollow = (followeeId) => {
     mutationKey: [REACT_QUERY_KEYS.FOLLOW, REACT_QUERY_KEYS.DELETE, userId, followeeId],
     mutationFn: deleteFollow,
     onSuccess: () => {
-      console.log('팔로우 취소 성공');
     },
     onError: (error) => {
       console.error(error);

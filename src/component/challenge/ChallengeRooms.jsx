@@ -13,6 +13,7 @@ const ChatRoomContainer = styled.div`
 
 const StyledImg = styled.img`
     width: 100%;
+    border-radius: 5px;
 `;
 const StyledTypography = styled(Typography)`
     margin: 10px;
@@ -20,6 +21,7 @@ const StyledTypography = styled(Typography)`
 `;
 const StyledPaper = styled(Paper)`
     cursor: pointer;
+    border-radius: 10px;
 `;
 
 const ChallengeRooms = () => {

@@ -138,7 +138,6 @@ const InfoBoardEditPage = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(data);
     if (data === null) return;
     setTitle(data.boardTitle);
     setInputHashTag(data.tagNameList ? data.tagNameList.map((item, index) => {

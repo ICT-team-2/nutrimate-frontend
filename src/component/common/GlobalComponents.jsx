@@ -75,7 +75,7 @@ CustomSearchInput.defaultProps = {
   id: 'search',
   size: 'small',
   callback: () => {
-    console.log('Enter key pressed');
+
   },
 };
 
@@ -86,6 +86,7 @@ const StyledAvatar = styled(Avatar)`
     ${({ variant }) => variant === 'rounded' && `
     border-radius: 22px;
   `}
+    cursor: ${({ clickable }) => clickable === 'true' ? 'pointer' : 'default'};
 `;
 
 /**
@@ -103,7 +104,7 @@ const StyledAvatar = styled(Avatar)`
  * @returns {Element} 유저의 프로필 사진을 보여주는 컴포넌트에 대한 JSX
  */
 export const UserAvatar = (props) => {
-  const { userNick, src, size, variant, sx, className } = props;
+  const { userNick, src, size, variant, sx, className, onClick, clickable } = props;
 
   return <StyledAvatar
     alt={userNick}
@@ -112,6 +113,9 @@ export const UserAvatar = (props) => {
     variant={variant}
     sx={sx}
     className={className}
+    onClick={clickable ? onClick : () => {
+    }}
+    clickable={clickable + ''}
   />;
 };
 
@@ -120,6 +124,7 @@ UserAvatar.defaultProps = {
   src: null,
   size: 40,
   variant: 'circular',
+  onClick: false,
 };
 
 export const BoardSubtitleTypo = ({ text }) => {

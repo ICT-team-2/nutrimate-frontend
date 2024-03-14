@@ -36,7 +36,6 @@ const useConnectStomp = (options) => {
       heartbeatIncoming: 4000,//서버가 클라이언트로부터 하트비트 메시지를 받아들일 최대 시간 간격(밀리초 단위)을 지정
       heartbeatOutgoing: 4000, //서버가 클라이언트로 하트비트 메시지를 보내는 빈도(밀리초 단위)를 지정
       onConnect: () => {
-        console.log('Connected to the server');
         // client.current.subscribe('/sub/topic/dm', onMessageReceived);
         setIsConnected(true);
       },
@@ -91,7 +90,6 @@ const useConnectStomp = (options) => {
         destination: destination,
         body: JSON.stringify(body),
       });
-      console.log('Message sent:', body);
     } else {
       console.error('Cannot send message when client is not connected.');
       setTimeout(() => {

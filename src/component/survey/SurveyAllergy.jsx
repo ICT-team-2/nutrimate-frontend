@@ -34,7 +34,6 @@ const SurveyAllergy = () => {
   };
 
   const onClickAllergy = (index) => {
-    console.log(index);
     setAllergyList((prevState) => ({
       ...prevState,
       [index]: !prevState[index],
@@ -51,9 +50,6 @@ const SurveyAllergy = () => {
     }, {}));
   }, []);
 
-  useEffect(() => {
-    console.log(allergyList);
-  }, [allergyList]);
 
   return (
     <SurveyLayout

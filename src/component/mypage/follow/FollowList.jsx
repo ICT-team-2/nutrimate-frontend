@@ -3,17 +3,17 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
 import ImageIcon from '@mui/icons-material/Image';
 import WorkIcon from '@mui/icons-material/Work';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
-import { Button } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
 import styled from 'styled-components';
 import FollowButton from '@src/component/common/FollowButton.jsx';
 import { UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import { useAtom, useSetAtom } from 'jotai/react';
-import { followerCountAtom, followingCountAtom } from '@src/component/mypage/atom.js';
+import { followerListModalAtom, followingCountAtom, followingListModalAtom } from '@src/component/mypage/atom.js';
+import { useNavigate } from 'react-router-dom';
+import { LINKS } from '@src/utils/const.js';
 
 const exampleDatas = [
   {
@@ -76,6 +76,11 @@ const StyledList = muiStyled(List)({
 const FollowList = ({ data, setData }) => {
 
   const setFollowingCount = useSetAtom(followingCountAtom);
+  const navigate = useNavigate();
+  const [followerModalState, setFollowerModalState] = useAtom(
+    followerListModalAtom);
+  const [followingModalState, setFollowingModalState] = useAtom(
+    followingListModalAtom);
 
   const handleFollow = (index) => {
     setFollowingCount((prev) => prev + 1);
@@ -101,6 +106,12 @@ const FollowList = ({ data, setData }) => {
           <StyledListItem key={item.userNick + index}>
             <ListItemAvatar>
               <UserAvatar
+                clickable
+                onClick={() => {
+                  navigate(`${LINKS.MYINFO}/${item.userId}`);
+                  setFollowerModalState(false);
+                  setFollowingModalState(false);
+                }}
                 userNick={item.userNick}
                 src={import.meta.env.REACT_APP_BACKEND_URL + item.userProfile}
               />

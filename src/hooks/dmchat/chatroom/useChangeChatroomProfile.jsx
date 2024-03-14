@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { REACT_QUERY_KEYS } from '@src/utils/const.js';
+import { toast } from 'react-toastify';
 
 const useChangeChatroomProfile = () => {
 
@@ -34,7 +35,7 @@ const useChangeChatroomProfile = () => {
       REACT_QUERY_KEYS.PROFILE,
       REACT_QUERY_KEYS.UPDATE],
     onSuccess: () => {
-      console.log('useChangeChatroomProfile onSuccess');
+      toast.success('프로필 변경 성공');
       queryClient.invalidateQueries({
         predicate: (query) => {
           return query.queryKey.includes(REACT_QUERY_KEYS.CHATROOM) &&
@@ -43,7 +44,8 @@ const useChangeChatroomProfile = () => {
       });
     },
     onError: () => {
-      console.log('useChangeChatroomProfile onError');
+      toast.error('프로필 변경 실패');
+      console.error('useChangeChatroomProfile onError');
     },
   });
 };

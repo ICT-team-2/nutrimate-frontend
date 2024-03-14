@@ -43,7 +43,8 @@ const NameProfileComponent = ({ profileButton, name, nickname }) => {
       <UserAvatar
         size={PROFILE_IMG_SIZE}
         variant="rounded"
-        src={`${import.meta.env.REACT_APP_BACKEND_URL}${data?.userProfile}`} />
+        src={data?.userProfile
+          && `${import.meta.env.REACT_APP_BACKEND_URL}${data?.userProfile}`} />
       <NameContainer>
         <Typography variant="h5">{name}</Typography>
         <SubTitleTypo variant="subtitle1">{nickname}</SubTitleTypo>

@@ -62,7 +62,6 @@ function BoardEditor({ content }) {
             base64ImageSrc,
             Quill.sources.USER,
           );
-          // console.log(base64ImageSrc); // 이미지 내용 출력
         };
         reader.readAsDataURL(file);
       }

@@ -23,7 +23,6 @@ const useClickLikeButton = (boardId) => {
       REACT_QUERY_KEYS.DELETE],
     mutationFn: () => clickLikeButton(boardId),
     onSuccess: () => {
-      console.log('좋아요 성공');
       queryClient.invalidateQueries({
         predicate: (query) => {
           return query.queryKey.includes(REACT_QUERY_KEYS.BOARD)

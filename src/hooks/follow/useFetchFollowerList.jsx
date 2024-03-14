@@ -3,14 +3,15 @@ import { REACT_QUERY_KEYS } from '@src/utils/const.js';
 import axios from 'axios';
 
 const useFetchFollowerList = (profileUserId) => {
-
+  
   profileUserId = profileUserId || parseInt(sessionStorage.getItem('userId'));
-
+  
   //axios
   const fetchFollowerList = async () => {
     const response = await axios.get('/follow/follower/list', {
       params: {
-        userId: profileUserId,
+        userId: parseInt(sessionStorage.getItem('userId')),
+        profileUserId: profileUserId,
       },
     });
     return response.data;

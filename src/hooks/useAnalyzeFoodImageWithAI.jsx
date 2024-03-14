@@ -1,8 +1,21 @@
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
-import { REACT_QUERY_KEYS } from '@src/utils/const.js';
+import {
+  REACT_QUERY_KEYS,
+  TOAST_MESSAGE,
+  TOAST_OPTIONS,
+} from '@src/utils/const.js';
+import { toast } from 'react-toastify';
+import { useRef } from 'react';
 
 const useAnalyzeFoodImageWithAI = () => {
+
+  const toastId = useRef(null);
+
+  const loadingToast = () => {
+    toastId.current = toast(TOAST_MESSAGE.ANALYZE.LOADING, TOAST_OPTIONS.LOADING);
+  };
+
   //axios
   /**
    * @param {string} base64Encoded
@@ -11,6 +24,7 @@ const useAnalyzeFoodImageWithAI = () => {
   const analyzeFoodImage = (base64Encoded) => {
     const formData = new FormData();
     formData.append('base64Encoded', base64Encoded);
+    loadingToast();
     return axios.post(`${import.meta.env.REACT_APP_FLASK_URL}/food`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -26,10 +40,17 @@ const useAnalyzeFoodImageWithAI = () => {
     ],
     mutationFn: analyzeFoodImage,
     onSuccess: (data) => {
-      console.log('onSuccess', data);
+      toast.update(toastId.current, {
+        ...TOAST_OPTIONS.SUCCESS,
+        render: TOAST_MESSAGE.ANALYZE.SUCCESS,
+      });
     },
     onError: (error) => {
       console.error('onError', error);
+      toast.update(toastId.current, {
+        ...TOAST_OPTIONS.ERROR,
+        render: TOAST_MESSAGE.ANALYZE.ERROR,
+      });
     },
   });
 };

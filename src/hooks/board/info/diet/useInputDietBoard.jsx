@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { LINKS, REACT_QUERY_KEYS } from '@src/utils/const.js';
+import { LINKS, REACT_QUERY_KEYS, TOAST_MESSAGE } from '@src/utils/const.js';
 import { useNavigate } from 'react-router-dom';
 import { BOARD } from '@src/component/board/const.js';
+import { toast } from 'react-toastify';
 
 const useInputDietBoard = () => {
 
@@ -41,7 +42,7 @@ const useInputDietBoard = () => {
       REACT_QUERY_KEYS.INSERT],
     mutationFn: inputDietBoard,
     onSuccess: (data) => {
-      console.log('게시글 등록 성공', data);
+      toast.success(TOAST_MESSAGE.BOARD.WRITE.SUCCESS);
       queryClient.invalidateQueries({
         predicate: (query) => {
           return query.queryKey.includes(REACT_QUERY_KEYS.INFO)
@@ -55,6 +56,7 @@ const useInputDietBoard = () => {
       });
     },
     onError: (error) => {
+      toast.error(TOAST_MESSAGE.BOARD.WRITE.ERROR);
       console.error(error);
     },
   });

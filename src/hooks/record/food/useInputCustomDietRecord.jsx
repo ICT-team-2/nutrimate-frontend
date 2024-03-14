@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { REACT_QUERY_KEYS } from '@src/utils/const.js';
+import { REACT_QUERY_KEYS, TOAST_MESSAGE } from '@src/utils/const.js';
+import { toast } from 'react-toastify';
 
 const useInputCustomDietRecord = () => {
 
@@ -44,13 +45,14 @@ const useInputCustomDietRecord = () => {
       REACT_QUERY_KEYS.CUSTOM],
     mutationFn: fetchCustomDietRecord,
     onSuccess: () => {
-      console.log('기록 성공');
+      toast.success(TOAST_MESSAGE.RECORD.SUCCESS);
       queryClient.invalidateQueries({
         queryKey: [REACT_QUERY_KEYS.RECORD],
       });
     },
     onError: (error) => {
-      console.log(error);
+      toast.error(TOAST_MESSAGE.RECORD.ERROR);
+      console.error(error);
     },
   });
 };

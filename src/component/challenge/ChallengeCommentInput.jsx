@@ -4,6 +4,8 @@ import SendIcon from '@mui/icons-material/Send';
 import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import axios from 'axios';
+import { TOAST_OPTIONS } from '@src/utils/const.js';
+import { toast } from 'react-toastify';
 
 const MIN_HEIGHT = 40;
 
@@ -49,14 +51,13 @@ const ChallengeCommentInput = (props) => {
         'cmtId': cmtId,
 
       }).then(data => {
-        console.log(data);
         if (data.data.SUCCESSNOT) {
-          alert('수정에 실패했습니다.');
+          toast.warn('수정에 실패했습니다.');
         }
         setComment('');
       })
         .catch(error => {
-          alert('수정에 실패했습니다.');
+          toast.warn('수정에 실패했습니다.');
         });
 
 
@@ -66,16 +67,14 @@ const ChallengeCommentInput = (props) => {
         'userId': userId,
 
       }).then(data => {
-
-        console.log(data.data.cmtId);
         onhandleComment(comment, data.data.cmtId);
         if (data.data.SUCCESSNOT) {
-          alert('입력에 실패했습니다.');
+          toast.error('입력에 실패했습니다.', TOAST_OPTIONS.ERROR);
         }
         setComment('');
       })
         .catch(error => {
-          alert('입력에 실패했습니다.');
+          toast.error('입력에 실패했습니다.', TOAST_OPTIONS.ERROR);
         });
     }
   };

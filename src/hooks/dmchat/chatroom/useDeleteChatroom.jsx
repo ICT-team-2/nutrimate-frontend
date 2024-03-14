@@ -22,7 +22,7 @@ const useDeleteChatroom = () => {
       REACT_QUERY_KEYS.CHATROOM,
       REACT_QUERY_KEYS.DELETE],
     onSuccess: () => {
-      console.log('채팅방 삭제 성공');
+
     },
     onError: (error) => {
       console.error(error);

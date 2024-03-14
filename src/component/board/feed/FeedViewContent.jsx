@@ -90,14 +90,14 @@ function FeedViewContent(props) {
           <CardHeader
             avatar={
               <UserAvatar
-                src={import.meta.env.REACT_APP_BACKEND_URL + writerProfile}
+                src={writerProfile && (import.meta.env.REACT_APP_BACKEND_URL + writerProfile)}
                 userNick={writer}
                 aria-label="recipe">
                 {writer}
               </UserAvatar>
             }
             action={
-              (writerId === userId) && <FeedDropMenu boardId={boardId}/>
+              (writerId === userId) && <FeedDropMenu boardId={boardId} />
             }
             title={writer}
           />

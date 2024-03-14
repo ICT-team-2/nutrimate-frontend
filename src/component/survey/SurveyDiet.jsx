@@ -6,6 +6,7 @@ import { surveyDataAtom } from '@src/component/survey/atom.js';
 import { SURVEY_SELECT } from '@src/component/survey/const.js';
 import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 
 const StyledContainer = styled.div`
     display: flex;
@@ -51,7 +52,7 @@ const SurveyDiet = () => {
     if (!checkedDiet) return false;
     if (checkedDiet === SURVEY_SELECT.DIET.CUSTOM.KEYS) {
       if (carbo === 0 || protein === 0 || fat === 0) {
-        alert('탄수화물, 단백질, 지방을 입력해주세요.');
+        toast.warn('탄수화물, 단백질, 지방을 입력해주세요.');
         return false;
       }
     }

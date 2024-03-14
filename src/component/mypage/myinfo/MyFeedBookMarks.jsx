@@ -1,14 +1,20 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 import MyFeedCard from '@src/component/mypage/myinfo/MyFeedCard.jsx';
-import useFetchBookmarkFeedList from '@src/hooks/mypage/useFetchBookmarkFeedList.jsx';
+import useFetchBookmarkFeedList
+  from '@src/hooks/mypage/useFetchBookmarkFeedList.jsx';
 import { useParams } from 'react-router-dom';
 
 const MyFeedBookMarks = () => {
-
+  
   const { profileUserId } = useParams();
-  const { data, isLoading, isError, error } = useFetchBookmarkFeedList(profileUserId);
-
+  const { data, isLoading, isError, error } = useFetchBookmarkFeedList(
+    profileUserId);
+  
+  if (data?.pages[0]?.feedList?.length === 0) {
+    return <div>등록된 글이 없습니다.</div>;
+  }
+  
   return (
     <Grid container spacing={3}>
       {

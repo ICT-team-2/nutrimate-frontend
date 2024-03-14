@@ -83,7 +83,6 @@ const FeedWrite = ({ editData, isEdit }) => {
       label: item,
     })) ?? []);
     setBoardContent(editData?.boardContent ?? '');
-    console.log(editData);
   }, [editData]);
 
   useEffect(() => {

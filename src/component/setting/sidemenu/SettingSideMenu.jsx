@@ -106,7 +106,7 @@ const menuItem = (() => {
   }
   return list;
 })();
-// console.log(menuItem);
+
 
 const menuTitle = menuItem.map((item) => item.TITLE);
 const menuPath = menuItem.map((item) => item.PATH);
@@ -153,7 +153,6 @@ const SettingSideMenu = () => {
   }, [iconButtonRef]);
 
   useEffect(() => {
-    console.log(firstDrawerRef);
 
     drawerRef.current.addEventListener('mouseover', (event) => {
       setDrawerOpen(true);

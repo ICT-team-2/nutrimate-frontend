@@ -89,7 +89,6 @@ const DataTableCell = (props) => {
   return <StyledTableCell
     {...props}
     onClick={() => {
-      console.log(data.boardId);
       if (data == null) return;
       updateViewCount.mutate(data.boardId);
 

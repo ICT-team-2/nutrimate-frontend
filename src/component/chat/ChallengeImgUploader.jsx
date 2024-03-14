@@ -65,7 +65,6 @@ const ChallengeImgUploader = (props) => {
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
-    console.log(file);
     const reader = new FileReader();
     reader.onloadend = () => {
       const imageDataURL = reader.result;
@@ -80,7 +79,6 @@ const ChallengeImgUploader = (props) => {
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
-    console.log(file);
     const reader = new FileReader();
     reader.onloadend = () => {
       const imageDataURL = reader.result;

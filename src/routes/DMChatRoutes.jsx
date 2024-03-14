@@ -6,12 +6,15 @@ import { LINKS } from '@src/utils/const.js';
 import NotFound404Page from '@src/pages/NotFound404Page.jsx';
 import DMChatPage from '@src/pages/dmchat/DMChatPage.jsx';
 import LayoutWithoutSideBar from '@src/layout/LayoutWithoutSideBar.jsx';
+import PrivateRoute from '@src/routes/PrivateRoute.jsx';
 
 const DMChatRoutes = () => {
   return (
     <Routes>
-      <Route path="" element={<Layout />}>
-        <Route path="" element={<DMChatPage />}></Route>
+      <Route path="" element={<PrivateRoute />}>
+        <Route path="" element={<Layout />}>
+          <Route path="" element={<DMChatPage />}></Route>
+        </Route>
       </Route>
       <Route path={'*'} element={<NotFound404Page />}></Route>
     </Routes>

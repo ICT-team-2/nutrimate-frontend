@@ -13,7 +13,7 @@ import {
   firstDrawerRefAtom,
   sideMenuIconRefAtom,
 } from '@src/component/common/Header/atom.js';
-import { MENU_LIST } from '@src/utils/const.js';
+import { LINKS, MENU_LIST } from '@src/utils/const.js';
 import {
   faCalendar,
   faClipboard, faComments,
@@ -129,6 +129,10 @@ const SideMenu = ({ drawerWidth, drawerHeight }) => {
     return () => {
       if (item.TITLE === MENU_LIST.RECORD.TITLE) {
         gotoRecord();
+        return;
+      }
+      if (item.TITLE === MENU_LIST.MYINFO.TITLE) {
+        navigate(`${LINKS.MYINFO}/${sessionStorage.getItem('userId')}`);
         return;
       }
       navigate(item.PATH);

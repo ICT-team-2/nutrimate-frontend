@@ -28,7 +28,7 @@ import BoardBookmarkButton from '@src/component/board/BoardBookmarkButton.jsx';
 const CustomCard = styled(Card)`
     width: 240px;
     margin: 10px;
-    height: ${({ isbookmark }) => isbookmark ? '300px' : '240px'};
+    height: ${({ isbookmark }) => isbookmark === 'true' ? '300px' : '240px'};
     display: flex;
     flex-direction: column;
     cursor: pointer;
@@ -73,7 +73,7 @@ export default function MyFeedCard(props) {
   return (
     <>
       <CustomCard
-        isbookmark={isBookmark}
+        isbookmark={isBookmark + ''}
         onClick={clickCard}>
         <CustomCardMedia
           src={import.meta.env.REACT_APP_BACKEND_URL + `${boardThumbnail}`}

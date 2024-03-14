@@ -66,11 +66,6 @@ const SportRecordList = () => {
 
   const { data: sportRecord } = useFetchSportRecord(dayjs(doDate).format('YYYY-MM-DD'));
 
-
-  useEffect(() => {
-    console.log('sportRecord', sportRecord);
-  }, [sportRecord]);
-
   return (
     <ContainerDiv>
       <FirstContainerDiv>

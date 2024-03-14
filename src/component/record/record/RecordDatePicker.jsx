@@ -25,7 +25,6 @@ export default function RecordDatePicker({ children, date }) {
     setAnchorEl(null);
   };
   const handleDateChange = (d) => {
-    console.log(d['$d']);
     gotoRecord(d['$d']);
   };
 

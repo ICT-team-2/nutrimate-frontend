@@ -12,13 +12,16 @@ import {
   profileModalAtom,
   profileImageAtom, followerCountAtom, followingCountAtom,
 } from '@src/component/mypage/atom.js';
-import FollowerListModal from '@src/component/mypage/follow/FollowerListModal.jsx';
-import FolloweeListModal from '@src/component/mypage/follow/FolloweeListModal.jsx';
+import FollowerListModal
+  from '@src/component/mypage/follow/FollowerListModal.jsx';
+import FolloweeListModal
+  from '@src/component/mypage/follow/FolloweeListModal.jsx';
 import { FOLLOW_MODAL } from '@src/component/mypage/const.js';
-import ChangeProfileComponent from '@src/component/common/ChangeProfileComponent.jsx';
+import ChangeProfileComponent
+  from '@src/component/common/ChangeProfileComponent.jsx';
 import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 import { useParams } from 'react-router-dom';
-
+import FollowButton from '@src/component/common/FollowButton.jsx';
 
 const MyInfomationContainer = styled.div`
     display: flex;
@@ -83,12 +86,22 @@ const MyInfomations = () => {
         <UserAvatar
           userNick={userData?.userNick}
           size={130} variant="rounded"
-          src={import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
+          src={userData?.userProfile &&
+            import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
       }
       <StyledContainerDiv>
         <NicknNameH3>
           <NickNameSpan>{userData?.userNick}</NickNameSpan>
-          <ChangeProfileComponent />
+          <ChangeProfileComponent
+            isLoginUser={parseInt(profileUserId) ===
+              parseInt(sessionStorage.getItem('userId'))}
+            profileUserId={profileUserId}
+          />
+          {parseInt(profileUserId) !==
+            parseInt(sessionStorage.getItem('userId')) &&
+            <FollowButton
+              following={userData?.isFollowing === 1}
+              followId={profileUserId} />}
         </NicknNameH3>
         <SecondaryInfoSpan>
           <SecInfoTypo variant="subtitle1">

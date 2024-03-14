@@ -20,6 +20,8 @@ import { userIdAtom } from '@src/pages/login/atom.js';
 import { useEffect } from 'react';
 import FollowButton from '@src/component/common/FollowButton.jsx';
 import useFetchRecommandFollowList from '@src/hooks/follow/useFetchRecommandFollowList.jsx';
+import { useNavigate } from 'react-router-dom';
+import { LINKS } from '@src/utils/const.js';
 
 const exampleDatas = [
   {
@@ -99,13 +101,18 @@ const StyledListItemText = styled(ListItemText)`
 const RecommendFriendList = ({ datas = exampleDatas }) => {
   const { data: userData } = useFetchProfileData();
   const { data: recommendFollowData } = useFetchRecommandFollowList();
+  const navigate = useNavigate();
 
   return (
     <FriendListContainer>
       <AvatarContainer>
         <UserAvatar
+          clickable
+          onClick={() => {
+            navigate(`${LINKS.MYINFO}/${sessionStorage.getItem('userId')}`);
+          }}
           userNick={userData?.userNick}
-          src={import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
+          src={userData?.userProfile && import.meta.env.REACT_APP_BACKEND_URL + userData?.userProfile} />
         <UserNameContainer>{userData?.userNick}</UserNameContainer>
       </AvatarContainer>
       <StyledPaper>
@@ -120,8 +127,12 @@ const RecommendFriendList = ({ datas = exampleDatas }) => {
             <StyledListItem key={data.userNick + index}>
               <ListItemAvatar>
                 <UserAvatar
+                  clickable
+                  onClick={() => {
+                    navigate(`${LINKS.MYINFO}/${data.userId}`);
+                  }}
                   userNick={data.userNick}
-                  src={import.meta.env.REACT_APP_BACKEND_URL + data.userProfile} />
+                  src={data.userProfile && import.meta.env.REACT_APP_BACKEND_URL + data.userProfile} />
               </ListItemAvatar>
               <StyledListItemText primary={<FollowNickContainer>{data.userNick}</FollowNickContainer>} />
               <FollowButton
