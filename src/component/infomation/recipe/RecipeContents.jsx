@@ -7,6 +7,7 @@ import { useAtom } from 'jotai/react';
 import { searchKeywordAtom } from '@src/component/infomation/atom.js';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
 import useFetchFoodRecipe from '@src/component/infomation/hooks/useFetchFoodRecipe.jsx';
+import Image from './recipe.png';
 
 const pageItemNumber = 16;
 
@@ -42,6 +43,7 @@ const RecipeContents = () => {
 
   return (
     <InfoContentContainer>
+      <img src={Image} alt="recipe" style={{ width: '100%', height: '400px', marginBottom: '20px' }} />
       <Grid container spacing={3}>
         {
           dataSearched?.slice((page - 1) * pageItemNumber, page * pageItemNumber)
