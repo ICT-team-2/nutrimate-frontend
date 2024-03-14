@@ -6,7 +6,7 @@ import Tab from '@mui/material/Tab';
 import { useAtom, useSetAtom } from 'jotai/react';
 import { bookmarkMenuAtom, myPageTabAtom } from '@src/component/mypage/atom.js';
 import { Menu, MenuItem } from '@mui/material';
-import { BOOKMARK_MENU } from '@src/component/mypage/const.js';
+import { BOOKMARK_MENU, MY_PAGE_TAB } from '@src/component/mypage/const.js';
 
 export default function CenteredTabs({ tab = null }) {
   const [value, setValue] = useAtom(myPageTabAtom);
@@ -42,7 +42,14 @@ export default function CenteredTabs({ tab = null }) {
       <Tabs value={value} onChange={handleTabClick} centered>
         <Tab label="정보공유" />
         <Tab label="피드" />
-        <Tab label="북마크" onClick={handleMenuClick} />
+        <Tab label="북마크"
+             onMouseOver={handleMenuClick}
+             onMouseLeave={() => {
+               setTimeout(() => {
+                 handleClose();
+               }, 3000);
+             }}
+        />
       </Tabs>
       <Menu
         id="simple-menu"
@@ -51,12 +58,16 @@ export default function CenteredTabs({ tab = null }) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={(event) =>
-          handleMenuItemClick(event, BOOKMARK_MENU.INFO)}>
+        <MenuItem onClick={(event) => {
+          setValue(MY_PAGE_TAB.BOOKMARK);
+          handleMenuItemClick(event, BOOKMARK_MENU.INFO);
+        }}>
           정보공유
         </MenuItem>
-        <MenuItem onClick={(event) =>
-          handleMenuItemClick(event, BOOKMARK_MENU.FEED)}>
+        <MenuItem onClick={(event) => {
+          setValue(MY_PAGE_TAB.BOOKMARK);
+          handleMenuItemClick(event, BOOKMARK_MENU.FEED);
+        }}>
           피드
         </MenuItem>
         {/* 이하 동일하게 추가... */}

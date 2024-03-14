@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Button, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const ChatInputContainer = styled.div`
     width: calc(100% - 40px);
@@ -26,7 +26,8 @@ const ChatInput = ({ onSend }) => {
   };
 
   const handleSendClick = () => {
-    onSend(message);
+    if (message.trim() !== '')
+      onSend(message);
     setMessage('');
   };
 
@@ -37,6 +38,10 @@ const ChatInput = ({ onSend }) => {
       event.stopPropagation();
     }
   };
+
+  useEffect(() => {
+    console.log('message:', message);
+  }, [message]);
 
   return (
     <ChatInputContainer>
