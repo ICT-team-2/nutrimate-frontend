@@ -49,7 +49,7 @@ function AdminLayout() {
     if (userData.userRole !== 'ROLE_ADMIN') {
       navigate('/');
     }
-  }, [data]);
+  }, [userData]);
 
   return (
     <>

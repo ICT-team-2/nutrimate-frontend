@@ -19,7 +19,7 @@ import { userIdAtom } from '@src/pages/login/atom';
 import { convertDateToUrlParam } from '@src/utils/functions.js';
 import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 
-import NotiBadge from '@src/component/notice/NotiBadge.jsx'
+import NotiBadge from '@src/component/notice/NotiBadge.jsx';
 
 const AppBar = muiStyled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -100,15 +100,15 @@ const Header = (props) => {
           <StyledButton
             onClick={gotoInfo}
             logowhite={logoWhite + ''}
-          >Infomation</StyledButton>
+          >Information</StyledButton>
           {userData?.userRole === 'ROLE_ADMIN' && <StyledButton
             onClick={gotoAdmin}
             logowhite={logoWhite + ''}
           >Admin</StyledButton>}
           {!!userId ? (
             <>
-            <div style={{ marginRight: '20px' }}><NotiBadge/></div>
-            <ProfileImgMenu />
+              <div style={{ marginRight: '20px' }}><NotiBadge /></div>
+              <ProfileImgMenu />
             </>
           ) : (
             <div>

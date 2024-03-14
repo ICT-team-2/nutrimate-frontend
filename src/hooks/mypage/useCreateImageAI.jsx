@@ -35,17 +35,9 @@ const useCreateImageAI = () => {
     ],
     mutationFn: createImageAI,
     onSuccess: () => {
-      toast.update(toastId.current, {
-        render: TOAST_MESSAGE.IMAGE_CREATE.SUCCESS,
-        ...TOAST_OPTIONS.SUCCESS,
-      });
     },
     onError: (error) => {
       console.error(error);
-      toast.update(toastId.current, {
-        render: TOAST_MESSAGE.IMAGE_CREATE.ERROR,
-        ...TOAST_OPTIONS.ERROR,
-      });
     },
   });
 };
