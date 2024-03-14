@@ -9,7 +9,7 @@ const useDeleteFollow = (followeeId) => {
   //axios
   const deleteFollow = async () => {
     await axios.delete('/follow/unfollow', {
-      data: {
+      params: {
         followeeId: followeeId,
         userId: userId,
       },

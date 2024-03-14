@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
 import { useAtomValue } from 'jotai/react';
 import { profileImageAtom } from '@src/component/mypage/atom.js';
+import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 
 const PROFILE_IMG_SIZE = 100;
 
@@ -36,11 +37,13 @@ const SubTitleTypo = muiStyled(Typography)`
   color: ${({ theme }) => theme['gray-light-text']};
 `;
 const NameProfileComponent = ({ profileButton, name, nickname }) => {
-  const uploadImg = useAtomValue(profileImageAtom);
-
+  const { data } = useFetchProfileData();
   return (
     <StyledContainerDiv>
-      <UserAvatar size={PROFILE_IMG_SIZE} variant="rounded" src={uploadImg} />
+      <UserAvatar
+        size={PROFILE_IMG_SIZE}
+        variant="rounded"
+        src={`${import.meta.env.REACT_APP_BACKEND_URL}${data?.userProfile}`} />
       <NameContainer>
         <Typography variant="h5">{name}</Typography>
         <SubTitleTypo variant="subtitle1">{nickname}</SubTitleTypo>

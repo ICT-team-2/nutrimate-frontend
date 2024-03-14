@@ -11,15 +11,16 @@ const useCheckUserToken = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('cookie', document.cookie);
     if (!cookies.ACCESS) {
-      setUserId(null);
+      setUserId(undefined);
       sessionStorage.removeItem('userId');
       navigate('/');
       return;
     }
     const decodedToken = jwtDecode(cookies.ACCESS);
     if (!decodedToken?.userInfo) {
-      setUserId(null);
+      setUserId(undefined);
       sessionStorage.removeItem('userId');
       navigate('/');
       return;

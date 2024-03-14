@@ -23,7 +23,6 @@ const style = {
   width: 200,
   height: 230,
   bgcolor: 'background.paper',
-  boxShadow: 24,
   padding: '20px',
   borderRadius: '3px',
 };
@@ -35,13 +34,17 @@ const TitleH3 = styled.h3`
     margin-bottom: 20px;
 `;
 
-export default function ChangeProfileModal() {
+const StyledModal = styled(Modal)`
+
+`;
+
+export default function ChangeProfileModal({ changeProfile, chatroom }) {
 
   const [open, setOpen] = useAtom(profileModalAtom);
   const fileInputRef = useRef();
   const setSelectedImage = useSetAtom(profileImageAtom);
   const [promptModalState, setPromptModalState] = useAtom(profilePromptModalAtom);
-  const changeProfile = useChangeProfileImage();
+
 
   const handleClose = () => setOpen(false);
   const uploadImg = (event) => {
@@ -54,14 +57,21 @@ export default function ChangeProfileModal() {
       setSelectedImage(reader.result);
     };
     reader.readAsDataURL(file);
-    changeProfile.mutate(file);
+    changeProfile(file);
     handleClose();
   };
   return (
-    <div>
-      <Modal
+    <>
+      <StyledModal
         open={open}
         onClose={handleClose}
+        slotProps={chatroom && {
+          backdrop: {
+            style: {
+              backgroundColor: 'rgba(0, 0, 0, 0.2)', // 여기서 투명도를 조절할 수 있습니다. 0.5는 예시 값입니다.
+            },
+          },
+        }}
       >
         <Box sx={style}>
           <Box
@@ -101,14 +111,16 @@ export default function ChangeProfileModal() {
             </List>
           </Box>
         </Box>
-      </Modal>
+      </StyledModal>
       <ResetStyleInput
         type="file"
         accept="image/*"
         ref={fileInputRef}
         onChange={handleImageUpload}
       />
-      <ProfileAIPromptModal />
-    </div>
+      <ProfileAIPromptModal
+        chatroom={chatroom}
+        changeProfile={changeProfile} />
+    </>
   );
 }

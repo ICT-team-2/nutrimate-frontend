@@ -1,57 +1,50 @@
-import React, { useState } from 'react';
-import { Menu, MenuItem, Tab, Tabs } from '@mui/material';
-import { RECOMMAND_MENU } from '@src/component/infomation/const.js';
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
-export default function TestComp() {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+export default function SimpleSnackbar() {
+  const [open, setOpen] = React.useState(false);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = () => {
+    setOpen(true);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   };
 
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setAnchorEl(null);
-  };
+  const action = (
+    <>
+      <Button color="secondary" size="small" onClick={handleClose}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </>
+  );
 
   return (
     <div>
-      <Tabs value={selectedIndex} onChange={handleMenuItemClick}>
-        <Tab label="뉴스" />
-        <Tab label="추천" onClick={handleClick} />
-        <Tab label="알레르기" />
-        {/* 이하 동일하게 추가... */}
-      </Tabs>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
+      <Button onClick={handleClick}>Open Snackbar</Button>
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
         onClose={handleClose}
-      >
-        <MenuItem onClick={(event) =>
-          handleMenuItemClick(event, RECOMMAND_MENU.NUTRIENTS)}>
-          영양제 추천
-        </MenuItem>
-        <MenuItem onClick={(event) =>
-          handleMenuItemClick(event, RECOMMAND_MENU.SPORT)}>
-          운동 추천
-        </MenuItem>
-        <MenuItem onClick={(event) =>
-          handleMenuItemClick(event, RECOMMAND_MENU.PLACE)}>
-          장소 추천
-        </MenuItem>
-        <MenuItem onClick={(event) =>
-          handleMenuItemClick(event, RECOMMAND_MENU.FOOD)}>
-          음식 추천
-        </MenuItem>
-        {/* 이하 동일하게 추가... */}
-      </Menu>
+        message="Note archived"
+        action={action}
+      />
     </div>
   );
 }

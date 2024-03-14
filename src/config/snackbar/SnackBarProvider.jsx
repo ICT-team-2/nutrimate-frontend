@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { createContext } from 'react';
+
+export const SnackBarContext = createContext({});
 
 const SnackBarProvider = (props) => {
   const { children } = props;
