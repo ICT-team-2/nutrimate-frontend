@@ -2,10 +2,13 @@ import Header from '@src/component/common/Header/Header.jsx';
 import Footer from '@src/component/common/Footer/Footer.jsx';
 import styled, { createGlobalStyle } from 'styled-components';
 import { styled as muiStyled } from '@mui/material/styles';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { FOOTER_HEIGHT } from '@src/utils/const.js';
 import AdminHeader from '@src/component/admin/header/AdminHeader.jsx';
 import { ADMIN_DRAWER_WIDTH } from '@src/component/admin/const.js';
+import useCheckUserToken from '@src/hooks/useCheckUserToken.jsx';
+import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
+import { useEffect } from 'react';
 
 
 const Wrapper = styled.div`
@@ -23,9 +26,6 @@ const Content = styled.div`
     padding-bottom: ${FOOTER_HEIGHT}; // 푸터의 높이만큼 padding-bottom을 추가
     display: flex;
 `;
-const DrawerDiv = styled.div`
-    width: ${ADMIN_DRAWER_WIDTH}px;
-`;
 
 const GlobalStyles = createGlobalStyle`
     body {
@@ -41,6 +41,15 @@ const OutletContainer = styled.div`
 
 function AdminLayout() {
 
+  const { data: userData, isLoading } = useFetchProfileData();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userData) return;
+    if (userData.userRole !== 'ROLE_ADMIN') {
+      navigate('/');
+    }
+  }, [data]);
 
   return (
     <>

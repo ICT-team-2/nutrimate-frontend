@@ -51,7 +51,6 @@ const SportContents = () => {
   }, [data, category, searchKeyword]);
 
   useEffect(() => {
-    // console.log(dataSearched);
     setTotalPage(Math.ceil((dataSearched?.length ?? pageItemNumber) / pageItemNumber));
   }, [dataSearched]);
 

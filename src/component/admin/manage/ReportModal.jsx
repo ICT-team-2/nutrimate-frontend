@@ -5,6 +5,7 @@ import { Button, TextField } from '@mui/material';
 import axios from 'axios';
 import { useAtom } from 'jotai';
 import { userIdAtom } from '@src/pages/login/atom.js';
+import { toast } from 'react-toastify';
 
 const ModalBg = styled.div`
     display: flex;
@@ -78,7 +79,6 @@ const ReportModal = ({ setShowReportModal, boardId, cmtId, searchKeyWord, showRe
   };
 
   const reportClick = (e) => {
-    console.log(cmtId);
     axios.post(`${import.meta.env.REACT_APP_BACKEND_URL}/report`, {
       'seachKeyWord': searchKeyWord,
       'boardid': boardId,
@@ -88,15 +88,13 @@ const ReportModal = ({ setShowReportModal, boardId, cmtId, searchKeyWord, showRe
     })
       .then(response => {
         // 서버에서 반환하는 데이터에 따라 적절한 동작을 수행합니다.
-        alert(response.data.REPORTOK); // 예시로 경고창을 띄움
+        toast.success(response.data.REPORTOK); // 예시로 경고창을 띄움
         setShowReportModal(false);
       })
       .catch(error => {
         console.error('Error submitting report:', error);
-        alert('Failed to submit report'); // 오류가 발생했을 때 처리
+        toast.warn('Failed to submit report'); // 오류가 발생했을 때 처리
       });
-
-
   };
 
   const handleInputChange = (event) => {
@@ -119,8 +117,8 @@ const ReportModal = ({ setShowReportModal, boardId, cmtId, searchKeyWord, showRe
 
 
   return (
-    <ModalBg onClick={handleModalClick}> 
-      <ModalBox >
+    <ModalBg onClick={handleModalClick}>
+      <ModalBox>
         <>
           <h2>신고하기</h2>
           <ModalCloseBtn onClick={closeModal}>✖</ModalCloseBtn>

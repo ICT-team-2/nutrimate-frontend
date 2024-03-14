@@ -37,7 +37,6 @@ messaging.onBackgroundMessage((payload) => {
 
 //알림창 클릭시
 self.addEventListener('notificationclick', event => {
-  console.log(event);
   event.notification.close(); // 알림창 닫기
 
   // 클라이언트(브라우저 탭)를 열거나 포커스

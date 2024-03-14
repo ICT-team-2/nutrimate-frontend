@@ -34,7 +34,6 @@ const useChangeChatroomName = () => {
       REACT_QUERY_KEYS.ROOMNAME,
       REACT_QUERY_KEYS.UPDATE],
     onSuccess: () => {
-      console.log('changeChatRoomName onSuccess');
       queryClient.invalidateQueries({
         predicate: query => {
           return query.queryKey.includes(REACT_QUERY_KEYS.DM) &&
@@ -52,7 +51,7 @@ const useChangeChatroomName = () => {
       });
     },
     onError: () => {
-      console.log('changeChatRoomName onError');
+      console.error('changeChatRoomName onError');
     },
   });
 };

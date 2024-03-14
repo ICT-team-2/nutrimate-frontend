@@ -52,9 +52,9 @@ export default function AskDeleteDialog({ open, setOpen, onClickDelete }) {
 AskDeleteDialog.defaultProps = {
   open: false,
   setOpen: () => {
-    console.log('setOpen');
+
   },
   onClickDelete: () => {
-    console.log('delete');
+
   },
 };

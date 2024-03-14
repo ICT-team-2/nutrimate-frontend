@@ -75,7 +75,7 @@ CustomSearchInput.defaultProps = {
   id: 'search',
   size: 'small',
   callback: () => {
-    console.log('Enter key pressed');
+
   },
 };
 

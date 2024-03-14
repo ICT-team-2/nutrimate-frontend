@@ -9,6 +9,7 @@ import React, { useRef } from 'react';
 
 import { useAtom } from 'jotai/react';
 import { mapCenterAtom, mapDistancesAtom, mapPathsAtom, mapRefAtom } from '@src/component/board/atom.js';
+import { toast } from 'react-toastify';
 
 const GlobalStyle = createGlobalStyle`
     .number {
@@ -97,9 +98,7 @@ const KakaoMap = (props) => {
     });
 
   };
-  // useEffect(() => {
-  //   console.log('centerValue:', centerValue);
-  // }, [centerValue]);
+
 
   const handleRightClick = (
     _map,
@@ -155,7 +154,7 @@ const KakaoMap = (props) => {
       return;
     }
     if (!navigator.geolocation) {
-      alert('이 브라우저에서는 Geolocation이 지원되지 않습니다.');
+      toast.warn('이 브라우저에서는 Geolocation이 지원되지 않습니다.');
     }
   }, []);
 
@@ -164,9 +163,6 @@ const KakaoMap = (props) => {
     if (searchValue) {
       const places = new window.kakao.maps.services.Places();
 
-      // 객체 생성 확인 로그 추가
-      // console.log(places);
-
       places.keywordSearch(searchValue, function(result, status) {
         if (status === window.kakao.maps.services.Status.OK) {
           setCenterValue({
@@ -174,15 +170,11 @@ const KakaoMap = (props) => {
             lng: result[0].x,
           });
         } else {
-          //alert("장소 검색에 실패했습니다.");
         }
       });
     }
   }, [searchValue]);
 
-  // useEffect(() => {
-  //   console.log(`유저가 검색한 단어:${searchValue}`);
-  // }, [searchValue]);
 
   // 걷기,달리기,자전거 소모 칼로리
   useEffect(() => {
@@ -220,12 +212,6 @@ const KakaoMap = (props) => {
   function calculateCalories(mets, weight, time) {
     return mets * weight * (time / 60);
   }
-
-  // todo console.log 주석처리할 것
-  // useEffect(() => {
-  //   console.log('pathValues:', pathValues, 'distanceValues:', distanceValues,
-  //     'centerValue:', centerValue);
-  // }, [centerValue, distanceValues, pathValues]);
 
   return (
     <>

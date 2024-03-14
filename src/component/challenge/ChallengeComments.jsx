@@ -39,7 +39,6 @@ const ChallengeComments = () => {
 
 
   const onhandleComment = (comment, cmt) => {
-    console.log('바뀜', cmt);
     setCmtId(cmt);
     setMessage(comment);
   };

@@ -45,7 +45,6 @@ const ChallengeRank = () => {
   const ChallengeRankList = () => {
     axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/success?chatroomId=${chatroomId}`)
       .then(datas => {
-        console.log(datas.data);
         setChallengeListData(datas.data);
 
       })

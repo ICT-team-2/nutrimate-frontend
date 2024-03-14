@@ -8,7 +8,7 @@ import NotFound404Page from '@src/pages/NotFound404Page.jsx';
 const MyPageRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
+      <Route path="" element={<Layout />}>
         <Route path=":profileUserId" element={<MyInfoPage />}></Route>
         <Route
           path=""
@@ -17,7 +17,6 @@ const MyPageRoutes = () => {
           }
         ></Route>
         <Route path={'*'} element={<NotFound404Page />}></Route>
-
       </Route>
 
     </Routes>

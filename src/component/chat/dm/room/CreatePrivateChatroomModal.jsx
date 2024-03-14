@@ -156,7 +156,7 @@ const CreatePrivateChatroomModal = (props) => {
                 />
                 <SearchButton
                   onClick={() => {
-                    console.log('searchWord', searchWord);
+                    refetchSearch();
                   }}
                   variant="contained">검색</SearchButton>
               </TextFieldContainer>

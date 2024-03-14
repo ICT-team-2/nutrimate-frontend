@@ -78,8 +78,6 @@ export function WeeklyCategoricalBarChart() {
       currentDate = currentDate.add(1, 'day');
     }
 
-    console.log(datas);
-
     axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/statistic/list/category`)
       .then(response => {
         setLabels(dates);
@@ -100,7 +98,6 @@ export function WeeklyCategoricalBarChart() {
         acc[boardcategory].push(item);
         return acc;
       }, {});
-      console.log(groupedData);
 
       if (groupedData['FOOD']) {
         setFoodDatas(labels.map(label => {
@@ -111,7 +108,6 @@ export function WeeklyCategoricalBarChart() {
         setFoodDatas(labels.map(() => 0)); // If no FOOD data found, set all counts to 0
 
       }
-      console.log(food);
 
       if (groupedData['exercise']) {
         setExercise(labels.map(label => {

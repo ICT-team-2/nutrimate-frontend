@@ -90,7 +90,6 @@ const UserViewInfo = () => {
   // const [intro, setIntro] = useAtom(introAtom); 
 
   useEffect(() => {
-    console.log('UserViewInfo useEffect - userId: ', userId);
     window.scrollTo(0, 0);
 
     axios.get('/member/mypage', {
@@ -99,7 +98,6 @@ const UserViewInfo = () => {
       },
     })
       .then(response => {
-        console.log(response.data);
         setUserInfo(response.data.memberDto);
         setGender(response.data.memberDto.userGender);
         setHeight(response.data.memberDto.userHeight);
@@ -128,8 +126,8 @@ const UserViewInfo = () => {
         nickname={userInfo?.userNick} />
       <StyledTypography variant="h5">소개</StyledTypography>
       <StyledTextField
-        variant={'outlined'} 
-        multiline 
+        variant={'outlined'}
+        multiline
         rows={4}
         //label="자기소개" 
         placeholder="자기 소개를 입력해주세요"

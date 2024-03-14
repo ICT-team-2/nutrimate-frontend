@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { REACT_QUERY_KEYS } from '@src/utils/const.js';
+import { REACT_QUERY_KEYS, TOAST_MESSAGE } from '@src/utils/const.js';
+import { toast } from 'react-toastify';
 
 const useChangeProfileImage = () => {
 
@@ -27,7 +28,7 @@ const useChangeProfileImage = () => {
       REACT_QUERY_KEYS.PROFILE,
       REACT_QUERY_KEYS.UPDATE],
     onSuccess: (data) => {
-      // console.log('프로필 변경 성공', data);
+      toast.success(TOAST_MESSAGE.PROFILE.SUCCESS);
       queryClient.invalidateQueries({
         predicate: (query) => {
           return query.queryKey.includes(REACT_QUERY_KEYS.MEMBER_DATA)
@@ -36,7 +37,8 @@ const useChangeProfileImage = () => {
       });
     },
     onError: (error) => {
-      console.log('프로필 변경 실패', error);
+      toast.error(TOAST_MESSAGE.PROFILE.ERROR);
+      console.error('프로필 변경 실패', error);
     },
   });
 };

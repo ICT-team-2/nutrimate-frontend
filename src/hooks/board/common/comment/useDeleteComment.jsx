@@ -19,7 +19,6 @@ const useDeleteComment = (cmtId, boardId) => {
     mutationKey: [REACT_QUERY_KEYS.COMMENTS, REACT_QUERY_KEYS.DELETE],
     mutationFn: deleteComment,
     onSuccess: () => {
-      // console.log('댓글 삭제 성공');
       queryClient.invalidateQueries({
         predicate: (query) => {
           return query.queryKey.includes(REACT_QUERY_KEYS.COMMENTS)

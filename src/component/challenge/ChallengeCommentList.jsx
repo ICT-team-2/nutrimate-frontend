@@ -16,6 +16,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import EditInput from '@src/component/challenge/ChallengeCommentInput.jsx';
+import { toast } from 'react-toastify';
 
 
 const blinkEffect = keyframes`
@@ -75,11 +76,9 @@ function ChallengeCommentList({ message, userId, cmtId }) {
   const observer = new IntersectionObserver(observerCallback, observerOptions);
 
   useEffect(() => {
-    console.log(nowPage);
     if (isFetching) {
       if (nowPage !== 1) {
         axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/comment/list?nowPage=${nowPage}`, {}).then(data => {
-          console.log(data.data);
           setCommentData(prevData => [...prevData, ...data.data]);
           if (data.data.length < 10) {
             setIsFetching(false); // 데이터 길이가 15보다 작으면 isFetching을 false로 설정
@@ -87,7 +86,6 @@ function ChallengeCommentList({ message, userId, cmtId }) {
         });
       } else {
         axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/comment/list?nowPage=${nowPage}`, {}).then(data => {
-          console.log(data.data);
           setCommentData(data.data);
         });
       }
@@ -117,15 +115,12 @@ function ChallengeCommentList({ message, userId, cmtId }) {
       topRef.current.scrollTo(0, 0); // 스크롤을 맨 위로 보냅니다.
     }
     const formattedDate = dayjs().format('YYYY-MM-DD');
-    console.log(message);
     if (typeof message === 'string' && message.trim() !== '') {
       axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/challenge/usernick?userId=${userId}`).then(data => {
-        console.log(cmdId);
         if (data.data.SUCCESSNOT) {
-          alert('닉네임 불러오기에 실패했습니다.');
+          toast.error('닉네임 불러오기에 실패했습니다.');
         } else {
           setUserNick(data.data.USER_NICK);
-          console.log('!@#$', cmtId);
           const newData = {
             'createdDate': formattedDate,
             'userNick': data.data.USER_NICK,
@@ -141,7 +136,7 @@ function ChallengeCommentList({ message, userId, cmtId }) {
         }
       })
         .catch(error => {
-          alert('닉네임 불러오기에 실패했습니다.');
+          toast.error('닉네임 불러오기에 실패했습니다.');
         });
 
     }
@@ -149,7 +144,6 @@ function ChallengeCommentList({ message, userId, cmtId }) {
 
   const handleOpenMenu = (props) => {
     const { event, cmtId } = props;
-    console.log(cmtId);
     setCmdId(cmtId);
     setAnchorEl(event.currentTarget);
   };
@@ -170,7 +164,7 @@ function ChallengeCommentList({ message, userId, cmtId }) {
 
     }).then(data => {
       if (data.data.SUCCESSNOT) {
-        alert('삭제를 실패했습니다.');
+        toast.error('삭제를 실패했습니다.');
       } else {
         setCommentData(commentData.filter(comment =>
           comment.cmtId !== cmdId,
@@ -179,13 +173,11 @@ function ChallengeCommentList({ message, userId, cmtId }) {
       handleCloseMenu(null);
     })
       .catch(error => {
-        alert('삭제를 실패했습니다.');
-        // Handle error here, for example, showing an alert or logging the error
+        toast.error('삭제를 실패했습니다.');
       });
   };
 
   const onhandleEdit = (comments) => {
-    console.log('comment', comments);
     setCommentData(commentData.map(comment =>
       comment.cmtId === cmdId ? { ...comment, cmtContent: comments, cmtId: comment.cmtId } : comment,
     ));

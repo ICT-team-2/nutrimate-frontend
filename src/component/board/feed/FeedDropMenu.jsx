@@ -10,14 +10,12 @@ import AskDeleteDialog from '@src/component/board/AskDeleteDialog.jsx';
 import useDeleteBoard from '@src/hooks/board/common/useDeleteBoard.jsx';
 
 
-
-const FeedDropMenu = ({ boardId,setShowReportModal}) => {
+const FeedDropMenu = ({ boardId, setShowReportModal }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
   const deleteBoard = useDeleteBoard();
-  console.log(boardId)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -62,7 +60,7 @@ const FeedDropMenu = ({ boardId,setShowReportModal}) => {
       <AskDeleteDialog
         onClickDelete={() => deleteBoard.mutate(boardId)}
         open={dialogOpen} setOpen={setDialogOpen} />
-        
+
     </>
   );
 };

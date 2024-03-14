@@ -34,9 +34,6 @@ const RecipeContents = () => {
       setPage(totalPage);
   }, [totalPage]);
 
-  useEffect(() => {
-    console.log('page', page);
-  }, [page]);
 
   if (isLoading) return <LoadingComponent />;
 

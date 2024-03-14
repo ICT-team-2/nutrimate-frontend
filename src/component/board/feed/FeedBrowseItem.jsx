@@ -41,10 +41,6 @@ const FeedBrowseItem = (props) => {
   const [open, setOpen] = useState(false);
 
 
-  useEffect(() => {
-    console.log('item', index, item);
-  }, [item]);
-
   const clickModalOpen = () => {
     setOpen(true);
   };

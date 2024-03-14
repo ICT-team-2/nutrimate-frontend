@@ -36,7 +36,7 @@ const GlobalStyle = createGlobalStyle`
 const StyledCalendar = styled(Calendar)`
     &.rbc-calendar {
         width: 100%;
-        height: 80%;
+        height: 90%;
         background-color: white;
         padding: 20px;
         border-radius: ${CALENDAR_BOARDER_RADIUS};
@@ -93,19 +93,18 @@ const StyledCalendar = styled(Calendar)`
 
 `;
 
-const CalendarContainer = muiStyled(Container)`
+const CalendarContainer = styled(Container)`
     width: 60%;
     height: 90vh;
     min-width: 800px;
     min-height: 700px;
-    
+
     &.MuiContainer-root {
-      max-width: 70vw;
+        max-width: 70vw;
     }
 `;
 
 const CalendarComponent = (props) => {
-  console.log(props);
   const [isClickCalendar, setIsClickCalendar] = useState(true);
   const [isClickList, setIsClickList] = useState(false);
   const [monthData, setMonthData] = useState([]);
@@ -122,7 +121,6 @@ const CalendarComponent = (props) => {
 
   const callendar = () => {
     //setDate(new Date());
-    console.log('asdasd', date);
     setIsClickCalendar(true);
     setIsClickList(false);
     setCalendarUpdate(prev => prev + 1);
@@ -136,16 +134,8 @@ const CalendarComponent = (props) => {
     setDate(dates);
   };
 
-
-  /*
-  if(transformedData.length !==0){
-    console.log('sdfsdfdf');
-    setMonthData(transformedData);
-  }
-  */
   useEffect(() => {
     const transformedData = [];
-    console.log(userId);
     axios.get(`${import.meta.env.REACT_APP_BACKEND_URL}/alarm/list/month?month=${date}&userId=${userId}`)
       .then(response => {
         if (response.data.length !== 0) {
@@ -204,7 +194,6 @@ const CalendarComponent = (props) => {
             //날짜 칸 클릭 이벤트
             onSelectSlot={(slotInfo) => {
               const filteredData = [];
-              console.log(slotInfo.start);
               monthData.forEach(data => {
                 if (dayjs(data.start).format('YYYY-MM-DD') == dayjs(slotInfo.start).format('YYYY-MM-DD')) {
                   filteredData.push(data);

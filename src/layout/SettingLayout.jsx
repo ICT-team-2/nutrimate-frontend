@@ -4,6 +4,7 @@ import { styled as muiStyled } from '@mui/material/styles';
 import { Outlet } from 'react-router-dom';
 import { FOOTER_HEIGHT } from '@src/utils/const.js';
 import SettingHeader from '@src/component/setting/sidemenu/SettingHeader.jsx';
+import useCheckUserToken from '@src/hooks/useCheckUserToken.jsx';
 
 const Wrapper = styled.div`
     height: fit-content;
@@ -21,6 +22,7 @@ const Content = styled.div`
 `;
 
 function SettingLayout() {
+
   return (
     <>
       <Wrapper>

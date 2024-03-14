@@ -19,6 +19,7 @@ import { initializeApp } from 'firebase/app';
 import { getMessaging, onMessage, getToken } from 'firebase/messaging';
 import SiteLogo from '@src/asset/image/SiteLogo.png';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 const LoadEffectAnimation = keyframes`
     0% {
@@ -208,19 +209,7 @@ const AlarmModal = (props) => {
   useEffect(() => {
     const firebaseApp = initializeApp(firebaseConfigFile);
     const messaging = getMessaging(firebaseApp);
-    /*  
-    const firebaseApp = initializeApp(firebaseConfigFile);
-    console.log(firebaseConfigFile);
-    console.log(process.env.YOUR_PUBLIC_VAPI)
-    const YOUR_PUBLIC_VAPID_KEY=`BF4iu85TgiNtmpCM9n0evtVZgf1oF6dzVm0cNr5oA9d49zOkvL9QvHwjaz-MaxxsXFO9xvl7YFWhU2r-MA1-2A4`;
-    const messaging = getMessaging(firebaseApp);
-    getToken(messaging,{vapidKey: YOUR_PUBLIC_VAPID_KEY}).then((token) => {
-        console.log("fcmToken:", token);
-        setFcmToken(token);
-    });
-  */
 
-    console.log(cookies.fcmtoken);
     if ('serviceWorker' in navigator && !navigator.serviceWorker.controller) {
       navigator.serviceWorker.getRegistrations().then((registrations) => {
         let swRegistered = false;
@@ -237,19 +226,16 @@ const AlarmModal = (props) => {
           // 등록된 service worker 없으면 새로 등록합니다.
           navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: 'firebase-cloud-messaging-push-scope' })
             .then((registration) => {
-              console.log('Service Worker 등록에 성공하였습니다:', registration.scope);
             }).catch((err) => {
-            console.error('Service Worker 등록에 실패하였습니다:', err);
           });
         } else {
-          console.log('Service Worker가 이미 등록되어 있습니다.');
         }
       });
     }
 
 
     onMessage(messaging, (payload) => {
-      console.log('Message received. ', payload);
+
       // 알림 생성
       let title = payload.data.title;
       let options = {
@@ -310,24 +296,23 @@ const AlarmModal = (props) => {
 
     if (startDate.length === 0) {
       count++;
-      window.alert('처음날짜를 선택해주세요.');
+      toast.warn('처음날짜를 선택해주세요.');
     }
     if (endDate.length === 0) {
       count++;
-      window.alert('마지막 날짜를 선택해주세요.');
+      toast.warn('마지막 날짜를 선택해주세요.');
     }
     if (time.length === 0) {
       count++;
-      window.alert('시간을 선택해주세요.');
+      toast.warn('시간을 선택해주세요.');
     }
 
     if (count === 0) {
       if (startDateTime.isBefore(currentDate)) {
-        window.alert('선택할 수 날짜입니다.');
       } else if (startDateTime.isAfter(endDateTime)) {
-        window.alert('처음 날짜 이후의 날짜을 선택해주세요.');
+        toast.warn('처음 날짜 이후의 날짜을 선택해주세요.');
       } else if (startDateTime.isSame(currentDate, 'day') && currentTime > selectTime) {
-        window.alert('선택할 수 없는 시간입니다.');
+        toast.warn('선택할 수 없는 시간입니다.');
       } else {
         const datesBetween = getDatesBetween(startDate, endDate + 1);
 
@@ -345,7 +330,6 @@ const AlarmModal = (props) => {
             const weekdaysList = ['일', '월', '화', '수', '목', '금', '토'];
             category.forEach(week => {
               if (weekdaysList[dayOfWeek] === week) {
-                console.log(date);
                 //Alarm(date+'T'+selectTime.slice(0, -3),title,content)
                 updatedAlarmWeek.push(date + 'T' + selectTime.slice(0, -3));
               }
@@ -367,8 +351,6 @@ const AlarmModal = (props) => {
 
 
   const AlarmSaveData = (updatedAlarmWeek) => {
-    console.log('sdf', updatedAlarmWeek.length);
-    console.log(userId);
 
 
     if (updatedAlarmWeek.length > 0) {
@@ -379,9 +361,7 @@ const AlarmModal = (props) => {
 
       })
         .then(response => {
-          console.log(response.data.alarmId);
           for (let i = 0; i < updatedAlarmWeek.length; i++) {
-            console.log('updatedAlarmWeek', updatedAlarmWeek[i], 'alarmId', response.data.alarmId[i]);
             Alarm(updatedAlarmWeek[i], title, content, response.data.alarmId[i]);
           }
 
@@ -390,7 +370,7 @@ const AlarmModal = (props) => {
             handleChangeWeek(startWeek, endWeek);
 
           } else {
-            alert('알람 저장에 실패했습니다.');
+            toast.warn('알람 저장에 실패했습니다.');
           }
 
         })
@@ -399,16 +379,12 @@ const AlarmModal = (props) => {
         });
 
     } else {
-      alert('해당되는 날짜가 없습니다. 다시 확인해주세요.');
+      toast.warn('해당되는 날짜가 없습니다. 다시 확인해주세요.');
     }
   };
 
 
   const Alarm = (dateTimeForDB, title, content, alarmId) => {
-
-
-    console.log(dateTimeForDB);
-    console.log('fcmToken!!:', cookies.fcmtoken);
     axios.post(`${import.meta.env.REACT_APP_FLASK_URL}/serviceworker`, {
       'alarm_time': dateTimeForDB,
       'title': title,
@@ -433,8 +409,6 @@ const AlarmModal = (props) => {
     } else {
       setCategory([...category, value]);
     }
-
-    console.log(category);
   };
 
 

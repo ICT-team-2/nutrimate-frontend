@@ -18,6 +18,7 @@ import NameProfileComponent
 import { useNavigate } from 'react-router-dom';
 import { LINKS } from '@src/utils/const';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 const LoginContainer = styled(Container)`
@@ -114,7 +115,7 @@ const RegisterPageNext = () => {
 
   const handleRegister = async () => {
     if (nickname === '') {
-      alert('닉네임을 입력해주세요');
+      toast.warn('닉네임을 입력해주세요');
       return;
     }
 
@@ -124,12 +125,12 @@ const RegisterPageNext = () => {
 
       // 중복된 닉네임이 있는 경우
       if (response.data.exists) {
-        alert('이미 사용 중인 닉네임입니다.');
+        toast.warn('이미 사용 중인 닉네임입니다.');
         return;
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('닉네임 중복 확인에 실패하였습니다.');
+      toast.warn('닉네임 중복 확인에 실패하였습니다.');
       return;
     }
 
@@ -145,23 +146,20 @@ const RegisterPageNext = () => {
       userAllergy: surveyData.userAllergy.join(','),
       userHealthReason: surveyData.userHealthReason.join(','),
     };
-    console.log('postData:', postData);
 
     try {
       // 서버에 POST 요청 보내기
       const response = await axios.post(`${import.meta.env.REACT_APP_BACKEND_URL}/member/join`, postData);
 
-      console.log('response:', response);
-
       if (response.status === 200) {
         navigate(LINKS.LOGIN);
-        alert('회원가입되었습니다.');
+        toast.success('회원가입되었습니다.');
       } else {
-        alert('회원가입에 실패하였습니다.');
+        toast.error('회원가입에 실패하였습니다.');
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('회원가입에 실패하였습니다.');
+      toast.error('회원가입에 실패하였습니다.');
     }
   };
 
