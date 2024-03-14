@@ -15,9 +15,15 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 import { LINKS } from '@src/utils/const.js';
+import styled from 'styled-components';
 
 
 const settings = ['프로필', '채팅', '캘린더', '로그아웃'];
+
+const StyledIconButton = styled(IconButton)`
+    cursor: pointer;
+    padding: 0;
+`;
 
 const ProfileImgMenu = () => {
 
@@ -36,14 +42,15 @@ const ProfileImgMenu = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 0 }}>
+    <Box>
       {/* 프로필 아이콘 */}
-      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+      <StyledIconButton onClick={handleOpenUserMenu}>
         <UserAvatar
+          clickable
           userNick={data?.userNick}
           src={data?.userProfile && import.meta.env.REACT_APP_BACKEND_URL + data?.userProfile}
         />
-      </IconButton>
+      </StyledIconButton>
 
 
       {/* 드롭다운 메뉴 */}
