@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { Grid } from '@mui/material';
 import NutrientCard from '@src/component/infomation/nutrient/NutrientCard.jsx';
 import PagnationComponent from '@src/component/common/PagnationComponent.jsx';
-import useFetchNutrients from '@src/component/infomation/hooks/useFetchNutrients.jsx';
+import useFetchNutrients from '@src/hooks/information/useFetchNutrients.jsx';
 import { NUTRIENTS_AGE_CATEGORY, NUTRIENTS_GENDER_CATEGORY } from '@src/component/infomation/const.js';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
 

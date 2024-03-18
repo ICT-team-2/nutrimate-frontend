@@ -9,10 +9,10 @@ import { profileModalAtom, profilePromptModalAtom } from '@src/component/mypage/
 import { useAtom, useSetAtom } from 'jotai/react';
 import { styled as muiStyled } from '@mui/material/styles';
 import styled from 'styled-components';
-import useCreateImageAI from '@src/hooks/mypage/useCreateImageAI.jsx';
+import useCreateImageAI from '@src/hooks/common/useCreateImageAI.jsx';
 import { useState } from 'react';
 import Typography from '@mui/material/Typography';
-import useChangeProfileImage from '@src/hooks/mypage/useChangeProfileImage.jsx';
+import useChangeProfileImage from '@src/hooks/common/useChangeProfileImage.jsx';
 import { base64toFile } from '@src/utils/functions.js';
 import LinearProgress from '@mui/material/LinearProgress';
 

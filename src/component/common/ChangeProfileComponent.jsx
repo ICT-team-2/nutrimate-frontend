@@ -5,7 +5,7 @@ import ChangeProfileModal
 import { Button } from '@mui/material';
 import React from 'react';
 import FollowButton from '@src/component/common/FollowButton.jsx';
-import useChangeProfileImage from '@src/hooks/mypage/useChangeProfileImage.jsx';
+import useChangeProfileImage from '@src/hooks/common/useChangeProfileImage.jsx';
 
 /**
  *
@@ -25,7 +25,7 @@ const ChangeProfileComponent = (props) => {
     }} />
     {isLoginUser && <Button
       onClick={() => setOpenModal(true)}
-      variant='contained'
+      variant="contained"
       size={buttonSize}>프로필 변경</Button>
     }
   </>);

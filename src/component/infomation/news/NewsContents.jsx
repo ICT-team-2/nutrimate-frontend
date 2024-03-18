@@ -11,7 +11,7 @@ import {
 import { useAtom } from 'jotai/react';
 import { searchKeywordAtom, selectedNewsCategoryAtom } from '@src/component/infomation/atom.js';
 import { NEWS_CATEGORY } from '@src/component/infomation/const.js';
-import useFetchNews from '@src/component/infomation/hooks/useFetchNews.jsx';
+import useFetchNews from '@src/hooks/information/useFetchNews.jsx';
 
 
 const StyledButton = styled(Button)`

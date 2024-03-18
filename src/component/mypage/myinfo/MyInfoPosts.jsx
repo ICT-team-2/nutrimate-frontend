@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import InfoBoardTable from '@src/component/board/info/list/InfoBoardTable.jsx';
 import styled from 'styled-components';
 import PagnationComponent from '@src/component/common/PagnationComponent.jsx';
-import useFetchProfileInfoBoardList from '@src/hooks/mypage/useFetchProfileInfoBoardList.jsx';
+import useFetchProfileInfoBoardList from '@src/hooks/common/useFetchProfileInfoBoardList.jsx';
 import { useParams } from 'react-router-dom';
 
 const MyInfoPostsContainer = styled.div`
@@ -17,7 +17,7 @@ const MyInfoPosts = () => {
   const handlePageChange = (event, value) => {
     setPageState(value);
   };
-  
+
   return (
     <MyInfoPostsContainer>
       <InfoBoardTable data={data?.infoBoardList} />

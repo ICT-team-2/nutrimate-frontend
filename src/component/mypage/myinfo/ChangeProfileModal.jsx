@@ -13,7 +13,7 @@ import { ResetStyleInput } from '@src/component/common/ImgUploader.jsx';
 import { styled as muiStyled } from '@mui/material/styles';
 import ProfileAIPromptModal from '@src/component/mypage/myinfo/ProfileAIPromptModal.jsx';
 import styled from 'styled-components';
-import useChangeProfileImage from '@src/hooks/mypage/useChangeProfileImage.jsx';
+import useChangeProfileImage from '@src/hooks/common/useChangeProfileImage.jsx';
 
 const style = {
   position: 'absolute',

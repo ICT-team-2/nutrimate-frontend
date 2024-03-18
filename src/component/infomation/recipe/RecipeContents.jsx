@@ -6,7 +6,7 @@ import RecipeCard from '@src/component/infomation/recipe/RecipeCard.jsx';
 import { useAtom } from 'jotai/react';
 import { searchKeywordAtom } from '@src/component/infomation/atom.js';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
-import useFetchFoodRecipe from '@src/component/infomation/hooks/useFetchFoodRecipe.jsx';
+import useFetchFoodRecipe from '@src/hooks/information/useFetchFoodRecipe.jsx';
 import Image from './recipe.png';
 
 const pageItemNumber = 16;

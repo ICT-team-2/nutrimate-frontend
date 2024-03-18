@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import MyFeedCard from '@src/component/mypage/myinfo/MyFeedCard.jsx';
 import useFetchProfileFeedList
-  from '@src/hooks/mypage/useFetchProfileFeedList.jsx';
+  from '@src/hooks/common/useFetchProfileFeedList.jsx';
 import { useEffect } from 'react';
 import * as React from 'react';
 import { useParams } from 'react-router-dom';

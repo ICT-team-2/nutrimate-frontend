@@ -9,7 +9,7 @@ import SportCard from '@src/component/infomation/sport/SportCard.jsx';
 import PagnationComponent from '@src/component/common/PagnationComponent.jsx';
 import { useAtom } from 'jotai/react';
 import { searchKeywordAtom } from '@src/component/infomation/atom.js';
-import useFetchSportVideo from '@src/component/infomation/hooks/useFetchSportVideo.jsx';
+import useFetchSportVideo from '@src/hooks/information/useFetchSportVideo.jsx';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
 import { SPORT_CATEGORY } from '@src/component/infomation/const.js';
 import styled from 'styled-components';

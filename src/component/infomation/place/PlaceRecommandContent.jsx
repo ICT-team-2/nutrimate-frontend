@@ -7,8 +7,8 @@ import PagnationComponent from '@src/component/common/PagnationComponent.jsx';
 import { useAtom } from 'jotai/react';
 import { searchKeywordAtom } from '@src/component/infomation/atom.js';
 import { PLACE_CATEGORY } from '@src/component/infomation/const.js';
-import useFetchRestaurant from '@src/component/infomation/hooks/useFetchRestaurant.jsx';
-import useFetchGym from '@src/component/infomation/hooks/useFetchGym.jsx';
+import useFetchRestaurant from '@src/hooks/information/useFetchRestaurant.jsx';
+import useFetchGym from '@src/hooks/information/useFetchGym.jsx';
 
 
 const StyledPlaceContainer = styled.div`
