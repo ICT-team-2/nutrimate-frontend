@@ -19,6 +19,7 @@ import TextField from '@mui/material/TextField';
 import ConfirmCreateChatroomModal from '@src/component/chat/dm/room/ConfirmCreateChatroomModal.jsx';
 import Avatar from '@mui/material/Avatar';
 import { AvatarGroup } from '@mui/lab';
+import useFetchSearchUser from '@src/hooks/dmchat/chatroom/useFetchSearchUser.jsx';
 
 const StyledBox = styled(Box)`
     position: absolute;
@@ -83,9 +84,11 @@ const CreateGroupChatroomModal = (props) => {
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
   const [userData, setUserData] = useState([]);
+  const [searchWord, setSearchWord] = useState('');
 
   const { data: followerList } = useFetchFollowerList();
   const { data: followeeList } = useFetchFolloweeList();
+  const { data: searchUserList, refetch: refetchSearch } = useFetchSearchUser(searchWord);
 
   useEffect(() => {
     setData([]);
@@ -98,11 +101,17 @@ const CreateGroupChatroomModal = (props) => {
         setData(followeeList);
         break;
       case CREATE_CHATROOM_TAB.SEARCH.tabValue:
+        setData(searchUserList ? searchUserList
+            .filter((user) =>
+              user.userId !== parseInt(sessionStorage.getItem('userId')),
+            )
+          : [],
+        );
         break;
       default:
         break;
     }
-  }, [tabValue, followerList, followeeList]);
+  }, [tabValue, followerList, followeeList, searchUserList]);
 
 
   const handleOpen = () => setOpen(true);
@@ -152,9 +161,25 @@ const CreateGroupChatroomModal = (props) => {
           </Tabs>
           {tabValue === CREATE_CHATROOM_TAB.SEARCH.tabValue &&
             (<TextFieldContainer>
-                <StyledTextField size="small" label="닉네임" fullWidth
+                <StyledTextField
+                  size="small" label="닉네임" fullWidth
+                  value={searchWord}
+                  onChange={(e) => {
+                    setSearchWord(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      refetchSearch();
+                      e.stopPropagation();
+                      e.preventDefault();
+                    }
+                  }}
                 />
-                <SearchButton variant="contained">검색</SearchButton>
+                <SearchButton
+                  onClick={() => {
+                    refetchSearch();
+                  }}
+                  variant="contained">검색</SearchButton>
               </TextFieldContainer>
             )
           }

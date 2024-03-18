@@ -137,7 +137,10 @@ const FeedCommentList = (props) => {
                      cmtId={cmtId} searchKeyWord={'CMT'} />}
       <FeedCommentInnerContainer>
         <FeedCommentHeader>
-          <UserAvatar userNick={writer} />
+          <UserAvatar
+            src={detailData?.userProfile
+              && `${import.meta.env.REACT_APP_BACKEND_URL}${detailData?.userProfile}`}
+            userNick={writer} />
           <NicknameTypo variant="subtitle2">{writer}</NicknameTypo>
           <FlexGrowDiv />
           {!isWriter &&
@@ -147,7 +150,11 @@ const FeedCommentList = (props) => {
               onClickFollow={onChangeFollow}
               onClickUnfollow={onChangeFollow}
             />}
-          {isWriter && <FeedDropMenu boardId={boardId} setShowReportModal={setShowReportModal} setCmtId={setCmtId} />}
+          {<FeedDropMenu
+            isWriter={isWriter}
+            boardId={boardId}
+            setShowReportModal={setShowReportModal}
+            setCmtId={setCmtId} />}
         </FeedCommentHeader>
         <Divider />
         <FeedCommentBody ref={commentListRef}>

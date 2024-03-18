@@ -7,16 +7,9 @@ import { useRef } from 'react';
 import { toast } from 'react-toastify';
 
 const useCreateImageAI = () => {
-
-  const toastId = useRef(null);
-  const loadingToast = () => {
-    toastId.current = toast.loading(TOAST_MESSAGE.IMAGE_CREATE.LOADING,
-      TOAST_OPTIONS.LOADING);
-  };
-
+  
   //axios
   const createImageAI = async ({ prompt }) => {
-    loadingToast();
     const formData = new FormData();
     formData.append('prompt', prompt);
     const response = await axios.post(import.meta.env.REACT_APP_FLASK_URL + '/profile/img', formData, {

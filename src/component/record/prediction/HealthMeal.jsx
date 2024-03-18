@@ -19,7 +19,6 @@ const HealthMeal = () => {
   // 컴포넌트가 마운트될 때 데이터를 불러오도록 useEffect 훅 사용
   useEffect(() => {
     fetchPrediction();
-    console.log(resultInfo.meals);
   }, []);
 
   return (

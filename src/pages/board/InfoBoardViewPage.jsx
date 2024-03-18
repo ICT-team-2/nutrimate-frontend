@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import ViewHashtag from '@src/component/board/info/view/ViewHashtag.jsx';
 import InfoComments from '@src/component/board/info/view/InfoComments.jsx';
 import KakaoMap from '@src/component/board/KakaoMap';
-import useInitMapData from '@src/component/board/info/hooks/useInitMapData.jsx';
+import useInitMapData from '@src/hooks/board/info/sport/useInitMapData.jsx';
 import BoardBookmarkButton from '@src/component/board/BoardBookmarkButton.jsx';
 import { BOARD } from '@src/component/board/const.js';
 import BoardLikeButton from '@src/component/board/BoardLikeButton.jsx';
@@ -114,10 +114,10 @@ const InfoBoardViewPage = (props) => {
         <BoardBookmarkButton
           clicked={data?.checkedBookmark === 1}
           boardid={parseInt(boardId)} />
-        {data?.userId === parseInt(sessionStorage.getItem('userId'))
-          && <InfoBoardDropMenu
-            category={category}
-            boardId={parseInt(boardId)} />}
+        {<InfoBoardDropMenu
+          isWriter={data?.userId === parseInt(sessionStorage.getItem('userId'))}
+          category={category}
+          boardId={parseInt(boardId)} />}
       </WriterTypo>
       <HashtagContainer>
         {data && data?.tagNameList && <ViewHashtag hashtags={data?.tagNameList.map((data) => {

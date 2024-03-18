@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlexGrowDiv, UserAvatar } from '@src/component/common/GlobalComponents.jsx';
 import Typography from '@mui/material/Typography';
 import ChangeProfileComponent from '@src/component/common/ChangeProfileComponent.jsx';
@@ -7,6 +7,7 @@ import { styled as muiStyled } from '@mui/material/styles';
 import { useAtomValue } from 'jotai/react';
 import { profileImageAtom } from '@src/component/mypage/atom.js';
 import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
+import TextField from '@mui/material/TextField';
 
 const PROFILE_IMG_SIZE = 100;
 
@@ -36,8 +37,14 @@ const ProfileContainer = styled.div`
 const SubTitleTypo = muiStyled(Typography)`
   color: ${({ theme }) => theme['gray-light-text']};
 `;
-const NameProfileComponent = ({ profileButton, name, nickname }) => {
+const NameProfileComponent = ({ profileButton, name, nickname, isEdit, setNickname }) => {
   const { data } = useFetchProfileData();
+  const [nick, setNick] = useState('');
+
+  useEffect(() => {
+    setNick(nickname);
+  }, [nickname]);
+
   return (
     <StyledContainerDiv>
       <UserAvatar
@@ -47,7 +54,18 @@ const NameProfileComponent = ({ profileButton, name, nickname }) => {
           && `${import.meta.env.REACT_APP_BACKEND_URL}${data?.userProfile}`} />
       <NameContainer>
         <Typography variant="h5">{name}</Typography>
-        <SubTitleTypo variant="subtitle1">{nickname}</SubTitleTypo>
+        {isEdit ?
+          <TextField
+            variant="standard"
+            disabled={!isEdit}
+            value={nick}
+            onChange={(e) => {
+              setNick(e.target.value);
+              setNickname(e.target.value);
+            }}
+          /> :
+          <SubTitleTypo variant="subtitle1">{nickname}</SubTitleTypo>
+        }
       </NameContainer>
       <FlexGrowDiv />
       {profileButton &&

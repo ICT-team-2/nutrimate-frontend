@@ -10,7 +10,7 @@ import AskDeleteDialog from '@src/component/board/AskDeleteDialog.jsx';
 import useDeleteBoard from '@src/hooks/board/common/useDeleteBoard.jsx';
 
 
-const FeedDropMenu = ({ boardId, setShowReportModal }) => {
+const FeedDropMenu = ({ boardId, setShowReportModal, isWriter }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -53,9 +53,10 @@ const FeedDropMenu = ({ boardId, setShowReportModal }) => {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        <MenuItem onClick={gotoEdit}>수정</MenuItem>
-        <MenuItem onClick={handleDelete}>삭제</MenuItem>
-        <MenuItem onClick={handleReport}>신고</MenuItem>
+        {isWriter ? <>
+          <MenuItem onClick={gotoEdit}>수정</MenuItem>
+          <MenuItem onClick={handleDelete}>삭제</MenuItem>
+        </> : <MenuItem onClick={handleReport}>신고</MenuItem>}
       </Menu>
       <AskDeleteDialog
         onClickDelete={() => deleteBoard.mutate(boardId)}

@@ -18,17 +18,17 @@ const root = createRoot(container);
 const MainApp = () => {
   const queryClient = new QueryClient();
   return (
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <StyledEngineProvider injectFirst>
-          <BrowserRouter>
-            {/*<JotaiDevTools />*/}
-            {/*<ReactQueryDevtools buttonPosition="bottom-left" />*/}
-            <App />
-          </BrowserRouter>
-        </StyledEngineProvider>
-      </QueryClientProvider>
-    </React.StrictMode>
+    // <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <StyledEngineProvider injectFirst>
+        <BrowserRouter>
+          {/*<JotaiDevTools />*/}
+          {/*<ReactQueryDevtools buttonPosition="bottom-left" />*/}
+          <App />
+        </BrowserRouter>
+      </StyledEngineProvider>
+    </QueryClientProvider>
+    // </React.StrictMode>
   );
 };
 

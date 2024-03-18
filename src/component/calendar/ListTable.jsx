@@ -21,6 +21,10 @@ import { color } from '@mui/system';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { toast } from 'react-toastify';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { FlexDiv, FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
 
 
 dayjs.locale('ko');
@@ -85,7 +89,6 @@ const StyledTableHead = styled(TableHead)`
 const ListTable = ({ userId }) => {
   const currentDate = dayjs();
 
-
   const [groupedData, setGroupedData] = useState({});
   const tableContainerRef = useRef(null);
   const [value, setValue] = React.useState(dayjs(new Date()));
@@ -95,6 +98,11 @@ const ListTable = ({ userId }) => {
   const [endWeek, setEndWeek] = useState(endOfWeekSecond);
   const [calendarData, setCalendarData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [deleteAlarmData, setDeleteAlarmData] = useState({
+    alarmId: null,
+    date: null,
+  });
 
   const handleChangeWeek = (startOfWeek, endOfWeek) => {
     setStartWeek(startOfWeek);
@@ -121,30 +129,28 @@ const ListTable = ({ userId }) => {
   };
 
   const deleteAlarm = (alarmId, date) => {
+    axios.delete(`${import.meta.env.REACT_APP_BACKEND_URL}/alarm/list/week/delete?alarmId=${alarmId}`)
+      .then(datas => {
+        if (datas.data.alarmOk === 1) {
+          axios.delete(`${import.meta.env.REACT_APP_FLASK_URL}/serviceworker`, {
+            data: {
+              alarmId: alarmId,
+            },
+          })
+            .catch(error => {
+              console.error('Error fetching chat data:', error);
+            });
+          let updatedData = { ...calendarData };
+          updatedData = Object.values(updatedData).filter(item => item.alarmId !== alarmId);
+          // 변경된 상태를 적용
+          setCalendarData(updatedData);
+        }
+      })
+      .catch(error => {
+        toast.error('알람을 읽어오는 데 실패했습니다.');
+      });
 
-    if (confirm('알람을 삭제하시겠습니까?')) {
-      axios.delete(`${import.meta.env.REACT_APP_BACKEND_URL}/alarm/list/week/delete?alarmId=${alarmId}`)
-        .then(datas => {
-          if (datas.data.alarmOk === 1) {
-            axios.delete(`${import.meta.env.REACT_APP_FLASK_URL}/serviceworker`, {
-              data: {
-                alarmId: alarmId,
-              },
-            })
-              .catch(error => {
-                console.error('Error fetching chat data:', error);
-              });
-            let updatedData = { ...calendarData };
-            updatedData = Object.values(updatedData).filter(item => item.alarmId !== alarmId);
-            // 변경된 상태를 적용
-            setCalendarData(updatedData);
-          }
-        })
-        .catch(error => {
-          toast.error('알람을 읽어오는 데 실패했습니다.');
-        });
 
-    }
   };
 
   useEffect(() => {
@@ -189,7 +195,15 @@ const ListTable = ({ userId }) => {
                   <StyledTableRow key={itemIndex}>
                     <TableCell>{dayjs(item.alarmTime).format('HH:mm')}</TableCell>
                     <TableCell>{item.alarmCategory}</TableCell>
-                    <TableCell><DeleteButton className="deleteButton" onClick={() => deleteAlarm(item.alarmId, date)} /></TableCell>
+                    <TableCell>
+                      <DeleteButton
+                        className="deleteButton"
+                        onClick={() => {
+                          setOpen(true);
+                          setDeleteAlarmData({
+                            alarmId: item.alarmId, date: date,
+                          });
+                        }} /></TableCell>
                   </StyledTableRow>
                 ))}
               </TableBody>
@@ -203,7 +217,61 @@ const ListTable = ({ userId }) => {
 
         </TableContainer>
       </>
+      <DeleteModal
+        deleteAlarm={() => {
+          if (deleteAlarmData.alarmId === null || deleteAlarmData.date === null) {
+            toast.error('알람을 읽어오는 데 실패했습니다.');
+            return;
+          }
+          deleteAlarm(deleteAlarmData.alarmId, deleteAlarmData.date);
+        }}
+        open={open}
+        setOpen={setOpen}
+      />
     </div>
+  );
+};
+
+const ModalBox = styled(Box)`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+`;
+
+const DeleteModal = ({ deleteAlarm, open, setOpen }) => {
+  const handleClose = () => setOpen(false);
+
+  return (
+    <>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ModalBox>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            정말로 삭제하시겠습니까?
+          </Typography>
+          <br />
+          <FlexDiv>
+            <FlexGrowDiv />
+            <Button
+              color={'error'}
+              onClick={() => {
+                deleteAlarm();
+                handleClose();
+              }}>확인</Button>
+            <Button onClick={handleClose}>취소</Button>
+          </FlexDiv>
+        </ModalBox>
+      </Modal>
+    </>
   );
 };
 

@@ -93,8 +93,7 @@ const CreatePrivateChatroomModal = (props) => {
               user.userId !== parseInt(sessionStorage.getItem('userId')),
             )
           : [],
-        )
-        ;
+        );
         break;
       default:
         break;

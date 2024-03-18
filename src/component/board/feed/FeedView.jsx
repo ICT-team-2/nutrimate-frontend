@@ -8,6 +8,9 @@ import { LINKS } from '@src/utils/const.js';
 import useFetchFeedList from '@src/hooks/board/feed/useFetchFeedList.jsx';
 import useIntersectionObserver from '@src/hooks/useIntersectionObserver.jsx';
 import LoadingComponent from '@src/component/common/LoadingComponent.jsx';
+import { useAtom } from 'jotai/react';
+import { ocrTextAtom } from '@src/component/board/OcrModal.jsx';
+import { quillRefAtom } from '@src/component/board/atom.js';
 
 const ViewContainer = styled.div`
     display: flex;
@@ -38,6 +41,8 @@ const FeedView = () => {
     () => fetchNextPage(),
     1);
   const observerRef = useRef(null);
+  const [ocrText, setOcrText] = useAtom(ocrTextAtom);
+  const quillRef = useAtom(quillRefAtom);
 
   const navigate = useNavigate();
   const gotoWrite = () => {
@@ -71,7 +76,9 @@ const FeedView = () => {
           >탐색</Button>
           <StyledButton
             variant="contained"
-            onClick={gotoWrite}
+            onClick={() => {
+              gotoWrite();
+            }}
           >글 작성</StyledButton>
         </FlexDiv>
 

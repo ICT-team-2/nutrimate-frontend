@@ -17,8 +17,6 @@ const StyledLabel = styled.label`
 const SelectContainer = styled.div`
     margin: 30px;
     width: 40%;
-
-
 `;
 
 const StyledSelect = muiStyled(Select)`
@@ -67,7 +65,7 @@ const DietSelectBox = (props) => {
 
   const handleChange = (event) => {
     setDiet(event.target.value);
-    onChange(event)
+    onChange(event);
   };
   return (
     <>
@@ -106,7 +104,8 @@ DietSelectBox.defaultProps = {
   label: SETTING_USER_INFOS.DIET.LABEL,
   values: SETTING_USER_INFOS.DIET.VALUES,
   keys: SETTING_USER_INFOS.DIET.KEYS,
-  onChange:()=>{}
+  onChange: () => {
+  },
 };
 
 export default DietSelectBox;

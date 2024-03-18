@@ -169,7 +169,7 @@ const LoginPage = () => {
           <AdditionalContainer>
             <FormControlLabel control={
               <Checkbox
-                value={checked}
+                checked={checked}
                 onChange={handleCheckboxChange} />} label="아이디 저장" />
             <FlexGrowDiv />
           </AdditionalContainer>

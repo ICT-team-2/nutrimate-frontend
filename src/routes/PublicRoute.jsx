@@ -7,7 +7,7 @@ const PublicRoute = () => {
   const userId = sessionStorage.getItem('userId');
 
   useEffect(() => {
-    if (userId != null)
+    if (userId != null || userId != undefined)
       toast.warn('이미 로그인이 되어있습니다.', TOAST_OPTIONS.WARN);
   }, []);
 

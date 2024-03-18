@@ -76,6 +76,7 @@ const UserEditInfo = () => {
     userGender: '',
     userSportHard: '',
     userIntro: '',
+    userNick: '',
   });
 
   const [diet, setDiet] = useAtom(dietStateAtom);
@@ -159,9 +160,13 @@ const UserEditInfo = () => {
   return (
     <>
       <NameProfileComponent
+        isEdit
         profileButton
         name={userInfo?.userName}
         nickname={userInfo?.userNick}
+        setNickname={(nickname) => {
+          setUserInfo(prev => ({ ...prev, userNick: nickname }));
+        }}
       />
       <StyledTypography variant="h5">소개</StyledTypography>
       <StyledTextField

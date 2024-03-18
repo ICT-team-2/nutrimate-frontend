@@ -12,6 +12,8 @@ import ChatLoadingText from '@src/component/chat/chatbot/ChatLoadingText';
 import { Tooltip, Typography, Stack, IconButton } from '@mui/material';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Logo from '@image/Logo.png';
+import useFetchProfileData from '@src/hooks/useFetchProfileData.jsx';
 
 const ChatContainer = styled.div`
     width: 100%;
@@ -87,6 +89,9 @@ const ChatUI = (props) => {
   //tts
   let prevStateLength = useRef(voicedata.length);
   const scrollRef = useRef();
+
+  const { data: userData } = useFetchProfileData();
+
   useEffect(() => {
     //setVoicedata(data)
     if (micicon) {
@@ -271,7 +276,6 @@ const ChatUI = (props) => {
   return (
     <ChatContainer>
       <ChatHeader>
-
         <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
           <Typography variant="h6">{title}</Typography>
           <Stack direction="row" spacing={2}>
@@ -307,7 +311,11 @@ const ChatUI = (props) => {
             ? voicedata.map((d, i) =>
               d && d.messageType == 'CHAT' ?
                 d.challengeNick == nickname ?
-                  <MyTalkComponent key={i} content={d.chatMessage} nick={d.challengeNick} />
+                  <MyTalkComponent
+                    key={i}
+                    src={userData?.userProfile && `${import.meta.env.REACT_APP_BACKEND_URL}${userData?.userProfile}`}
+                    content={d.chatMessage}
+                    nick={userData?.userNick ?? '유저'} />
                   : <OtherTalkComponent
                     userId={d.userId}
                     key={i} content={d.chatMessage} nick={d.challengeNick} />
@@ -319,11 +327,13 @@ const ChatUI = (props) => {
             : voicedata.messageType == 'CHAT' ?
               voicedata.challengeNick == nickname ?
                 <MyTalkComponent
+                  src={userData?.userProfile && `${import.meta.env.REACT_APP_BACKEND_URL}${userData?.userProfile}`}
                   content={voicedata.chatMessage}
                   nick={voicedata.challengeNick} />
                 : <OtherTalkComponent
                   userId={d.userId}
-                  content={voicedata.chatMessage} nick={voicedata.challengeNick} />
+                  content={voicedata.chatMessage}
+                  nick={voicedata.challengeNick} />
               : voicedata.messageType == 'CHALLENGE' ?
                 <ChallengeSuccess> {voicedata.chatMessage}</ChallengeSuccess>
                 : <ChatOutAndEnter>{voicedata.chatMessage}</ChatOutAndEnter>

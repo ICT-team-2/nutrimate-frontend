@@ -9,11 +9,9 @@ import { LINKS } from '@src/utils/const.js';
 import AskDeleteDialog from '@src/component/board/AskDeleteDialog.jsx';
 import useDeleteBoard from '@src/hooks/board/common/useDeleteBoard.jsx';
 import ReportModal from '@src/component/admin/manage/ReportModal.jsx';
-import { useAtom } from 'jotai';
-import { userIdAtom } from '@src/pages/login/atom.js';
 
 
-const InfoBoardDropMenu = ({ boardId, category }) => {
+const InfoBoardDropMenu = ({ boardId, category, isWriter }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -61,9 +59,14 @@ const InfoBoardDropMenu = ({ boardId, category }) => {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        <MenuItem onClick={gotoEdit}>수정</MenuItem>
-        <MenuItem onClick={handleDelete}>삭제</MenuItem>
-        <MenuItem onClick={handleReport}>신고</MenuItem>
+        {
+          isWriter ?
+            <>
+              <MenuItem onClick={gotoEdit}>수정</MenuItem>
+              <MenuItem onClick={handleDelete}>삭제</MenuItem>
+            </>
+            : <MenuItem onClick={handleReport}>신고</MenuItem>
+        }
       </Menu>
       <AskDeleteDialog
         onClickDelete={() => deleteBoard.mutate(boardId)}

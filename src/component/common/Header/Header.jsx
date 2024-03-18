@@ -39,7 +39,9 @@ const StyledAppBar = styled(AppBar)`
             logowhite === 'true' ? 'absolute' : 'static'
     };
     padding: 0;
-    padding-right: 0 !important; //프로필 메뉴 클릭시 패딩 생기는거 날리는 용
+    ${({ logowhite }) => {
+        return logowhite !== 'true' && `padding-right: 0 !important;`;
+    }}
 `;
 const StyledButton = styled(Button)`
     color: ${({ theme, logowhite }) =>

@@ -1,10 +1,10 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 import Box from '@mui/material/Box';
 import InfomationTabs from '@src/component/infomation/InfomationTabs.jsx';
 import { CustomSearchInput, FlexGrowDiv } from '@src/component/common/GlobalComponents.jsx';
-import { useAtom, useAtomValue } from 'jotai/react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai/react';
 import { infoTabStateAtom, recommandMenuStateAtom, searchKeywordAtom } from '@src/component/infomation/atom.js';
 
 import { INFO_TABS, RECOMMAND_MENU } from '@src/component/infomation/const.js';
@@ -31,7 +31,12 @@ const TabContainer = styled.div`
 
 const InfomationPage = () => {
   const [searchValue, setSearchValue] = useAtom(searchKeywordAtom);
+  const [selectedTab, setSelectedTab] = useAtom(infoTabStateAtom);
+  const [selectedMenu, setSelectedMenu] = useAtom(recommandMenuStateAtom);
 
+  useEffect(() => {
+    setSearchValue('');
+  }, [selectedTab, selectedMenu]);
 
   return (
     <InfomationContainer>

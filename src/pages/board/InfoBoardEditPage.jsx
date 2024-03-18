@@ -22,7 +22,7 @@ import {
   mapRefAtom,
   quillRefAtom,
 } from '@src/component/board/atom.js';
-import useInitMapData from '@src/component/board/info/hooks/useInitMapData.jsx';
+import useInitMapData from '@src/hooks/board/info/sport/useInitMapData.jsx';
 import DOMPurify from 'dompurify';
 
 import { useNavigate } from 'react-router-dom';

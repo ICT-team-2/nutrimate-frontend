@@ -12,8 +12,8 @@ const StyledEditor = styled(ReactQuill)`
 `;
 
 function BoardEditor({ content }) {
-  const [value, setValue] = useState(content);
-  const ocrText = useAtomValue(ocrTextAtom);
+  const [value, setValue] = useState('');
+  const [ocrText, setOcrText] = useAtom(ocrTextAtom);
 
   const quillRef = useRef(null);
   const [quillRefState, setQuillRefState] = useAtom(quillRefAtom);
@@ -21,21 +21,26 @@ function BoardEditor({ content }) {
   useEffect(() => {
     if (quillRef.current) {
       const quill = quillRef.current.getEditor();
+      quill.setText('');
       quill.getModule('toolbar').addHandler('image', imageHandler);
       setQuillRefState(quillRef.current);
     }
-  }, []);
+  }, [quillRef.current]);
 
   useEffect(() => {
+    if (content === undefined) {
+      setValue('');
+      return;
+    }
     setValue(content);
   }, [content]);
 
+
   useEffect(() => {
-    if (ocrText !== '') {
-      const quill = quillRef.current.getEditor();
-      const range = quill.getSelection(true);
-      quill.insertText(range.index, ocrText, Quill.sources.USER);
-    }
+    if (ocrText === '') return;
+    const quill = quillRef.current.getEditor();
+    const range = quill.getSelection(true);
+    quill.insertText(range.index, ocrText, Quill.sources.USER);
   }, [ocrText]);
 
 
